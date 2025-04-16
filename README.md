@@ -1,2 +1,25 @@
-# org-landing-pages
-Org Landing Pages is a modern, responsive web application built with Astro and Tailwind CSS. It is designed to dynamically render landing pages for various campaigns using data from Sanity CMS. The project leverages Portable Text for rich text content and includes reusable templates for different campaign types.
+# Org Landing Pages
+
+Org Landing Pages is a dynamic and responsive web application for creating and managing landing pages for various campaigns. Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/), this project integrates with Sanity CMS to fetch and render campaign data, including rich text content and images.
+
+## Features
+
+- **Dynamic Campaign Pages**: Automatically generate landing pages based on campaign data from Sanity CMS.
+- **Reusable Templates**: Includes multiple templates (e.g., Marketing, Sustainers) for different campaign types.
+- **Rich Text Rendering**: Supports Portable Text for rendering headings, paragraphs, and other rich text elements.
+- **Responsive Design**: Fully responsive layouts using Tailwind CSS.
+- **Sanity Integration**: Fetches data dynamically from Sanity CMS, including images and Portable Text content.
+
+## Tech Stack
+
+- **Framework**: [Astro](https://astro.build/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **CMS**: [Sanity](https://www.sanity.io/)
+- **Rich Text Rendering**: [@portabletext/to-html](https://github.com/portabletext/to-html)
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/org-landing-pages.git
+   cd org-landing-pages
