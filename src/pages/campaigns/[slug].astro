@@ -1,0 +1,103 @@
+---
+import { client } from '../../lib/sanityClient.js';
+import imageUrlBuilder from '@sanity/image-url';
+
+// Import the templates for different campaign types
+import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
+import InvestorRepsTemplate from '../../components/templates/InvestorRepsTemplate.astro';
+import MarketingTemplate from '../../components/templates/MarketingTemplate.astro';
+import SustainersTemplate from '../../components/templates/SustainersTemplate.astro';
+
+// Map templates from Sanity to Astro components
+const templateMap = {
+  advocates: AdvocatesTemplate,
+  investorReps: InvestorRepsTemplate,
+  marketing: MarketingTemplate,
+  sustainers: SustainersTemplate,
+};
+
+// Utility to build Sanity image URLs
+const builder = imageUrlBuilder(client);
+function urlFor(source) {
+  return builder.image(source).url();
+}
+
+// Define getStaticPaths to pre-render known slugs
+export async function getStaticPaths() {
+  const query = `*[_type == "campaign" && defined(slug.current)] {
+    "slug": slug.current,
+    heading,
+    heroCopy,
+    body,
+    heroImage,
+    heroImageAlt,
+    ctaText,
+    ctaLink,
+    templateType,
+    contactEmail
+  }`;
+  const campaigns = await client.fetch(query);
+
+  console.log('Campaign slugs:', campaigns.map(c => c.slug)); // Debug slugs
+
+  return campaigns.map(campaign => ({
+    params: { slug: campaign.slug },
+    props: { campaign },
+  }));
+}
+
+// Get the campaign data from props (for pre-rendered pages)
+let campaign = Astro.props.campaign;
+
+// If no campaign data (e.g., for an unknown slug), fetch it dynamically
+if (!campaign) {
+  const { slug } = Astro.params;
+  const query = `*[_type == "campaign" && slug.current == $slug][0] {
+    heading,
+    heroCopy,
+    body,
+    heroImage,
+    heroImageAlt,
+    ctaText,
+    ctaLink,
+    templateType,
+    contactEmail
+  }`;
+  campaign = await client.fetch(query, { slug });
+
+  if (!campaign) {
+    return new Response(null, {
+      status: 404,
+      statusText: 'Not Found',
+    });
+  }
+}
+
+// Determine which template to use
+const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
+const pageTitle = campaign.heading || "Campaign Page";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <section>
+      {/* Render the template with campaign data */}
+      {campaign && TemplateComponent && (
+        <TemplateComponent campaignData={campaign} />
+      )}
+
+      {/* Display warning if template type is unknown */}
+      {campaign && !templateMap[campaign.templateType] && (
+        <div class="text-center py-10 text-orange-600">
+          <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
+        </div>
+      )}
+    </section>
+  </body>
+</html>
