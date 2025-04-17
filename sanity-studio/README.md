@@ -1,9 +1,25 @@
-# Sanity Clean Content Studio
+# Org Landing Pages
 
-Congratulations, you have now installed the Sanity Content Studio, an open-source real-time content editing environment connected to the Sanity backend.
+Org Landing Pages is a dynamic and responsive web application for creating and managing landing pages for various campaigns. Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/), this project integrates with Sanity CMS to fetch and render campaign data, including rich text content and images.
 
-Now you can do the following things:
+## Features
 
-- [Read “getting started” in the docs](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
-- [Join the community Slack](https://slack.sanity.io/?utm_source=readme)
-- [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+- **Dynamic Campaign Pages**: Automatically generate landing pages based on campaign data from Sanity CMS.
+- **Reusable Templates**: Includes multiple templates (e.g., Marketing, Sustainers) for different campaign types.
+- **Rich Text Rendering**: Supports Portable Text for rendering headings, paragraphs, and other rich text elements.
+- **Responsive Design**: Fully responsive layouts using Tailwind CSS.
+- **Sanity Integration**: Fetches data dynamically from Sanity CMS, including images and Portable Text content.
+
+## Tech Stack
+
+- **Framework**: [Astro](https://astro.build/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **CMS**: [Sanity](https://www.sanity.io/)
+- **Rich Text Rendering**: [@portabletext/to-html](https://github.com/portabletext/to-html)
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/org-landing-pages.git
+   cd org-landing-pages

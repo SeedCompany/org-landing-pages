@@ -1,21 +1,85 @@
----
-import { urlFor } from '../../lib/sanityClient';
+--- 
+import { urlFor } from "../../lib/sanityClient";
+import { toHTML } from '@portabletext/to-html';
+
 const { campaignData } = Astro.props;
 ---
-<article class="p-8 max-w-3xl mx-auto bg-green-50">
-    <h1 class="text-3xl font-bold mb-4 text-green-800">{campaignData.heading}</h1>
-     {campaignData.mainImage && (
-        <img
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{campaignData.heading}</title>
+    <style is:global>
+      @import '../../styles/global.css';
+    </style>
+  </head>
+  <body>
+    <article>
+      <section class="bg-[#f3f3e7]">
+        
+      <div class="p-8 max-w-7xl mx-auto md:flex items-center mb-8">
+        <!-- Render the hero image -->
+        {campaignData.heroImage && (
+          <img
+            class="md:w-1/2 h-auto mb-4 mr-8 rounded-lg shadow-lg"
             src={campaignData.heroImage ? urlFor(campaignData.heroImage) : ''}
-            alt={campaignData.heading || 'Default alt text'}
-            class="mb-4 w-full h-auto object-cover rounded"
-        />
-    )}
-    <p class="text-green-700 mb-6">{campaignData.body}</p>
-    <!-- Advocate-specific layout elements -->
-    <div class="mt-8 p-4 border border-green-300 rounded">
-        <h2 class="text-xl font-semibold text-green-700">Join the Cause</h2>
+            alt={campaignData.heroImageAlt || 'Default alt text'}
+          />
+        )}
+      <div class="p-4">
+      <h1 class="font-bold mb-4 text-[#323232]">{campaignData.heading}</h1>
+      <!-- Render the heroCopy content -->
+      <div class=" mb-[60px]" set:html={toHTML(campaignData.heroCopy)}></div>
+      <a class="cta" href={(campaignData.ctaLink)}>{(campaignData.ctaText)}</a>
+    </div>
+      </div>
+      
+    </section>
+      <div class="px-8 max-w-7xl mx-auto">
+      <!-- Render the body content -->
+      <div class="text-[#323232] mb-6" set:html={toHTML(campaignData.body)}></div>
+      
+      <div class="mt-8 p-4 border border-slate-300 rounded">
+        <h2 class="font-semibold text-[#323232]">Advocates Template</h2>
         <!-- Placeholder for future Give Form -->
         <div class="mt-4 p-6 bg-white rounded shadow">Give Form Area</div>
+      </div>
     </div>
-</article>
+    </article>
+  </body>
+</html>
+
+<style>
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Libre Baskerville', serif;
+  }
+  h1 {
+    font-size: 58px;
+    line-height: 1.3em;
+  }
+  h2 {
+    font-size: 42px;
+  }
+  p {
+    font-family: 'Gotham', sans-serif;
+    color: #54595F;
+  }
+  .cta {
+    background-color: #006268;
+    color: #ffffff;
+    padding: 20px 50px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+  }
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 42px;
+    }
+    h2 {
+      font-size: 32px;
+    }
+  }
+</style>
