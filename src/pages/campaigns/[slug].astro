@@ -47,7 +47,22 @@ export async function getStaticPaths() {
 }
 
 // Get the campaign data from props (for pre-rendered pages)
-let campaign = Astro.props.campaign;
+// Define the type of Astro.props to include a campaign property
+interface CampaignProps {
+  campaign?: {
+    heading?: string;
+    heroCopy?: string;
+    body?: string;
+    heroImage?: string;
+    heroImageAlt?: string;
+    ctaText?: string;
+    ctaLink?: string;
+    templateType?: string;
+    contactEmail?: string;
+  };
+}
+
+let campaign = (Astro.props as CampaignProps).campaign;
 
 // If no campaign data (e.g., for an unknown slug), fetch it dynamically
 if (!campaign) {

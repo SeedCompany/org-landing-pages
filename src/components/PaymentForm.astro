@@ -1,0 +1,672 @@
+---
+const v3RecaptchaKey = "6Ld99uUUAAAAAFC2zFV9A2ifvQnZirPaL9tBcM5v";
+const v2RecaptchaKey = "6Lcf--UUAAAAAFV0vXhY3vQeS5uWZI1-1OTkS70T";
+---
+
+<section class="form-wrapper">
+  <form id="payment-form">
+    <!-- Investor Type -->
+    <h2 class="give-as-heading">Give as</h2>
+    <div class="form-section">
+      <select name="investor-type" id="investor-type">
+        <option value="Individual">Individual</option>
+        <option value="Organization">Businesses/Organization</option>
+      </select>
+    </div>
+    <div class="recurring-wrapper">
+      <label class="recurring-amount">
+        <input class="recurring-item hidden" type="checkbox" id="recurring" name="recurring"/>
+        <div class="box">
+          <span id="recurring-label">Donate Monthly?</span>
+        </div>
+      </label>
+    </div>
+    <div class="payment-form-presets-container">
+      <h2 class="payment-form-heading choose-amount">Choose an amount to give</h2>
+      <div class="payment-form-presets-wrapper"> 
+        <label class="preset-amount">
+          <input class="preset-item" type="radio" name="donation_amount" value="35" />
+          <div class="box">
+            <span><strong>$35</strong> <small>USD</small></span>
+          </div>
+        </label>
+        <label class="preset-amount">
+          <input class="preset-item" type="radio" name="donation_amount" value="75" checked />
+          <div class="box">
+            <span><strong>$75</strong> <small>USD</small></span>
+          </div>
+        </label>
+        <label class="preset-amount">
+          <input class="preset-item" type="radio" name="donation_amount" value="100" />
+          <div class="box">
+            <span><strong>$100</strong> <small>USD</small></span>
+          </div>
+        </label>
+        <label class="preset-amount">
+          <input class="preset-item" type="radio" name="donation_amount" value="200" />
+          <div class="box">
+            <span><strong>$200</strong> <small>USD</small></span>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="dollar-input">
+      <div class="dollar-sign-box">
+        <span class="dollar-sign">$</span>
+      </div>
+      <input class="payment-form-input" type="number" id="amount" name="amount" placeholder="Other Amount"/>
+    </div>
+    <hr class="payment-form-hr">
+    <h2 class="payment-form-heading give-as-heading" id="give-as-heading">Personal Information</h2>
+    <!-- Contact Information -->
+    <div class="payment-form-column" id="first_name">
+      <label class="payment-form-label hidden" for="first-name">First Name:</label>
+      <input class="payment-form-input" type="text" id="first-name" name="first-name" placeholder="First Name*" required/>
+    </div>
+    <div class="payment-form-column" id="last_name">  
+      <label class="payment-form-label hidden" for="last-name" id="last-name-label">Last Name:</label>
+      <input class="payment-form-input" type="text" id="last-name" name="last-name" placeholder="Last Name*" required/>
+    </div>
+    <div>
+      <label class="payment-form-label hidden" for="email">Email:</label>
+      <input class="payment-form-input" type="email" id="email" placeholder="Email Address*" required/>
+      <label class="payment-form-label hidden" for="address-1">Address Line 1:</label>
+      <input class="payment-form-input" type="text" id="address-1" name="address-1" placeholder="Address*" required/>
+      <label class="payment-form-label hidden" for="city">City:</label>
+      <input class="payment-form-input" type="text" id="city" name="city" placeholder="City*" required/>
+      <div class="payment-form-row">
+        <label class="payment-form-label hidden" for="state">State:</label>
+        <input class="payment-form-input" type="text" id="state" name="state" placeholder="State*" required/>
+        <label class="payment-form-label hidden" for="zip-code">Zip Code:</label>
+        <input class="payment-form-input" type="text" id="zip-code" name="zip-code" placeholder="Zip Code*" required/>
+      </div>
+    </div>
+    <hr class="payment-form-hr">
+    <h2 class="payment-form-heading give-as-heading">Payment method</h2>
+    <div class="payment-form-payment-method-wrapper">
+      <div class="payment-methods">
+        <input type="radio" name="payment_method" class="payment-method-radio" id="payment-form-card" value="card" checked>
+        <label for="payment-form-card" id="payment-form-card-label">Card</label>
+      </div>
+      <div class="payment-methods">
+        <input type="radio" name="payment_method" class="payment-method-radio" id="payment-form-bank" value="bank">
+        <label for="payment-form-bank" id="payment-form-bank-label">Bank Account</label>
+      </div>        
+    </div>
+    <div id="payment-element">
+      <!-- Stripe Elements will create form elements here -->
+    </div>
+    <button type="submit" id="submit">Give God's Word</button>
+    <div id="error-message">
+      <!-- Display error message to your customers here -->
+    </div>
+  </form>
+</section>
+
+<!-- External Scripts -->
+<script src="https://www.google.com/recaptcha/api.js?render={v3RecaptchaKey}"></script>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
+<!-- Client-side JavaScript -->
+<script>
+    // Ensure script runs after DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      let plaidAccountId;
+      let plaidToken;
+      window.v3RecaptchaToken = null;
+      window.v2RecaptchaToken = null;
+  
+      grecaptcha.ready(function(){
+        grecaptcha.execute('{v3RecaptchaKey}', {action: 'create_donation'}).then(function(token){
+          window.v3RecaptchaToken = token;
+          window.inputDonation.input.captchaV3 = token;
+        });
+      });  
+  
+      const stripe = Stripe('pk_live_5Xe5PGHfc4PGUga3BGluJYEP');
+      const options = {
+        mode: 'payment',
+        amount: 7500,
+        currency: 'usd',
+        appearance: {/*...*/},
+      };
+  
+      const elements = stripe.elements(options);
+      let paymentElement = elements.create('payment', {
+        paymentMethodOrder: ['card', 'apple_pay', 'google_pay']  
+      });
+      paymentElement.mount('#payment-element');
+  
+      // DOM references
+      const recurring = document.querySelector('#recurring');
+      const investorType = document.querySelector('#investor-type');
+      const firstName = document.querySelector('#first-name');
+      const lastName = document.querySelector('#last-name');
+      const email = document.querySelector('#email');
+      const address1 = document.querySelector('#address-1');
+      const city = document.querySelector('#city');
+      const state = document.querySelector('#state');
+      const zipCode = document.querySelector('#zip-code');
+      const amount = document.querySelector('#amount');
+      let setAmount = 75;
+  
+      // GET DONATION AMOUNT
+      amount.addEventListener('input', function () {
+        let inputValue = amount.value;
+        if (inputValue) {
+          let radios = document.querySelectorAll('input[name="donation_amount"]');
+          radios.forEach((radio) => {
+            radio.checked = false;
+          });
+        }
+      });
+  
+      const updateSelectedAmount = () => {
+        const radioInputs = document.querySelectorAll('.preset-item');
+        const elementsArray = Array.from(radioInputs); 
+        const checkedInput = elementsArray.find(element => element.checked);
+        if (checkedInput) {
+          setAmount = parseInt(checkedInput.value);
+          updateAmount();
+        }
+      }
+  
+      function updateAmount() {
+        let selectedOption = document.querySelector('input[name="donation_amount"]:checked');
+        let inputValue = document.getElementById('amount').value;
+  
+        if (inputValue) {
+          setAmount = parseInt(inputValue);
+        } else if (selectedOption) {
+          setAmount = parseInt(selectedOption.value);
+        } else {
+          setAmount = 75;
+        }
+        updateStripeElement();
+      }
+  
+      const updateStripeElement = () => {
+        elements.update({
+          amount: setAmount * 100,
+          mode: recurring.checked ? 'subscription' : 'payment',
+        });
+      };
+  
+      const updateSelectedPayment = () => {
+        const achPayment = document.querySelector('#payment-form-bank');
+        const stripeForm = document.querySelector('#payment-element');
+        if (achPayment.checked) {
+          stripeForm.style.display = 'none';
+        } else {
+          stripeForm.style.display = 'block';
+        }
+      }  
+  
+      async function submitForm(e) {
+        e.preventDefault();
+        document.querySelector('#submit').disabled = true;
+        const achPayment = document.querySelector('#payment-form-bank');
+  
+        if (achPayment.checked) {
+          await processPlaid();
+        } else {
+          const { error: submitError } = await elements.submit();
+          if (submitError) {
+            document.querySelector('#submit').disabled = false;
+            return;
+          }
+  
+          const { error, confirmationToken } = await stripe.createConfirmationToken({
+            elements,
+            params: {
+              return_url: 'https://seedcompany.com/thank-you'
+            }
+          });
+  
+          if (error) {
+            document.querySelector('#submit').disabled = false;
+            return;
+          }
+  
+          const { body: data } = await processStripeFinalCall(confirmationToken.id, "stripe");
+          if (!data || !data.data || !data.data.donate || !data.data.donate.intent) {
+            document.querySelector('#submit').disabled = false;
+            return;
+          }
+  
+          const clientSecret = data.data.donate.intent.clientSecret;
+  
+          const { error: confirmError } = await stripe.confirmPayment({
+            clientSecret,
+            confirmParams: {
+              confirmation_token: confirmationToken.id,
+              return_url: 'https://seedcompanydev.wpengine.com/thank-you',
+            },
+          });
+  
+          if (confirmError) {
+            document.querySelector('#submit').disabled = false;
+          }
+        }
+      }
+  
+      async function processStripeFinalCall(token, type) {
+        let paymentType = {
+          "stripe": {
+            "confirmationToken": token
+          }
+        };
+        if (type === "plaid") {
+          paymentType = {
+            "plaid": {
+              "publicToken": token
+            }
+          }
+        }
+  
+        const inputDonation = {
+          "input": {
+            "cadence": recurring.checked ? 'Monthly' : 'OneTime',
+            "captcha": {
+              "v2": window.v2RecaptchaToken || null,
+              "v3": window.v3RecaptchaToken || null
+            },
+            "investor": {
+              "email": email.value,
+              "firstName": firstName.value,
+              "lastName": lastName.value,
+              "mailingAddress": {
+                "city": city.value,
+                "line1": address1.value,
+                "state": state.value,
+                "zip": zipCode.value,
+                "country": 'US'
+              },
+              "phone": null,
+              "type": investorType.value
+            },
+            "payment": paymentType,
+            "targets": [
+              {
+                "amount": parseInt(setAmount)
+              }
+            ]
+          }
+        };
+  
+        let body = JSON.stringify({
+          query: "mutation Donate($input: DonateInput!) {donate(input: $input) { intent { clientSecret } }}",
+          variables: inputDonation,
+          operationName: "Donate",
+        });
+  
+        const res = await fetch("https://api.seedcompany.com/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Access: "application/json",
+          },
+          body: body,
+        });
+  
+        const json = await res.json();
+        if (res.status !== 200 || json.errors) {
+          throw new Error('Failed to create donation');
+        }
+        return {status: res.status, body: json};
+      }
+  
+      // Investor Type Dropdown
+      function giveType() {
+        const firstNameDiv = document.querySelector('#first_name');
+        const investType = document.querySelector('#investor-type').value;
+  
+        if (investType === 'Organization') {
+          firstNameDiv.style.display = "none";
+          lastName.style.width = "100%";
+          document.getElementById('give-as-heading').textContent = "Organization Information";
+          document.getElementsByName('last-name')[0].placeholder = 'Organization Name';
+          document.querySelector('#last-name-label').textContent = "Organization";
+        } else {
+          firstNameDiv.style.display = "block"; // Changed to 'block' for consistency
+          lastName.style.width = "100%";
+          document.getElementById('give-as-heading').textContent = "Personal Information";
+          document.getElementsByName('last-name')[0].placeholder = 'Last Name';
+          document.querySelector('#last-name-label').textContent = "Last Name";
+        }
+      }
+  
+      // Event Listeners
+      document.querySelector('#payment-form').addEventListener('submit', submitForm);
+      amount.addEventListener('change', updateStripeElement);
+      amount.addEventListener('input', updateAmount);
+      recurring.addEventListener('change', updateStripeElement);
+      document.querySelector('#payment-form-bank').addEventListener('change', updateSelectedPayment);
+      document.querySelector('#payment-form-card').addEventListener('change', updateSelectedPayment);
+      document.querySelectorAll('.preset-item').forEach(item => {
+        item.addEventListener('change', updateSelectedAmount);
+      });
+      investorType.addEventListener('change', giveType);
+  
+      // Plaid payment processing
+      async function processPlaid() {
+        let input = {
+          input: {
+            email: email.value,
+            firstName: firstName.value || "",
+            lastName: lastName.value || "",
+            mailingAddress: {
+              city: city.value || "",
+              country: "",
+              line1: address1.value || "",
+              state: state.value || "",
+              zip: zipCode.value || "",
+            },
+            name: "",
+            phone: "",
+          },
+        };
+  
+        let body = JSON.stringify({
+          query: "mutation createPlaidLinkToken($input: CreateInvestor!) {createPlaidLinkToken(input: $input) { token }}",
+          variables: input,
+          operationName: "createPlaidLinkToken",
+        });
+  
+        fetch("https://api.seedcompany.com/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Access: "application/json",
+          },
+          body: body,
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          let token = data.data.createPlaidLinkToken.token;
+          const configs = {
+            token: token,
+            onSuccess: async function(public_token, metadata) {
+              plaidToken = public_token;
+              plaidAccountId = metadata.account_id;
+              processStripeFinalCall(plaidToken, "plaid");
+            },
+            onExit: async function(err, metadata) {
+              if (err != null && err.error_code === "INVALID_LINK_TOKEN") {
+                linkHandler.destroy();
+                linkHandler = Plaid.create({
+                  ...configs,
+                  token: await fetchLinkToken(),
+                });
+              }
+            },
+          };
+          var linkHandler = Plaid.create(configs);
+          linkHandler.open();
+        });
+      }
+    });
+  </script>
+
+<style>
+/* FORM STYLES */
+.elementor-kit-7 h2 {
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+small {
+  font-size: 16px;
+  font-weight: normal;
+}
+#payment-form {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 540px;
+  width: auto;
+  padding: 0px 2.5rem 2.5rem;
+  border-radius: 5px;
+  font-family: "Libre Baskerville", Sans-serif;
+  margin: auto;
+  box-sizing: border-box;
+}
+#payment-form * {
+  box-sizing: border-box;
+}
+.payment-form-heading {
+  font-size: 20px;
+  font-family: "Gotham" !important;
+  font-weight: 400 !important;
+  padding: 0px;
+  margin: 10px 0px !important;
+  line-height: 1.3em !important;
+}
+.give-as-heading,
+#give-as-heading {
+  font-family: gothammediumwebfont !important;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.choose-amount {
+  font-size: 18px;	
+}
+.payment-form-hr {
+  margin-top: 10px !important;
+  border: 1px solid #e6e6e6;
+  width: 100%;
+}
+/* RECURRING CHECKBOX */
+.recurring-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0px;
+}
+#recurring {
+  width: 1.25em;
+  height: 1.25rem;
+  accent-color: #006268;
+}
+.recurring-amount {
+  width: 48.5%;
+}
+#recurring-label {
+  font-family: gothammediumwebfont !important;
+}
+/* AMOUNT TO GIVE */
+.payment-form-presets-wrapper {
+  display: grid;
+  grid-template-columns: calc((100% - 8px) / 2) calc((100% - 8px) / 2);
+  grid-gap: 8px;
+}
+/* RADIO STYLES */
+.box {
+  width: 100%;
+  height: 75px;
+  background-color: #F4F3E7;
+  color: #323232;
+  font-weight: 400;
+  transition: all 250ms ease;
+  will-change: transition;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+}
+.box span {
+  font-size: 20px;
+  font-family: "Gotham" !important;
+}
+.preset-item {
+  display: none;
+}
+.preset-item:checked + .box {
+  background: #D8E1BE;
+  border: 1px solid #64B145;
+}
+.recurring-item:checked + .box {
+  background: #D8E1BE;
+  border: 1px solid #64B145;
+}
+.payment-form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+.payment-form-row * {
+  width: calc(50% - 10px);
+  box-sizing: border-box;
+}
+.payment-form-row input[name="state"] {
+  margin-right: 10px;
+}
+.payment-form-input,
+#investor-type {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
+}
+.payment-form-input {
+  font-family: "Gotham" !important;
+  padding: 0.75rem 1rem !important;
+  margin-bottom: 10px;
+  font-weight: 400 !important;
+}
+.payment-form-input:focus {
+  border-color: #e6e6e6 !important;		
+  box-shadow: 0 1 1 rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02) !important;
+  outline: 0px !important;
+}
+.payment-form-input::placeholder {
+  color: #757680 !important;
+  font-weight: 100 !important;
+  font-size: 15px;
+}
+.payment-form-input::-webkit-input-placeholder {
+  color: #757680 !important;
+}
+.payment-form-input::-moz-input-placeholder {
+  color: #757680 !important;
+}
+.payment-form-input:-ms-input-placeholder {
+  color: #757680 !important;	
+}
+.payment-form-input::-ms-input-placeholder {
+  color: #757680 !important;	
+}
+.payment-form-label {
+  font-family: "Gotham" !important;
+  margin-bottom: 0.25rem;
+  font-size: 0.93rem;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  margin-top: 20px;
+}
+#investor-type {
+  font-family: "Gotham" !important;
+  margin-bottom: 1.5rem;
+  color: #323232 !important;
+}
+/* PAYMENT METHOD */
+.payment-form-presets-container {
+  padding-bottom: 30px;
+}
+.payment-form-payment-method-wrapper {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 1.15rem 0px;
+}
+.payment-methods {
+  display: flex;
+  align-items: center;
+  font-family: "Gotham" !important;
+  margin-left: 5px;
+}
+.payment-method-radio {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  accent-color: #006268;
+  border: 1px solid #006268;
+  border-radius: 100%;
+  cursor: pointer;
+  text-align: center;
+  transition: all 250ms ease;
+}
+#payment-form-card-label,
+#payment-form-bank-label {
+  padding: 5px;
+}
+input#payment-form-bank {
+  margin-left: 10px;
+}
+/* SUBMIT BUTTON */
+button#submit {
+  width: 100%;
+  background-color: #006268;
+  color: #FFF;
+  border-radius: 5px;
+  margin-top: 20px;
+  padding: 12px 30px;
+  border: none;
+  outline: none;
+  font-family: "Gotham" !important;
+}
+.hidden {
+  display: none;
+}
+.dollar-input {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.dollar-sign-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 10px;
+  width: 30px;
+  border: 1px solid #ccc;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dollar-sign {
+  pointer-events: none;
+  font-family: "Gotham" !important;
+}
+.payment-form-input {
+  padding-left: 40px;
+  border: 1px solid #ccc;
+  height: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 550px) {
+  .payment-form-row {
+    display: block;
+  }
+  .payment-form-row * {
+    width: 100%;
+  }
+  .payment-form-presets-wrapper {
+    display: grid;
+    grid-template-columns: calc((100% - 8px) / 1);
+    grid-gap: 8px;
+  }
+  .recurring-amount {
+    width: 97% !important;
+  }
+  #payment-form {
+    padding: 10px;
+  }
+}
+</style>

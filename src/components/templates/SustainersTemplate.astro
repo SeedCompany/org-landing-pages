@@ -1,6 +1,7 @@
 --- 
 import { urlFor } from "../../lib/sanityClient";
 import { toHTML } from '@portabletext/to-html';
+import PaymentForm from "../PaymentForm.astro";
 
 const { campaignData } = Astro.props;
 ---
@@ -43,7 +44,14 @@ const { campaignData } = Astro.props;
       <div class="mt-8 p-4 border border-slate-300 rounded">
         <h2 class="font-semibold text-[#323232]">Sustainers Template</h2>
         <!-- Placeholder for future Give Form -->
-        <div class="mt-4 p-6 bg-white rounded shadow">Give Form Area</div>
+        <div class="mt-4 p-6 bg-white rounded shadow">
+          <PaymentForm 
+            campaignData={campaignData} 
+            formType="sustainers" 
+            formTitle="Become a Sustainer" 
+            formDescription="Join our community of supporters who make a difference every month."
+            formButtonText="Become a Sustainer" />
+        </div>
       </div>
     </div>
     </article>
