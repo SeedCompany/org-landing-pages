@@ -1,0 +1,113 @@
+---
+
+---
+<header class="md:fixed absolute inset-x-0 top-0 z-50">
+    <nav class="flex items-center justify-between p-6 lg:px-8 bg-transparent bg-[linear-gradient(89deg,#192D2F59_0%,#D2DCCF52_100%)] my-4 w-[98%] mx-auto rounded-[30px]" aria-label="Global">
+      <div class="flex lg:flex-1">
+        <a href="#" class="-m-1.5 md:p-1.5 p-0">
+          <span class="sr-only">Seed Company</span>
+          <img class="md:h-12 h-10 w-auto" src="https://seedcompany.com/wp-content/uploads/2025/01/sc-full-logo-white-1.svg" alt="">
+        </a>
+      </div>
+      <div class="flex lg:hidden">
+        <button type="button" id="menuOpen" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+          <span class="sr-only">Open main menu</span>
+          <!-- Replace image with a hamburger icon for clarity -->
+          <svg class="size-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFF" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+      <div class="hidden lg:flex lg:gap-x-12">
+        <a href="#" class="text-sm/6 font-semibold text-white hover:text-gray-300 transition duration-300">Impact</a>
+        <a href="#" class="text-sm/6 font-semibold text-white hover:text-gray-300 transition duration-300">Approach</a>
+        <a href="#" class="text-sm/6 font-semibold text-white hover:text-gray-300 transition duration-300">Stories</a>
+      </div>
+      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+        <a href="#" class="text-sm/6 font-semibold text-white hover:text-gray-300 transition duration-300">Give Now <span aria-hidden="true">→</span></a>
+      </div>
+    </nav>
+    <!-- Mobile menu, hidden by default -->
+    <div id="mobileMenu" class="fixed transform inset-0 z-50 hidden lg:hidden" role="dialog" aria-modal="true">
+      <!-- Background backdrop -->
+      <div id="backdrop" class="fixed inset-0 bg-black/50 transition-opacity duration-300 opacity-0"></div>
+      <!-- Menu panel -->
+      <div class="fixed inset-y-0 right-0 z-50 w-full sm:max-w-sm bg-white px-6 py-6 overflow-y-auto transform translate-x-full transition-transform duration-300 sm:ring-1 sm:ring-gray-900/10">
+        <div class="flex items-center justify-between">
+          <a href="#" class="-m-1.5 p-1.5">
+            <span class="sr-only">Seed Company</span>
+            <img class="md:h-8 w-[200px] md:w-auto" src="https://seedcompany.com/wp-content/uploads/2025/03/Seed_Company_primary_logo_dark.png" alt="">
+          </a>
+          <button type="button" id="menuClose" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+            <span class="sr-only">Close menu</span>
+            <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="mt-6 flow-root">
+          <div class="-my-6 divide-y divide-gray-500/10">
+            <div class="space-y-2 py-6">
+              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Impact</a>
+              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Approach</a>
+              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Stories</a>
+            </div>
+            <div class="py-6">
+              <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Give</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+<script>
+  // Wait for the DOM to be fully loaded before running the script
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuOpenButton = document.getElementById('menuOpen');
+    const menuCloseButton = document.getElementById('menuClose');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('backdrop');
+
+    // --- Null Checks ---
+    if (!menuOpenButton || !menuCloseButton || !mobileMenu || !backdrop) {
+      console.error('Header script: One or more menu elements not found.');
+      return; // Exit if essential elements are missing
+    }
+
+    const panel = mobileMenu.querySelector('.fixed.inset-y-0');
+    if (!panel) {
+        console.error('Header script: Menu panel element not found.');
+        return; // Exit if panel is missing
+    }
+
+    // --- Event Listeners ---
+    menuOpenButton.addEventListener('click', () => {
+      mobileMenu.classList.remove('hidden');
+      // Use requestAnimationFrame for smoother transitions starting on the next frame
+      requestAnimationFrame(() => {
+        backdrop.classList.remove('opacity-0');
+        panel.classList.remove('translate-x-full');
+      });
+    });
+
+    const closeMenu = () => {
+      backdrop.classList.add('opacity-0');
+      panel.classList.add('translate-x-full');
+      // Wait for transition to finish before hiding
+      setTimeout(() => {
+        mobileMenu.classList.add('hidden');
+      }, 300); // Match the transition duration (e.g., duration-300)
+    };
+
+    menuCloseButton.addEventListener('click', closeMenu);
+    backdrop.addEventListener('click', closeMenu);
+
+    // Optional: Close menu on Escape key press
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+            closeMenu();
+        }
+    });
+
+  }); // End DOMContentLoaded listener
+</script>

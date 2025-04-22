@@ -1,6 +1,8 @@
 --- 
 import { urlFor } from "../../lib/sanityClient";
 import { toHTML } from '@portabletext/to-html';
+import Footer from "../Footer.astro";
+import PaymentForm from "../PaymentForm.astro";
 
 const { campaignData } = Astro.props;
 ---
@@ -36,26 +38,21 @@ const { campaignData } = Astro.props;
           </div>
         </div>
       </section>
-      <div class="px-8 max-w-7xl mx-auto">
+      <div class="px-8 max-w-7xl mx-auto mb-8">
       <!-- Render the body content -->
       <div class="text-[#323232] my-8" set:html={toHTML(campaignData.body)}></div>
       
       <div class="mt-8 p-4 border border-slate-300 rounded">
         <h2 class="font-semibold text-[#323232]">Sustainers Template</h2>
         <!-- Placeholder for future Give Form -->
-        <div class="mt-4 p-6 bg-white rounded shadow">
-          <PaymentForm 
-            campaignData={campaignData} 
-            formType="sustainers" 
-            formTitle="Become a Sustainer" 
-            formDescription="Join our community of supporters who make a difference every month."
-            formButtonText="Become a Sustainer" />
-        </div>
+        <PaymentForm />
       </div>
     </div>
     </article>
   </body>
 </html>
+
+<Footer />
 
 <style>
   h1, h2, h3, h4, h5, h6 {

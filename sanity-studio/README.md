@@ -19,7 +19,7 @@ Org Landing Pages is a dynamic and responsive web application for creating and m
 
 ## Installation
 
-1. Clone the repository:
+Clone the repository:
    ```bash
    git clone https://github.com/your-username/org-landing-pages.git
    cd org-landing-pages
