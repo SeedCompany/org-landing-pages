@@ -1,8 +1,15 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
+import icon from 'astro-icon';
 
 export default defineConfig({
   integrations: [
-    tailwind(), // Astro's Tailwind integration
+    tailwind(),
+    icon({
+      include: {
+        lucide: ['check', 'heart', 'chevron-down'], 
+      },
+    }),
   ],
+  output: 'server',
 });

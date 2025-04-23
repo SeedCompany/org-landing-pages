@@ -1,6 +1,7 @@
 ---
 import { client } from '../../lib/sanityClient.js';
 import imageUrlBuilder from '@sanity/image-url';
+import { toPlainText } from '../../lib/portableTextSerializer.js';
 
 // Import the templates for different campaign types
 import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
@@ -22,30 +23,26 @@ function urlFor(source) {
   return builder.image(source).url();
 }
 
-// Define getStaticPaths to pre-render known slugs
-export async function getStaticPaths() {
-  const query = `*[_type == "campaign" && defined(slug.current)] {
-    "slug": slug.current,
-    heading,
-    heroCopy,
-    body,
-    heroImage,
-    heroImageAlt,
-    ctaText,
-    ctaLink,
-    templateType,
-    contactEmail
-  }`;
-  const campaigns = await client.fetch(query);
+const { slug } = Astro.params;
+const query = `*[_type == "campaign" && slug.current == $slug][0] {
+  heading,
+  heroCopy,
+  body,
+  heroImage,
+  heroImageAlt,
+  ctaText,
+  ctaLink,
+  templateType,
+  contactEmail
+}`;
+const campaigns = await client.fetch(query, { slug }, { cache: 'no-store' });
 
-  console.log('Campaign slugs:', campaigns.map(c => c.slug)); // Debug slugs
-
-  return campaigns.map(campaign => ({
-    params: { slug: campaign.slug },
-    props: { campaign },
-  }));
+if (!campaigns) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not Found',
+  });
 }
-
 // Get the campaign data from props (for pre-rendered pages)
 // Define the type of Astro.props to include a campaign property
 interface CampaignProps {
@@ -87,10 +84,12 @@ if (!campaign) {
     });
   }
 }
-
+console.log('Campaign data:', campaign);
+console.log('Fetched campaign templateType:', campaign.templateType);
 // Determine which template to use
 const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-const pageTitle = campaign.heading || "Campaign Page";
+//const pageTitle = campaign.heading || "Campaign Page";
+const pageTitle = campaign.heading ? toPlainText(campaign.heading) : "Campaign Page";
 ---
 
 <!DOCTYPE html>
@@ -98,6 +97,7 @@ const pageTitle = campaign.heading || "Campaign Page";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.png" type="image/svg+xml">
     <title>{pageTitle}</title>
   </head>
   <body>
