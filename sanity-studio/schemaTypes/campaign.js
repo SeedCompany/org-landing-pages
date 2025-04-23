@@ -47,7 +47,6 @@ export default defineType({
                               }
                             ]
                           },
-                          // Add the textColor annotation
                           {
                             name: 'textColor',
                             title: 'Text Color',
@@ -73,7 +72,6 @@ export default defineType({
                         decorators: [
                           {title: 'Strong', value: 'strong'},
                           {title: 'Emphasis', value: 'em'},
-                          // Add other decorators if needed
                         ],
                         // Add annotations to the block type
                         annotations: [
@@ -93,7 +91,7 @@ export default defineType({
                           {
                             name: 'textColor',
                             title: 'Text Color',
-                            type: 'textColor' // This type is provided by the simpler-color-input plugin
+                            type: 'textColor'
                           }
                         ]
                     }

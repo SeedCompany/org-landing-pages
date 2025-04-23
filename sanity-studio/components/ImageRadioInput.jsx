@@ -65,12 +65,6 @@ const ImageRadioInput = React.forwardRef((props, ref) => {
             role="radio"
             aria-checked={isSelected}
             tabIndex={0}
-            onKeyPress={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleSelect(option.value);
-                }
-            }}
           >
             {option.imageSrc && (
                <img src={option.imageSrc} alt={option.title} style={styles.image} />

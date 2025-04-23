@@ -96,7 +96,7 @@ const { campaignData } = Astro.props;
 
   <!-- Donation Tiers -->
   <section class="bg-gray-50 py-16 md:py-24">
-    Give form goes here.
+    <p class="text-center">Give form goes here.</p>
   </section>
 
   <!-- How It Works  -->
@@ -106,10 +106,30 @@ const { campaignData } = Astro.props;
         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-emerald-600">
           How it Works title
         </h2>
-        <p class="mt-4 text-lg text-gray-600">How it Works description</p>
+        <p class="mt-4 text-lg text-gray-600">Becoming a sustainer is simple:</p>
       </div>
       <div class="mt-12 grid gap-8 md:grid-cols-3">
-        How it works steps go here.
+        <div class="flex flex-col items-center text-center">
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <span class="text-2xl font-bold">1</span>
+          </div>
+          <h3 class="mt-4 text-xl font-bold">Choose Your Amount</h3>
+          <p class="mt-2 text-gray-600">Select a monthly donation amount that works for your budget.</p>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <span class="text-2xl font-bold">2</span>
+          </div>
+          <h3 class="mt-4 text-xl font-bold">Sign Up Once</h3>
+          <p class="mt-2 text-gray-600">Enter your information and payment details just once.</p>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <span class="text-2xl font-bold">3</span>
+          </div>
+          <h3 class="mt-4 text-xl font-bold">Make a Difference</h3>
+          <p class="mt-2 text-gray-600">Your donation automatically processes each month, creating ongoing impact.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -160,14 +180,3 @@ const { campaignData } = Astro.props;
   </section>
 <Footer />
 
-<style>
-/*  .cta {
-    background-color: #006268;
-    color: #ffffff;
-    padding: 20px 50px;
-    border-radius: 5px;
-    font-size: 18px;
-    font-family: 'Inter', sans-serif;
-    text-decoration: none;
-  }*/
-</style>
