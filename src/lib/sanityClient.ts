@@ -1,26 +1,30 @@
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import dotenv from 'dotenv';
 
-const projectId = 'fgpinugl';
-const dataset = 'production';   
-const apiVersion = '2023-10-01';
+dotenv.config();
+
+const projectId = process.env.SANITY_PROJECT_ID;
+const dataset = process.env.SANITY_DATASET;
+const apiVersion = process.env.SANITY_API_VERSION;
+
 
 if (!projectId || !dataset || !apiVersion) {
-  throw new Error('Missing required environment variables: PROJECT_ID, DATASET, or API_VERSION');
+  throw new Error('Missing required environment variables: SANITY_PROJECT_ID, SANITY_DATASET, or SANITY_API_VERSION');
 }
 
 export const client = createClient({
-  projectId: projectId,
-  dataset: dataset,     
-  apiVersion: apiVersion,
-  useCdn: false,
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: process.env.NODE_ENV === 'production',
 });
 
 const builder = imageUrlBuilder(client);
 
 export function urlFor(source: object | null | undefined): string | undefined {
-    if (!source) {
-        return undefined;
-    }
-    return builder.image(source).url();
+  if (!source) {
+    return undefined;
+  }
+  return builder.image(source).url();
 }

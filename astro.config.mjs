@@ -7,7 +7,7 @@ export default defineConfig({
     tailwind(),
     icon({
       include: {
-        lucide: ['check', 'heart', 'chevron-down'], 
+        lucide: ['check', 'heart', 'chevron-down'],
       },
     }),
   ],

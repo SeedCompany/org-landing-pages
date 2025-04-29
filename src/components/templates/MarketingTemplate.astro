@@ -27,7 +27,7 @@ console.log('heroCtaLink:', campaignData?.heroCtaLink);
             <div class="mt-8 text-pretty text-md font-medium text-gray-500 sm:text-xl/8" set:html={toHTML(campaignData.heroCopy)}></div>
           </div>
           <div class="mt-10 flex items-center gap-x-6">
-            <a href={(campaignData.ctaLink)} class="btn bg-[#006268] border-[#006268] border-2 hover:bg-white hover:text-[#323232] hover:border-black transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
+            <a href={(campaignData.ctaLink)} class="btn bg-[#1D3638] border-[#1D3638] border-2 hover:bg-white hover:text-[#29B67E] hover:border-[#29B67E] transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
           </div>
         </div>
         <div class="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
@@ -44,13 +44,13 @@ console.log('heroCtaLink:', campaignData?.heroCtaLink);
         <div class="text-lg" set:html={toHTML(campaignData.body)}></div>
       </div>
       <div class="my-10 md:flex items-center md:gap-x-6">
-        <a href={(campaignData.ctaLink)} class="btn bg-[#006268] border-[#006268] border-2 hover:bg-white hover:text-[#323232] hover:border-black transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
-        <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={campaignData.contactEmail} class="text-[#006268]">{campaignData.contactEmail}</a></p>
+        <a href={(campaignData.ctaLink)} class="btn bg-[#1D3638] border-[#1D3638] border-2 hover:bg-white hover:text-[#323232] hover:border-black transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
+        <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={campaignData.contactEmail} class="text-[#1D3638]">{campaignData.contactEmail}</a></p>
       </div>
     </section>
-    <div class="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
+    <section class="relative isolate bg-[#CDC3B0] overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
       <div class="absolute inset-0 -z-10 overflow-hidden">
-        <svg class="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)]" aria-hidden="true">
+        <!-- <svg class="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)]" aria-hidden="true">
           <defs>
             <pattern id="e813992c-7d03-4cc4-a2bd-151760b470a0" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
               <path d="M100 200V.5M.5 .5H200" fill="none" />
@@ -60,30 +60,30 @@ console.log('heroCtaLink:', campaignData?.heroCtaLink);
             <path d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z" stroke-width="0" />
           </svg>
           <rect width="100%" height="100%" stroke-width="0" fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)" />
-        </svg>
+        </svg> -->
       </div>
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
         <div class="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div class="lg:pr-4">
             <div class="lg:max-w-lg">
-              <p class="text-base/7 font-semibold text-[#006268]">All Scripture, All People</p>
-              <h2 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">About Seed Company</h2>
-              <p class="mt-6 text-xl/8 text-gray-700">Seed Company exists to bring God's Word to every language and community. Founded with a vision of accessibility and understanding, we build partnerships that transcend borders and barriers. Our collaborative approach empowers local translators with the tools they need to share Scripture's transformative message in ways that resonate deeply with their own people.</div>
+              <p class="text-base/7 font-semibold text-[#E35C2A]">All Scripture, All People</p>
+              <h2 class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-[#323232] sm:text-5xl">About Seed Company</h2>
+              <p class="mt-6 text-xl/8 text-[#323232]">Seed Company exists to bring God's Word to every language and community. Founded with a vision of accessibility and understanding, we build partnerships that transcend borders and barriers. Our collaborative approach empowers local translators with the tools they need to share Scripture's transformative message in ways that resonate deeply with their own people.</div>
               <p class="mt-6">We accelerate the work of Bible translation by connecting local field partners around the world with investors, resources, and training. Through these global partnerships, God's people are being equipped to reach communities still waiting for Scripture in the languages they understand best.</p>
               <div class="md:py-6 py-24">
                 <div class="mx-auto max-w-7xl">
-                  <dl class="grid md:grid-cols-3 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
-                    <div class="mx-auto flex md:max-w-xs w-full flex-col gap-y-4 border-2 rounded-lg border-[#006268] p-6">
-                      <dt class="text-base/7 text-gray-600">of Bible translation.</dt>
-                      <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-2xl">30+ Years</dd>
+                  <dl class="grid md:grid-cols-3 gap-x-8 gap-y-6 md:gap-y-16 text-center lg:grid-cols-3">
+                    <div class="mx-auto flex md:max-w-xs w-full flex-col gap-y-4 border-2 rounded-lg bg-[#F7F1E7] border-[#E35C2A] p-6">
+                      <dt class="text-base/7 text-[#323232]">of Bible translation.</dt>
+                      <dd class="order-first text-3xl font-semibold tracking-tight text-[#E35C2A] sm:text-2xl">30+ Years</dd>
                     </div>
-                    <div class="mx-auto flex md:max-w-xs w-full flex-col gap-y-4 border-2 rounded-lg border-[#006268] p-6">
-                      <dt class="text-base/7 text-gray-600">languages engaged in Bible translation.</dt>
-                      <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-2xl">2,000+</dd>
+                    <div class="mx-auto flex md:max-w-xs w-full flex-col gap-y-4 border-2 rounded-lg bg-[#F7F1E7] border-[#E35C2A] p-6">
+                      <dt class="text-base/7 text-[#323232]">languages engaged in Bible translation.</dt>
+                      <dd class="order-first text-3xl font-semibold tracking-tight text-[#E35C2A] sm:text-2xl">2,000+</dd>
                     </div>
-                    <div class="mx-auto flex md:max-w-xs w-full flex-col gap-y-4 border-2 rounded-lg border-[#006268] p-6">
-                      <dt class="text-base/7 text-gray-600">people reached with God's Word in their language.</dt>
-                      <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-2xl">2.2 billion</dd>
+                    <div class="mx-auto flex md:max-w-xs w-full flex-col gap-y-4 border-2 rounded-lg bg-[#F7F1E7] border-[#E35C2A] p-6">
+                      <dt class="text-base/7 text-[#323232]">people reached with God's Word in their language.</dt>
+                      <dd class="order-first text-3xl font-semibold tracking-tight text-[#E35C2A] sm:text-2xl">2.2 billion</dd>
                     </div>
                   </dl>
                 </div>
@@ -95,7 +95,7 @@ console.log('heroCtaLink:', campaignData?.heroCtaLink);
         </div>
 
       </div>
-    </div>
+    </section>
 
     <Footer />
 

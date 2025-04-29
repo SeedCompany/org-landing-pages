@@ -1,0 +1,212 @@
+---
+import Layout from '../layouts/Layout.astro';
+const goal = 100000;
+---
+
+<Layout title="Donation Thermometer">
+  <main class="flex w-full items-center justify-center">
+    <div class="max-w-[100%] w-full rounded-lg border-[1px] shadow-lg p-6">
+      <div class="thermometer-container">
+        <div class="thermometer-label flex justify-between mb-1">
+          <div class="amount-labels ">
+            <p class="text-[15px] font-semibold">Raised:</p>
+            <span id="totalRaised" class="text-[16px] font-bold">$0</span>
+          </div>
+          <div class="amount-labels">
+            <p class="text-[15px] font-semibold">Donations:</p>
+            <span id="totalDonations" class="text-[16px] font-bold">0</span>
+          </div>
+          <div class="amount-labels">
+            <p class="text-[15px] font-semibold">Goal:</p>
+            <span id="goalAmount" class="text-[16px] font-bold">${goal.toLocaleString()}</span>
+          </div>
+        </div>
+        <div class="thermometer-background h-12 bg-gray-200 rounded">
+          <canvas id="thermometerChart" class="w-full h-ful"></canvas>
+        </div>
+      </div>
+      <!-- <div class="donation-form mt-6">
+        <label for="donationAmount" class="block text-sm font-medium text-gray-700 mb-2">
+          Enter Donation ($):
+        </label>
+        <div class="flex space-x-2">
+          <input
+            type="number"
+            id="donationAmount"
+            min="1"
+            step="1"
+            class="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+            placeholder="Amount"
+          />
+          <button
+            id="donationBtn"
+            class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
+          >
+            Donate
+          </button>
+        </div>
+      </div> -->
+    </div>
+  </main>
+
+  <script>
+    // import Chart from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
+    import { Chart, registerables } from 'chart.js';
+    Chart.register(...registerables);
+    
+    // Initialize state
+    let totalRaised = 48926;
+    let totalDonations = 217;
+    const goal = 100000;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get DOM elements (add type assertions for inputs)
+      const totalRaisedEl = document.getElementById('totalRaised');
+      const totalDonationsEl = document.getElementById('totalDonations');
+      const donationAmountEl = document.getElementById('donationAmount') as HTMLInputElement | null; // Assert type
+      const donationBtn = document.getElementById('donationBtn');
+      const canvas = document.getElementById('thermometerChart') as HTMLCanvasElement | null;
+
+      // --- Null Checks ---
+      if (!totalRaisedEl || !totalDonationsEl || !canvas) {
+        console.error("Donation Thermometer Error: Core display elements not found.");
+        return;
+      }
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+          console.error("Donation Thermometer Error: Could not get canvas context.");
+          return;
+      }
+
+      // Initialize Chart.js
+      const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [''],
+          datasets: [{
+            label: 'Donations',
+            data: [totalRaised],
+            backgroundColor: '#1D3638',
+            borderWidth: 0,
+            barThickness: 50,
+          }],
+        },
+        options: {
+          indexAxis: 'y',
+          scales: {
+            x: {
+              display: false,
+              max: goal,
+              min: 0,
+              ticks: { display: false },
+            },
+            y: {
+              display: false,
+              ticks: { display: false },
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false },
+          },
+          maintainAspectRatio: false,
+          animation: {
+            duration: 1000,
+            easing: 'easeOutBounce',
+          },
+        },
+      });
+
+      // Update UI function (add checks inside too)
+      function updateUI() {
+        if (totalRaisedEl) {
+            totalRaisedEl.textContent = `$${totalRaised.toLocaleString()}`;
+        }
+        if (totalDonationsEl) {
+            // Ensure totalDonations is treated as a string for textContent
+            totalDonationsEl.textContent = String(totalDonations);
+        }
+        chart.data.datasets[0].data = [totalRaised]; // Assuming chart shows totalRaised
+        chart.update();
+      }
+
+      // Initial UI update
+      updateUI();
+
+      // --- Handle donation (Check elements BEFORE adding listener) ---
+      if (donationBtn && donationAmountEl) { // Check both button and input field
+          donationBtn.addEventListener('click', () => {
+              // Use donationAmountEl safely inside the listener
+              const amount = parseInt(donationAmountEl.value) || 0;
+              if (amount > 0) {
+                  totalRaised += amount;
+                  totalDonations += 1;
+                  if (totalRaised >= goal) {
+                  // Consider a less intrusive notification than alert
+                  console.log('Goal Reached! Time to celebrate!');
+                  // Example: Maybe update a status message element
+                  }
+                  updateUI();
+                  donationAmountEl.value = ''; // Clear input
+              } else {
+                  alert('Please enter a valid donation amount!');
+              }
+          });
+      } else {
+          // Log a warning if the donation form elements aren't found
+          // This helps debugging if the form is commented out or IDs change
+          console.warn("Donation form elements (button or amount input) not found. Donation functionality disabled.");
+      }
+    });
+  </script>
+</Layout>
+
+<style>
+.thermometer-background {
+  width: 100%;
+  height: 25px;
+  background-color: #e0e0e0;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+}
+  /* background-color: #006268; */
+  
+
+
+@media (max-width: 600px) {
+  .thermometer-background {
+    height: 30px;
+  }
+  #donationAmount {
+    font-size: 16px;
+    padding: 6px 10px;
+  }
+  #totalRaised,
+  #goalAmount {
+    font-size: 16px;
+  }
+  .thermometer-label {
+    flex-direction: column;
+    align-items: center;
+  }
+  .amount-labels {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .donation-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+  }
+  .donation-form label {
+    margin-bottom: 10px;
+  }
+  .donation-form input {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
+
+</style>

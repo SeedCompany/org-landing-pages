@@ -1,6 +1,7 @@
 ---
+import Header from "./Header.astro"
 import Stories from "./Stories.astro"
-import Header from "./Header.astro";
+import Footer from "./Footer.astro"
 ---
 
 <div class="bg-white">
@@ -9,8 +10,8 @@ import Header from "./Header.astro";
 <div class="relative isolate px-6 pt-14 lg:px-8 bg-[url('https://seedcompany.com/wp-content/uploads/2025/01/bible_translation1-1.png')] bg-no-repeat bg-cover bg-center">
 	<div class=" max-w-7xl px-8 py-8 h-[100vh] flex items-end">
 		<div class="md:w-3/4 lg:w-1/2 w-full pb-12">
-			<h1 class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">God's Word Transforms Lives</h1>
-			<p class="mt-8 text-pretty text-lg font-medium text-white sm:text-xl/8">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.</p>
+			<h1 class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl uppercase rader-bold">God's Word Transforms Lives</h1>
+			<p class="mt-8 text-pretty text-lg text-white sm:text-xl/8 gotham">Unleash the potential of God's people everywhere by bringing Scripture to those who don't have it in the language they understand best.</p>
 
 		</div>
 	</div>
@@ -20,4 +21,50 @@ import Header from "./Header.astro";
 </div>
 
 <Stories />
-  
+<Footer />
+<style>
+  @font-face {
+    font-family: 'Rader Bold';
+    src: url('/public/fonts/PPRader-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Rader Medium';
+    src: url('/public/fonts/PPRader-Medium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Sentinel Bold';
+    src: url('/public/fonts/._Sentinel-Bold-Pro.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Sentinel Light';
+    src: url('/public/fonts/._Sentinel-Light-Pro.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Gotham';
+    src: url('/public/fonts/._GothamOffice-Regular') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  .rader-bold {
+	font-family: 'Rader Bold', sans-serif;
+  }
+  .sentinel-light {
+	font-family: 'Sentinel Light', sans-serif;
+  }
+  .gotham {
+	font-family: 'Gotham', sans-serif;
+  }
+</style>

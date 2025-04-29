@@ -18,12 +18,12 @@ const templateMap = {
 };
 
 // Utility to build Sanity image URLs
-const builder = imageUrlBuilder(client);
-function urlFor(source) {
-  return builder.image(source).url();
-}
+// const builder = imageUrlBuilder(client);
+// function urlFor(source) {
+//   return builder.image(source).url();
+// }
 
-const { slug } = Astro.params;
+// Define the Sanity query once
 const query = `*[_type == "campaign" && slug.current == $slug][0] {
   heading,
   heroCopy,
@@ -33,17 +33,20 @@ const query = `*[_type == "campaign" && slug.current == $slug][0] {
   ctaText,
   ctaLink,
   templateType,
-  contactEmail
+  contactEmail,
+  faqs[] { question, answer },
+  sections[] {
+    _type,
+    _type == "sustainerSection" => {
+      title,
+      description,
+      benefits[] { title, description, icon },
+      quote { text, source }
+    },
+    _type == "advocateSection" => { quote, video }
+  }
 }`;
-const campaigns = await client.fetch(query, { slug }, { cache: 'no-store' });
 
-if (!campaigns) {
-  return new Response(null, {
-    status: 404,
-    statusText: 'Not Found',
-  });
-}
-// Get the campaign data from props (for pre-rendered pages)
 // Define the type of Astro.props to include a campaign property
 interface CampaignProps {
   campaign?: {
@@ -56,39 +59,31 @@ interface CampaignProps {
     ctaLink?: string;
     templateType?: string;
     contactEmail?: string;
+    faqs?: { question: string; answer: any }[];
+    sections?: any[];
   };
 }
 
+const { slug } = Astro.params;
 let campaign = (Astro.props as CampaignProps).campaign;
 
-// If no campaign data (e.g., for an unknown slug), fetch it dynamically
+// Fetch campaign data if not provided via props
 if (!campaign) {
-  const { slug } = Astro.params;
-  const query = `*[_type == "campaign" && slug.current == $slug][0] {
-    heading,
-    heroCopy,
-    body,
-    heroImage,
-    heroImageAlt,
-    ctaText,
-    ctaLink,
-    templateType,
-    contactEmail
-  }`;
-  campaign = await client.fetch(query, { slug });
-
-  if (!campaign) {
-    return new Response(null, {
-      status: 404,
-      statusText: 'Not Found',
-    });
-  }
+  campaign = await client.fetch(query, { slug }, { cache: 'no-store' });
 }
-console.log('Campaign data:', campaign);
+
+if (!campaign) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not Found',
+  });
+}
+
+console.log('Campaign data:', JSON.stringify(campaign, null, 2));
 console.log('Fetched campaign templateType:', campaign.templateType);
+
 // Determine which template to use
 const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-//const pageTitle = campaign.heading || "Campaign Page";
 const pageTitle = campaign.heading ? toPlainText(campaign.heading) : "Campaign Page";
 ---
 
