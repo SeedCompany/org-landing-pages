@@ -6,20 +6,22 @@ import { Icon } from 'astro-icon/components';
 import DonationThermometer from '../DonationThermometer.astro';
 import Footer from "../Footer.astro";
 
-// Define the type for an FAQ item
 interface FaqItem {
   question: string;
   answer: any;
 }
 
-// Define the type for a benefit item
 interface Benefit {
   icon?: string;
   title: string;
   description: string;
 }
 
-// Define a type for a sustainer section
+interface Partner {
+  name: string;
+  logo: any;
+}
+
 interface SustainerSection {
   _type: "sustainerSection";
   title: string;
@@ -31,7 +33,6 @@ interface SustainerSection {
   };
 }
 
-// Define a type for your campaign data
 interface CampaignData {
   heading?: string;
   heroCopy?: string;
@@ -45,6 +46,7 @@ interface CampaignData {
   contactEmail?: string;
   faqs?: FaqItem[];
   sections?: (SustainerSection | any)[];
+  partners?: Partner[];
 }
 
 const { campaignData } = Astro.props;
@@ -59,13 +61,13 @@ const typedCampaignData = campaignData as CampaignData;
   </div> -->
 
   <!-- Hero section -->
-  <section class="relative bg-gradient-to-r from-[#29B67E] to-[#1D3638] py-20 text-white">
+  <section class="relative bg-gradient-to-r from-[#414E46] to-[#414E46] py-20 text-white">
     <div class="container mx-auto px-4 md:px-6">
       <div class="grid gap-6 lg:grid-cols-2 lg:gap-12">
         <div class="flex flex-col justify-center space-y-4">
           <div class="space-y-2 text-center lg:text-left">
-            <h1 class="text-3xl font-bold text-white tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl" set:html={toHTML(campaignData.heading)}></h1>
-            <div class="max-w-[600px] text-lg md:text-xl" set:html={toHTML(campaignData.heroCopy)}></div>
+            <h1 class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl uppercase rader-bold" set:html={toHTML(campaignData.heading)}></h1>
+            <div class="max-w-[600px] text-lg md:text-xl " set:html={toHTML(campaignData.heroCopy)}></div>
           </div>
           <div class="flex flex-col gap-2 min-[400px]:flex-row mx-auto lg:mx-0">
             <a href={campaignData.ctaLink} class="mt-8 px-6 py-2 bg-white text-[#29B67E] hover:bg-gray-100">
@@ -90,17 +92,16 @@ const typedCampaignData = campaignData as CampaignData;
         </div>
       </div>
     </div>
-    <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
   </section>
 
   <!-- Why Become a Sustainer? (Dynamic Template Section) -->
   {campaignData.sections?.length ? (
     campaignData.sections.map((section: SustainerSection) => (
       section._type === 'sustainerSection' && (
-        <section class="py-16 md:py-24">
+        <section class="py-16 md:py-24 bg-[#F7F1E7]">
           <div class="container mx-auto px-4 md:px-6">
             <div class="mx-auto max-w-3xl text-center">
-              <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#29B67E]">
+              <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#1D3638]">
                 {section.title || 'Why Become a Sustainer?'}
               </h2>
               {section.description ? (
@@ -112,9 +113,9 @@ const typedCampaignData = campaignData as CampaignData;
             {section.benefits?.length ? (
               <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {section.benefits.map((benefit, index) => (
-                  <div class="flex flex-col items-start space-y-3 rounded-lg border border-gray-200 p-6 shadow-sm transition-all hover:shadow-md" key={index}>
+                  <div class="flex flex-col items-start space-y-3 rounded-lg bg-white border border-gray-200 p-6 shadow-sm transition-all hover:shadow-md" key={index}>
                     <div class="rounded-full bg-emerald-100 p-2 text-[#29B67E]">
-                      <Icon name={benefit.icon === 'Check' ? 'lucide:check' : (benefit.icon || 'lucide:check')} class="h-5 w-5" />
+                      <Icon name={benefit.icon === 'Check' ? 'lucide:check' : (benefit.icon || 'lucide:check')} class="h-5 w-5 text-[#1D3638]" />
                     </div>
                     <h3 class="text-xl font-bold">{benefit.title || 'Benefit Title'}</h3>
                     <p class="text-gray-600">{benefit.description || 'No description available.'}</p>
@@ -152,35 +153,35 @@ const typedCampaignData = campaignData as CampaignData;
   </section>
 
   <!-- How It Works -->
-  <section class="bg-emerald-50 py-16 md:py-24">
+  <section class="bg-[#D2CFAF] py-16 md:py-24 text-[#1D3638]">
     <div class="container mx-auto px-4 md:px-6">
       <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#1D3638]">
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           How it Works
         </h2>
-        <p class="mt-4 text-lg text-gray-600">Becoming a sustainer is simple:</p>
+        <p class="mt-4 text-lg ">Becoming a sustainer is simple:</p>
       </div>
       <div class="mt-12 grid gap-8 md:grid-cols-3">
         <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-[#29B67E]">
-            <span class="text-2xl font-bold">1</span>
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F1E7] text-[#29B67E]">
+            <span class="text-2xl font-bold text-[#1D3638]">1</span>
           </div>
-          <h3 class="mt-4 text-[#1D3638] text-xl font-bold">Choose Your Amount</h3>
-          <p class="mt-2 text-gray-600">Select a monthly donation amount that works for your budget.</p>
+          <h3 class="mt-4 text-xl font-bold">Choose Your Amount</h3>
+          <p class="mt-2">Select a monthly donation amount that works for your budget.</p>
         </div>
         <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-[#29B67E]">
-            <span class="text-2xl font-bold">2</span>
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F1E7] text-[#29B67E]">
+            <span class="text-2xl font-bold text-[#1D3638]">2</span>
           </div>
-          <h3 class="mt-4 text-[#1D3638] text-xl font-bold">Sign Up Once</h3>
-          <p class="mt-2 text-gray-600">Enter your information and payment details just once.</p>
+          <h3 class="mt-4 text-xl font-bold">Sign Up Once</h3>
+          <p class="mt-2">Enter your information and payment details just once.</p>
         </div>
         <div class="flex flex-col items-center text-center">
-          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-[#29B67E]">
-            <span class="text-2xl font-bold">3</span>
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F1E7] text-[#29B67E]">
+            <span class="text-2xl font-bold text-[#1D3638]">3</span>
           </div>
           <h3 class="mt-4 text-[#1D3638] text-xl font-bold">Make a Difference</h3>
-          <p class="mt-2 text-gray-600">Your donation automatically processes each month, creating ongoing impact.</p>
+          <p class="mt-2">Your donation automatically processes each month, creating ongoing impact.</p>
         </div>
       </div>
     </div>
@@ -190,7 +191,7 @@ const typedCampaignData = campaignData as CampaignData;
   <section class="py-16 md:py-24">
     <div class="container mx-auto px-4 md:px-6">
       <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#29B67E]">
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#1D3638]">
           Frequently Asked Questions
         </h2>
         <p class="mt-4 text-lg text-gray-600">Have questions about becoming a sustainer? Find answers below.</p>
@@ -219,7 +220,7 @@ const typedCampaignData = campaignData as CampaignData;
   </section>
 
   <!-- Footer CTA -->
-  <section class="bg-[#29B67E] py-16 text-white md:py-24">
+  <section class="bg-[#D2CFAF] py-16 text-[#1D3638] md:py-24">
     <div class="container mx-auto px-4 md:px-6">
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Ready to make a lasting difference?</h2>
@@ -232,10 +233,22 @@ const typedCampaignData = campaignData as CampaignData;
       <div class="mt-16">
         <p class="mb-4 text-center font-medium">Trusted by:</p>
         <div class="flex flex-wrap items-center justify-center gap-8">
-          <div class="rounded-lg bg-white/10 px-4 py-2">Partner 1</div>
-          <div class="rounded-lg bg-white/10 px-4 py-2">Partner 2</div>
-          <div class="rounded-lg bg-white/10 px-4 py-2">Partner 3</div>
-          <div class="rounded-lg bg-white/10 px-4 py-2">Partner 4</div>
+          {typedCampaignData.partners?.length ? (
+            typedCampaignData.partners.map((partner: Partner, index: number) => (
+              <div key={index} class="flex flex-col items-center">
+                {partner.logo && (
+                  <img
+                    src={urlFor(partner.logo) || ''}
+                    alt={partner.name || 'Partner logo'}
+                    class="h-16 w-auto rounded-lg shadow-md"
+                  />
+                )}
+                <div class="rounded-lg bg-white/10 px-4 py-2 my-4">{partner.name || 'Unknown Partner'}</div>
+              </div>
+            ))
+          ) : (
+            <p class="text-center text-gray-600">No partners available.</p>
+          )}
         </div>
       </div>
     </div>

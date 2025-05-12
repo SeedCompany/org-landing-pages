@@ -4,9 +4,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const projectId = process.env.SANITY_PROJECT_ID;
+// const projectId = process.env.SANITY_PROJECT_ID;
+const projectId = 'fgpinugl';
 const dataset = process.env.SANITY_DATASET;
 const apiVersion = process.env.SANITY_API_VERSION;
+const token = process.env.SANITY_API_READ_TOKEN;
 
 
 if (!projectId || !dataset || !apiVersion) {
@@ -18,6 +20,7 @@ export const client = createClient({
   dataset,
   apiVersion,
   useCdn: process.env.NODE_ENV === 'production',
+  token: token,
 });
 
 const builder = imageUrlBuilder(client);

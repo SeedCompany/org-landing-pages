@@ -5,3 +5,48 @@
 .prose {
     max-width: 100% !important;
 }
+
+@font-face {
+    font-family: 'Rader Bold';
+    src: url('/fonts/PPRader-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Rader Medium';
+    src: url('/fonts/PPRader-Medium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Sentinel Bold';
+    src: url('/fonts/._Sentinel-Bold-Pro.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Sentinel Light';
+    src: url('/fonts/._Sentinel-Light-Pro.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/._GothamOffice-Regular') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  .rader-bold {
+	font-family: 'Rader Bold', sans-serif;
+  }
+  .sentinel-light {
+	font-family: 'Sentinel Light', sans-serif;
+  }
+  .gotham {
+	font-family: 'Gotham', sans-serif;
+  }

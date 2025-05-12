@@ -25,32 +25,10 @@ const goal = 100000;
           <canvas id="thermometerChart" class="w-full h-ful"></canvas>
         </div>
       </div>
-      <!-- <div class="donation-form mt-6">
-        <label for="donationAmount" class="block text-sm font-medium text-gray-700 mb-2">
-          Enter Donation ($):
-        </label>
-        <div class="flex space-x-2">
-          <input
-            type="number"
-            id="donationAmount"
-            min="1"
-            step="1"
-            class="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
-            placeholder="Amount"
-          />
-          <button
-            id="donationBtn"
-            class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition"
-          >
-            Donate
-          </button>
-        </div>
-      </div> -->
     </div>
   </main>
 
   <script>
-    // import Chart from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
     import { Chart, registerables } from 'chart.js';
     Chart.register(...registerables);
     
@@ -60,10 +38,9 @@ const goal = 100000;
     const goal = 100000;
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Get DOM elements (add type assertions for inputs)
       const totalRaisedEl = document.getElementById('totalRaised');
       const totalDonationsEl = document.getElementById('totalDonations');
-      const donationAmountEl = document.getElementById('donationAmount') as HTMLInputElement | null; // Assert type
+      const donationAmountEl = document.getElementById('donationAmount') as HTMLInputElement | null;
       const donationBtn = document.getElementById('donationBtn');
       const canvas = document.getElementById('thermometerChart') as HTMLCanvasElement | null;
 
@@ -86,7 +63,7 @@ const goal = 100000;
           datasets: [{
             label: 'Donations',
             data: [totalRaised],
-            backgroundColor: '#1D3638',
+            backgroundColor: '#29b67e',
             borderWidth: 0,
             barThickness: 50,
           }],
@@ -117,13 +94,11 @@ const goal = 100000;
         },
       });
 
-      // Update UI function (add checks inside too)
       function updateUI() {
         if (totalRaisedEl) {
             totalRaisedEl.textContent = `$${totalRaised.toLocaleString()}`;
         }
         if (totalDonationsEl) {
-            // Ensure totalDonations is treated as a string for textContent
             totalDonationsEl.textContent = String(totalDonations);
         }
         chart.data.datasets[0].data = [totalRaised]; // Assuming chart shows totalRaised
@@ -132,19 +107,14 @@ const goal = 100000;
 
       // Initial UI update
       updateUI();
-
-      // --- Handle donation (Check elements BEFORE adding listener) ---
-      if (donationBtn && donationAmountEl) { // Check both button and input field
+      if (donationBtn && donationAmountEl) {
           donationBtn.addEventListener('click', () => {
-              // Use donationAmountEl safely inside the listener
               const amount = parseInt(donationAmountEl.value) || 0;
               if (amount > 0) {
                   totalRaised += amount;
                   totalDonations += 1;
                   if (totalRaised >= goal) {
-                  // Consider a less intrusive notification than alert
                   console.log('Goal Reached! Time to celebrate!');
-                  // Example: Maybe update a status message element
                   }
                   updateUI();
                   donationAmountEl.value = ''; // Clear input
@@ -153,8 +123,6 @@ const goal = 100000;
               }
           });
       } else {
-          // Log a warning if the donation form elements aren't found
-          // This helps debugging if the form is commented out or IDs change
           console.warn("Donation form elements (button or amount input) not found. Donation functionality disabled.");
       }
     });

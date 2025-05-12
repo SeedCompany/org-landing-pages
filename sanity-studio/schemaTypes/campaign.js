@@ -114,8 +114,8 @@ export default defineType({
       options: {
         list: [
           { title: 'Sustainers Template', value: 'sustainers', imageSrc: '/static/Sustainer_Template.png' },
-          { title: 'Advocates Template', value: 'advocates', imageSrc: '/static/Advocates_Template.png' },
-          { title: 'Investor Reps Template', value: 'investorReps', imageSrc: '/static/Investor_Rep_Template.png' },
+          // { title: 'Advocates Template', value: 'advocates', imageSrc: '/static/Advocates_Template.png' },
+          // { title: 'Investor Reps Template', value: 'investorReps', imageSrc: '/static/Investor_Rep_Template.png' },
           { title: 'Marketing Template', value: 'marketing', imageSrc: '/static/Marketing_Template.png' },
         ],
       },
@@ -174,7 +174,6 @@ export default defineType({
                           { title: 'Check', value: 'lucide:check' },
                           { title: 'Heart', value: 'lucide:heart' },
                           { title: 'Star', value: 'lucide:star' },
-                          // Add more icons as needed
                         ],
                       },
                     }),
@@ -240,5 +239,37 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: 'partners',
+      title: 'Partners',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'partner',
+          title: 'Partner',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'logo',
+              title: 'Logo',
+              type: 'image',
+              options: { hotspot: true },
+            }),
+            defineField({
+              name: 'link',
+              title: 'Link',
+              type: 'url',
+            }),
+          ],
+        },
+      ],
+      hidden: ({ document }) => document?.templateType !== 'sustainers',
+    })
   ],
 });

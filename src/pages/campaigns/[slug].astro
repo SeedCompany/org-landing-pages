@@ -44,6 +44,10 @@ const query = `*[_type == "campaign" && slug.current == $slug][0] {
       quote { text, source }
     },
     _type == "advocateSection" => { quote, video }
+  },
+  partners[]{ 
+    name,
+    logo
   }
 }`;
 

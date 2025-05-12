@@ -5,14 +5,18 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/node": "^9.2.1",
+    "@astrojs/react": "^4.2.7",
     "@iconify-json/lucide": "^1.2.38",
     "@portabletext/to-html": "^2.0.14",
+    "@sanity/astro": "^3.2.6",
     "@sanity/image-url": "^1.1.0",
+    "@sanity/visual-editing": "^2.13.7",
     "@tailwindcss/typography": "^0.5.16",
     "astro": "^5.7.9",
     "astro-icon": "^1.1.5",

@@ -16,7 +16,7 @@ export function toPlainText(blocks = []) {
 const components = {
   block: {
     normal: ({ children }) => `<p>${children}</p>`,
-    h1: ({ children }) => `<h1 class="my-10 text-pretty text-5xl font-semibold tracking-tight sm:text-7xl">${children}</h1>`,
+    h1: ({ children }) => `${children}`,
     h2: ({ children }) => `<h2>${children}</h2>`,
     h3: ({ children }) => `<h3>${children}</h3>`,
     // Fallback for unrecognized block styles

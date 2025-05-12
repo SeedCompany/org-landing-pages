@@ -10,11 +10,11 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "outDir": "./dist" // Output files will go here
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
-    "node_modules",
-    "sanity-studio"
+    "node_modules"
   ]
 }
