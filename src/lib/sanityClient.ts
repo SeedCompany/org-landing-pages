@@ -10,9 +10,10 @@ const dataset = process.env.SANITY_DATASET;
 const apiVersion = process.env.SANITY_API_VERSION;
 const token = process.env.SANITY_API_READ_TOKEN;
 
-
 if (!projectId || !dataset || !apiVersion) {
-  throw new Error('Missing required environment variables: SANITY_PROJECT_ID, SANITY_DATASET, or SANITY_API_VERSION');
+  throw new Error(
+    'Missing required environment variables: SANITY_PROJECT_ID, SANITY_DATASET, or SANITY_API_VERSION',
+  );
 }
 
 export const client = createClient({

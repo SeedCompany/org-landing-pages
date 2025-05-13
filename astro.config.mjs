@@ -7,17 +7,10 @@ import react from '@astrojs/react';
 export default defineConfig({
   integrations: [
     tailwind(),
-    react(), 
+    react(),
     icon({
       include: {
-        lucide: [
-          'check', 
-          'heart', 
-          'chevron-down', 
-          'calendar',
-          'book',
-          'users'
-        ],
+        lucide: ['check', 'heart', 'chevron-down', 'calendar', 'book', 'users'],
       },
     }),
   ],

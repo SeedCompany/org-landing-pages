@@ -65,7 +65,10 @@ export default defineType({
       type: 'string',
       group: 'hero',
       validation: (Rule) =>
-        Rule.required().min(5).max(100).warning('Alt text should be between 5 and 100 characters long'),
+        Rule.required()
+          .min(5)
+          .max(100)
+          .warning('Alt text should be between 5 and 100 characters long'),
     }),
     defineField({
       name: 'slug',
@@ -75,8 +78,7 @@ export default defineType({
       options: {
         source: 'heading',
         maxLength: 96,
-        slugify: (input) =>
-          input.toLowerCase().replace(/\s+/g, '-').slice(0, 96),
+        slugify: (input) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 96),
       },
       validation: (Rule) => Rule.required().warning('A slug is required'),
     }),
@@ -113,10 +115,18 @@ export default defineType({
       components: { input: ImageRadioInput },
       options: {
         list: [
-          { title: 'Sustainers Template', value: 'sustainers', imageSrc: '/static/Sustainer_Template.png' },
+          {
+            title: 'Sustainers Template',
+            value: 'sustainers',
+            imageSrc: '/static/Sustainer_Template.png',
+          },
           // { title: 'Advocates Template', value: 'advocates', imageSrc: '/static/Advocates_Template.png' },
           // { title: 'Investor Reps Template', value: 'investorReps', imageSrc: '/static/Investor_Rep_Template.png' },
-          { title: 'Marketing Template', value: 'marketing', imageSrc: '/static/Marketing_Template.png' },
+          {
+            title: 'Marketing Template',
+            value: 'marketing',
+            imageSrc: '/static/Marketing_Template.png',
+          },
         ],
       },
     }),
@@ -199,8 +209,7 @@ export default defineType({
               ],
             }),
           ],
-          
-        }, 
+        },
       ],
       hidden: ({ document }) => document?.templateType !== 'sustainers',
     }),
@@ -270,6 +279,6 @@ export default defineType({
         },
       ],
       hidden: ({ document }) => document?.templateType !== 'sustainers',
-    })
+    }),
   ],
 });

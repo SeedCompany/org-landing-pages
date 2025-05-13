@@ -1,4 +1,2 @@
-import campaign from './campaign'
-export const schemaTypes = [
-    campaign
-]
+import campaign from './campaign';
+export const schemaTypes = [campaign];

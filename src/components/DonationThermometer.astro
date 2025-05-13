@@ -8,7 +8,7 @@ const goal = 100000;
     <div class="max-w-[100%] w-full rounded-lg border-[1px] shadow-lg p-6">
       <div class="thermometer-container">
         <div class="thermometer-label flex justify-between mb-1">
-          <div class="amount-labels ">
+          <div class="amount-labels">
             <p class="text-[15px] font-semibold">Raised:</p>
             <span id="totalRaised" class="text-[16px] font-bold">$0</span>
           </div>
@@ -31,7 +31,7 @@ const goal = 100000;
   <script>
     import { Chart, registerables } from 'chart.js';
     Chart.register(...registerables);
-    
+
     // Initialize state
     let totalRaised = 48926;
     let totalDonations = 217;
@@ -46,13 +46,13 @@ const goal = 100000;
 
       // --- Null Checks ---
       if (!totalRaisedEl || !totalDonationsEl || !canvas) {
-        console.error("Donation Thermometer Error: Core display elements not found.");
+        console.error('Donation Thermometer Error: Core display elements not found.');
         return;
       }
       const ctx = canvas.getContext('2d');
       if (!ctx) {
-          console.error("Donation Thermometer Error: Could not get canvas context.");
-          return;
+        console.error('Donation Thermometer Error: Could not get canvas context.');
+        return;
       }
 
       // Initialize Chart.js
@@ -60,13 +60,15 @@ const goal = 100000;
         type: 'bar',
         data: {
           labels: [''],
-          datasets: [{
-            label: 'Donations',
-            data: [totalRaised],
-            backgroundColor: '#29b67e',
-            borderWidth: 0,
-            barThickness: 50,
-          }],
+          datasets: [
+            {
+              label: 'Donations',
+              data: [totalRaised],
+              backgroundColor: '#29b67e',
+              borderWidth: 0,
+              barThickness: 50,
+            },
+          ],
         },
         options: {
           indexAxis: 'y',
@@ -96,10 +98,10 @@ const goal = 100000;
 
       function updateUI() {
         if (totalRaisedEl) {
-            totalRaisedEl.textContent = `$${totalRaised.toLocaleString()}`;
+          totalRaisedEl.textContent = `$${totalRaised.toLocaleString()}`;
         }
         if (totalDonationsEl) {
-            totalDonationsEl.textContent = String(totalDonations);
+          totalDonationsEl.textContent = String(totalDonations);
         }
         chart.data.datasets[0].data = [totalRaised]; // Assuming chart shows totalRaised
         chart.update();
@@ -108,73 +110,72 @@ const goal = 100000;
       // Initial UI update
       updateUI();
       if (donationBtn && donationAmountEl) {
-          donationBtn.addEventListener('click', () => {
-              const amount = parseInt(donationAmountEl.value) || 0;
-              if (amount > 0) {
-                  totalRaised += amount;
-                  totalDonations += 1;
-                  if (totalRaised >= goal) {
-                  console.log('Goal Reached! Time to celebrate!');
-                  }
-                  updateUI();
-                  donationAmountEl.value = ''; // Clear input
-              } else {
-                  alert('Please enter a valid donation amount!');
-              }
-          });
+        donationBtn.addEventListener('click', () => {
+          const amount = parseInt(donationAmountEl.value) || 0;
+          if (amount > 0) {
+            totalRaised += amount;
+            totalDonations += 1;
+            if (totalRaised >= goal) {
+              console.log('Goal Reached! Time to celebrate!');
+            }
+            updateUI();
+            donationAmountEl.value = ''; // Clear input
+          } else {
+            alert('Please enter a valid donation amount!');
+          }
+        });
       } else {
-          console.warn("Donation form elements (button or amount input) not found. Donation functionality disabled.");
+        console.warn(
+          'Donation form elements (button or amount input) not found. Donation functionality disabled.',
+        );
       }
     });
   </script>
 </Layout>
 
 <style>
-.thermometer-background {
-  width: 100%;
-  height: 25px;
-  background-color: #e0e0e0;
-  border-radius: 25px;
-  overflow: hidden;
-  position: relative;
-}
-  /* background-color: #006268; */
-  
-
-
-@media (max-width: 600px) {
   .thermometer-background {
-    height: 30px;
-  }
-  #donationAmount {
-    font-size: 16px;
-    padding: 6px 10px;
-  }
-  #totalRaised,
-  #goalAmount {
-    font-size: 16px;
-  }
-  .thermometer-label {
-    flex-direction: column;
-    align-items: center;
-  }
-  .amount-labels {
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  .donation-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-  }
-  .donation-form label {
-    margin-bottom: 10px;
-  }
-  .donation-form input {
-    margin-bottom: 10px;
     width: 100%;
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
   }
-}
+  /* background-color: #006268; */
 
+  @media (max-width: 600px) {
+    .thermometer-background {
+      height: 30px;
+    }
+    #donationAmount {
+      font-size: 16px;
+      padding: 6px 10px;
+    }
+    #totalRaised,
+    #goalAmount {
+      font-size: 16px;
+    }
+    .thermometer-label {
+      flex-direction: column;
+      align-items: center;
+    }
+    .amount-labels {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .donation-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+    }
+    .donation-form label {
+      margin-bottom: 10px;
+    }
+    .donation-form input {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+  }
 </style>

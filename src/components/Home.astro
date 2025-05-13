@@ -1,70 +1,86 @@
 ---
-import Header from "./Header.astro"
-import Stories from "./Stories.astro"
-import Footer from "./Footer.astro"
+import Header from './Header.astro';
+import Stories from './Stories.astro';
+import Footer from './Footer.astro';
 ---
 
 <div class="bg-white">
-<Header />
+  <Header />
 
-<div class="relative isolate px-6 pt-14 lg:px-8 bg-[url('https://seedcompany.com/wp-content/uploads/2025/01/bible_translation1-1.png')] bg-no-repeat bg-cover bg-center">
-	<div class=" max-w-7xl px-8 py-8 h-[100vh] flex items-end">
-		<div class="md:w-3/4 lg:w-1/2 w-full pb-12">
-			<h1 class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl uppercase rader-bold">God's Word Transforms Lives</h1>
-			<p class="mt-8 text-pretty text-lg text-white sm:text-xl/8 gotham">Unleash the potential of God's people everywhere by bringing Scripture to those who don't have it in the language they understand best.</p>
+  <div
+    class="relative isolate px-6 pt-14 lg:px-8 bg-[url('https://seedcompany.com/wp-content/uploads/2025/01/bible_translation1-1.png')] bg-no-repeat bg-cover bg-center"
+  >
+    <div class="max-w-7xl px-8 py-8 h-[100vh] flex items-end">
+      <div class="md:w-3/4 lg:w-1/2 w-full pb-12">
+        <h1
+          class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl uppercase rader-bold"
+        >
+          God's Word Transforms Lives
+        </h1>
+        <p class="mt-8 text-pretty text-lg text-white sm:text-xl/8 gotham">
+          Unleash the potential of God's people everywhere by bringing Scripture to those who don't
+          have it in the language they understand best.
+        </p>
+      </div>
+    </div>
+    <div
+      class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+      aria-hidden="true"
+    >
+      <div
+        class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#006268] to-[#006268] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+        style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+      >
+      </div>
+    </div>
+  </div>
 
-		</div>
-	</div>
-	<div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-		<div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#006268] to-[#006268] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-	</div>
+  <Stories />
+  <Footer />
+  <style>
+    @font-face {
+      font-family: 'Rader Bold';
+      src: url('/public/fonts/PPRader-Bold.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Rader Medium';
+      src: url('/public/fonts/PPRader-Medium.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Sentinel Bold';
+      src: url('/public/fonts/._Sentinel-Bold-Pro.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Sentinel Light';
+      src: url('/public/fonts/._Sentinel-Light-Pro.otf') format('opentype');
+      font-weight: 100;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Gotham';
+      src: url('/public/fonts/._GothamOffice-Regular') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    .rader-bold {
+      font-family: 'Rader Bold', sans-serif;
+    }
+    .sentinel-light {
+      font-family: 'Sentinel Light', sans-serif;
+    }
+    .gotham {
+      font-family: 'Gotham', sans-serif;
+    }
+  </style>
 </div>
-
-<Stories />
-<Footer />
-<style>
-  @font-face {
-    font-family: 'Rader Bold';
-    src: url('/public/fonts/PPRader-Bold.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Rader Medium';
-    src: url('/public/fonts/PPRader-Medium.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Sentinel Bold';
-    src: url('/public/fonts/._Sentinel-Bold-Pro.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Sentinel Light';
-    src: url('/public/fonts/._Sentinel-Light-Pro.otf') format('opentype');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Gotham';
-    src: url('/public/fonts/._GothamOffice-Regular') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  .rader-bold {
-	font-family: 'Rader Bold', sans-serif;
-  }
-  .sentinel-light {
-	font-family: 'Sentinel Light', sans-serif;
-  }
-  .gotham {
-	font-family: 'Gotham', sans-serif;
-  }
-</style>

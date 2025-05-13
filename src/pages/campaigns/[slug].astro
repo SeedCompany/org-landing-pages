@@ -88,30 +88,30 @@ console.log('Fetched campaign templateType:', campaign.templateType);
 
 // Determine which template to use
 const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-const pageTitle = campaign.heading ? toPlainText(campaign.heading) : "Campaign Page";
+const pageTitle = campaign.heading ? toPlainText(campaign.heading) : 'Campaign Page';
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.png" type="image/svg+xml">
+    <link rel="icon" href="/favicon.png" type="image/svg+xml" />
     <title>{pageTitle}</title>
   </head>
   <body>
     <section>
       {/* Render the template with campaign data */}
-      {campaign && TemplateComponent && (
-        <TemplateComponent campaignData={campaign} />
-      )}
+      {campaign && TemplateComponent && <TemplateComponent campaignData={campaign} />}
 
       {/* Display warning if template type is unknown */}
-      {campaign && !templateMap[campaign.templateType] && (
-        <div class="text-center py-10 text-orange-600">
-          <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
-        </div>
-      )}
+      {
+        campaign && !templateMap[campaign.templateType] && (
+          <div class="text-center py-10 text-orange-600">
+            <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
+          </div>
+        )
+      }
     </section>
   </body>
 </html>
