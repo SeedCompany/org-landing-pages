@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import ImageRadioInput from '../components/ImageRadioInput';
+import ImageRadioInput from '../../sanity-studio/components/ImageRadioInput.jsx';
 
 const richTextBlock = {
   type: 'block',
