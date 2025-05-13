@@ -1,6 +1,5 @@
 ---
-import { client } from '../../lib/sanityClient.js';
-import imageUrlBuilder from '@sanity/image-url';
+import { sanityClient as sanity } from 'sanity:client';
 import { toPlainText } from '../../lib/portableTextSerializer.js';
 
 // Import the templates for different campaign types
@@ -16,12 +15,6 @@ const templateMap = {
   marketing: MarketingTemplate,
   sustainers: SustainersTemplate,
 };
-
-// Utility to build Sanity image URLs
-// const builder = imageUrlBuilder(client);
-// function urlFor(source) {
-//   return builder.image(source).url();
-// }
 
 // Define the Sanity query once
 const query = `*[_type == "campaign" && slug.current == $slug][0] {
@@ -73,7 +66,7 @@ let campaign = (Astro.props as CampaignProps).campaign;
 
 // Fetch campaign data if not provided via props
 if (!campaign) {
-  campaign = await client.fetch(query, { slug }, { cache: 'no-store' });
+  campaign = await sanity.fetch(query, { slug }, { cache: 'no-store' });
 }
 
 if (!campaign) {

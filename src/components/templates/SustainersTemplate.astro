@@ -1,5 +1,6 @@
 ---
-import { urlFor } from '../../lib/sanityClient';
+import img from '@sanity/image-url';
+import { sanityClient as sanity } from 'sanity:client';
 import { toHTML } from '../../lib/portableTextSerializer';
 import '../../styles/global.css';
 import { Icon } from 'astro-icon/components';
@@ -93,7 +94,7 @@ const typedCampaignData = campaignData as CampaignData;
         <div class="flex items-center justify-center">
           <div class="overflow-hidden rounded-lg shadow-xl">
             <img
-              src={campaignData.heroImage ? urlFor(campaignData.heroImage) : ''}
+              src={campaignData.heroImage ? img(sanity).image(campaignData.heroImage).url() : ''}
               alt={campaignData.heroImageAlt || 'Hero image'}
               class="aspect-[4/3] object-cover"
             />
@@ -287,7 +288,7 @@ const typedCampaignData = campaignData as CampaignData;
                 <div key={index} class="flex flex-col items-center">
                   {partner.logo && (
                     <img
-                      src={urlFor(partner.logo) || ''}
+                      src={img(sanity).image(partner.logo).url()}
                       alt={partner.name || 'Partner logo'}
                       class="h-16 w-auto rounded-lg shadow-md"
                     />
