@@ -7,6 +7,7 @@
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "lint": "eslint --max-warnings 0 --fix .",
+    "sanity:gen": "sanity schema extract && sanity typegen generate",
     "astro": "astro"
   },
   "engines": {

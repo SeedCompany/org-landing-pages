@@ -3,6 +3,8 @@ dist/
 
 # generated types
 .astro/
+schema.json
+sanity.types.ts
 
 # Yarn / NPM
 .yarn/cache
