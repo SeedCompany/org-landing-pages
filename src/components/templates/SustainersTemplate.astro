@@ -4,54 +4,15 @@ import { sanityClient as sanity } from 'sanity:client';
 import { toHTML } from '../../lib/portableTextSerializer';
 import '../../styles/global.css';
 import { Icon } from 'astro-icon/components';
+import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import DonationThermometer from '../DonationThermometer.astro';
 import Footer from '../Footer.astro';
 
-interface FaqItem {
-  question: string;
-  answer: any;
-}
-
-interface Benefit {
-  icon?: string;
-  title: string;
-  description: string;
-}
-
-interface Partner {
-  name: string;
-  logo: any;
-}
-
-interface SustainerSection {
-  _type: 'sustainerSection';
-  title: string;
-  description?: string;
-  benefits?: Benefit[];
-  quote?: {
-    text: string;
-    source?: string;
-  };
-}
-
-interface CampaignData {
-  heading?: string;
-  heroCopy?: string;
-  heroImage?: string;
-  heroImageAlt?: string;
-  slug?: string;
-  body?: string;
-  ctaText?: string;
-  ctaLink?: string;
-  templateType?: string;
-  contactEmail?: string;
-  faqs?: FaqItem[];
-  sections?: (SustainerSection | any)[];
-  partners?: Partner[];
+interface Props {
+  campaignData: Campaign;
 }
 
 const { campaignData } = Astro.props;
-const typedCampaignData = campaignData as CampaignData;
 ---
 
 <main class="flex min-h-screen flex-col">
@@ -108,7 +69,7 @@ const typedCampaignData = campaignData as CampaignData;
   {
     campaignData.sections?.length ? (
       campaignData.sections.map(
-        (section: SustainerSection) =>
+        (section) =>
           section._type === 'sustainerSection' && (
             <section class="py-16 md:py-24 bg-[#F7F1E7]">
               <div class="container mx-auto px-4 md:px-6">
@@ -235,8 +196,8 @@ const typedCampaignData = campaignData as CampaignData;
       </div>
       <div class="mx-auto mt-12 max-w-3xl">
         {
-          typedCampaignData.faqs?.length ? (
-            typedCampaignData.faqs.map((item: FaqItem, index: number) => (
+          campaignData.faqs?.length ? (
+            campaignData.faqs.map((item, index) => (
               <details
                 class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
                 key={index}
@@ -283,8 +244,8 @@ const typedCampaignData = campaignData as CampaignData;
         <p class="mb-4 text-center font-medium">Trusted by:</p>
         <div class="flex flex-wrap items-center justify-center gap-8">
           {
-            typedCampaignData.partners?.length ? (
-              typedCampaignData.partners.map((partner: Partner, index: number) => (
+            campaignData.partners?.length ? (
+              campaignData.partners.map((partner, index) => (
                 <div key={index} class="flex flex-col items-center">
                   {partner.logo && (
                     <img

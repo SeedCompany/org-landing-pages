@@ -8255,7 +8255,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"groq@npm:3.88.3":
+"groq@npm:3.88.3, groq@npm:^3.88.3":
   version: 3.88.3
   resolution: "groq@npm:3.88.3"
   checksum: 10c0/aba792ff900ed75a7af24376ab11aa94da81bbd22bf92024188ba7b2b845f2eb891c664b3a26aae1e519997138cc4762ceab681a2daa30305c72bf628b358865
@@ -11070,6 +11070,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.5"
     eslint-plugin-astro: "npm:^1.3.1"
     eslint-plugin-prettier: "npm:^5.4.0"
+    groq: "npm:^3.88.3"
     lucide: "npm:^0.503.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"

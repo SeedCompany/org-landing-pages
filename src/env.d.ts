@@ -1,4 +1,5 @@
 /// <reference types="@sanity/astro/module" />
+/// <reference types="../sanity.types.ts" />
 
 interface ViteTypeOptions {
   strictImportMetaEnv: unknown;

@@ -2,6 +2,11 @@
 import { sanityClient as sanity } from 'sanity:client';
 import img from '@sanity/image-url';
 import { toHTML } from '@portabletext/to-html';
+import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
+
+interface Props {
+  campaignData: Campaign;
+}
 
 const { campaignData } = Astro.props;
 ---

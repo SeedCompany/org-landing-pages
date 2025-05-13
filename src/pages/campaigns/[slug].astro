@@ -1,4 +1,5 @@
 ---
+import type { ClientReturn } from '@sanity/client';
 import { sanityClient as sanity } from 'sanity:client';
 import { toPlainText } from '../../lib/portableTextSerializer.js';
 
@@ -7,6 +8,7 @@ import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astr
 import InvestorRepsTemplate from '../../components/templates/InvestorRepsTemplate.astro';
 import MarketingTemplate from '../../components/templates/MarketingTemplate.astro';
 import SustainersTemplate from '../../components/templates/SustainersTemplate.astro';
+import { campaignBySlug } from './campaignBySlug.groq';
 
 // Map templates from Sanity to Astro components
 const templateMap = {
@@ -16,58 +18,15 @@ const templateMap = {
   sustainers: SustainersTemplate,
 };
 
-// Define the Sanity query once
-const query = `*[_type == "campaign" && slug.current == $slug][0] {
-  heading,
-  heroCopy,
-  body,
-  heroImage,
-  heroImageAlt,
-  ctaText,
-  ctaLink,
-  templateType,
-  contactEmail,
-  faqs[] { question, answer },
-  sections[] {
-    _type,
-    _type == "sustainerSection" => {
-      title,
-      description,
-      benefits[] { title, description, icon },
-      quote { text, source }
-    },
-    _type == "advocateSection" => { quote, video }
-  },
-  partners[]{
-    name,
-    logo
-  }
-}`;
-
-// Define the type of Astro.props to include a campaign property
-interface CampaignProps {
-  campaign?: {
-    heading?: string;
-    heroCopy?: string;
-    body?: string;
-    heroImage?: string;
-    heroImageAlt?: string;
-    ctaText?: string;
-    ctaLink?: string;
-    templateType?: string;
-    contactEmail?: string;
-    faqs?: { question: string; answer: any }[];
-    sections?: any[];
-  };
+interface Props {
+  campaign?: ClientReturn<typeof campaignBySlug>;
 }
 
 const { slug } = Astro.params;
-let campaign = (Astro.props as CampaignProps).campaign;
+let { campaign } = Astro.props;
 
 // Fetch campaign data if not provided via props
-if (!campaign) {
-  campaign = await sanity.fetch(query, { slug }, { cache: 'no-store' });
-}
+campaign ??= await sanity.fetch(campaignBySlug, { slug });
 
 if (!campaign) {
   throw new Response(null, {
