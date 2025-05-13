@@ -45,7 +45,7 @@ const query = `*[_type == "campaign" && slug.current == $slug][0] {
     },
     _type == "advocateSection" => { quote, video }
   },
-  partners[]{ 
+  partners[]{
     name,
     logo
   }
@@ -77,7 +77,7 @@ if (!campaign) {
 }
 
 if (!campaign) {
-  return new Response(null, {
+  throw new Response(null, {
     status: 404,
     statusText: 'Not Found',
   });
