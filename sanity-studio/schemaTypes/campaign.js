@@ -238,6 +238,7 @@ export default defineType({
           ],
         },
       ],
+      hidden: ({ document }) => document?.templateType !== 'sustainers',
     }),
     defineField({
       name: 'partners',

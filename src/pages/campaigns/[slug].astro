@@ -1,6 +1,5 @@
 ---
 import { client } from '../../lib/sanityClient.js';
-import imageUrlBuilder from '@sanity/image-url';
 import { toPlainText } from '../../lib/portableTextSerializer.js';
 
 // Import the templates for different campaign types
@@ -17,11 +16,6 @@ const templateMap = {
   sustainers: SustainersTemplate,
 };
 
-// Utility to build Sanity image URLs
-// const builder = imageUrlBuilder(client);
-// function urlFor(source) {
-//   return builder.image(source).url();
-// }
 
 // Define the Sanity query once
 const query = `*[_type == "campaign" && slug.current == $slug][0] {
