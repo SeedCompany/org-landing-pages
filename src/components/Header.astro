@@ -1,19 +1,14 @@
+---
+import { ImageLink } from './ImageLink';
+import { NavLinkList } from './NavLinkList';
+---
 <header class="md:fixed absolute inset-x-0 top-0 z-50">
   <nav
     class="flex items-center justify-between p-4 lg:px-8 bg-transparent bg-[linear-gradient(89deg,#192D2F59_0%,#D2DCCF52_100%)] my-4 w-[98%] mx-auto rounded-[30px] transition-colors duration-300"
     aria-label="Global"
     id="nav"
   >
-    <div class="flex lg:flex-1">
-      <a href="#" class="-m-1.5 md:p-1.5 p-0">
-        <span class="sr-only">Seed Company</span>
-        <img
-          class="md:h-12 h-10 w-auto"
-          src="https://seedcompany.com/wp-content/uploads/2025/01/sc-full-logo-white-1.svg"
-          alt=""
-        />
-      </a>
-    </div>
+    <ImageLink linkUrl="#" imageUrl="https://seedcompany.com/wp-content/uploads/2025/01/sc-full-logo-white-1.svg" altText="Seed Company" />
     <div class="flex lg:hidden">
       <button
         type="button"
@@ -36,23 +31,8 @@
         </svg>
       </button>
     </div>
-    <div class="hidden lg:flex lg:gap-x-12">
-      <a
-        href="#"
-        class="text-md font-semibold text-white hover:text-gray-300 transition duration-300"
-        >Impact</a
-      >
-      <a
-        href="#"
-        class="text-md font-semibold text-white hover:text-gray-300 transition duration-300"
-        >Approach</a
-      >
-      <a
-        href="#"
-        class="text-md font-semibold text-white hover:text-gray-300 transition duration-300"
-        >Stories</a
-      >
-    </div>
+    <!-- TODO figure out how to put this array into a variable in the astro files -->
+    <NavLinkList ItemList={[{title: "Impact", href: "#"}, {title: "Approach", href: "#"}, {title: "Stories", href: "#"}]} />
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
       <a
         href="#"
@@ -98,34 +78,7 @@
           </svg>
         </button>
       </div>
-      <div class="mt-6 flow-root">
-        <div class="-my-6 divide-y divide-gray-500/10">
-          <div class="space-y-2 py-6">
-            <a
-              href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-              >Impact</a
-            >
-            <a
-              href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-              >Approach</a
-            >
-            <a
-              href="#"
-              class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-              >Stories</a
-            >
-          </div>
-          <div class="py-6">
-            <a
-              href="#"
-              class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-              >Give</a
-            >
-          </div>
-        </div>
-      </div>
+      <NavLinkList mobile ItemList={[{title: "Impact", href: "#"}, {title: "Approach", href: "#"}, {title: "Stories", href: "#"}]} />
     </div>
   </div>
 </header>
