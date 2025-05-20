@@ -1,3 +1,4 @@
+import { env } from 'node:process';
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import icon from 'astro-icon';
@@ -10,9 +11,9 @@ export default defineConfig({
     tailwind(),
     react(),
     sanity({
-      projectId: import.meta.env.SANITY_PROJECT_ID,
-      dataset: import.meta.env.SANITY_DATASET,
-      useCdn: import.meta.env.PROD,
+      projectId: env.SANITY_PROJECT_ID,
+      dataset: env.SANITY_DATASET,
+      useCdn: env.PROD,
     }),
     icon({
       include: {
