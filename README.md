@@ -24,3 +24,4 @@ Clone the repository:
    git clone https://github.com/your-username/org-landing-pages.git
    cd org-landing-pages
 
+Create a .env.local file - copy the environment variables from the .env file and replace the values with the proper values in the .env.local
