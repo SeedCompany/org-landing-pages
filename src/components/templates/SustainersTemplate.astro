@@ -3,9 +3,12 @@ import img from '@sanity/image-url';
 import { sanityClient as sanity } from 'sanity:client';
 import { toHTML } from '../../lib/portableTextSerializer';
 import '../../styles/global.css';
-import { Icon } from 'astro-icon/components';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import DonationThermometer from '../DonationThermometer.astro';
+import SustainerStep from '../SustainerStep.astro';
+import SustainerSection from '../SustainerSection.astro';
+import FAQSection from '../FAQSection.astro';
+import FooterCTA from '../FooterCTA.astro';
 import Footer from '../Footer.astro';
 
 interface Props {
@@ -13,6 +16,26 @@ interface Props {
 }
 
 const { campaignData } = Astro.props;
+
+// Steps for the "How It Works" section
+// Not connected to Sanity, hardcoded for now
+const steps = [
+  {
+    step: 1,
+    title: 'Choose Your Amount',
+    description: 'Select a monthly donation amount that works for your budget.',
+  },
+  {
+    step: 2,
+    title: 'Sign Up Once',
+    description: 'Enter your information and payment details just once.',
+  },
+  {
+    step: 3,
+    title: 'Make a Difference',
+    description: 'Your donation automatically processes each month, creating ongoing impact.',
+  }
+];
 ---
 
 <main class="flex min-h-screen flex-col">
@@ -23,13 +46,13 @@ const { campaignData } = Astro.props;
   </div> -->
 
   <!-- Hero section -->
-  <section class="relative bg-gradient-to-r from-[#414E46] to-[#414E46] py-20 text-white">
+  <section class="relative sus-primary-bg py-20 text-white">
     <div class="container mx-auto px-4 md:px-6">
       <div class="grid gap-6 lg:grid-cols-2 lg:gap-12">
         <div class="flex flex-col justify-center space-y-4">
           <div class="space-y-2 text-center lg:text-left">
             <h1
-              class="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl uppercase rader-bold"
+              class="text-balance text-5xl font-semibold tracking-tight sus-secondary-text sm:text-7xl uppercase rader-bold"
               set:html={toHTML(campaignData.heading)}
             />
             <div
@@ -40,7 +63,7 @@ const { campaignData } = Astro.props;
           <div class="flex flex-col gap-2 min-[400px]:flex-row mx-auto lg:mx-0">
             <a
               href={campaignData.ctaLink}
-              class="mt-8 px-6 py-2 bg-white text-[#29B67E] hover:bg-gray-100"
+              class="mt-8 px-6 py-2 bg-white sus-button-secondary-bg sus-button-secondary-hover border-2"
             >
               {campaignData.ctaText}
             </a>
@@ -71,59 +94,7 @@ const { campaignData } = Astro.props;
       campaignData.sections.map(
         (section) =>
           section._type === 'sustainerSection' && (
-            <section class="py-16 md:py-24 bg-[#F7F1E7]">
-              <div class="container mx-auto px-4 md:px-6">
-                <div class="mx-auto max-w-3xl text-center">
-                  <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#1D3638]">
-                    {section.title || 'Why Become a Sustainer?'}
-                  </h2>
-                  {section.description ? (
-                    <p class="mt-4 text-lg text-gray-600">{section.description}</p>
-                  ) : (
-                    <p class="mt-4 text-lg text-gray-600">No description available.</p>
-                  )}
-                </div>
-                {section.benefits?.length ? (
-                  <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-                    {section.benefits.map((benefit, index) => (
-                      <div
-                        class="flex flex-col items-start space-y-3 rounded-lg bg-white border border-gray-200 p-6 shadow-sm transition-all hover:shadow-md"
-                        key={index}
-                      >
-                        <div class="rounded-full bg-emerald-100 p-2 text-[#29B67E]">
-                          <Icon
-                            name={
-                              benefit.icon === 'Check'
-                                ? 'lucide:check'
-                                : benefit.icon || 'lucide:check'
-                            }
-                            class="h-5 w-5 text-[#1D3638]"
-                          />
-                        </div>
-                        <h3 class="text-xl font-bold">{benefit.title || 'Benefit Title'}</h3>
-                        <p class="text-gray-600">
-                          {benefit.description || 'No description available.'}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p class="text-center text-gray-600 mt-12">No benefits available.</p>
-                )}
-                {section.quote?.text ? (
-                  <div class="mx-auto mt-16 max-w-2xl rounded-lg bg-gray-50 p-8">
-                    <blockquote class="space-y-2">
-                      <p class="text-lg font-medium italic text-gray-700">{section.quote.text}</p>
-                      {section.quote.source && (
-                        <footer class="text-sm font-semibold text-gray-600">
-                          — {section.quote.source}
-                        </footer>
-                      )}
-                    </blockquote>
-                  </div>
-                ) : null}
-              </div>
-            </section>
+            <SustainerSection section={section} />
           ),
       )
     ) : (
@@ -143,130 +114,25 @@ const { campaignData } = Astro.props;
   </section>
 
   <!-- How It Works -->
-  <section class="bg-[#D2CFAF] py-16 md:py-24 text-[#1D3638]">
+  <section class="sus-accent-bg py-16 md:py-24 sus-primary-heading">
     <div class="container mx-auto px-4 md:px-6">
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">How it Works</h2>
         <p class="mt-4 text-lg">Becoming a sustainer is simple:</p>
       </div>
       <div class="mt-12 grid gap-8 md:grid-cols-3">
-        <div class="flex flex-col items-center text-center">
-          <div
-            class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F1E7] text-[#29B67E]"
-          >
-            <span class="text-2xl font-bold text-[#1D3638]">1</span>
-          </div>
-          <h3 class="mt-4 text-xl font-bold">Choose Your Amount</h3>
-          <p class="mt-2">Select a monthly donation amount that works for your budget.</p>
-        </div>
-        <div class="flex flex-col items-center text-center">
-          <div
-            class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F1E7] text-[#29B67E]"
-          >
-            <span class="text-2xl font-bold text-[#1D3638]">2</span>
-          </div>
-          <h3 class="mt-4 text-xl font-bold">Sign Up Once</h3>
-          <p class="mt-2">Enter your information and payment details just once.</p>
-        </div>
-        <div class="flex flex-col items-center text-center">
-          <div
-            class="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F1E7] text-[#29B67E]"
-          >
-            <span class="text-2xl font-bold text-[#1D3638]">3</span>
-          </div>
-          <h3 class="mt-4 text-[#1D3638] text-xl font-bold">Make a Difference</h3>
-          <p class="mt-2">
-            Your donation automatically processes each month, creating ongoing impact.
-          </p>
-        </div>
+        {steps.map(({ step, title, description }) => (
+          <SustainerStep step={step} title={title} description={description} />
+        ))}
       </div>
     </div>
   </section>
 
   <!-- FAQ Section (Dynamic) -->
-  <section class="py-16 md:py-24">
-    <div class="container mx-auto px-4 md:px-6">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#1D3638]">
-          Frequently Asked Questions
-        </h2>
-        <p class="mt-4 text-lg text-gray-600">
-          Have questions about becoming a sustainer? Find answers below.
-        </p>
-      </div>
-      <div class="mx-auto mt-12 max-w-3xl">
-        {
-          campaignData.faqs?.length ? (
-            campaignData.faqs.map((item, index) => (
-              <details
-                class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
-                key={index}
-              >
-                <summary class="cursor-pointer text-lg font-medium text-gray-900">
-                  {item.question || 'Question missing'}
-                </summary>
-                <div class="mt-2 text-gray-600">
-                  {item.answer && item.answer.length ? (
-                    <div set:html={toHTML(item.answer)} />
-                  ) : (
-                    <p>No answer provided.</p>
-                  )}
-                </div>
-              </details>
-            ))
-          ) : (
-            <p class="text-center text-gray-600">No FAQs available. Please check Sanity data.</p>
-          )
-        }
-      </div>
-    </div>
-  </section>
+  <FAQSection faqs={campaignData.faqs || []} />
 
   <!-- Footer CTA -->
-  <section class="bg-[#D2CFAF] py-16 text-[#1D3638] md:py-24">
-    <div class="container mx-auto px-4 md:px-6">
-      <div class="mx-auto max-w-3xl text-center">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-          Ready to make a lasting difference?
-        </h2>
-        <p class="mt-4 text-lg">
-          Join our community of 1,000+ sustainers who are changing lives every day.
-        </p>
-        <a
-          href={campaignData.ctaLink}
-          class="mt-8 px-6 py-2 flex justify-center items-center mx-auto w-[220px] bg-white text-[#1D3638] hover:bg-gray-100"
-        >
-          Become a Sustainer
-          <Icon name="lucide:heart" class="ml-2 h-4 w-4" />
-        </a>
-      </div>
-      <div class="mt-16">
-        <p class="mb-4 text-center font-medium">Trusted by:</p>
-        <div class="flex flex-wrap items-center justify-center gap-8">
-          {
-            campaignData.partners?.length ? (
-              campaignData.partners.map((partner, index) => (
-                <div key={index} class="flex flex-col items-center">
-                  {partner.logo && (
-                    <img
-                      src={img(sanity).image(partner.logo).url()}
-                      alt={partner.name || 'Partner logo'}
-                      class="h-16 w-auto rounded-lg shadow-md"
-                    />
-                  )}
-                  <div class="rounded-lg bg-white/10 px-4 py-2 my-4">
-                    {partner.name || 'Unknown Partner'}
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p class="text-center text-gray-600">No partners available.</p>
-            )
-          }
-        </div>
-      </div>
-    </div>
-  </section>
+  <FooterCTA />
 </main>
 
 <Footer />
