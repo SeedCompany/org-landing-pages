@@ -1,0 +1,30 @@
+schema:
+  - ${RAZZLE_API_BASE_URL}/graphql:
+      loader: http://localhost:8367/graphql
+documents:
+  - ./src/**/*.graphql
+  - '!./src/api/schema/client-schema.graphql'
+overwrite: true
+config:
+  useTypeImports: true
+  immutableTypes: true
+generates:
+  ./src/api/operationsList/operations.generated.ts:
+    plugins:
+      - ./src/api/operationsList/operations.codegen
+    config:
+      identifierName: GQLOperations
+  ./src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .graphql.ts
+      baseTypesPath: api/schema.graphql.ts
+    plugins:
+      - typescript-operations
+      - typed-document-node
+    config:
+      documentMode: documentNodeImportFragments
+      skipTypename: false
+      enumsAsTypes: true
+      preResolveTypes: false
+      skipTypeNameForRoot: true
