@@ -1,0 +1,51 @@
+schema:
+  - ${RAZZLE_API_BASE_URL}/graphql:
+      loader: http://localhost:8367/graphql
+overwrite: true
+config:
+  useTypeImports: true
+  immutableTypes: true
+generates:
+  ./schema.graphql:
+    plugins:
+      - schema-ast
+  ./src/api/schema/fragmentMatcher/fragmentMatcher.generated.ts:
+    plugins:
+      - ./src/api/schema/fragmentMatcher/fragmentMatcher.codegen
+  ./src/api/schema/typePolicies/typePolicies.generated.ts:
+    plugins:
+      - ./src/api/schema/typePolicies/typePolicies.codegen
+  ./src/api/schema/enumLists/enumLists.generated.ts:
+    plugins:
+      - ./src/api/schema/enumLists/enumLists.codegen
+  ./src/api/schema/typeMap/typeMap.generated.ts:
+    plugins:
+      - ./src/api/schema/typeMap/typeMap.codegen
+  ./src/api/schema/schema.graphql.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+      - add:
+          placement: prepend
+          content: |
+            import { DateTime } from 'luxon';
+            import { Opaque } from 'type-fest';
+            import { CalendarDate, PaginationCursor, EditorJsJson, Quarter, YearQuarter } from '~/common';
+    config:
+      scalars:
+        EditorJsJSON: EditorJsJson
+        EmailAddress: string
+        Date: CalendarDate
+        DateTime: DateTime
+        DateInterval: string
+        JSONObject: Record<string, any>
+        LocalDate: string
+        PaginationCursor: PaginationCursor
+        PercentageDecimal: number
+        PositivePercentageDecimal: number
+        URL: string
+        YearQuarter: YearQuarter
+      defaultScalarType: Opaque<unknown, 'Unknown Scalar'>
+      skipTypename: false
+      enumsAsTypes: true
+      resolverTypeWrapperSignature: T
