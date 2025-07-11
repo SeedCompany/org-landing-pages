@@ -1,4 +1,7 @@
-<footer class="bg-[#1D3638]">
+---
+import FooterImageList from './FooterImageList';
+---
+<footer class="mkt-button-primary-bg mkt-neutral-text">
   <div class="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
     <div class="xl:grid xl:grid-cols-2 xl:gap-8 flex flex-col gap-y-8">
       <div class="space-y-8">
@@ -8,9 +11,9 @@
           alt="Seed Company"
         />
         <div class="flex flex-col gap-y-3">
-          <a href="#" class="text-white hover:text-gray-300">info@tsco.org</a>
-          <a href="#" class="text-white hover:text-gray-300">(817) 557-2121</a>
-          <a href="#" class="text-white hover:text-gray-300"
+          <a href="#" class="hover:text-gray-300">info@tsco.org</a>
+          <a href="#" class="hover:text-gray-300">(817) 557-2121</a>
+          <a href="#" class="hover:text-gray-300"
             >220 Westway Place, Suite 100, Arlington, TX 76018</a
           >
           <p class="text-balance text-sm/6 text-gray-300">
@@ -24,7 +27,7 @@
         <div
           class="flex flex-row gap-x-8 w-full items-center min-h-[150px] justify-center sm:flex-row"
         >
-          <div>
+          <!-- <div>
             <img
               src="https://seedcompany.com/wp-content/uploads/2024/03/EIG-Certified-Transparent-Logo-150x150.png"
               alt="EIG Certified Transparent"
@@ -41,12 +44,13 @@
               src="https://seedcompany.com/wp-content/uploads/2024/03/ecfa-seal-charter-150x150.png"
               alt="ECFA Accredited"
             />
-          </div>
+          </div> -->
+          <FooterImageList client:load />
         </div>
       </div>
     </div>
     <div class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
-      <p class="text-sm/6 text-gray-400">
+      <p class="text-sm/6 gray-500">
         &copy; {new Date().getFullYear()} Seed Company, Inc. All rights reserved.
       </p>
     </div>

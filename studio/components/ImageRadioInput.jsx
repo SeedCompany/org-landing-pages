@@ -1,4 +1,3 @@
-// sanity-studio/components/ImageRadioInput.jsx
 import React from 'react'
 import { set } from 'sanity'
 
