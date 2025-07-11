@@ -4,7 +4,7 @@ import { sanityClient as sanity } from 'sanity:client';
 import imageUrlBuilder from '@sanity/image-url';
 
 interface Partner {
-  logo?: any;
+  logo?: string;
   name?: string;
 }
 

@@ -6,6 +6,7 @@ import '../../styles/global.css';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import DonationThermometer from '../DonationThermometer.astro';
 import SustainerStep from '../SustainerStep.astro';
+import CampaignButtons from '../CampaignButtons.tsx';
 import SustainerSection from '../SustainerSection.astro';
 import FAQSection from '../FAQSection.tsx';
 import FooterCTA from '../FooterCTA.tsx';
@@ -39,12 +40,6 @@ const steps = [
 ---
 
 <main class="flex min-h-screen flex-col">
-  <!-- Debug Output -->
-  <!-- <div class="debug p-4 bg-gray-100 border border-gray-300 m-4">
-    <h3>Debug: Campaign Data</h3>
-    <pre>{JSON.stringify(campaignData, null, 2)}</pre>
-  </div> -->
-
   <!-- Hero section -->
   <section class="relative sus-primary-bg py-20 text-white">
     <div class="container mx-auto px-4 md:px-6">
@@ -60,17 +55,13 @@ const steps = [
               set:html={toHTML(campaignData.heroCopy)}
             />
           </div>
-          <div class="flex flex-col gap-2 min-[400px]:flex-row mx-auto lg:mx-0">
-            <a
-              href={campaignData.ctaLink}
-              class="mt-8 px-6 py-2 bg-white sus-button-secondary-bg sus-button-secondary-hover border-2"
-            >
-              {campaignData.ctaText}
-            </a>
-            <a href="#" class="mt-8 px-6 py-2 border-white text-white hover:bg-white/20">
-              Learn More
-            </a>
-          </div>
+          <CampaignButtons
+            client:load
+            primaryCtaLink={campaignData.ctaLink}
+            primaryCtaText={campaignData.ctaText}
+            secondaryCtaLink="#"
+            secondaryCtaText="Learn More"
+          />
           <div class="space-y-2 pt-4">
             <DonationThermometer />
           </div>
@@ -132,7 +123,10 @@ const steps = [
   <FAQSection faqs={campaignData.faqs || []} />
 
   <!-- Footer CTA -->
-  <FooterCTA />
+  <FooterCTA 
+    ctaLink={campaignData.ctaLink || "#"}
+    partners={campaignData.partners || []}
+  />
 </main>
 
 <Footer />

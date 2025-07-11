@@ -1,5 +1,6 @@
 {
   "name": "org-landing-pages",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -10,6 +11,9 @@
     "sanity:gen": "sanity schema extract && sanity typegen generate",
     "astro": "astro"
   },
+  "workspaces": [
+    "studio"
+  ],
   "engines": {
     "node": ">= 22"
   },
