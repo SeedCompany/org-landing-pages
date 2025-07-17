@@ -14,7 +14,18 @@ const elementsOptions: StripeElementsOptions = {
 };
 
 export const StripeProvider = ({ children }: ChildrenProp) => {
-  const [lib] = useState(() => loadStripe(import.meta.env.STRIPE_PUBLIC_KEY));
+  const [lib] = useState(() => {
+    const stripe = loadStripe(import.meta.env.STRIPE_PUBLIC_KEY);
+    console.log('Stripe Public Key:', import.meta.env.STRIPE_PUBLIC_KEY); // Debug
+    console.log('Stripe Loaded:', !!stripe); // Debug
+    return stripe;
+  });
+
+  if (!lib) {
+    console.error('Stripe failed to load');
+    return <div>Loading Stripe...</div>;
+  }
+
   return (
     <Elements stripe={lib} options={elementsOptions}>
       {children}
