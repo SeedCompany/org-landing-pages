@@ -1,12 +1,9 @@
 ---
-import { DonationForm } from '../components/DonationForm';
-import { ClientStripeWrapper } from '../components/stripe/ClientStripeWrapper';
+import { StripeClientIsland } from '../components/stripe/StripeClientIsland';
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <div>
-  <ClientStripeWrapper client:load>
-    <DonationForm client:load />
-  </ClientStripeWrapper>
+  <StripeClientIsland formProps={{ enableRecurring: true, hideInvestorType: "Organization" }} client:load />
 </div>

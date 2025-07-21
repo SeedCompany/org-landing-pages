@@ -3,10 +3,10 @@ import { investorSchema } from './investor.schema';
 import { paymentSchema } from './payment.schema';
 import { telemetrySchema } from './telemetry.schema';
 
-// const captcha = z.object({
-//   v2: z.string().nullable(),
-//   v3: z.string().nullable(),
-// });
+const captcha = z.object({
+  v2: z.string().nullable(),
+  v3: z.string().nullable(),
+});
 
 const donationIntent = z
   .object({
@@ -26,14 +26,14 @@ const targets = z.object({
       invalid_type_error: 'Must be a whole number.',
     })
     .int('Must be a whole number')
-    .positive('Must be a positive number')
-    .transform((val) => val.toString()),
+    .positive('Must be a positive number'),
+    // .transform((val) => val.toString()),
   intent: donationIntent,
 });
 
 export const donateSchema = z.object({
-  // cadence: z.enum(['Monthly', 'OneTime']),
-  // captcha: captcha,
+  cadence: z.enum(['Monthly', 'OneTime']),
+  captcha: captcha,
   investor: investorSchema,
   memo: z.string().nullable(),
   payment: paymentSchema,

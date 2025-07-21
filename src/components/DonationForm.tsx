@@ -9,12 +9,14 @@ import { DonationInput } from './DonationInput.tsx';
 
 type DonateFormValues = z.infer<typeof donateSchema>;
 
-type DonateProps = {
+export type DonateProps = {
+  hideInvestorType?: 'Individual' | 'Organization';
+  enableRecurring?: boolean;
   onSubmit?: () => void;
 };
 
-export const DonationForm = (props: DonateProps) => {
-  // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
+export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
+  const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [isRecurring, setIsRecurring] = useState(false);
   const form = useForm<DonateFormValues>({
     defaultValues: {},
@@ -24,8 +26,9 @@ export const DonationForm = (props: DonateProps) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  // @ts-ignore
+  // @ts-expect-error I dunno what message to put
   const submitForm = async ({ variables }) => {
+    console.log(variables);
     try {
       const response = await fetch('http://localhost:8367/graphql', {
         method: 'POST',
@@ -44,6 +47,7 @@ export const DonationForm = (props: DonateProps) => {
             }
           }
         `,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           variables,
         }),
       });
@@ -51,10 +55,13 @@ export const DonationForm = (props: DonateProps) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result = await response.json();
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (result.errors) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
         throw new Error(result.errors.map((err) => err.message).join(', '));
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       return { data: result.data };
     } catch (error) {
       console.error('Error submitting donation:', error);
@@ -65,6 +72,7 @@ export const DonationForm = (props: DonateProps) => {
   const onSubmit = form.handleSubmit(
     // @ts-expect-error I hate frontend
     async (formData: DonateFormValues) => {
+      console.log(formData);
       try {
         if (!elements) {
           console.error('No Stripe Elements found');
@@ -112,13 +120,13 @@ export const DonationForm = (props: DonateProps) => {
               },
               targets: [
                 {
-                  amount: parseInt(formData.targets.amount || '75'),
+                  amount: formData.targets.amount || 75,
                 },
               ],
             },
           },
         });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
         const clientSecret = data?.donate.intent?.clientSecret;
         if (!clientSecret) {
           console.error('no client secret');
@@ -154,6 +162,30 @@ export const DonationForm = (props: DonateProps) => {
     control: form.control,
     name: 'investor.lastName',
   });
+  const email = useController({
+    control: form.control,
+    name: 'investor.email',
+  });
+  const line1 = useController({
+    control: form.control,
+    name: 'investor.mailingAddress.line1',
+  });
+  const line2 = useController({
+    control: form.control,
+    name: 'investor.mailingAddress.line2',
+  });
+  const city = useController({
+    control: form.control,
+    name: 'investor.mailingAddress.city',
+  });
+  const state = useController({
+    control: form.control,
+    name: 'investor.mailingAddress.state',
+  });
+  const zip = useController({
+    control: form.control,
+    name: 'investor.mailingAddress.zip',
+  });
 
   const paymentElementOptions: StripePaymentElementOptions = {
     paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
@@ -162,7 +194,7 @@ export const DonationForm = (props: DonateProps) => {
     if (elements) {
       elements.update({
         mode: isRecurring ? 'subscription' : 'payment',
-        amount: parseInt(form.getValues('targets.amount') || '75') * 100,
+        amount: (form.getValues('targets.amount') || 75) * 100,
       });
     }
   }, [elements, form, isRecurring]);
@@ -170,28 +202,45 @@ export const DonationForm = (props: DonateProps) => {
   return (
     <div>
       <div>
-        <span>Give As:</span>
-        <div
-        // value={giveAs === 'Individual' ? 0 : 1}
-        // onChange={(e) => {
-        //   setGiveAs(
-        //     // @ts-expect-error instead of creating a custom type, just ignoring for now
-        //     e.target.firstChild.textContent,
-        //   );
-        // }}
-        >
-          <span>Individual</span>
-          <span>Organization</span>
-        </div>
-        <div>
-          <span>One-Time Donation</span>
-          {/*<Switch*/}
-          {/*  onChange={() => {*/}
-          {/*    setIsRecurring(!isRecurring);*/}
-          {/*  }}*/}
-          {/*/>*/}
-          <span>Monthly Gift</span>
-        </div>
+        {!formProps.hideInvestorType && (
+          <>
+            <span>Give As:</span>
+            {/* this needs to be a selector */}
+            <div>
+              <span>Individual</span>
+              <span>Organization</span>
+            </div>
+          </>
+        )}
+        {formProps.enableRecurring && (
+          <>
+            <div className="flex items-center justify-between gap-3">
+              <div className="group relative inline-flex w-11 shrink-0 rounded-full bg-gray-200 p-0.5 outline-offset-2 outline-indigo-600 ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out has-[:checked]:bg-indigo-600 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 dark:bg-white/5 dark:outline-indigo-500 dark:ring-white/10 dark:has-[:checked]:bg-indigo-500">
+                <span className="size-5 rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition-transform duration-200 ease-in-out group-has-[:checked]:translate-x-5" />
+                <input
+                  id="recurring"
+                  name="recurring"
+                  type="checkbox"
+                  aria-labelledby="recurring-label"
+                  aria-describedby="recurring-description"
+                  className="absolute inset-0 appearance-none focus:outline-none"
+                />
+              </div>
+
+              <div className="text-sm">
+                <label id="recurring-label" className="font-medium text-gray-900">
+                  Make this a recurring donation?
+                </label>
+                <span id="recurring-description" className="text-gray-500"></span>
+              </div>
+            </div>
+            {/*<div>*/}
+            {/*  /!* this also needs to be a switch *!/*/}
+            {/*  <span>One-Time Donation</span>*/}
+            {/*  <span>Monthly Gift</span>*/}
+            {/*</div>*/}
+          </>
+        )}
         <form
           onSubmit={(e: React.FormEvent) => {
             e.preventDefault();
@@ -200,17 +249,63 @@ export const DonationForm = (props: DonateProps) => {
         >
           <DonationInput
             placeholder="First name"
+            label="First name"
             error={firstName.fieldState.invalid}
+            fieldName="firstName"
             required
             {...firstName.field}
           />
           <DonationInput
             placeholder="Last name"
+            label="Last name"
+            fieldName="lastName"
             error={lastName.fieldState.invalid}
             required
             {...lastName.field}
           />
-          {/*<InvestorGroup form={form} />*/}
+          <DonationInput
+            placeholder="Email"
+            label="Email"
+            fieldName="email"
+            type="email"
+            error={email.fieldState.invalid}
+            {...email.field}
+          />
+          <DonationInput
+            placeholder="Address Line 1"
+            label="Address Line 1"
+            fieldName="line1"
+            error={line1.fieldState.invalid}
+            {...line1.field}
+          />
+          <DonationInput
+            placeholder="Address Line 2"
+            label="Address Line 2"
+            fieldName="line2"
+            error={line2.fieldState.invalid}
+            {...line2.field}
+          />
+          <DonationInput
+            placeholder="City"
+            label="City"
+            fieldName="city"
+            error={city.fieldState.invalid}
+            {...city.field}
+          />
+          <DonationInput
+            placeholder="State"
+            label="State"
+            fieldName="state"
+            error={state.fieldState.invalid}
+            {...state.field}
+          />
+          <DonationInput
+            placeholder="Zip Code"
+            label="Zip Code"
+            fieldName="zip"
+            error={zip.fieldState.invalid}
+            {...zip.field}
+          />
           <PaymentElement id="payment-element" options={paymentElementOptions} />
           <button type="submit" disabled={form.formState.isSubmitting}>
             Submit

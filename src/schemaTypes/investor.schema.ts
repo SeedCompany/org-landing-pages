@@ -14,10 +14,7 @@ const mailingAddress = z.object({
     .string()
     .trim()
     .min(2, 'Should be 2 character state symbol. Incorrect: Texas, Correct: TX')
-    .max(
-      2,
-      'Should be 2 character state symbol. Incorrect: Texas, Correct: TX',
-    ),
+    .max(2, 'Should be 2 character state symbol. Incorrect: Texas, Correct: TX'),
   zip: z.string(),
 });
 
@@ -27,10 +24,6 @@ export const investorSchema = z.object({
   firstName: z.string().nullable(),
   lastName: z.string(),
   mailingAddress: mailingAddress,
-  phone: z
-    .string()
-    .trim()
-    .min(10, 'Phone number should be at least 10 digits')
-    .nullable(),
+  phone: z.string().trim().min(10, 'Phone number should be at least 10 digits').nullable(),
   type: z.enum(['Individual', 'Organization']),
 });
