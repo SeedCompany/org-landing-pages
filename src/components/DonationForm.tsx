@@ -251,14 +251,12 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
             placeholder="First name"
             label="First name"
             error={firstName.fieldState.invalid}
-            fieldName="firstName"
             required
             {...firstName.field}
           />
           <DonationInput
             placeholder="Last name"
             label="Last name"
-            fieldName="lastName"
             error={lastName.fieldState.invalid}
             required
             {...lastName.field}
@@ -266,7 +264,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           <DonationInput
             placeholder="Email"
             label="Email"
-            fieldName="email"
             type="email"
             error={email.fieldState.invalid}
             {...email.field}
@@ -274,21 +271,18 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           <DonationInput
             placeholder="Address Line 1"
             label="Address Line 1"
-            fieldName="line1"
             error={line1.fieldState.invalid}
             {...line1.field}
           />
           <DonationInput
             placeholder="Address Line 2"
             label="Address Line 2"
-            fieldName="line2"
             error={line2.fieldState.invalid}
             {...line2.field}
           />
           <DonationInput
             placeholder="City"
             label="City"
-            fieldName="city"
             error={city.fieldState.invalid}
             {...city.field}
           />
@@ -302,7 +296,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           <DonationInput
             placeholder="Zip Code"
             label="Zip Code"
-            fieldName="zip"
             error={zip.fieldState.invalid}
             {...zip.field}
           />

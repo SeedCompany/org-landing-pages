@@ -1,31 +1,42 @@
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
+import type { ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form/dist/types';
 
-export const DonationInput = ({
+interface FormValues {
+  investor: {
+    firstName: string;
+    lastName: string;
+  };
+}
+
+export const DonationInput = <
+  TFieldValues extends FieldValues = FormValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
   error,
   label,
-  fieldName,
   type = 'text',
   required,
   placeholder,
+  ...field
 }: {
   error: boolean;
   label: string;
-  fieldName: string;
   type?: 'text' | 'email';
   required?: boolean;
   placeholder: string;
-}) => {
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+} & ControllerRenderProps<TFieldValues, TName>) => {
   return (
     <>
       {error ? (
         <div>
-          <label htmlFor={fieldName} className="block text-sm/6 font-medium text-gray-900">
+          <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
             {label}
           </label>
           <div className="mt-2 grid grid-cols-1">
             <input
-              id={fieldName}
-              name={fieldName}
+              id={field.name}
+              name={field.name}
               type={type}
               required={required}
               placeholder={placeholder}
@@ -51,13 +62,13 @@ export const DonationInput = ({
         // />
         // <input type="text" required={required} placeholder={placeholder} />
         <div>
-          <label htmlFor={fieldName} className="block text-sm/6 font-medium text-gray-900">
+          <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
             {label}
           </label>
           <div className="mt-2">
             <input
-              id={fieldName}
-              name={fieldName}
+              id={field.name}
+              name={field.name}
               type={type}
               required={required}
               placeholder={placeholder}
