@@ -19,7 +19,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [isRecurring, setIsRecurring] = useState(false);
   const form = useForm<DonateFormValues>({
-    defaultValues: {},
     resolver: zodResolver(donateSchema),
   });
 
@@ -70,7 +69,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   };
 
   const onSubmit = form.handleSubmit(
-    // @ts-expect-error I hate frontend
     async (formData: DonateFormValues) => {
       console.log(formData);
       try {
@@ -250,14 +248,14 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           <DonationInput
             placeholder="First name"
             label="First name"
-            error={firstName.fieldState.invalid}
+            error={firstName.fieldState.error}
             required
             {...firstName.field}
           />
           <DonationInput
             placeholder="Last name"
             label="Last name"
-            error={lastName.fieldState.invalid}
+            error={lastName.fieldState.error}
             required
             {...lastName.field}
           />
@@ -265,38 +263,37 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
             placeholder="Email"
             label="Email"
             type="email"
-            error={email.fieldState.invalid}
+            error={email.fieldState.error}
             {...email.field}
           />
           <DonationInput
             placeholder="Address Line 1"
             label="Address Line 1"
-            error={line1.fieldState.invalid}
+            error={line1.fieldState.error}
             {...line1.field}
           />
           <DonationInput
             placeholder="Address Line 2"
             label="Address Line 2"
-            error={line2.fieldState.invalid}
+            error={line2.fieldState.error}
             {...line2.field}
           />
           <DonationInput
             placeholder="City"
             label="City"
-            error={city.fieldState.invalid}
+            error={city.fieldState.error}
             {...city.field}
           />
           <DonationInput
             placeholder="State"
             label="State"
-            fieldName="state"
-            error={state.fieldState.invalid}
+            error={state.fieldState.error}
             {...state.field}
           />
           <DonationInput
             placeholder="Zip Code"
             label="Zip Code"
-            error={zip.fieldState.invalid}
+            error={zip.fieldState.error}
             {...zip.field}
           />
           <PaymentElement id="payment-element" options={paymentElementOptions} />

@@ -1,17 +1,7 @@
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
-import type { ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form/dist/types';
+import type { ControllerRenderProps, FieldError } from 'react-hook-form';
 
-interface FormValues {
-  investor: {
-    firstName: string;
-    lastName: string;
-  };
-}
-
-export const DonationInput = <
-  TFieldValues extends FieldValues = FormValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
+export const DonationInput = ({
   error,
   label,
   type = 'text',
@@ -19,13 +9,12 @@ export const DonationInput = <
   placeholder,
   ...field
 }: {
-  error: boolean;
+  error: FieldError | undefined;
   label: string;
   type?: 'text' | 'email';
   required?: boolean;
   placeholder: string;
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-} & ControllerRenderProps<TFieldValues, TName>) => {
+} & ControllerRenderProps) => {
   return (
     <>
       {error ? (
@@ -36,7 +25,7 @@ export const DonationInput = <
           <div className="mt-2 grid grid-cols-1">
             <input
               id={field.name}
-              name={field.name}
+              {...field}
               type={type}
               required={required}
               placeholder={placeholder}
@@ -50,7 +39,7 @@ export const DonationInput = <
             />
           </div>
           <p id="email-error" className="mt-2 text-sm text-red-600">
-            {error}
+            {error.message}
           </p>
         </div>
       ) : (
@@ -68,7 +57,7 @@ export const DonationInput = <
           <div className="mt-2">
             <input
               id={field.name}
-              name={field.name}
+              {...field}
               type={type}
               required={required}
               placeholder={placeholder}
