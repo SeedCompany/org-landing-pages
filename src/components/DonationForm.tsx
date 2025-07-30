@@ -1,29 +1,58 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import type { StripePaymentElementOptions } from '@stripe/stripe-js';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { DonationPresets } from './DonationPresets.tsx';
 
 type DonateFormValues = z.infer<typeof donateSchema>;
 
 export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
   enableRecurring?: boolean;
+  presetAmounts?: number[];
   onSubmit?: () => void;
 };
 
 export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [isRecurring, setIsRecurring] = useState(false);
+  const [showAmountInput, setShowAmountInput] = useState('hidden' as 'hidden' | 'value' | 'form');
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const [amount, setAmount] = useState(1);
+  const [v3RecaptchaToken, setV3RecaptchaToken] = useState<string | null>(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema),
   });
 
   const stripe = useStripe();
   const elements = useElements();
+
+  const handleReCaptcha = useCallback(async () => {
+    if (!executeRecaptcha) {
+      console.error('reCAPTCHA not loaded yet');
+      return;
+    }
+    try {
+      const token = await executeRecaptcha('donate');
+      console.log('recaptcha token received:', token);
+      setV3RecaptchaToken(token);
+    } catch (error) {
+      console.error('Recaptcha error:', error);
+    }
+  }, [executeRecaptcha]);
+
+  useEffect(() => {
+    const initializeRecaptcha = async () => {
+      await handleReCaptcha();
+    };
+    void initializeRecaptcha();
+  }, [handleReCaptcha]);
 
   // @ts-expect-error I dunno what message to put
   const submitForm = async ({ variables }) => {
@@ -110,17 +139,22 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                   city: formData.investor.mailingAddress.city,
                   state: formData.investor.mailingAddress.state,
                   zip: formData.investor.mailingAddress.zip,
+                  country: 'US', // Assuming US for simplicity, adjust as needed
                 },
-                type: 'Individual', // Use state value for Individual/Organization
+                type: 'Individual',
               },
               payment: {
                 stripe: { confirmationToken: confirmationToken.id },
               },
               targets: [
                 {
-                  amount: formData.targets.amount || 75,
+                  amount: amount,
                 },
               ],
+              captcha: {
+                v2: null,
+                v3: v3RecaptchaToken || '',
+              },
             },
           },
         });
@@ -152,6 +186,11 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     },
   );
 
+  // const donationAmount = useController({
+  //   control: form.control,
+  //   name: 'targets.amount',
+  //   defaultValue: amount,
+  // });
   const firstName = useController({
     control: form.control,
     name: 'investor.firstName',
@@ -189,118 +228,159 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
   };
   useEffect(() => {
+    console.log('amount:', amount);
     if (elements) {
       elements.update({
         mode: isRecurring ? 'subscription' : 'payment',
-        amount: (form.getValues('targets.amount') || 75) * 100,
+        amount: amount * 100,
       });
     }
-  }, [elements, form, isRecurring]);
+  }, [elements, form, isRecurring, amount]);
 
   return (
     <div>
       <div>
-        {!formProps.hideInvestorType && (
+        {showForm ? (
           <>
-            <span>Give As:</span>
-            {/* this needs to be a selector */}
+            {!formProps.hideInvestorType && (
+              <>
+                <span>Give As:</span>
+                {/* this needs to be a selector */}
+                <div>
+                  <span>Individual</span>
+                  <span>Organization</span>
+                </div>
+              </>
+            )}
+            {formProps.enableRecurring && (
+              <>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="group relative inline-flex w-11 shrink-0 rounded-full bg-gray-200 p-0.5 outline-offset-2 outline-indigo-600 ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out has-[:checked]:bg-indigo-600 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 dark:bg-white/5 dark:outline-indigo-500 dark:ring-white/10 dark:has-[:checked]:bg-indigo-500">
+                    <span className="size-5 rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition-transform duration-200 ease-in-out group-has-[:checked]:translate-x-5" />
+                    <input
+                      id="recurring"
+                      name="recurring"
+                      type="checkbox"
+                      aria-labelledby="recurring-label"
+                      aria-describedby="recurring-description"
+                      className="absolute inset-0 appearance-none focus:outline-none"
+                    />
+                  </div>
+                  <div className="text-sm">
+                    <label id="recurring-label" className="font-medium text-gray-900">
+                      Make this a recurring donation?
+                    </label>
+                    <span id="recurring-description" className="text-gray-500"></span>
+                  </div>
+                </div>
+                {/*<div>*/}
+                {/*  /!* this also needs to be a switch *!/*/}
+                {/*  <span>One-Time Donation</span>*/}
+                {/*  <span>Monthly Gift</span>*/}
+                {/*</div>*/}
+              </>
+            )}
             <div>
-              <span>Individual</span>
-              <span>Organization</span>
-            </div>
-          </>
-        )}
-        {formProps.enableRecurring && (
-          <>
-            <div className="flex items-center justify-between gap-3">
-              <div className="group relative inline-flex w-11 shrink-0 rounded-full bg-gray-200 p-0.5 outline-offset-2 outline-indigo-600 ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out has-[:checked]:bg-indigo-600 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 dark:bg-white/5 dark:outline-indigo-500 dark:ring-white/10 dark:has-[:checked]:bg-indigo-500">
-                <span className="size-5 rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition-transform duration-200 ease-in-out group-has-[:checked]:translate-x-5" />
+              <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
+                Donation Amount
+              </label>
+              <div className="mt-2">
                 <input
-                  id="recurring"
-                  name="recurring"
-                  type="checkbox"
-                  aria-labelledby="recurring-label"
-                  aria-describedby="recurring-description"
-                  className="absolute inset-0 appearance-none focus:outline-none"
+                  id="amount"
+                  type="text"
+                  required
+                  value={amount}
+                  onChange={(e) => setAmount(parseInt(e.target.value))}
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               </div>
-
-              <div className="text-sm">
-                <label id="recurring-label" className="font-medium text-gray-900">
-                  Make this a recurring donation?
-                </label>
-                <span id="recurring-description" className="text-gray-500"></span>
-              </div>
             </div>
-            {/*<div>*/}
-            {/*  /!* this also needs to be a switch *!/*/}
-            {/*  <span>One-Time Donation</span>*/}
-            {/*  <span>Monthly Gift</span>*/}
-            {/*</div>*/}
+            <form
+              onSubmit={(e: React.FormEvent) => {
+                e.preventDefault();
+                void onSubmit();
+              }}
+            >
+              <DonationInput
+                placeholder="First name"
+                label="First name"
+                error={firstName.fieldState.error}
+                required
+                {...firstName.field}
+              />
+              <DonationInput
+                placeholder="Last name"
+                label="Last name"
+                error={lastName.fieldState.error}
+                required
+                {...lastName.field}
+              />
+              <DonationInput
+                placeholder="Email"
+                label="Email"
+                type="email"
+                error={email.fieldState.error}
+                {...email.field}
+              />
+              <DonationInput
+                placeholder="Address Line 1"
+                label="Address Line 1"
+                error={line1.fieldState.error}
+                {...line1.field}
+              />
+              <DonationInput
+                placeholder="Address Line 2"
+                label="Address Line 2"
+                error={line2.fieldState.error}
+                {...line2.field}
+              />
+              <DonationInput
+                placeholder="City"
+                label="City"
+                error={city.fieldState.error}
+                {...city.field}
+              />
+              <DonationInput
+                placeholder="State"
+                label="State"
+                error={state.fieldState.error}
+                {...state.field}
+              />
+              <DonationInput
+                placeholder="Zip Code"
+                label="Zip Code"
+                error={zip.fieldState.error}
+                {...zip.field}
+              />
+              <PaymentElement id="payment-element" options={paymentElementOptions} />
+              <button
+                type="submit"
+                disabled={form.formState.isSubmitting || !v3RecaptchaToken}
+                className="my-5"
+              >
+                Submit
+              </button>
+            </form>
           </>
+        ) : (
+          <div>
+            <DonationPresets
+              presetAmounts={formProps?.presetAmounts}
+              setAmount={setAmount}
+              showForm={setShowAmountInput}
+              currentAmount={amount}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setShowForm(true);
+              }}
+              className="rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            >
+              Give Now
+            </button>
+          </div>
         )}
-        <form
-          onSubmit={(e: React.FormEvent) => {
-            e.preventDefault();
-            void onSubmit();
-          }}
-        >
-          <DonationInput
-            placeholder="First name"
-            label="First name"
-            error={firstName.fieldState.error}
-            required
-            {...firstName.field}
-          />
-          <DonationInput
-            placeholder="Last name"
-            label="Last name"
-            error={lastName.fieldState.error}
-            required
-            {...lastName.field}
-          />
-          <DonationInput
-            placeholder="Email"
-            label="Email"
-            type="email"
-            error={email.fieldState.error}
-            {...email.field}
-          />
-          <DonationInput
-            placeholder="Address Line 1"
-            label="Address Line 1"
-            error={line1.fieldState.error}
-            {...line1.field}
-          />
-          <DonationInput
-            placeholder="Address Line 2"
-            label="Address Line 2"
-            error={line2.fieldState.error}
-            {...line2.field}
-          />
-          <DonationInput
-            placeholder="City"
-            label="City"
-            error={city.fieldState.error}
-            {...city.field}
-          />
-          <DonationInput
-            placeholder="State"
-            label="State"
-            error={state.fieldState.error}
-            {...state.field}
-          />
-          <DonationInput
-            placeholder="Zip Code"
-            label="Zip Code"
-            error={zip.fieldState.error}
-            {...zip.field}
-          />
-          <PaymentElement id="payment-element" options={paymentElementOptions} />
-          <button type="submit" disabled={form.formState.isSubmitting}>
-            Submit
-          </button>
-        </form>
       </div>
     </div>
   );

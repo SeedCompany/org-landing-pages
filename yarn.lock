@@ -11128,6 +11128,7 @@ __metadata:
     prettier-plugin-astro: "npm:^0.14.1"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
+    react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.59.0"
     react-is: "npm:^19.1.0"
     sanity: "npm:^3.88.3"
@@ -12101,6 +12102,18 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/5a3e92fb0025042ab613c54b8ff0aa6c3a45a4d4785c51c024758b02ff83a89295b458ba609c48d11f1c6bbcab6a6b032c5c17d1f3d168a2835cbbec3dea6a46
+  languageName: node
+  linkType: hard
+
+"react-google-recaptcha-v3@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "react-google-recaptcha-v3@npm:1.11.0"
+  dependencies:
+    hoist-non-react-statics: "npm:^3.3.2"
+  peerDependencies:
+    react: ^16.3 || ^17.0 || ^18.0 || ^19.0
+    react-dom: ^17.0 || ^18.0 || ^19.0
+  checksum: 10c0/8c14d4aae702cb4be150ec15794842947473c1fd8d9c65545fb17566beb6033982f418a4a2dea0b4e5b73c28cb3a7312f5ab2c32e45c6a4d4e115b2a6193a86b
   languageName: node
   linkType: hard
 
