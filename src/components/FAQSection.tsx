@@ -1,9 +1,9 @@
 import React from 'react';
-import { toHTML } from '../lib/portableTextSerializer';
+import { PortableText, type PortableTextBlock } from '@portabletext/react';
 
 interface FAQ {
   question?: string;
-  answer?: any;
+  answer?: PortableTextBlock[];
 }
 
 interface Props {
@@ -34,8 +34,16 @@ const FAQSection: React.FC<Props> = ({ faqs }) => {
                 </summary>
                 <div className="mt-2 sus-primary-text">
                   {item.answer ? (
-                    <div
-                      dangerouslySetInnerHTML={{ __html: toHTML(item.answer) }}
+                    <PortableText
+                      value={item.answer}
+                      // you can optionally add elements to render here
+                      // components={{
+                      //   types: {
+                      //     block: ({ children }) => (
+                      //       <p className="mb-2">{children}</p>
+                      //     ),
+                      //   },
+                      // }}
                     />
                   ) : (
                     <p>No answer provided.</p>

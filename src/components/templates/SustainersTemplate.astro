@@ -22,17 +22,14 @@ const { campaignData } = Astro.props;
 // Not connected to Sanity, hardcoded for now
 const steps = [
   {
-    step: 1,
     title: 'Choose Your Amount',
     description: 'Select a monthly donation amount that works for your budget.',
   },
   {
-    step: 2,
     title: 'Sign Up Once',
     description: 'Enter your information and payment details just once.',
   },
   {
-    step: 3,
     title: 'Make a Difference',
     description: 'Your donation automatically processes each month, creating ongoing impact.',
   }
@@ -112,8 +109,8 @@ const steps = [
         <p class="mt-4 text-lg">Becoming a sustainer is simple:</p>
       </div>
       <div class="mt-12 grid gap-8 md:grid-cols-3">
-        {steps.map(({ step, title, description }) => (
-          <SustainerStep step={step} title={title} description={description} />
+        {steps.map(({ title, description }, index) => (
+          <SustainerStep step={index + 1} title={title} description={description} />
         ))}
       </div>
     </div>
@@ -123,7 +120,7 @@ const steps = [
   <FAQSection faqs={campaignData.faqs || []} />
 
   <!-- Footer CTA -->
-  <FooterCTA 
+  <FooterCTA
     ctaLink={campaignData.ctaLink || "#"}
     partners={campaignData.partners || []}
   />
