@@ -12,22 +12,18 @@ interface Props {
 }
 
 const { campaignData } = Astro.props;
-// console.log(JSON.stringify(campaignData.body, null, 2));
-console.log('heroCtaText:', campaignData?.heroCtaText);
-console.log('heroCtaLink:', campaignData?.heroCtaLink);
 ---
 
-    <div class="relative isolate overflow-hidden bg-[#F7F1E7]">
-
+    <div class="relative isolate overflow-hidden mkt-primary-bg">
       <div class="mx-auto max-w-7xl px-6 py-12 md:py-24 lg:flex lg:px-8">
         <div class="mx-auto max-w-2xl lg:mx-0 lg:shrink-0 lg:pt-8 md:pr-8">
           <img class="h-11" src="https://seedcompany.com/wp-content/uploads/2024/10/Seed-Company-Logo_secondary.png" alt="Your Company">
-          <h1 class="mt-10 text-pretty text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl" set:html={toHTML(campaignData.heading)}></h1>
+          <h1 class="mt-10 text-pretty text-5xl font-semibold tracking-tight mkt-primary-text sm:text-7xl" set:html={toHTML(campaignData.heading)}></h1>
           <div class="prose">
-            <div class="mt-8 text-pretty text-md font-medium text-gray-500 sm:text-xl/8" set:html={toHTML(campaignData.heroCopy)}></div>
+            <div class="mt-8 text-pretty text-md font-medium gray-500 sm:text-xl/8" set:html={toHTML(campaignData.heroCopy)}></div>
           </div>
           <div class="mt-10 flex items-center gap-x-6">
-            <a href={(campaignData.ctaLink)} class="btn bg-[#1D3638] border-[#1D3638] border-2 hover:bg-white hover:text-[#29B67E] hover:border-[#29B67E] transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
+            <a href={(campaignData.ctaLink)} class="btn mkt-button-primary-bg mkt-button-primary-border border-2 hover:bg-white mkt-button-primary-hover transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
           </div>
         </div>
         <div class="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
@@ -44,8 +40,8 @@ console.log('heroCtaLink:', campaignData?.heroCtaLink);
         <div class="text-lg" set:html={toHTML(campaignData.body)}></div>
       </div>
       <div class="my-10 md:flex items-center md:gap-x-6">
-        <a href={(campaignData.ctaLink)} class="btn bg-[#1D3638] border-[#1D3638] border-2 hover:bg-white hover:text-[#323232] hover:border-black transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
-        <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={campaignData.contactEmail} class="text-[#1D3638]">{campaignData.contactEmail}</a></p>
+        <a href={(campaignData.ctaLink)} class="btn mkt-button-primary-bg mkt-button-primary-border mkt-button-primary-hover border-2 transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
+        <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={campaignData.contactEmail} class="mkt-secondary-accent">{campaignData.contactEmail}</a></p>
       </div>
     </section>
     <section class="relative isolate bg-[#CDC3B0] overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
@@ -54,33 +50,33 @@ console.log('heroCtaLink:', campaignData?.heroCtaLink);
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
         <div class="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div class="lg:pr-4">
-            <div class="lg:max-w-lg text-[#323232]">
-              <p class="text-base/7 font-semibold text-[#E35C2A]">All Scripture, All People</p>
+            <div class="lg:max-w-lg primary-text">
+              <p class="text-base/7 font-semibold mkt-accent-text">All Scripture, All People</p>
               <h2 class="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">About Seed Company</h2>
               <p class="mt-6 text-xl/8">Seed Company exists to bring God's Word to every language and community. Founded with a vision of accessibility and understanding, we build partnerships that transcend borders and barriers. Our collaborative approach empowers local translators with the tools they need to share Scripture's transformative message in ways that resonate deeply with their own people.</div>
               <p class="mt-6">We accelerate the work of Bible translation by connecting local field partners around the world with investors, resources, and training. Through these global partnerships, God's people are being equipped to reach communities still waiting for Scripture in the languages they understand best.</p>
               <dl class="mt-10 space-y-8 text-base/7">
                 <div class="relative pl-9">
-                  <dt class="font-semibold text-[#323232]">
-                    <Icon name={"lucide:calendar"} class="text-[#E35C2A] mb-2 text-2xl" />
+                  <dt class="font-semibold primary-text">
+                    <Icon name={"lucide:calendar"} class="mkt-accent-text mb-2 text-2xl" />
                     <dd class="order-first text-xl font-semibold tracking-tight sm:text-4xl">30+ Years</dd>
-                    <dt class="text-lg text-[#323232]">of Bible translation.</dt>
+                    <dt class="text-lg primary-text">of Bible translation.</dt>
                   </dt>
                 </div>
                 <hr>
                 <div class="relative pl-9">
-                  <dt class="font-semibold text-[#323232]">
-                    <Icon name={"lucide:book"} class="text-[#E35C2A] mb-2 text-2xl" />
+                  <dt class="font-semibold primary-text">
+                    <Icon name={"lucide:book"} class="mkt-accent-text mb-2 text-2xl" />
                     <dd class="order-first text-xl font-semibold tracking-tight sm:text-4xl">2,000+</dd>
-                    <dt class="text-lg text-[#323232]">languages engaged in Bible translation.</dt>
+                    <dt class="text-lg primary-text">languages engaged in Bible translation.</dt>
                   </dt>
                 </div>
                 <hr>
                 <div class="relative pl-9">
-                  <dt class="font-semibold text-[#323232]">
-                    <Icon name={"lucide:users"} class="text-[#E35C2A] mb-2 text-2xl" />
+                  <dt class="font-semibold primary-text">
+                    <Icon name={"lucide:users"} class="mkt-accent-text mb-2 text-2xl" />
                     <dd class="order-first text-xl font-semibold tracking-tight sm:text-4xl">2.2 billion</dd>
-                    <dt class="text-lg text-[#323232]">people reached with God's Word in their language.</dt>
+                    <dt class="text-lg primary-text">people reached with God's Word in their language.</dt>
                   </dt>
                 </div>
               </dl>
