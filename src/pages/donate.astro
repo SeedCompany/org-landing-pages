@@ -5,5 +5,5 @@ import { StripeClientIsland } from '../components/stripe/StripeClientIsland';
 ---
 
 <div>
-  <StripeClientIsland formProps={{ enableRecurring: false, hideInvestorType: "Organization", presetAmounts: [35, 500, 2500, 10000, 20000] }} client:load />
+  <StripeClientIsland formProps={{ enableRecurring: true, hideInvestorType: "Organization", presetAmounts: { oneTime: [35, 500, 2500, 10000, 20000], recurring: [25, 50, 100, 500, 1000]} }} client:load />
 </div>

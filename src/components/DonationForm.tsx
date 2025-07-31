@@ -8,19 +8,21 @@ import { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { DonationPresets } from './DonationPresets.tsx';
+import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 
 type DonateFormValues = z.infer<typeof donateSchema>;
 
 export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
   enableRecurring?: boolean;
-  presetAmounts?: number[];
+  presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
 };
 
 export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
-  const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
-  const [isRecurring, setIsRecurring] = useState(false);
+  // this will be used eventually but is not a part of the initial Watermark use case
+  // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
+  const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [showAmountInput, setShowAmountInput] = useState('hidden' as 'hidden' | 'value' | 'form');
   const [showForm, setShowForm] = useState<boolean>(false);
   const [amount, setAmount] = useState(1);
@@ -128,7 +130,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
         const { data } = await submitForm({
           variables: {
             input: {
-              cadence: 'OneTime',
+              cadence: donationCadence,
               investor: {
                 firstName: formData.investor.firstName,
                 lastName: formData.investor.lastName,
@@ -186,11 +188,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     },
   );
 
-  // const donationAmount = useController({
-  //   control: form.control,
-  //   name: 'targets.amount',
-  //   defaultValue: amount,
-  // });
   const firstName = useController({
     control: form.control,
     name: 'investor.firstName',
@@ -231,11 +228,11 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     console.log('amount:', amount);
     if (elements) {
       elements.update({
-        mode: isRecurring ? 'subscription' : 'payment',
+        mode: donationCadence === 'Monthly' ? 'subscription' : 'payment',
         amount: amount * 100,
       });
     }
-  }, [elements, form, isRecurring, amount]);
+  }, [elements, form, donationCadence, amount]);
 
   return (
     <div>
@@ -273,11 +270,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                     <span id="recurring-description" className="text-gray-500"></span>
                   </div>
                 </div>
-                {/*<div>*/}
-                {/*  /!* this also needs to be a switch *!/*/}
-                {/*  <span>One-Time Donation</span>*/}
-                {/*  <span>Monthly Gift</span>*/}
-                {/*</div>*/}
               </>
             )}
             <div>
@@ -364,10 +356,15 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           </>
         ) : (
           <div>
+            <RecurringDonationSwitcher
+              currentType={donationCadence}
+              setDonationType={setDonationCadence}
+            />
             <DonationPresets
               presetAmounts={formProps?.presetAmounts}
               setAmount={setAmount}
-              showForm={setShowAmountInput}
+              recurring={donationCadence === 'Monthly'}
+              // showForm={setShowAmountInput}
               currentAmount={amount}
             />
             <button

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const AmountButton = ({
   amount,
@@ -22,48 +22,69 @@ const AmountButton = ({
 export const DonationPresets = ({
   presetAmounts,
   setAmount,
-  showForm,
+  recurring,
+  // showForm,
   currentAmount,
 }: {
-  presetAmounts: number[] | null | undefined;
+  presetAmounts: { recurring: number[]; oneTime: number[] } | null | undefined;
   setAmount: React.Dispatch<React.SetStateAction<number>>;
-  showForm: React.Dispatch<React.SetStateAction<'hidden' | 'value' | 'form'>>;
+  recurring: boolean;
+  // showForm?: React.Dispatch<React.SetStateAction<'hidden' | 'value' | 'form'>>;
   currentAmount: number;
 }) => {
   const defaultAmounts = [25, 50, 100, 250, 500];
+  const [amountPresets, setAmountPresets] = React.useState<number[]>(
+    presetAmounts ? (recurring ? presetAmounts.recurring : presetAmounts.oneTime) : defaultAmounts,
+  );
+  const [otherAmount, setOtherAmount] = React.useState<boolean>(false);
+  useEffect(() => {
+    setAmountPresets(
+      presetAmounts
+        ? recurring
+          ? presetAmounts.recurring
+          : presetAmounts.oneTime
+        : defaultAmounts,
+    );
+  }, [recurring, presetAmounts]);
   return (
     <div className="grid grid-cols-3 gap-2">
-      {presetAmounts
-        ? presetAmounts.map((amount) => (
-            <AmountButton
-              key={amount}
-              click={() => {
-                console.log(amount);
-                setAmount(amount);
-                showForm('value');
-              }}
-              amount={amount}
-              current={currentAmount === amount}
-            />
-          ))
-        : defaultAmounts.map((amount) => (
-            <AmountButton
-              key={amount}
-              click={() => {
-                console.log(amount);
-                setAmount(amount);
-                showForm('value');
-              }}
-              current={currentAmount === amount}
-              amount={amount}
-            />
-          ))}
+      {amountPresets.map((amount) => (
+        <AmountButton
+          key={amount}
+          click={() => {
+            console.log(amount);
+            setAmount(amount);
+            setOtherAmount(false);
+          }}
+          amount={amount}
+          current={currentAmount === amount}
+        />
+      ))}
       <AmountButton
         click={() => {
-          showForm('form');
+          setOtherAmount(true);
+          setAmount(1);
         }}
+        current={otherAmount}
         amount="Other"
       />
+      {otherAmount && (
+        <div>
+          <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
+            Donation Amount
+          </label>
+          <div className="mt-2">
+            <input
+              id="amount"
+              type="text"
+              required
+              placeholder="Amount"
+              onChange={(e) => setAmount(parseInt(e.target.value))}
+              className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
