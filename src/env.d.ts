@@ -8,6 +8,7 @@ interface ViteTypeOptions {
 interface ImportMetaEnv {
   readonly SANITY_PROJECT_ID: string;
   readonly SANITY_DATASET: string;
+  readonly STRIPE_PUBLIC_KEY: string;
 }
 
 interface ImportMeta {
