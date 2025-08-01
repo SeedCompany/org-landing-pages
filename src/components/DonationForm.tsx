@@ -12,6 +12,61 @@ import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 
 type DonateFormValues = z.infer<typeof donateSchema>;
 
+// Defining the type for the GraphQL variables
+interface DonateInput {
+  input: {
+    cadence: string;
+    investor: {
+      firstName: string | null;
+      lastName: string;
+      email: string;
+      mailingAddress: {
+        line1: string;
+        line2: string | null | undefined;
+        city: string;
+        state: string;
+        zip: string;
+        country: string | null;
+      };
+      type: string;
+    };
+    payment: {
+      stripe: { confirmationToken: string };
+    };
+    targets: { amount: number }[];
+    captcha: {
+      v2: string | null;
+      v3: string;
+    };
+  };
+}
+
+// again defining some graphQL typing to get past errors:
+interface GraphQLResponse {
+  data?: {
+    donate: {
+      intent: {
+        clientSecret: string;
+      };
+    };
+  };
+  errors?: Array<{
+    message: string;
+    [key: string]: unknown; // Allow for additional error fields
+  }>;
+}
+
+// more defining of the return type for submitForm
+interface SubmitFormResponse {
+  data: {
+    donate: {
+      intent: {
+        clientSecret: string;
+      };
+    };
+  };
+}
+
 export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
   enableRecurring?: boolean;
@@ -23,7 +78,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   // this will be used eventually but is not a part of the initial Watermark use case
   // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
-  const [showAmountInput, setShowAmountInput] = useState('hidden' as 'hidden' | 'value' | 'form');
   const [showForm, setShowForm] = useState<boolean>(false);
   const [amount, setAmount] = useState(1);
   const [v3RecaptchaToken, setV3RecaptchaToken] = useState<string | null>(null);
@@ -56,8 +110,11 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     void initializeRecaptcha();
   }, [handleReCaptcha]);
 
-  // @ts-expect-error I dunno what message to put
-  const submitForm = async ({ variables }) => {
+  const submitForm = async ({
+    variables,
+  }: {
+    variables: DonateInput;
+  }): Promise<SubmitFormResponse> => {
     console.log(variables);
     try {
       const response = await fetch('http://localhost:8367/graphql', {
@@ -77,22 +134,19 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
             }
           }
         `,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           variables,
         }),
       });
 
+      // squashing this ESLint issue for now as this will go away once we integrate GraphQL into the repo
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const result = await response.json();
+      const result: GraphQLResponse = await response.json();
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (result.errors) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
         throw new Error(result.errors.map((err) => err.message).join(', '));
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      return { data: result.data };
+      return { data: result.data as SubmitFormResponse['data'] };
     } catch (error) {
       console.error('Error submitting donation:', error);
       throw error;
@@ -100,7 +154,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   };
 
   const onSubmit = form.handleSubmit(
-    async (formData: DonateFormValues) => {
+    async (formData) => {
       console.log(formData);
       try {
         if (!elements) {
@@ -110,7 +164,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
         const { error: submitError } = await elements.submit();
         if (submitError) {
           console.error('Submit Error:', submitError);
-          return; // Early return in case of error
+          return;
         }
         if (!stripe) {
           console.error('stripe not initialized properly');
@@ -124,9 +178,9 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
         });
         if (error) {
           console.error('Confirmation Token Error:', error);
-          return; // Early return in case of error
+          return;
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        // I think data should be the DonateFormValues type here, but struggling to implement it
         const { data } = await submitForm({
           variables: {
             input: {
@@ -160,14 +214,12 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
             },
           },
         });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
         const clientSecret = data?.donate.intent?.clientSecret;
         if (!clientSecret) {
           console.error('no client secret');
           return;
         }
         const { error: confirmError } = await stripe.confirmPayment({
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           clientSecret,
           confirmParams: {
             confirmation_token: confirmationToken.id,
@@ -235,7 +287,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   }, [elements, form, donationCadence, amount]);
 
   return (
-    <div>
+    <div className="my-3">
       <div>
         {showForm ? (
           <>
@@ -249,34 +301,17 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 </div>
               </>
             )}
-            {formProps.enableRecurring && (
-              <>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="group relative inline-flex w-11 shrink-0 rounded-full bg-gray-200 p-0.5 outline-offset-2 outline-indigo-600 ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out has-[:checked]:bg-indigo-600 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 dark:bg-white/5 dark:outline-indigo-500 dark:ring-white/10 dark:has-[:checked]:bg-indigo-500">
-                    <span className="size-5 rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition-transform duration-200 ease-in-out group-has-[:checked]:translate-x-5" />
-                    <input
-                      id="recurring"
-                      name="recurring"
-                      type="checkbox"
-                      aria-labelledby="recurring-label"
-                      aria-describedby="recurring-description"
-                      className="absolute inset-0 appearance-none focus:outline-none"
-                    />
-                  </div>
-                  <div className="text-sm">
-                    <label id="recurring-label" className="font-medium text-gray-900">
-                      Make this a recurring donation?
-                    </label>
-                    <span id="recurring-description" className="text-gray-500"></span>
-                  </div>
-                </div>
-              </>
-            )}
-            <div>
+            <div className="flex items-center justify-between gap-3 m-2">
+              <div className="text-sm">
+                Input payment details for your{' '}
+                {donationCadence === 'Monthly' ? 'monthly' : 'one-time'} gift.{' '}
+              </div>
+            </div>
+            <div className="m-2">
               <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
                 Donation Amount
               </label>
-              <div className="mt-2">
+              <div>
                 <input
                   id="amount"
                   type="text"
@@ -344,18 +379,24 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 error={zip.fieldState.error}
                 {...zip.field}
               />
-              <PaymentElement id="payment-element" options={paymentElementOptions} />
+              <PaymentElement
+                className="m-2"
+                id="payment-element"
+                options={paymentElementOptions}
+              />
               <button
-                type="submit"
-                disabled={form.formState.isSubmitting || !v3RecaptchaToken}
-                className="my-5"
+                type="button"
+                onClick={() => {
+                  setShowForm(true);
+                }}
+                className="rounded-sm bg-emerald-600 px-3.5 py-2.5 m-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
               >
-                Submit
+                Give Now
               </button>
             </form>
           </>
         ) : (
-          <div>
+          <div className="m-2">
             <RecurringDonationSwitcher
               currentType={donationCadence}
               setDonationType={setDonationCadence}
@@ -372,7 +413,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
               onClick={() => {
                 setShowForm(true);
               }}
-              className="rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+              className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
             >
               Give Now
             </button>

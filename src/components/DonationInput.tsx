@@ -18,7 +18,7 @@ export const DonationInput = ({
   return (
     <>
       {error ? (
-        <div>
+        <div className="m-2">
           <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
             {label}
           </label>
@@ -43,7 +43,7 @@ export const DonationInput = ({
           </p>
         </div>
       ) : (
-        <div>
+        <div className="m-2">
           <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
             {label}
           </label>
