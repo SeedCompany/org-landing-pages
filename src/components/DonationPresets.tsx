@@ -23,13 +23,11 @@ export const DonationPresets = ({
   presetAmounts,
   setAmount,
   recurring,
-  // showForm,
   currentAmount,
 }: {
   presetAmounts: { recurring: number[]; oneTime: number[] } | null | undefined;
   setAmount: React.Dispatch<React.SetStateAction<number>>;
   recurring: boolean;
-  // showForm?: React.Dispatch<React.SetStateAction<'hidden' | 'value' | 'form'>>;
   currentAmount: number;
 }) => {
   const defaultAmounts = [25, 50, 100, 250, 500];
@@ -52,7 +50,6 @@ export const DonationPresets = ({
         <AmountButton
           key={amount}
           click={() => {
-            console.log(amount);
             setAmount(amount);
             setOtherAmount(false);
           }}

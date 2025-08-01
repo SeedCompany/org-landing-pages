@@ -115,7 +115,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   }: {
     variables: DonateInput;
   }): Promise<SubmitFormResponse> => {
-    console.log(variables);
     try {
       const response = await fetch('http://localhost:8367/graphql', {
         method: 'POST',
@@ -155,7 +154,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
 
   const onSubmit = form.handleSubmit(
     async (formData) => {
-      console.log(formData);
       try {
         if (!elements) {
           console.error('No Stripe Elements found');
@@ -236,7 +234,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     },
     (errors: FieldErrors<DonateFormValues>) => {
       // Handle validation errors here
-      console.log('Validation Errors:', errors);
+      console.error('Validation Errors:', errors);
     },
   );
 
@@ -277,7 +275,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
   };
   useEffect(() => {
-    console.log('amount:', amount);
     if (elements) {
       elements.update({
         mode: donationCadence === 'Monthly' ? 'subscription' : 'payment',
