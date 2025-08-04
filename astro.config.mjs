@@ -1,4 +1,3 @@
-import { env } from 'node:process';
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import icon from 'astro-icon';
@@ -11,9 +10,10 @@ export default defineConfig({
     tailwind(),
     react(),
     sanity({
-      projectId: env.SANITY_PROJECT_ID,
-      dataset: env.SANITY_DATASET,
-      useCdn: env.PROD,
+      projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'fgpinugl',
+      dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
+      useCdn: import.meta.env.PUBLIC_PROD === 'true',
+      studioBasePath: '/studio',
     }),
     icon({
       include: {
@@ -25,4 +25,8 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  server: {
+    port: 4321,
+    host: 'localhost',
+  },
 });

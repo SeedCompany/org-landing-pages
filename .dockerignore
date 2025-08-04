@@ -1,0 +1,19 @@
+# Versioned but ignore
+.*
+Dockerfile
+
+# Yarn / NPM
+!.yarnrc.yml
+!.yarn/keep
+!.yarn/releases
+!.yarn/plugins
+!.yarn/patches
+node_modules
+
+# Local / Builds
+dist
+
+# Generated
+schema.graphql
+*.generated.ts
+*.graphql.ts
