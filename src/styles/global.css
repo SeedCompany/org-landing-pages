@@ -2,51 +2,196 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Sustainers Template Colors */
+  --sus-primary-bg: #414E46;
+  --sus-secondary-bg: #2A5C6B;
+  --sus-neutral-bg: #F5F5F5;
+  --sus-bg-light: #F7F1E7;
+  --sus-primary-heading: #1D3638;
+  --sus-primary-text: #323232;
+  --sus-secondary-text: #FFFFFF;
+  --sus-accent-text: #E35C2A;
+  --sus-green-text: #29B67E;
+  --sus-accent-bg: #D2CFAF;
+  --sus-secondary-accent: #2A5C6B;
+  --sus-button-primary-bg: #E35C2A;
+  --sus-button-primary-text: #FFFFFF;
+  --sus-button-secondary-bg: #29B67E;
+  --sus-button-secondary-hover: #29B67E;;
+  --sus-button-secondary-text: #FFFFFF;
+  
+  /* Marketing Template Colors */
+  --mkt-primary-bg: #F4F3E7;
+  --mkt-neutral-bg: #FFFFFF;
+  --mkt-neutral-text: #FFFFFF;
+  --mkt-primary-text: #323232;
+  --mkt-secondary-text: #666666;
+  --mkt-accent-text: #E35C2A;
+  --mkt-accent-bg: #E35C2A;
+  --mkt-secondary-accent: #1D3638;
+  --mkt-button-primary-bg: #1D3638;
+  --mkt-button-primary-border: #1D3638;
+  --mkt-button-primary-hover: #29B67E;
+  --mkt-button-primary-text: #FFFFFF;
+  --mkt-button-secondary-bg: #D2CFAF;
+  --mkt-button-secondary-text: #323232;
+
+  --gray-500: #6B7280;
+}
+
+/* Sustainers Template Styles */
+.sus-primary-bg {
+  background-color: var(--sus-primary-bg);
+}
+.sus-secondary-bg {
+  background-color: var(--sus-secondary-bg);
+}
+.sus-neutral-bg {
+  background-color: var(--sus-neutral-bg);
+}
+.sus-bg-light {
+  background-color: var(--sus-bg-light);
+}
+.sus-primary-heading {
+  color: var(--sus-primary-heading);
+}
+.sus-primary-text {
+  color: var(--sus-primary-text);
+}
+.sus-secondary-text {
+  color: var(--sus-secondary-text);
+}
+.sus-accent-text {
+  color: var(--sus-accent-text);
+}
+.sus-checkbox-text {
+  color: var(--mkt-button-primary-hover);
+}
+.sus-green-text {
+  color: var(--sus-green-text);
+}
+.sus-accent-bg {
+  background-color: var(--sus-accent-bg);
+}
+.sus-secondary-accent {
+  color: var(--sus-secondary-accent);
+}
+.sus-button-primary-bg {
+  background-color: var(--sus-button-primary-bg);
+}
+.sus-button-primary-text {
+  color: var(--sus-button-primary-text);
+}
+.sus-button-secondary-bg {
+  background-color: var(--sus-button-secondary-bg);
+  border: 2px solid var(--sus-button-secondary-bg);
+}
+.sus-button-secondary-text {
+  color: var(--sus-button-secondary-text);
+}
+.sus-button-secondary-hover:hover {
+  background-color: transparent;
+  border: 2px solid var(--sus-button-secondary-hover);
+  color: var(--sus-button-secondary-hover);
+}
+/* Marketing Template Styles */
+.mkt-primary-bg {
+  background-color: var(--mkt-primary-bg);
+}
+.mkt-neutral-bg {
+  background-color: var(--mkt-neutral-bg);
+}
+.mkt-neutral-text {
+  color: var(--mkt-neutral-text);
+}
+.mkt-primary-text {
+  color: var(--mkt-primary-text);
+}
+.mkt-secondary-text {
+  color: var(--mkt-secondary-text);
+}
+.mkt-accent-text {
+  color: var(--mkt-accent-text);
+}
+.mkt-accent-bg {
+  background-color: var(--mkt-accent-bg);
+}
+.mkt-secondary-accent {
+  color: var(--mkt-secondary-accent);
+}
+.mkt-button-primary-bg {
+  background-color: var(--mkt-button-primary-bg);
+}
+.mkt-button-primary-border {
+  border-color: var(--mkt-button-primary-border);
+}
+.mkt-button-primary-hover:hover {
+  background-color: transparent;
+  color: var(--mkt-button-primary-hover);
+  border-color: var(--mkt-button-primary-hover)
+}
+.mkt-button-primary-border-hover {
+  border-color: var(--mkt-button-primary-border-hover);
+}
+.mkt-button-primary-text {
+  color: var(--mkt-button-primary-text);
+}
+.mkt-button-secondary-bg {
+  background-color: var(--mkt-button-secondary-bg);
+}
+.mkt-button-secondary-text {
+  color: var(--mkt-button-secondary-text);
+}
+.gray-500 {
+  color: var(--gray-500);
+}
+
 .prose {
     max-width: 100% !important;
 }
 
 @font-face {
-    font-family: 'Rader Bold';
-    src: url('/fonts/PPRader-Bold.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Rader Medium';
-    src: url('/fonts/PPRader-Medium.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Sentinel Bold';
-    src: url('/fonts/._Sentinel-Bold-Pro.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Sentinel Light';
-    src: url('/fonts/._Sentinel-Light-Pro.otf') format('opentype');
-    font-weight: 100;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Gotham';
-    src: url('/fonts/._GothamOffice-Regular') format('truetype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  .rader-bold {
-	font-family: 'Rader Bold', sans-serif;
-  }
-  .sentinel-light {
-	font-family: 'Sentinel Light', sans-serif;
-  }
-  .gotham {
-	font-family: 'Gotham', sans-serif;
-  }
+  font-family: 'Rader Bold';
+  src: url('/fonts/PPRader-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rader Medium';
+  src: url('/fonts/PPRader-Medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sentinel Bold';
+  src: url('/fonts/._Sentinel-Bold-Pro.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sentinel Light';
+  src: url('/fonts/._Sentinel-Light-Pro.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/._GothamOffice-Regular') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.rader-bold {
+font-family: 'Rader Bold', sans-serif;
+}
+.sentinel-light {
+font-family: 'Sentinel Light', sans-serif;
+}
+.gotham {
+font-family: 'Gotham', sans-serif;
+}
