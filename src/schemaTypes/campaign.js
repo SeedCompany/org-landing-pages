@@ -34,8 +34,36 @@ export default defineType({
     { name: 'template', title: 'Templates' },
     { name: 'faq', title: 'FAQs' },
     { name: 'templateContent', title: 'Template Content' },
+    { name: 'campaignData', title: 'Campaign Data' },
   ],
   fields: [
+    // Template Selection
+    defineField({
+      name: 'templateType',
+      title: 'Campaign Template',
+      type: 'string',
+      group: 'template',
+      components: { input: ImageRadioInput },
+      options: {
+        list: [
+          {
+            title: 'Marketing Template',
+            value: 'marketing',
+            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/99e113372471d08ff56150c0c7dc0cf895b341ab-265x159.png',
+          },
+          {
+            title: 'Sustainers Template',
+            value: 'sustainers',
+            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/ad2f9a0ecd9c0299f3264f8c0a5e43ef8feade63-265x159.png',
+          },
+          {
+            title: 'Church Template',
+            value: 'church',
+            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/5c407b29b41d2723b538de4566e54058be399bb8-265x159.png',
+          },
+        ],
+      },
+    }),
     // Hero Section
     defineField({
       name: 'heading',
@@ -105,30 +133,6 @@ export default defineType({
         Rule.uri({
           scheme: ['http', 'https', 'mailto', 'tel'],
         }),
-    }),
-    // Template Selection
-    defineField({
-      name: 'templateType',
-      title: 'Page Template',
-      type: 'string',
-      group: 'template',
-      components: { input: ImageRadioInput },
-      options: {
-        list: [
-          {
-            title: 'Sustainers Template',
-            value: 'sustainers',
-            imageSrc: '/static/Sustainer_Template.png',
-          },
-          // { title: 'Advocates Template', value: 'advocates', imageSrc: '/static/Advocates_Template.png' },
-          // { title: 'Investor Reps Template', value: 'investorReps', imageSrc: '/static/Investor_Rep_Template.png' },
-          {
-            title: 'Marketing Template',
-            value: 'marketing',
-            imageSrc: '/static/Marketing_Template.png',
-          },
-        ],
-      },
     }),
     // Template-Specific Sections
     defineField({
@@ -247,6 +251,43 @@ export default defineType({
           ],
         },
       ],
+    }),
+    // Campaign Data
+    defineField({
+      name: 'leadSource',
+      title: 'Lead Source',
+      type: 'string',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'subSource',
+      title: 'subSource',
+      type: 'string',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Campaign Description',
+      type: 'text',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'campaignFocus',
+      title: 'Campaign Focus',
+      type: 'string',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'campaignStartDate',
+      title: 'Campaign Start Date',
+      type: 'date',
+      group: 'campaignData',
+    }),    
+    defineField({
+      name: 'campaignEndDate',
+      title: 'Campaign End Date',
+      type: 'date',
+      group: 'campaignData',
     }),
     defineField({
       name: 'partners',

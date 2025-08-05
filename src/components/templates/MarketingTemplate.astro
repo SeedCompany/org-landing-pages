@@ -14,69 +14,61 @@ interface Props {
 const { campaignData } = Astro.props;
 ---
 
-    <div class="relative isolate overflow-hidden mkt-primary-bg">
-      <div class="mx-auto max-w-7xl px-6 py-12 md:py-24 lg:flex lg:px-8">
-        <div class="mx-auto max-w-2xl lg:mx-0 lg:shrink-0 lg:pt-8 md:pr-8">
-          <img class="h-11" src="https://seedcompany.com/wp-content/uploads/2024/10/Seed-Company-Logo_secondary.png" alt="Your Company">
-          <h1 class="mt-10 text-pretty text-5xl font-semibold tracking-tight mkt-primary-text sm:text-7xl" set:html={toHTML(campaignData.heading)}></h1>
-          <div class="prose">
-            <div class="mt-8 text-pretty text-md font-medium gray-500 sm:text-xl/8" set:html={toHTML(campaignData.heroCopy)}></div>
-          </div>
-          <div class="mt-10 flex items-center gap-x-6">
-            <a href={(campaignData.ctaLink)} class="btn mkt-button-primary-bg mkt-button-primary-border border-2 hover:bg-white mkt-button-primary-hover transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
-          </div>
-        </div>
-        <div class="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
-          <div class="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-            <div class="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
-              <img src={campaignData.heroImage ? img(sanity).image(campaignData.heroImage).url() : ''} alt="App screenshot"  class="w-full md:min-w-[500px] md:h-[650px] h-[500px] max-h-full object-cover rounded-md shadow-2xl ring-1 ring-gray-900/10">
-            </div>
-          </div>
-        </div>
+<section class="bg-cover bg-center" style={campaignData.heroImage ? `background-image: url(${img(sanity).image(campaignData.heroImage).url()});` : ''}>
+  <div class="w-full h-full bg-black/50 md:p-6 md:p-10 flex items-center">
+    <div class="mkt-hero">
+      <h1 class="mt-10 rader-bold text-pretty mkt-primary-text w-full md:w-2/3" set:html={toHTML(campaignData.heading)}></h1>
+      <div class="prose">
+        <div class="mkt-hero-text mt-8 text-pretty red-hat-mono" set:html={toHTML(campaignData.heroCopy)}></div>
+      </div>
+      <div class="mt-10 flex items-center gap-x-6">
+        <a href={(campaignData.ctaLink)} class="mkt-primary-btn transition duration-300">{(campaignData.ctaText)}</a>
       </div>
     </div>
-    <section class="mx-auto max-w-7xl px-6 lg:px-8 ">
-      <div class="prose">
-        <div class="text-lg" set:html={toHTML(campaignData.body)}></div>
-      </div>
-      <div class="my-10 md:flex items-center md:gap-x-6">
-        <a href={(campaignData.ctaLink)} class="btn mkt-button-primary-bg mkt-button-primary-border mkt-button-primary-hover border-2 transition duration-300 py-[1em] px-[2.5em] text-white rounded-md text-[18px]">{(campaignData.ctaText)}</a>
-        <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={campaignData.contactEmail} class="mkt-secondary-accent">{campaignData.contactEmail}</a></p>
-      </div>
-    </section>
+  </div>
+</section>
+<section class="mkt-primary-bg">
+  <div class="mkt-primary-content">
+    <div class="prose">
+      <div class="" set:html={toHTML(campaignData.body)}></div>
+      <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={`mailto:${campaignData.contactEmail}`} class="mkt-secondary-accent">{campaignData.contactEmail}</a></p>
+    </div>
+  </div>
+</section>
+
     <section class="relative isolate bg-[#CDC3B0] overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
       <div class="absolute inset-0 -z-10 overflow-hidden">
       </div>
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
-        <div class="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-          <div class="lg:pr-4">
+        <div class="w-full">
+          <div class="lg:pr-4 lg:pl-32">
             <div class="lg:max-w-lg primary-text">
               <p class="text-base/7 font-semibold mkt-accent-text">All Scripture, All People</p>
-              <h2 class="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">About Seed Company</h2>
-              <p class="mt-6 text-xl/8">Seed Company exists to bring God's Word to every language and community. Founded with a vision of accessibility and understanding, we build partnerships that transcend borders and barriers. Our collaborative approach empowers local translators with the tools they need to share Scripture's transformative message in ways that resonate deeply with their own people.</div>
-              <p class="mt-6">We accelerate the work of Bible translation by connecting local field partners around the world with investors, resources, and training. Through these global partnerships, God's people are being equipped to reach communities still waiting for Scripture in the languages they understand best.</p>
+              <h2 class="mt-2 text-pretty text-4xl rader-bold font-semibold sm:text-5xl">About Seed Company</h2>
+              <p class="mt-6 text-xl/8 red-hat-mono">Seed Company exists to bring God's Word to every language and community. Founded with a vision of accessibility and understanding, we build partnerships that transcend borders and barriers. Our collaborative approach empowers local translators with the tools they need to share Scripture's transformative message in ways that resonate deeply with their own people.</div>
+              <p class="mt-6 red-hat-mono">We accelerate the work of Bible translation by connecting local field partners around the world with investors, resources, and training. Through these global partnerships, God's people are being equipped to reach communities still waiting for Scripture in the languages they understand best.</p>
               <dl class="mt-10 space-y-8 text-base/7">
                 <div class="relative pl-9">
                   <dt class="font-semibold primary-text">
                     <Icon name={"lucide:calendar"} class="mkt-accent-text mb-2 text-2xl" />
-                    <dd class="order-first text-xl font-semibold tracking-tight sm:text-4xl">30+ Years</dd>
-                    <dt class="text-lg primary-text">of Bible translation.</dt>
+                    <dd class="order-first text-xl font-semibold rader-bold sm:text-4xl">30+ Years</dd>
+                    <dt class="text-lg primary-text red-hat-mono">of Bible translation.</dt>
                   </dt>
                 </div>
                 <hr>
                 <div class="relative pl-9">
                   <dt class="font-semibold primary-text">
                     <Icon name={"lucide:book"} class="mkt-accent-text mb-2 text-2xl" />
-                    <dd class="order-first text-xl font-semibold tracking-tight sm:text-4xl">2,000+</dd>
-                    <dt class="text-lg primary-text">languages engaged in Bible translation.</dt>
+                    <dd class="order-first text-xl font-semibold rader-bold sm:text-4xl">2,000+</dd>
+                    <dt class="text-lg primary-text red-hat-mono">languages engaged in Bible translation.</dt>
                   </dt>
                 </div>
                 <hr>
                 <div class="relative pl-9">
                   <dt class="font-semibold primary-text">
                     <Icon name={"lucide:users"} class="mkt-accent-text mb-2 text-2xl" />
-                    <dd class="order-first text-xl font-semibold tracking-tight sm:text-4xl">2.2 billion</dd>
-                    <dt class="text-lg primary-text">people reached with God's Word in their language.</dt>
+                    <dd class="order-first text-xl font-semibold rader-bold sm:text-4xl">2.2 billion</dd>
+                    <dt class="text-lg primary-text red-hat-mono">people reached with God's Word in their language.</dt>
                   </dt>
                 </div>
               </dl>
@@ -85,7 +77,6 @@ const { campaignData } = Astro.props;
         <div class="-ml-12 -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden">
           <img class="w-[36rem] max-w-none rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]" src="https://seedcompany.com/wp-content/uploads/2021/10/about-1-1024x683.jpeg" alt="" />
         </div>
-
       </div>
     </section>
 
