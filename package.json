@@ -22,6 +22,7 @@
     "@astrojs/node": "^9.2.1",
     "@astrojs/react": "^4.2.7",
     "@heroicons/react": "^2.2.0",
+    "@hookform/resolvers": "^5.1.1",
     "@iconify-json/lucide": "^1.2.38",
     "@portabletext/react": "^3.2.1",
     "@portabletext/to-html": "^2.0.14",
@@ -32,6 +33,8 @@
     "@sanity/presentation": "^2.0.0",
     "@sanity/vision": "^3.82.0",
     "@sanity/visual-editing": "^2.13.7",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/typography": "^0.5.16",
     "astro": "^5.7.9",
     "astro-icon": "^1.1.5",
@@ -41,10 +44,13 @@
     "lucide": "^0.503.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-google-recaptcha-v3": "^1.11.0",
+    "react-hook-form": "^7.59.0",
     "react-is": "^19.1.0",
     "sanity": "^3.88.3",
     "sanity-plugin-simpler-color-input": "^3.0.1",
-    "styled-components": "^6.1.18"
+    "styled-components": "^6.1.18",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.5",
