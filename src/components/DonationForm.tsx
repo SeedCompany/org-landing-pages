@@ -38,6 +38,13 @@ interface DonateInput {
       v2: string | null;
       v3: string;
     };
+    telemetry?: {
+      app?: string | null;
+      feature?: string | null;
+      referrer?: string | null;
+      sourceName?: string | null;
+      sourceUrl?: string | null;
+    };
   };
 }
 
@@ -72,6 +79,13 @@ export type DonateProps = {
   enableRecurring?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
+  telemetry?: {
+    app?: string | null;
+    feature?: string | null;
+    referrer?: string | null;
+    sourceName?: string | null;
+    sourceUrl?: string | null;
+  };
 };
 
 export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
@@ -209,6 +223,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 v2: null,
                 v3: v3RecaptchaToken || '',
               },
+              telemetry: { ...formProps.telemetry },
             },
           },
         });
@@ -382,7 +397,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 options={paymentElementOptions}
               />
               <button
-                type="button"
+                type="submit"
                 onClick={() => {
                   setShowForm(true);
                 }}
