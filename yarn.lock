@@ -2195,6 +2195,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@hookform/resolvers@npm:5.1.1"
+  dependencies:
+    "@standard-schema/utils": "npm:^0.3.0"
+  peerDependencies:
+    react-hook-form: ^7.55.0
+  checksum: 10c0/74601ba4abb3159bbaa25175af9459a2c0337a28d8c0a5be95c7ae7b0a76ddafcf63c03eea8561fd099fe80b226194ad09e3824c53b9beda38393ff9fd264a03
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -4269,6 +4280,33 @@ __metadata:
   version: 10.0.2
   resolution: "@shikijs/vscode-textmate@npm:10.0.2"
   checksum: 10c0/36b682d691088ec244de292dc8f91b808f95c89466af421cf84cbab92230f03c8348649c14b3251991b10ce632b0c715e416e992dd5f28ff3221dc2693fd9462
+  languageName: node
+  linkType: hard
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 10c0/6eb74cd13e52d5fc74054df51e37d947ef53f3ab9e02c085665dcca3c38c60ece8d735cebbdf18fbb13c775fbcb9becb3f53109b0e092a63f0f7389ce0993fd0
+  languageName: node
+  linkType: hard
+
+"@stripe/react-stripe-js@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@stripe/react-stripe-js@npm:3.7.0"
+  dependencies:
+    prop-types: "npm:^15.7.2"
+  peerDependencies:
+    "@stripe/stripe-js": ">=1.44.1 <8.0.0"
+    react: ">=16.8.0 <20.0.0"
+    react-dom: ">=16.8.0 <20.0.0"
+  checksum: 10c0/663e9176b0a710632abe64bb7efca63a22d8cf690942a4507d57ba1d4fb6328cd08e3cf9040ea95348540c47ed8dbc5250982b150b38eb9564861dc0ecd83d72
+  languageName: node
+  linkType: hard
+
+"@stripe/stripe-js@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "@stripe/stripe-js@npm:7.4.0"
+  checksum: 10c0/f75da6be7a83b8ce659c133ad585d9b27f2d65152cc62747df4b7880ae53ed1b7f8304a4d184e5c4e12c76c3e589579a4b7440aa13afff44c39f098942565ed2
   languageName: node
   linkType: hard
 
@@ -12389,6 +12427,7 @@ __metadata:
     "@astrojs/tailwind": "npm:^5.1.5"
     "@eslint/js": "npm:^9.26.0"
     "@heroicons/react": "npm:^2.2.0"
+    "@hookform/resolvers": "npm:^5.1.1"
     "@iconify-json/lucide": "npm:^1.2.38"
     "@portabletext/react": "npm:^3.2.1"
     "@portabletext/to-html": "npm:^2.0.14"
@@ -12399,6 +12438,8 @@ __metadata:
     "@sanity/presentation": "npm:^2.0.0"
     "@sanity/vision": "npm:^3.82.0"
     "@sanity/visual-editing": "npm:^2.13.7"
+    "@stripe/react-stripe-js": "npm:^3.7.0"
+    "@stripe/stripe-js": "npm:^7.4.0"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@types/react": "npm:^19.1.4"
     "@types/react-dom": "npm:^19.1.4"
@@ -12418,6 +12459,8 @@ __metadata:
     prettier-plugin-astro: "npm:^0.14.1"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
+    react-google-recaptcha-v3: "npm:^1.11.0"
+    react-hook-form: "npm:^7.59.0"
     react-is: "npm:^19.1.0"
     sanity: "npm:^3.88.3"
     sanity-plugin-simpler-color-input: "npm:^3.0.1"
@@ -12425,6 +12468,7 @@ __metadata:
     tailwindcss: "npm:^3.4.1"
     typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.32.1"
+    zod: "npm:^3.25.67"
   languageName: unknown
   linkType: soft
 
@@ -13197,7 +13241,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -13398,6 +13442,27 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/5a3e92fb0025042ab613c54b8ff0aa6c3a45a4d4785c51c024758b02ff83a89295b458ba609c48d11f1c6bbcab6a6b032c5c17d1f3d168a2835cbbec3dea6a46
+  languageName: node
+  linkType: hard
+
+"react-google-recaptcha-v3@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "react-google-recaptcha-v3@npm:1.11.0"
+  dependencies:
+    hoist-non-react-statics: "npm:^3.3.2"
+  peerDependencies:
+    react: ^16.3 || ^17.0 || ^18.0 || ^19.0
+    react-dom: ^17.0 || ^18.0 || ^19.0
+  checksum: 10c0/8c14d4aae702cb4be150ec15794842947473c1fd8d9c65545fb17566beb6033982f418a4a2dea0b4e5b73c28cb3a7312f5ab2c32e45c6a4d4e115b2a6193a86b
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.59.0":
+  version: 7.59.0
+  resolution: "react-hook-form@npm:7.59.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10c0/6be30ce65121f4be0f491c2929142e2d9a390a8802f58fb7a41ab978ab8daa6fcd2c442258dbd1b053e6864a83c8f4b1d83de9c95f0efdf5c2120d3c21bd838e
   languageName: node
   linkType: hard
 
@@ -17189,6 +17254,13 @@ __metadata:
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 10c0/5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.67":
+  version: 3.25.67
+  resolution: "zod@npm:3.25.67"
+  checksum: 10c0/80a0cab3033272c4ab9312198081f0c4ea88e9673c059aa36dc32024906363729db54bdb78f3dc9d5529bd1601f74974d5a56c0a23e40c6f04a9270c9ff22336
   languageName: node
   linkType: hard
 
