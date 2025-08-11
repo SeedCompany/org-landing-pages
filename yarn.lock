@@ -3497,7 +3497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sanity/client@npm:^7.2.1, @sanity/client@npm:^7.3.0, @sanity/client@npm:^7.6.0":
+"@sanity/client@npm:^7.3.0, @sanity/client@npm:^7.6.0":
   version: 7.6.0
   resolution: "@sanity/client@npm:7.6.0"
   dependencies:
@@ -3506,6 +3506,18 @@ __metadata:
     nanoid: "npm:^3.3.11"
     rxjs: "npm:^7.0.0"
   checksum: 10c0/571e438459bb50aafd3bb2ce54a72a74719d2e80f62777dc902594bb59528280a90dc3cc37bec8bb3c8c8e9db570bec688d8765c154cebb00c815aea115c4754
+  languageName: node
+  linkType: hard
+
+"@sanity/client@npm:^7.8.2":
+  version: 7.8.2
+  resolution: "@sanity/client@npm:7.8.2"
+  dependencies:
+    "@sanity/eventsource": "npm:^5.0.2"
+    get-it: "npm:^8.6.9"
+    nanoid: "npm:^3.3.11"
+    rxjs: "npm:^7.0.0"
+  checksum: 10c0/5f2dc60a6a3a88867b8a6c1b63e747317e372fc3d850701759f02cb0cd42875eb53336cbe7d282cbaa212d2ce74394f26884c76641f7dd408cfab6e82b61986f
   languageName: node
   linkType: hard
 
@@ -12433,7 +12445,7 @@ __metadata:
     "@portabletext/to-html": "npm:^2.0.14"
     "@sanity/astro": "npm:^3.2.6"
     "@sanity/block-content-to-react": "npm:^3.0.0"
-    "@sanity/client": "npm:^7.2.1"
+    "@sanity/client": "npm:^7.8.2"
     "@sanity/image-url": "npm:^1.1.0"
     "@sanity/presentation": "npm:^2.0.0"
     "@sanity/vision": "npm:^3.82.0"
@@ -14538,7 +14550,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seed-donate@workspace:studio"
   dependencies:
-    "@sanity/client": "npm:^7.2.1"
+    "@sanity/client": "npm:^7.8.2"
     "@sanity/eslint-config-studio": "npm:^5.0.2"
     "@sanity/presentation": "npm:^2.0.0"
     "@sanity/vision": "npm:^3.88.3"
