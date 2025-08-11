@@ -9,44 +9,43 @@
 }
 :root {
   /* Sustainers Template Colors */
-  --sus-primary-bg: #414E46;
-  --sus-secondary-bg: #2A5C6B;
-  --sus-neutral-bg: #F5F5F5;
-  --sus-bg-light: #F7F1E7;
-  --sus-primary-heading: #1D3638;
+  --sus-primary-bg: #414e46;
+  --sus-secondary-bg: #2a5c6b;
+  --sus-neutral-bg: #f5f5f5;
+  --sus-bg-light: #f7f1e7;
+  --sus-primary-heading: #1d3638;
   --sus-primary-text: #323232;
-  --sus-secondary-text: #FFFFFF;
-  --sus-accent-text: #E35C2A;
-  --sus-green-text: #29B67E;
-  --sus-accent-bg: #D2CFAF;
-  --sus-secondary-accent: #2A5C6B;
-  --sus-button-primary-bg: #E35C2A;
-  --sus-button-primary-text: #FFFFFF;
-  --sus-button-secondary-bg: #29B67E;
-  --sus-button-secondary-hover: #29B67E;;
-  --sus-button-secondary-text: #FFFFFF;
-  
+  --sus-secondary-text: #ffffff;
+  --sus-accent-text: #e35c2a;
+  --sus-green-text: #29b67e;
+  --sus-accent-bg: #d2cfaf;
+  --sus-secondary-accent: #2a5c6b;
+  --sus-button-primary-bg: #e35c2a;
+  --sus-button-primary-text: #ffffff;
+  --sus-button-secondary-bg: #29b67e;
+  --sus-button-secondary-hover: #29b67e;
+  --sus-button-secondary-text: #ffffff;
+
   /* Marketing Template Colors */
-  --mkt-primary-bg: #F4F3E7;
-  --mkt-neutral-bg: #FFFFFF;
-  --mkt-neutral-text: #FFFFFF;
+  --mkt-primary-bg: #f4f3e7;
+  --mkt-neutral-bg: #ffffff;
+  --mkt-neutral-text: #ffffff;
   --mkt-primary-text: #000000;
   --mkt-secondary-text: #666666;
-  --mkt-accent-text: #E35C2A;
-  --mkt-accent-bg: #E35C2A;
-  --mkt-secondary-accent: #1D3638;
-  --mkt-button-primary-bg: transparent;;
-  --mkt-button-primary-border: #FFF;
-  --mkt-button-primary-hover: #29B67E;
-  --mkt-button-primary-text: #FFF;
-  --mkt-button-secondary-bg: #D2CFAF;
+  --mkt-accent-text: #e35c2a;
+  --mkt-accent-bg: #e35c2a;
+  --mkt-secondary-accent: #1d3638;
+  --mkt-button-primary-bg: transparent;
+  --mkt-button-primary-border: #fff;
+  --mkt-button-primary-hover: #29b67e;
+  --mkt-button-primary-text: #fff;
+  --mkt-button-secondary-bg: #d2cfaf;
   --mkt-button-secondary-text: #323232;
-  
-  
-  --gray-500: #6B7280;
+
+  --gray-500: #6b7280;
   --dark-green: #133739;
   --footer-bg: #000;
-  --footer-text: #FFF;
+  --footer-text: #fff;
   --mkt-primary-heading-size: 8rem;
 }
 
@@ -80,6 +79,7 @@
 }
 .sus-green-text {
   color: var(--sus-green-text);
+  fill: var(--sus-green-text);
 }
 .sus-accent-bg {
   background-color: var(--sus-accent-bg);
@@ -154,10 +154,10 @@
 }
 .mkt-primary-btn {
   background-color: var(--mkt-button-primary-bg);
-  color: #FFF;
-  font-family: "Red Hat Mono", Sans-serif;
+  color: #fff;
+  font-family: 'Red Hat Mono', Sans-serif;
   font-weight: 500;
-  text-transform: uppercase;;
+  text-transform: uppercase;
   padding: 12px 24px;
   border-style: solid;
   border-width: 1px 1px 1px 1px;
@@ -177,16 +177,16 @@
 Church page styles
 *****/
 .form-card {
-  background: #FFF;
+  background: #fff;
 }
 .hero-h1 {
   font-size: 5rem;
-  line-height: .85;
+  line-height: 0.85;
   color: var(--mkt-primary-text);
 }
 .hero-sub-heading {
   font-size: 3.5rem;
-  line-height: .85;
+  line-height: 0.85;
   color: var(--dark-green);
 }
 .hero-p {
@@ -202,6 +202,13 @@ Church page styles
   border: 1px solid var(--mkt-button-primary-hover);
   border-radius: 8px;
   background-color: var(--mkt-neutral-bg);
+}
+.donation-card-locked {
+  color: var(--sus-primary-heading);
+  opacity: 0.4;
+}
+.donation-card-black {
+  color: var(--mkt-primary-text);
 }
 .donation-card-image {
   border-radius: 8px 8px 0 0;
@@ -224,13 +231,12 @@ Church page styles
 .donation-card-subheading {
   text-transform: uppercase;
   font-weight: 500;
-  ;
 }
 .donation-card-heading {
   font-size: 2.25rem;
   font-family: 'Librebaskerville', serif;
   line-height: 1.2;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
   color: var(--sus-primary-heading);
 }
 .donation-card-amount {
@@ -246,12 +252,12 @@ Church page styles
 .donation-card-ul {
   list-style-type: none;
   padding-left: 1.5rem;
-  margin-top: .5rem;
-  margin-bottom: .5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   font-size: 1.1rem;
 }
 .donation-card-li {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   padding-left: 1.5rem;
   position: relative;
   font-weight: bold;
@@ -270,7 +276,7 @@ Church page styles
   color: var(--gray-500);
 }
 .prose {
-    max-width: 100% !important;
+  max-width: 100% !important;
 }
 .footer {
   background-color: var(--footer-bg);
@@ -319,16 +325,16 @@ Church page styles
   font-display: swap;
 }
 .rader-bold {
-font-family: 'Rader Bold', sans-serif;
+  font-family: 'Rader Bold', sans-serif;
 }
 .rader {
-font-family: 'Rader Medium', sans-serif;
+  font-family: 'Rader Medium', sans-serif;
 }
 .sentinel-light {
-font-family: 'Sentinel Light', sans-serif;
+  font-family: 'Sentinel Light', sans-serif;
 }
 .gotham {
-font-family: 'Gotham', sans-serif;
+  font-family: 'Gotham', sans-serif;
 }
 .red-hat-mono {
   font-family: 'Red Hat Mono', sans-serif;
@@ -356,25 +362,25 @@ font-family: 'Gotham', sans-serif;
 }
 @media (max-width: 1720px) {
   .form-card {
-      max-width: 35rem !important;
+    max-width: 35rem !important;
   }
 }
 @media (min-width: 1300px) and (max-width: 1720px) {
   .form-card {
-      max-width: 39rem !important;
+    max-width: 39rem !important;
   }
 }
 @media (min-width: 1024px) and (max-width: 1299px) {
-    .form-card {
-        max-width: 29rem !important;
-    }
+  .form-card {
+    max-width: 29rem !important;
+  }
 }
 @media (max-width: 1023px) {
   .form-card {
-      max-width: 100% !important;
-      position: static !important;
-      right: auto !important;
-      top: auto !important;
-      margin: 1rem auto !important;
+    max-width: 100% !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    margin: 1rem auto !important;
   }
 }

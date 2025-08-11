@@ -1,30 +1,30 @@
 ---
-const isUnlocked = true;
+import { DonationCardComponent } from './DonationCardComponent';
+import { type CardProps, ProjectCards } from './ProjectCards';
+const mockData: CardProps[] = [
+  {
+    currentAmount: 105000,
+    startAmount: 0,
+    endAmount: 100000,
+    peopleGroups: 5,
+    region: 'SouthEast Asia',
+    projectHeader: 'Oportunity One',
+    projectDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    projectBullets: ['Lorem Ipsum', 'Lorem Ipsum'],
+  },
+  {
+    currentAmount: 105000,
+    startAmount: 100001,
+    endAmount: 250000,
+    peopleGroups: 7,
+    region: 'Northern Indiana',
+    projectHeader: 'Oportunity Two',
+    projectDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    projectBullets: ['Lorem Ipsum', 'Lorem Ipsum', 'Morem Ipsum'],
+  },
+];
 ---
-<div class="donation-card">
-  <div class="donation-card-image-wrapper">
-    <img class="donation-card-image" src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/eaffaaa131775759083460fbe8886c0d574ceee4-1080x809.jpg" alt="">
-    <div class="donation-card-status">100% FUNDED!</div>
-  </div>
-  <div class="donation-card-content">
-    <h3 class="donation-card-subheading">5 People groups in SouthEast Asia</h3>
-    <div class="flex justify-between gap-2">
-      <h2 class="donation-card-heading">Oportunity One</h2>
-      <div class="flex items-center">
-        {isUnlocked ? (
-          <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0606083bcd404b1478cfe5dc44aa67cf19e51c13-24x24.png" alt="Unlocked icon" />
-        ) : (
-          <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6043847e34c8365fa70451a1ccddecb8ab69c10e-24x24.png" alt="Locked icon" />
-        )}
-        <span class="ml-1 donation-card-amount font-medium">100,000</span>
-      </div>
-    </div>
-    <p class="donation-card-description">
-      The Koro people group of Vanuatu has no Scripture in their heart language. The Koro New Testament project is underway, and the team is working to complete the translation of the New Testament by 2025. The Koro people are primarily oral communicators, so the translation will be recorded in audio format and distributed via mobile devices.
-    </p>
-    <ul class="donation-card-ul">
-      <li class="donation-card-li">Lorem Ipsum</li>
-      <li class="donation-card-li">Lorem Ipsum</li>
-    </ul>
-  </div>
-</div>
+
+<ProjectCards projectData={mockData} />

@@ -49,7 +49,7 @@ const { campaignData } = Astro.props;
         </section>
       )}
       {campaignData.heroTemplate === 'heroSplit' && (
-        
+
         <section class="hero">
             <div class="bg-[url('../assets/mask_group.png')] bg-cover">
             <div class="container mx-auto flex flex-col py-6 lg:flex-row">
@@ -66,7 +66,7 @@ const { campaignData } = Astro.props;
                         <div class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base red-hat-mono" set:html={toHTML(campaignData.heroCopy)}></div>
                     </div>
                 </div>
-                <Video 
+                <Video
                 src="https://vimeo.com/442493346?fl=pl&fe=sh"
                 poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
                 class="rounded-lg mb-4"
@@ -121,14 +121,14 @@ const { campaignData } = Astro.props;
               />
             </div>
             <div class="lg:w-1/2 w-full p-4 lg:p-8">
-              
+
             </div>
           </div>
         )}
         {section.template === 'aboutImageLeft' && (
           <div class="flex flex-col lg:flex-row gap-8">
             <div class="lg:w-1/2 w-full p-4 lg:p-8">
-              
+
             </div>
             <div class="lg:w-1/2 w-full p-4 lg:p-8">
               <ContentSection
@@ -191,7 +191,7 @@ const { campaignData } = Astro.props;
   </section>
 
   <!-- FAQ Section -->
-  
+
   {campaignData.faqs && (
     <section class="donation-faq bg-gray-50 pb-16 z-100">
       {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqAccordion' && (
@@ -206,11 +206,11 @@ const { campaignData } = Astro.props;
       {campaignData.faqs.map((faq) => (
         <div class="py-6 first:pt-0 last:pb-0">
           <dt>
-              
+
             <button type="button" command="--toggle" commandfor="faq-0" class="flex w-full items-start justify-between text-left text-gray-900">
-           
+
                 <span class="text-base/7 font-semibold">{faq.question}</span>
-              
+
               <span class="ml-6 flex h-7 items-center">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
                   <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
