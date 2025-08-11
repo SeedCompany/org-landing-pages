@@ -1,5 +1,5 @@
 ---
-
+const isUnlocked = true;
 ---
 <div class="donation-card">
   <div class="donation-card-image-wrapper">
@@ -11,8 +11,12 @@
     <div class="flex justify-between gap-2">
       <h2 class="donation-card-heading">Oportunity One</h2>
       <div class="flex items-center">
-        <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0606083bcd404b1478cfe5dc44aa67cf19e51c13-24x24.png" alt="">
-        <span class="ml-1 donation-card-amount font-medium">100,00</span>
+        {isUnlocked ? (
+          <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0606083bcd404b1478cfe5dc44aa67cf19e51c13-24x24.png" alt="Unlocked icon" />
+        ) : (
+          <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6043847e34c8365fa70451a1ccddecb8ab69c10e-24x24.png" alt="Locked icon" />
+        )}
+        <span class="ml-1 donation-card-amount font-medium">100,000</span>
       </div>
     </div>
     <p class="donation-card-description">

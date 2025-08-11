@@ -1,0 +1,265 @@
+---
+import img from '@sanity/image-url';
+import { sanityClient as sanity } from 'sanity:client';
+import { toHTML } from '../../lib/portableTextSerializer';
+import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
+import PageHeader from '../../components/PageHeader.astro';
+import Hero from '../../components/Hero.astro';
+import GiveForm from '../../components/GiveForm.astro';
+import '../../styles/global.css';
+import Layout from '../../layouts/Layout.astro';
+import Video from '../../components/Video.astro';
+import ContentSection from '../../components/ContentSection.astro';
+import DonationCard from '../../components/DonationCard.astro';
+import DonationFAQ from '../../components/DonationFAQ.astro';
+import Footer from '../../components/Footer.astro';
+
+interface Props {
+  campaignData: Campaign;
+}
+
+const { campaignData } = Astro.props;
+---
+
+<Layout title={campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page'}>
+  <PageHeader />
+
+  <!-- Hero Section -->
+  {campaignData.templateType === 'church' && (
+    <>
+      {campaignData.heroTemplate === 'heroFullWidth' && (
+        <section class="hero">
+          <div class="bg-[url('../assets/mask_group.png')] bg-cover bg-center" style={campaignData.heroImage ? `background-image: url(${img(sanity).image(campaignData.heroImage).url()});` : 'background-image: url("../assets/mask_group.png");'}>
+            <div class="container mx-auto flex flex-col py-6 lg:flex-row">
+              <div class="lg:w-1/2 w-full p-4 lg:p-8">
+                <Hero />
+                {campaignData.video && (
+                  <Video
+                    src={campaignData.video.src}
+                    poster={campaignData.video.poster ? img(sanity).image(campaignData.video.poster).url() : 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg'}
+                    class="rounded-lg mb-4"
+                  />
+                )}
+              </div>
+              <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
+                <GiveForm />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+      {campaignData.heroTemplate === 'heroSplit' && (
+        
+        <section class="hero">
+            <div class="bg-[url('../assets/mask_group.png')] bg-cover">
+            <div class="container mx-auto flex flex-col py-6 lg:flex-row">
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+                <div class="relative isolate">
+                    <div class="">
+                        <img
+                            src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/129f5599a20cf300112af5bd151253b44d5304c7-265x110.png"
+                            alt="Watermark Logo"
+                            class="mb-4 w-20 sm:w-40 lg:mx-0"
+                        />
+                        {campaignData.subheading && <h2 class="hero-sub-heading uppercase text-pretty">{campaignData.subheading}</h2>}
+                        <h1 class="hero-h1 text-pretty uppercase font-semibold" set:html={toHTML(campaignData.heading)}></h1>
+                        <div class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base red-hat-mono" set:html={toHTML(campaignData.heroCopy)}></div>
+                    </div>
+                </div>
+                <Video 
+                src="https://vimeo.com/442493346?fl=pl&fe=sh"
+                poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
+                class="rounded-lg mb-4"
+                />
+            </div>
+            </div>
+            <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
+            <GiveForm />
+            </div>
+          </div>
+        </section>
+      )}
+      {campaignData.heroTemplate === 'heroCentered' && (
+        <section class="hero text-center py-12">
+          <div class="container mx-auto">
+            <h1 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl" set:html={toHTML(campaignData.heading)}></h1>
+            {campaignData.subheading && <h2 class="mt-4 text-xl">{campaignData.subheading}</h2>}
+            <div class="mt-6 prose mx-auto max-w-2xl" set:html={toHTML(campaignData.heroCopy)}></div>
+            {campaignData.heroImage && (
+              <img class="mx-auto mt-8 w-full max-w-md rounded-lg" src={img(sanity).image(campaignData.heroImage).url()} alt={campaignData.heroImageAlt} />
+            )}
+            {campaignData.video && (
+              <Video
+                src={campaignData.video.src}
+                poster={campaignData.video.poster ? img(sanity).image(campaignData.video.poster).url() : 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg'}
+                class="mx-auto mt-8 max-w-md rounded-lg"
+              />
+            )}
+            {campaignData.ctaText && campaignData.ctaLink && (
+              <a href={campaignData.ctaLink} class="mt-6 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">{campaignData.ctaText}</a>
+            )}
+            <div class="mt-8">
+              <GiveForm />
+            </div>
+          </div>
+        </section>
+      )}
+    </>
+  )}
+
+  <!-- About Section -->
+  {campaignData.aboutSections?.map((section) => (
+    <section class="py-16">
+      <div class="container mx-auto">
+        {section.template === 'aboutTextOnly' && (
+          <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+              <ContentSection
+                title={toHTML(section.title)}
+                content={toHTML(section.content)}
+                htmlContent={true}
+              />
+            </div>
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+              
+            </div>
+          </div>
+        )}
+        {section.template === 'aboutImageLeft' && (
+          <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+              
+            </div>
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+              <ContentSection
+                title={toHTML(section.title)}
+                content={toHTML(section.content)}
+                htmlContent={true}
+              />
+            </div>
+          </div>
+
+          <div class="container mx-auto flex flex-col py-6 lg:flex-row">
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+            <ContentSection
+              title={toHTML(section.title)}
+              content={toHTML(section.content)}
+              htmlContent={true}
+            />
+            </div>
+</div>
+
+
+
+
+        )}
+        {section.template === 'aboutImageRight' && (
+          <div class="flex flex-col lg:flex-row gap-8">
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+              <ContentSection
+                title={toHTML(section.title)}
+                content={toHTML(section.content)}
+                htmlContent={true}
+              />
+            </div>
+            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+              <img class="w-full rounded-lg" src={img(sanity).image(section.image).url()} alt={section.imageAlt} />
+            </div>
+          </div>
+        )}
+        <div class="lg:w-1/2 w-full p-4 lg:p-8">
+          <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Unlock a Project.<br>Join the Mission.</h2>
+        </div>
+        <div class="lg:w-1/2 w-full p-4 lg:p-8">
+          <DonationCard />
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Body Section -->
+  <section class="container mx-auto flex flex-col lg:flex-row gap-8">
+    <div class="mkt-primary-content lg:w-1/2 w-full p-4 lg:p-8">
+      <div class="prose">
+        <div set:html={toHTML(campaignData.body)}></div>
+        {campaignData.contactEmail && campaignData.contactEmail.trim() !== '' && (
+          <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={`mailto:${campaignData.contactEmail}`} class="mkt-secondary-accent">{campaignData.contactEmail}</a></p>
+        )}
+      </div>
+    </div>
+    <div class="lg:w-1/2 w-full p-4 lg:p-8"></div>
+  </section>
+
+  <!-- FAQ Section -->
+  
+  {campaignData.faqs && (
+    <section class="donation-faq bg-gray-50 pb-16 z-100">
+      {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqAccordion' && (
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
+<div class="bg-white">
+  <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
+    <div class="mx-auto max-w-4xl">
+      <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Frequently asked questions</h2>
+      <dl class="mt-16 divide-y divide-gray-900/10">
+      {campaignData.faqs.map((faq) => (
+        <div class="py-6 first:pt-0 last:pb-0">
+          <dt>
+              
+            <button type="button" command="--toggle" commandfor="faq-0" class="flex w-full items-start justify-between text-left text-gray-900">
+           
+                <span class="text-base/7 font-semibold">{faq.question}</span>
+              
+              <span class="ml-6 flex h-7 items-center">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </button>
+          </dt>
+          <el-disclosure id="faq-0" class="[&:not([hidden])]:contents">
+            <dd class="mt-2 pr-12">
+              <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
+            </dd>
+          </el-disclosure>
+        </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</div>
+      )}
+      {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqGrid' && (
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">Frequently Asked Questions</h2>
+          {campaignData.faqs.map((faq) => (
+            <div>
+              <h3 class="text-lg font-semibold">{faq.question}</h3>
+              <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
+            </div>
+          ))}
+        </div>
+      )}
+      {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqList' && (
+        <div class="container mx-auto">
+          <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
+          <ul class="mt-4 space-y-4">
+            {campaignData.faqs.map((faq) => (
+              <li>
+                <h3 class="text-lg font-semibold">{faq.question}</h3>
+                <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {/* {campaignData.templateType !== 'church' && <DonationFAQ />} */}
+    </section>
+  )}
+
+  <Footer />
+</Layout>
