@@ -1,0 +1,20 @@
+---
+import { StripeClientIsland } from './stripe/StripeClientIsland';
+import { CampaignGivingInfo } from './CampaignGivingInfo';
+---
+
+<div class="form-card lg:fixed right-4 lg:right-8 top-36 p-5 rounded-lg shadow-lg z-10">
+  <StripeClientIsland
+    formProps={{
+      enableRecurring: true,
+      hideInvestorType: 'Organization',
+      presetAmounts: {
+        oneTime: [35, 500, 2500, 10000, 20000],
+        recurring: [25, 50, 100, 500, 1000],
+      },
+      telemetry: { referrer: ' Watermark' },
+    }}
+    client:load
+  />
+</div>
+<style></style>

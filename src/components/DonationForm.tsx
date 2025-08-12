@@ -9,6 +9,7 @@ import { DonationInput } from './DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
+import { CampaignGivingInfo } from './CampaignGivingInfo.tsx';
 
 type DonateFormValues = z.infer<typeof donateSchema>;
 
@@ -409,6 +410,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           </>
         ) : (
           <div className="m-2">
+            <CampaignGivingInfo />
             <RecurringDonationSwitcher
               currentType={donationCadence}
               setDonationType={setDonationCadence}

@@ -202,6 +202,7 @@ Church page styles
   border: 1px solid var(--mkt-button-primary-hover);
   border-radius: 8px;
   background-color: var(--mkt-neutral-bg);
+  margin: 1.5rem auto;
 }
 .donation-card-locked {
   color: var(--sus-primary-heading);

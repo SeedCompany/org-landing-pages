@@ -5,7 +5,7 @@ import { toHTML } from '../../lib/portableTextSerializer';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import PageHeader from '../../components/PageHeader.astro';
 import Hero from '../../components/Hero.astro';
-import GiveForm from '../../components/GiveForm.astro';
+import GiveFormWithTotals from '../GiveFormWithTotals.astro';
 import '../../styles/global.css';
 import Layout from '../../layouts/Layout.astro';
 import Video from '../../components/Video.astro';
@@ -42,7 +42,7 @@ const { campaignData } = Astro.props;
                 )}
               </div>
               <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
-                <GiveForm />
+                <GiveFormWithTotals />
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@ const { campaignData } = Astro.props;
             </div>
             </div>
             <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
-            <GiveForm />
+              <GiveFormWithTotals />
             </div>
           </div>
         </section>
@@ -99,7 +99,7 @@ const { campaignData } = Astro.props;
               <a href={campaignData.ctaLink} class="mt-6 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">{campaignData.ctaText}</a>
             )}
             <div class="mt-8">
-              <GiveForm />
+              <GiveFormWithTotals />
             </div>
           </div>
         </section>
