@@ -103,6 +103,9 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     mode: 'onBlur',
   });
 
+  const stripeReturnUrl = import.meta.env.PUBLIC_BASE_URL + '/thank-you';
+  console.log(stripeReturnUrl);
+
   const validateContactInfo = async () => {
     const isValid = await form.trigger();
     if (isValid) {
@@ -146,7 +149,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     variables: DonateInput;
   }): Promise<SubmitFormResponse> => {
     try {
-      const response = await fetch('http://localhost:8367/graphql', {
+      const response = await fetch(import.meta.env.PUBLIC_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -201,7 +204,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
         const { error, confirmationToken } = await stripe.createConfirmationToken({
           elements,
           params: {
-            return_url: 'https://seedcompany.com/get-involved/thank-you',
+            return_url: stripeReturnUrl,
           },
         });
         if (error) {
@@ -252,7 +255,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
           clientSecret,
           confirmParams: {
             confirmation_token: confirmationToken.id,
-            return_url: 'https://seedcompany.com/get-involved/thank-you/',
+            return_url: stripeReturnUrl,
           },
         });
         if (confirmError.message) {

@@ -10,8 +10,8 @@ export default defineConfig({
     tailwind(),
     react(),
     sanity({
-      projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'fgpinugl',
-      dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
+      projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+      dataset: import.meta.env.PUBLIC_SANITY_DATASET,
       useCdn: import.meta.env.PUBLIC_PROD === 'true',
       studioBasePath: '/studio',
     }),
@@ -26,7 +26,7 @@ export default defineConfig({
     mode: 'standalone',
   }),
   server: {
-    port: 4321,
+    port: parseInt(import.meta.env.PUBLIC_PORT) || 4321,
     host: 'localhost',
   },
 });

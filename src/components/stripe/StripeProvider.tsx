@@ -15,8 +15,7 @@ const elementsOptions: StripeElementsOptions = {
 
 export const StripeProvider = ({ children }: ChildrenProp) => {
   const [lib] = useState(async () => {
-    const stripe = await loadStripe('pk_test_kCAgJ8Yd2HwPuHiAChlSIyJl');
-    console.log('Stripe Public Key:', import.meta.env.STRIPE_PUBLIC_KEY); // Debug
+    const stripe = await loadStripe(import.meta.env.PUBLIC_STRIPE_PUBLIC_KEY);
     console.log('Stripe Loaded:', !!stripe); // Debug
     return stripe;
   });
