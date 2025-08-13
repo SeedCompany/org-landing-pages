@@ -8,6 +8,7 @@ import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astr
 import InvestorRepsTemplate from '../../components/templates/InvestorRepsTemplate.astro';
 import MarketingTemplate from '../../components/templates/MarketingTemplate.astro';
 import SustainersTemplate from '../../components/templates/SustainersTemplate.astro';
+import ChurchTemplate from '../../components/templates/ChurchTemplate.astro';
 import { campaignBySlug } from './campaignBySlug.groq';
 
 // Map templates from Sanity to Astro components
@@ -16,6 +17,7 @@ const templateMap = {
   investorReps: InvestorRepsTemplate,
   marketing: MarketingTemplate,
   sustainers: SustainersTemplate,
+  church: ChurchTemplate,
 };
 
 interface Props {

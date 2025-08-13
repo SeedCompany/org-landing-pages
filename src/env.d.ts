@@ -11,6 +11,10 @@ interface ImportMetaEnv {
   readonly PUBLIC_SANITY_DATASET: 'production' | 'staging';
   readonly PUBLIC_STRIPE_KEY: string;
   readonly PUBLIC_RECAPTCHA_SITE_KEY: string;
+  readonly PUBLIC_STRIPE_PUBLIC_KEY: string;
+  readonly PUBLIC_BASE_URL: string;
+  readonly PUBLIC_PORT: string;
+  readonly PUBLIC_API_URL: string;
 }
 
 interface ImportMeta {

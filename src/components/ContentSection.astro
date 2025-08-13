@@ -1,0 +1,17 @@
+---
+const { title, content, htmlContent = false } = Astro.props;
+---
+
+<section class="mb-8">
+  {htmlContent ? (
+    <h2 class="text-3xl mb-4" set:html={title}></h2>
+  ) : (
+    <h2 class="text-3xl mb-4">{title}</h2>
+  )}
+  
+  {htmlContent ? (
+    <p class="text-base " set:html={content}></p>
+  ) : (
+    <p class="text-base /">{content}</p>
+  )}
+</section>

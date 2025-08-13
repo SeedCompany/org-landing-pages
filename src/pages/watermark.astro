@@ -1,0 +1,56 @@
+---
+import PageHeader from '../components/PageHeader.astro';
+import Hero from '../components/Hero.astro';
+import GiveFormWithTotals from '../components/GiveFormWithTotals.astro';
+import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
+import Video from '../components/Video.astro';
+import ContentSection from '../components/ContentSection.astro';
+import DonationCard from '../components/DonationCardComponent';
+import DonationFAQ from '../components/DonationFAQ.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Watermark - Translating the Bible Together">
+  <PageHeader />
+  <section class="hero">
+    <div class="bg-[url('../assets/mask_group.png')] bg-cover">
+      <div class="container mx-auto flex flex-col py-6 lg:flex-row">
+        <div class="lg:w-1/2 w-full p-4 lg:p-8">
+          <Hero />
+          <Video
+            src="https://vimeo.com/442493346?fl=pl&fe=sh"
+            poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
+            class="rounded-lg mb-4"
+          />
+        </div>
+      </div>
+      <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
+        <GiveFormWithTotals />
+      </div>
+    </div>
+  </section>
+  <section class="py-16">
+    <div class="container mx-auto">
+      <div class="lg:w-1/2 w-full p-4 lg:p-8">
+        <ContentSection
+          title="More than a <strong>billion people</strong> don't have access to the Bible in their language."
+          content="In partnership with Seed Company, we're asking God to use the generosity of Watermark members to unlock as many Bible translation projects as possible during a focused season of prayer, giving, and dependence. Each project is geared toward an unreached people group, those with little to no access to Scripture and virtually no Christ-followers in their communities. <br><br>As we walk through Year of the Word together, this is our chance to respond; to pray, seek the Lord, and give as he leads. <br><br><h3><strong>Let's translate the Bible together, church!</strong></h3>"
+          htmlContent={true}
+        />
+      </div>
+      <div class="lg:w-1/2 w-full p-4 lg:p-8">
+        <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+          Unlock a Project.<br />Join the Mission.
+        </h2>
+      </div>
+      <div class="lg:w-1/2 w-full p-4 lg:p-8">
+        <DonationCard />
+      </div>
+    </div>
+    <section class="donation-faq bg-gray-50 pb-16 z-100">
+      <DonationFAQ />
+    </section>
+    <Footer />
+  </section>
+</Layout>

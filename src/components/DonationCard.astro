@@ -1,0 +1,29 @@
+---
+import { type CardProps, ProjectCards } from './ProjectCards';
+const mockData: CardProps[] = [
+  {
+    currentAmount: 105000,
+    startAmount: 0,
+    endAmount: 100000,
+    peopleGroups: 5,
+    region: 'SouthEast Asia',
+    projectHeader: 'Oportunity One',
+    projectDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    projectBullets: ['Lorem Ipsum', 'Lorem Ipsum'],
+  },
+  {
+    currentAmount: 105000,
+    startAmount: 100001,
+    endAmount: 250000,
+    peopleGroups: 7,
+    region: 'Northern Indiana',
+    projectHeader: 'Oportunity Two',
+    projectDescription:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    projectBullets: ['Lorem Ipsum', 'Lorem Ipsum', 'Morem Ipsum'],
+  },
+];
+---
+
+<ProjectCards projectData={mockData} />

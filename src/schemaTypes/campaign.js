@@ -36,15 +36,78 @@ export default defineType({
     { name: 'template', title: 'Templates' },
     { name: 'faq', title: 'FAQs' },
     { name: 'templateContent', title: 'Template Content' },
+    { name: 'campaignData', title: 'Campaign Data' },
   ],
   fields: [
+    defineField({
+      name: 'campaignName',
+      title: 'Campaign Name',
+      type: 'string',
+    }),
+    // Template Selection
+    defineField({
+      name: 'templateType',
+      title: 'Campaign Template',
+      type: 'string',
+      group: 'template',
+      components: { input: ImageRadioInput },
+      options: {
+        list: [
+          {
+            title: 'Marketing Template',
+            value: 'marketing',
+            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/99e113372471d08ff56150c0c7dc0cf895b341ab-265x159.png',
+          },
+          {
+            title: 'Sustainers Template',
+            value: 'sustainers',
+            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/ad2f9a0ecd9c0299f3264f8c0a5e43ef8feade63-265x159.png',
+          },
+          {
+            title: 'Church Template',
+            value: 'church',
+            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/5c407b29b41d2723b538de4566e54058be399bb8-265x159.png',
+          },
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
     // Hero Section
+    defineField({
+      name: 'heroTemplate',
+      title: 'Hero Template',
+      type: 'string',
+      group: 'hero',
+      hidden: ({ document }) => document?.templateType !== 'church',
+      options: {
+        list: [
+          { title: 'Hero Layout 1 - Full Width Image', value: 'heroFullWidth' },
+          { title: 'Hero Layout 2 - Split Image/Text', value: 'heroSplit' },
+          { title: 'Hero Layout 3 - Centered Text', value: 'heroCentered' },
+        ],
+        layout: 'radio',
+      },
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (context.document?.templateType === 'church' && !value) {
+            return 'A hero template must be selected for Church campaigns';
+          }
+          return true;
+        }),
+    }),
     defineField({
       name: 'heading',
       title: 'Heading',
       type: 'array',
       group: 'hero',
       of: [richTextBlock],
+    }),
+    defineField({
+      name: 'subheading',
+      title: 'Subheading',
+      type: 'string',
+      group: 'hero',
+      hidden: ({ document }) => document?.templateType !== 'church',
     }),
     defineField({
       name: 'heroCopy',
@@ -78,11 +141,119 @@ export default defineType({
       type: 'slug',
       group: 'hero',
       options: {
-        source: 'heading',
+        source: 'campaignName',
         maxLength: 96,
         slugify: (input) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 96),
       },
       validation: (Rule) => Rule.required().warning('A slug is required'),
+    }),
+    // About Section
+    defineField({
+      name: 'aboutSections',
+      title: 'About Sections',
+      type: 'array',
+      group: 'templateContent',
+      of: [
+        {
+          type: 'object',
+          name: 'aboutSection',
+          title: 'About Section',
+          fields: [
+            defineField({
+              name: 'template',
+              title: 'About Template',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Text Only', value: 'aboutTextOnly' },
+                  { title: 'Image Left', value: 'aboutImageLeft' },
+                  { title: 'Image Right', value: 'aboutImageRight' },
+                ],
+                layout: 'radio',
+              },
+              validation: (Rule) => Rule.required(),
+              hidden: ({ document }) => document?.templateType !== 'church',
+            }),
+            defineField({
+              name: 'title',
+              title: 'Section Title',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'content',
+              title: 'Content',
+              type: 'array',
+              of: [richTextBlock],
+            }),
+            defineField({
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: { hotspot: true },
+              hidden: ({ parent, document }) =>
+                parent?.template === 'aboutTextOnly' || document?.templateType !== 'church',
+            }),
+            defineField({
+              name: 'imageAlt',
+              title: 'Image Alt Text',
+              type: 'string',
+              hidden: ({ parent, document }) =>
+                parent?.template === 'aboutTextOnly' || document?.templateType !== 'church',
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  if (
+                    context.parent?.template !== 'aboutTextOnly' &&
+                    context.document?.templateType === 'church' &&
+                    !value
+                  ) {
+                    return 'Alt text is required for images';
+                  }
+                  return true;
+                }),
+            }),
+            defineField({
+              name: 'stats',
+              title: 'Statistics',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  name: 'stat',
+                  title: 'Statistic',
+                  fields: [
+                    defineField({
+                      name: 'value',
+                      title: 'Value',
+                      type: 'string',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: 'description',
+                      title: 'Description',
+                      type: 'string',
+                      validation: (Rule) => Rule.required(),
+                    }),
+                    defineField({
+                      name: 'icon',
+                      title: 'Icon',
+                      type: 'string',
+                      options: {
+                        list: [
+                          { title: 'Calendar', value: 'lucide:calendar' },
+                          { title: 'Book', value: 'lucide:book' },
+                          { title: 'Users', value: 'lucide:users' },
+                        ],
+                      },
+                    }),
+                  ],
+                },
+              ],
+              hidden: ({ document }) => document?.templateType !== 'marketing',
+            }),
+          ],
+        },
+      ],
     }),
     // Body
     defineField({
@@ -215,13 +386,6 @@ export default defineType({
       ],
       hidden: ({ document }) => document?.templateType !== 'sustainers',
     }),
-    // Contact Email
-    defineField({
-      name: 'contactEmail',
-      title: 'Contact Email',
-      type: 'email',
-      validation: (Rule) => Rule.required().email().warning('A valid email is required'),
-    }),
     // FAQs
     defineField({
       name: 'faqs',
@@ -234,6 +398,27 @@ export default defineType({
           name: 'faq',
           title: 'FAQ',
           fields: [
+            defineField({
+              name: 'template',
+              title: 'FAQ Template',
+              type: 'string',
+              hidden: ({ parent, document }) => document?.templateType !== 'church',
+              options: {
+                list: [
+                  { title: 'Accordion', value: 'faqAccordion' },
+                  { title: 'Grid', value: 'faqGrid' },
+                  { title: 'List', value: 'faqList' },
+                ],
+                layout: 'radio',
+              },
+              validation: (Rule) =>
+                Rule.custom((value, context) => {
+                  if (context.document?.templateType === 'church' && !value) {
+                    return 'An FAQ template must be selected for Church campaigns';
+                  }
+                  return true;
+                }),
+            }),
             defineField({
               name: 'question',
               title: 'Question',
@@ -249,6 +434,50 @@ export default defineType({
           ],
         },
       ],
+    }),
+    // Contact Email
+    defineField({
+      name: 'contactEmail',
+      title: 'Contact Email',
+      type: 'email',
+      validation: (Rule) => Rule.required().email().warning('A valid email is required'),
+    }),
+    // Campaign Data
+    defineField({
+      name: 'leadSource',
+      title: 'Lead Source',
+      type: 'string',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'subSource',
+      title: 'subSource',
+      type: 'string',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Campaign Description',
+      type: 'text',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'campaignFocus',
+      title: 'Campaign Focus',
+      type: 'string',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'campaignStartDate',
+      title: 'Campaign Start Date',
+      type: 'date',
+      group: 'campaignData',
+    }),
+    defineField({
+      name: 'campaignEndDate',
+      title: 'Campaign End Date',
+      type: 'date',
+      group: 'campaignData',
     }),
     defineField({
       name: 'partners',

@@ -2,42 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 :root {
   /* Sustainers Template Colors */
-  --sus-primary-bg: #414E46;
-  --sus-secondary-bg: #2A5C6B;
-  --sus-neutral-bg: #F5F5F5;
-  --sus-bg-light: #F7F1E7;
-  --sus-primary-heading: #1D3638;
+  --sus-primary-bg: #414e46;
+  --sus-secondary-bg: #2a5c6b;
+  --sus-neutral-bg: #f5f5f5;
+  --sus-bg-light: #f7f1e7;
+  --sus-primary-heading: #1d3638;
   --sus-primary-text: #323232;
-  --sus-secondary-text: #FFFFFF;
-  --sus-accent-text: #E35C2A;
-  --sus-green-text: #29B67E;
-  --sus-accent-bg: #D2CFAF;
-  --sus-secondary-accent: #2A5C6B;
-  --sus-button-primary-bg: #E35C2A;
-  --sus-button-primary-text: #FFFFFF;
-  --sus-button-secondary-bg: #29B67E;
-  --sus-button-secondary-hover: #29B67E;;
-  --sus-button-secondary-text: #FFFFFF;
-  
+  --sus-secondary-text: #ffffff;
+  --sus-accent-text: #e35c2a;
+  --sus-green-text: #29b67e;
+  --sus-accent-bg: #d2cfaf;
+  --sus-secondary-accent: #2a5c6b;
+  --sus-button-primary-bg: #e35c2a;
+  --sus-button-primary-text: #ffffff;
+  --sus-button-secondary-bg: #29b67e;
+  --sus-button-secondary-hover: #29b67e;
+  --sus-button-secondary-text: #ffffff;
+
   /* Marketing Template Colors */
-  --mkt-primary-bg: #F4F3E7;
-  --mkt-neutral-bg: #FFFFFF;
-  --mkt-neutral-text: #FFFFFF;
-  --mkt-primary-text: #323232;
+  --mkt-primary-bg: #f4f3e7;
+  --mkt-neutral-bg: #ffffff;
+  --mkt-neutral-text: #ffffff;
+  --mkt-primary-text: #000000;
   --mkt-secondary-text: #666666;
-  --mkt-accent-text: #E35C2A;
-  --mkt-accent-bg: #E35C2A;
-  --mkt-secondary-accent: #1D3638;
-  --mkt-button-primary-bg: #1D3638;
-  --mkt-button-primary-border: #1D3638;
-  --mkt-button-primary-hover: #29B67E;
-  --mkt-button-primary-text: #FFFFFF;
-  --mkt-button-secondary-bg: #D2CFAF;
+  --mkt-accent-text: #e35c2a;
+  --mkt-accent-bg: #e35c2a;
+  --mkt-secondary-accent: #1d3638;
+  --mkt-button-primary-bg: transparent;
+  --mkt-button-primary-border: #fff;
+  --mkt-button-primary-hover: #29b67e;
+  --mkt-button-primary-text: #fff;
+  --mkt-button-secondary-bg: #d2cfaf;
   --mkt-button-secondary-text: #323232;
 
-  --gray-500: #6B7280;
+  --gray-500: #6b7280;
+  --dark-green: #133739;
+  --footer-bg: #000;
+  --footer-text: #fff;
+  --mkt-primary-heading-size: 8rem;
 }
 
 /* Sustainers Template Styles */
@@ -70,6 +79,7 @@
 }
 .sus-green-text {
   color: var(--sus-green-text);
+  fill: var(--sus-green-text);
 }
 .sus-accent-bg {
   background-color: var(--sus-accent-bg);
@@ -96,8 +106,28 @@
   color: var(--sus-button-secondary-hover);
 }
 /* Marketing Template Styles */
+.mkt-hero {
+  max-width: 1440px;
+  margin: auto;
+  padding: 4rem 1rem;
+}
+.mkt-hero-text {
+  font-size: 1.6875rem;
+}
 .mkt-primary-bg {
   background-color: var(--mkt-primary-bg);
+  padding: 2.5rem 1.15rem;
+}
+.mkt-primary-content {
+  max-width: 1440px;
+  margin: auto;
+  font-family: 'Red Hat Mono', Sans-serif;
+}
+.mkt-primary-content p,
+.mkt-primary-content li {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: var(--mkt-primary-text);
 }
 .mkt-neutral-bg {
   background-color: var(--mkt-neutral-bg);
@@ -107,6 +137,8 @@
 }
 .mkt-primary-text {
   color: var(--mkt-primary-text);
+  font-size: var(--mkt-primary-heading-size);
+  line-height: 1em;
 }
 .mkt-secondary-text {
   color: var(--mkt-secondary-text);
@@ -120,22 +152,20 @@
 .mkt-secondary-accent {
   color: var(--mkt-secondary-accent);
 }
-.mkt-button-primary-bg {
+.mkt-primary-btn {
   background-color: var(--mkt-button-primary-bg);
-}
-.mkt-button-primary-border {
+  color: #fff;
+  font-family: 'Red Hat Mono', Sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
   border-color: var(--mkt-button-primary-border);
+  border-radius: 96px;
 }
-.mkt-button-primary-hover:hover {
-  background-color: transparent;
-  color: var(--mkt-button-primary-hover);
-  border-color: var(--mkt-button-primary-hover)
-}
-.mkt-button-primary-border-hover {
-  border-color: var(--mkt-button-primary-border-hover);
-}
-.mkt-button-primary-text {
-  color: var(--mkt-button-primary-text);
+.mkt-primary-btn:hover {
+  cursor: pointer;
 }
 .mkt-button-secondary-bg {
   background-color: var(--mkt-button-secondary-bg);
@@ -143,14 +173,116 @@
 .mkt-button-secondary-text {
   color: var(--mkt-button-secondary-text);
 }
+/*****
+Church page styles
+*****/
+.form-card {
+  background: #fff;
+}
+.hero-h1 {
+  font-size: 5rem;
+  line-height: 0.85;
+  color: var(--mkt-primary-text);
+}
+.hero-sub-heading {
+  font-size: 3.5rem;
+  line-height: 0.85;
+  color: var(--dark-green);
+}
+.hero-p {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.heading-h2 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  color: var(--mkt-primary-text);
+}
+.donation-card {
+  border: 1px solid var(--mkt-button-primary-hover);
+  border-radius: 8px;
+  background-color: var(--mkt-neutral-bg);
+  margin: 1.5rem auto;
+}
+.donation-card-locked {
+  color: var(--sus-primary-heading);
+  opacity: 0.4;
+}
+.donation-card-black {
+  color: var(--mkt-primary-text);
+}
+.donation-card-image {
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+.donation-card-status {
+  background: var(--mkt-button-primary-hover);
+  padding: 2px 8px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: 600;
+}
+.donation-card-content {
+  padding: 1.5rem;
+}
+.donation-card-subheading {
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.donation-card-heading {
+  font-size: 2.25rem;
+  font-family: 'Librebaskerville', serif;
+  line-height: 1.2;
+  margin: 0.5rem 0;
+  color: var(--sus-primary-heading);
+}
+.donation-card-amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--sus-green-text);
+}
+.donation-card-description {
+  font-size: 1.1rem;
+  font-family: 'Gotham', sans-serif;
+  line-height: 1.5;
+}
+.donation-card-ul {
+  list-style-type: none;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.donation-card-li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-weight: bold;
+}
+.donation-card-li::before {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--sus-green-text);
+  border-radius: 50%;
+}
 .gray-500 {
   color: var(--gray-500);
 }
-
 .prose {
-    max-width: 100% !important;
+  max-width: 100% !important;
 }
-
+.footer {
+  background-color: var(--footer-bg);
+  color: var(--footer-text);
+}
 @font-face {
   font-family: 'Rader Bold';
   src: url('/fonts/PPRader-Bold.otf') format('opentype');
@@ -186,12 +318,70 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Red Hat Mono';
+  src: url('/fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
 .rader-bold {
-font-family: 'Rader Bold', sans-serif;
+  font-family: 'Rader Bold', sans-serif;
+}
+.rader {
+  font-family: 'Rader Medium', sans-serif;
 }
 .sentinel-light {
-font-family: 'Sentinel Light', sans-serif;
+  font-family: 'Sentinel Light', sans-serif;
 }
 .gotham {
-font-family: 'Gotham', sans-serif;
+  font-family: 'Gotham', sans-serif;
+}
+.red-hat-mono {
+  font-family: 'Red Hat Mono', sans-serif;
+}
+@media (max-width: 768px) {
+  :root {
+    --mkt-primary-heading-size: 4rem;
+  }
+  .mkt-hero-text {
+    font-size: 1.3125rem;
+  }
+  .mkt-primary-btn {
+    font-size: 1.166rem;
+  }
+  .hero-h1 {
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--mkt-primary-text);
+  }
+  .hero-sub-heading {
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--dark-green);
+  }
+}
+@media (max-width: 1720px) {
+  .form-card {
+    max-width: 35rem !important;
+  }
+}
+@media (min-width: 1300px) and (max-width: 1720px) {
+  .form-card {
+    max-width: 39rem !important;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1299px) {
+  .form-card {
+    max-width: 29rem !important;
+  }
+}
+@media (max-width: 1023px) {
+  .form-card {
+    max-width: 100% !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    margin: 1rem auto !important;
+  }
 }

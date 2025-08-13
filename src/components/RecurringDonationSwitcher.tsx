@@ -8,7 +8,7 @@ export const RecurringDonationSwitcher = ({
   setDonationType: React.Dispatch<React.SetStateAction<'OneTime' | 'Monthly'>>;
 }) => {
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-3">
       <button
         onClick={() => setDonationType('OneTime')}
         className={`${currentType === 'OneTime' ? 'bg-white text-emerald-950 hover:text-emerald-900' : 'bg-emerald-950 text-white  active:border-emerald-500 hover:text-emerald-100 active:text-emerald-200'} border-emerald-950  border rounded-sm m-2 px-2 py-3 min-w-32`}
