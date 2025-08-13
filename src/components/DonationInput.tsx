@@ -5,6 +5,7 @@ export const DonationInput = ({
   error,
   label,
   type = 'text',
+  hidden,
   required,
   placeholder,
   ...field
@@ -12,6 +13,7 @@ export const DonationInput = ({
   error: FieldError | undefined;
   label: string;
   type?: 'text' | 'email';
+  hidden?: boolean;
   required?: boolean;
   placeholder: string;
 } & ControllerRenderProps) => {
@@ -43,7 +45,7 @@ export const DonationInput = ({
           </p>
         </div>
       ) : (
-        <div className="m-2">
+        <div className={`m-2 ${hidden ? 'hidden' : ''}`}>
           <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
             {label}
           </label>

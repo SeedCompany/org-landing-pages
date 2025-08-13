@@ -78,6 +78,7 @@ interface SubmitFormResponse {
 export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
   enableRecurring?: boolean;
+  campaignTotals?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
   telemetry?: {
@@ -93,13 +94,28 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   // this will be used eventually but is not a part of the initial Watermark use case
   // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
-  const [showForm, setShowForm] = useState<boolean>(false);
   const [amount, setAmount] = useState(1);
+  const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [v3RecaptchaToken, setV3RecaptchaToken] = useState<string | null>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema),
+    mode: 'onBlur',
   });
+
+  const validateContactInfo = async () => {
+    const isValid = await form.trigger();
+    if (isValid) {
+      setDonationStep('payment');
+    } else {
+      console.error('Validation errors present - please fix before proceeding');
+    }
+    return;
+  };
+
+  const handleNextClick = () => {
+    void validateContactInfo();
+  };
 
   const stripe = useStripe();
   const elements = useElements();
@@ -111,7 +127,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     }
     try {
       const token = await executeRecaptcha('donate');
-      console.log('recaptcha token received:', token);
       setV3RecaptchaToken(token);
     } catch (error) {
       console.error('Recaptcha error:', error);
@@ -302,7 +317,31 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   return (
     <div className="my-3">
       <div>
-        {showForm ? (
+        {donationStep === 'amount' ? (
+          <div className="m-2">
+            {formProps.campaignTotals && <CampaignGivingInfo />}
+            <RecurringDonationSwitcher
+              currentType={donationCadence}
+              setDonationType={setDonationCadence}
+            />
+            <DonationPresets
+              presetAmounts={formProps?.presetAmounts}
+              setAmount={setAmount}
+              recurring={donationCadence === 'Monthly'}
+              // showForm={setShowAmountInput}
+              currentAmount={amount}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setDonationStep('contact');
+              }}
+              className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            >
+              Give Now
+            </button>
+          </div>
+        ) : (
           <>
             {!formProps.hideInvestorType && (
               <>
@@ -314,13 +353,15 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 </div>
               </>
             )}
-            <div className="flex items-center justify-between gap-3 m-2">
+            <div
+              className={`flex items-center justify-between gap-3 m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}
+            >
               <div className="text-sm">
                 Input payment details for your{' '}
                 {donationCadence === 'Monthly' ? 'monthly' : 'one-time'} gift.{' '}
               </div>
             </div>
-            <div className="m-2">
+            <div className={`m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}>
               <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
                 Donation Amount
               </label>
@@ -340,11 +381,22 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 e.preventDefault();
                 void onSubmit();
               }}
+              onInvalid={(e: React.FormEvent) => {
+                e.preventDefault();
+                console.error('Form submission invalid:', e);
+                setDonationStep('contact');
+              }}
+              onError={(e) => {
+                e.preventDefault();
+                console.error('Form submission error:', e);
+                setDonationStep('contact');
+              }}
             >
               <DonationInput
                 placeholder="First name"
                 label="First name"
                 error={firstName.fieldState.error}
+                hidden={donationStep === 'payment'}
                 required
                 {...firstName.field}
               />
@@ -352,6 +404,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 placeholder="Last name"
                 label="Last name"
                 error={lastName.fieldState.error}
+                hidden={donationStep === 'payment'}
                 required
                 {...lastName.field}
               />
@@ -360,78 +413,90 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 label="Email"
                 type="email"
                 error={email.fieldState.error}
+                hidden={donationStep === 'payment'}
                 {...email.field}
               />
               <DonationInput
                 placeholder="Address Line 1"
                 label="Address Line 1"
                 error={line1.fieldState.error}
+                hidden={donationStep === 'payment'}
                 {...line1.field}
               />
               <DonationInput
                 placeholder="Address Line 2"
                 label="Address Line 2"
                 error={line2.fieldState.error}
+                hidden={donationStep === 'payment'}
                 {...line2.field}
               />
               <DonationInput
                 placeholder="City"
                 label="City"
                 error={city.fieldState.error}
+                hidden={donationStep === 'payment'}
                 {...city.field}
               />
               <DonationInput
                 placeholder="State"
                 label="State"
                 error={state.fieldState.error}
+                hidden={donationStep === 'payment'}
                 {...state.field}
               />
               <DonationInput
                 placeholder="Zip Code"
                 label="Zip Code"
                 error={zip.fieldState.error}
+                hidden={donationStep === 'payment'}
                 {...zip.field}
               />
-              <PaymentElement
-                className="m-2"
-                id="payment-element"
-                options={paymentElementOptions}
-              />
-              <button
-                type="submit"
-                onClick={() => {
-                  setShowForm(true);
-                }}
-                className="rounded-sm bg-emerald-600 px-3.5 py-2.5 m-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-              >
-                Give Now
-              </button>
+              {donationStep === 'payment' && (
+                <>
+                  <PaymentElement
+                    className="m-2"
+                    id="payment-element"
+                    options={paymentElementOptions}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDonationStep('contact');
+                    }}
+                    className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                  >
+                    Go Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-sm bg-emerald-600 px-3.5 py-2.5 m-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                  >
+                    Give Now
+                  </button>
+                </>
+              )}
+              {donationStep !== 'payment' && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDonationStep('amount');
+                    }}
+                    className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                  >
+                    Go Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextClick}
+                    className="rounded-sm bg-emerald-600 px-3.5 py-2.5 m-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                  >
+                    Go to Payment
+                  </button>
+                </>
+              )}
             </form>
           </>
-        ) : (
-          <div className="m-2">
-            <CampaignGivingInfo />
-            <RecurringDonationSwitcher
-              currentType={donationCadence}
-              setDonationType={setDonationCadence}
-            />
-            <DonationPresets
-              presetAmounts={formProps?.presetAmounts}
-              setAmount={setAmount}
-              recurring={donationCadence === 'Monthly'}
-              // showForm={setShowAmountInput}
-              currentAmount={amount}
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setShowForm(true);
-              }}
-              className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-            >
-              Give Now
-            </button>
-          </div>
         )}
       </div>
     </div>
