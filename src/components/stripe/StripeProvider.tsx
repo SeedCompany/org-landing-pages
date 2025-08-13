@@ -15,15 +15,8 @@ const elementsOptions: StripeElementsOptions = {
 
 export const StripeProvider = ({ children }: ChildrenProp) => {
   const [lib] = useState(async () => {
-    const stripe = await loadStripe(import.meta.env.PUBLIC_STRIPE_PUBLIC_KEY);
-    console.log('Stripe Loaded:', !!stripe); // Debug
-    return stripe;
+    return await loadStripe(import.meta.env.PUBLIC_STRIPE_KEY);
   });
-
-  if (!lib) {
-    console.error('Stripe failed to load');
-    return <div>Loading Stripe...</div>;
-  }
 
   return (
     <Elements stripe={lib} options={elementsOptions}>
