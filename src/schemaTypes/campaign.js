@@ -279,30 +279,6 @@ export default defineType({
           scheme: ['http', 'https', 'mailto', 'tel'],
         }),
     }),
-    // Template Selection
-    defineField({
-      name: 'templateType',
-      title: 'Page Template',
-      type: 'string',
-      group: 'template',
-      components: { input: ImageRadioInput },
-      options: {
-        list: [
-          {
-            title: 'Sustainers Template',
-            value: 'sustainers',
-            imageSrc: TemplateThumbnailSustainers,
-          },
-          // { title: 'Advocates Template', value: 'advocates', imageSrc: TemplateThumbnailAdvocates },
-          // { title: 'Investor Reps Template', value: 'investorReps', imageSrc: TemplateThumbnailInvestorReps },
-          {
-            title: 'Marketing Template',
-            value: 'marketing',
-            imageSrc: TemplateThumbnailMarketing,
-          },
-        ],
-      },
-    }),
     // Template-Specific Sections
     defineField({
       name: 'sections',
