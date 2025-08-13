@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import ImageRadioInput from '../../studio/components/ImageRadioInput.jsx';
+import ImageRadioInput from '../components/ImageRadioInput.jsx';
 
 const richTextBlock = {
   type: 'block',
@@ -50,7 +50,6 @@ export default defineType({
           {
             title: 'Giving Campaign',
             value: 'givingCampaign',
-            imageSrc: '../static/GivingCampaign_Template.png',
           },
         ],
       },
