@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+/// <reference types="@sanity/astro/module" />
 /// <reference types="../sanity.types.ts" />
 
 interface ViteTypeOptions {
@@ -7,9 +8,9 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly PUBLIC_SANITY_PROJECT_ID: string;
-  readonly PUBLIC_SANITY_DATASET: string;
-  readonly PUBLIC_PROD: string;
-  readonly STRIPE_PUBLIC_KEY: string;
+  readonly PUBLIC_SANITY_DATASET: 'production' | 'staging';
+  readonly PUBLIC_STRIPE_KEY: string;
+  readonly PUBLIC_RECAPTCHA_SITE_KEY: string;
 }
 
 interface ImportMeta {
