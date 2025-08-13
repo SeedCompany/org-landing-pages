@@ -11,9 +11,6 @@
     "sanity:gen": "sanity schema extract && sanity typegen generate",
     "astro": "astro"
   },
-  "workspaces": [
-    "studio"
-  ],
   "engines": {
     "node": ">= 22"
   },
