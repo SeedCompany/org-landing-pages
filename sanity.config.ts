@@ -5,9 +5,8 @@ import { simplerColorInput } from 'sanity-plugin-simpler-color-input';
 import { schemaTypes } from './src/schemaTypes';
 
 export default defineConfig({
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'fgpinugl',
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
-  basePath: '/studio',
+  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
+  dataset: import.meta.env.PUBLIC_SANITY_DATASET,
   plugins: [structureTool(), visionTool(), simplerColorInput()],
 
   schema: {
