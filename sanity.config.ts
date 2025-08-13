@@ -4,9 +4,11 @@ import { visionTool } from '@sanity/vision';
 import { simplerColorInput } from 'sanity-plugin-simpler-color-input';
 import { schemaTypes } from './src/schemaTypes';
 
+const env = typeof process !== 'undefined' ? process.env : import.meta.env;
+
 export default defineConfig({
-  projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-  dataset: import.meta.env.PUBLIC_SANITY_DATASET,
+  projectId: env.PUBLIC_SANITY_PROJECT_ID,
+  dataset: env.PUBLIC_SANITY_DATASET,
   plugins: [structureTool(), visionTool(), simplerColorInput()],
 
   schema: {

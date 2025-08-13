@@ -1,5 +1,7 @@
 import { defineField, defineType } from 'sanity';
-import ImageRadioInput from '../../studio/components/ImageRadioInput.jsx';
+import ImageRadioInput from '../components/ImageRadioInput.jsx';
+import TemplateThumbnailMarketing from '../components/templates/MarketingTemplate.png';
+import TemplateThumbnailSustainers from '../components/templates/SustainersTemplate.png';
 
 const richTextBlock = {
   type: 'block',
@@ -118,14 +120,14 @@ export default defineType({
           {
             title: 'Sustainers Template',
             value: 'sustainers',
-            imageSrc: '/static/Sustainer_Template.png',
+            imageSrc: TemplateThumbnailSustainers,
           },
-          // { title: 'Advocates Template', value: 'advocates', imageSrc: '/static/Advocates_Template.png' },
-          // { title: 'Investor Reps Template', value: 'investorReps', imageSrc: '/static/Investor_Rep_Template.png' },
+          // { title: 'Advocates Template', value: 'advocates', imageSrc: TemplateThumbnailAdvocates },
+          // { title: 'Investor Reps Template', value: 'investorReps', imageSrc: TemplateThumbnailInvestorReps },
           {
             title: 'Marketing Template',
             value: 'marketing',
-            imageSrc: '/static/Marketing_Template.png',
+            imageSrc: TemplateThumbnailMarketing,
           },
         ],
       },
