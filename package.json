@@ -7,12 +7,13 @@
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
+    "type-check": "tsc",
     "lint": "eslint --max-warnings 0 --fix .",
     "sanity:gen": "sanity schema extract && sanity typegen generate",
     "astro": "astro"
   },
   "engines": {
-    "node": ">= 22"
+    "node": ">= 24"
   },
   "packageManager": "yarn@4.9.1",
   "dependencies": {
