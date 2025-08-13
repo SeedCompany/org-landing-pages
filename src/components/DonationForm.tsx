@@ -11,6 +11,10 @@ import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { CampaignGivingInfo } from './CampaignGivingInfo.tsx';
 
+const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
+
+const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
+
 type DonateFormValues = z.infer<typeof donateSchema>;
 
 // Defining the type for the GraphQL variables
@@ -103,7 +107,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     mode: 'onBlur',
   });
 
-  const stripeReturnUrl = import.meta.env.PUBLIC_BASE_URL + '/thank-you';
+  const stripeReturnUrl = window.location.origin + '/thank-you';
   console.log(stripeReturnUrl);
 
   const validateContactInfo = async () => {
@@ -149,7 +153,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     variables: DonateInput;
   }): Promise<SubmitFormResponse> => {
     try {
-      const response = await fetch(import.meta.env.PUBLIC_API_URL, {
+      const response = await fetch(GQL_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
