@@ -50,7 +50,6 @@ export default defineType({
           {
             title: 'Giving Campaign',
             value: 'givingCampaign',
-            imageSrc: '../static/GivingCampaign_Template.png',
           },
         ],
       },
