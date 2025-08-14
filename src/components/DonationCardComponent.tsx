@@ -1,5 +1,6 @@
 import type { CardProps } from './ProjectCards.tsx';
 import { useState } from 'react';
+import { ProgressBar } from './atoms/ProgressBar';
 
 type FundingStatus = 'funded' | 'inProgress' | 'locked' | 'unknown';
 
@@ -107,6 +108,7 @@ export const DonationCardComponent = ({ projectData }: { projectData: CardProps 
       start: projectData.startAmount,
     }),
   );
+
   return (
     <div className="donation-card">
       <div className="donation-card-image-wrapper">
@@ -115,13 +117,25 @@ export const DonationCardComponent = ({ projectData }: { projectData: CardProps 
           src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/eaffaaa131775759083460fbe8886c0d574ceee4-1080x809.jpg"
           alt=""
         />
-        {(fundingStatus === 'funded' || fundingStatus === 'inProgress') && (
-          <div className="donation-card-status">
+        {/* TODO + Note on the below: somehow, even with the guardrails in place to assure the total is maximum 100% in both this file and the ProgressBar component,
+        if the currentAmount is higher than the endAmount, the progress bar renders outside the alotted space*/}
+        {fundingStatus === 'inProgress' && (
+          <ProgressBar
+            maxNumber={projectData.endAmount}
+            currentNumber={projectData.currentAmount}
+            // TODO - fix background images
+            // backgroundType="image"
+          >
             {(projectData.currentAmount / projectData.endAmount) * 100 > 100
-              ? '100'
+              ? 100
               : `${Math.round((projectData.currentAmount / projectData.endAmount) * 100)}`}
             % FUNDED!
-          </div>
+          </ProgressBar>
+        )}
+        {fundingStatus === 'funded' && (
+          <ProgressBar maxNumber={100} currentNumber={100}>
+            100% FUNDED!
+          </ProgressBar>
         )}
       </div>
       <div className="donation-card-content">

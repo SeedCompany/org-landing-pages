@@ -10,7 +10,12 @@ export default {
     'template-marketing',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        watermarkGreen: '#29B67E',
+        watermarkDarkBlue: '#1D3638',
+      },
+    },
   },
   plugins: [typography],
 };
