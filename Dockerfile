@@ -57,6 +57,7 @@ FROM base-runtime AS runtime
 COPY --from=builder /app/.yarn ./.yarn
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json /app/yarn.lock /app/.yarnrc.yml /app/.pnp.* ./
+COPY --from=builder /app/sanity.cli.ts /app/sanity.config.ts /app/sanity.types.ts /app/schema.json ./
 COPY --from=builder /app/dist ./dist
 
 # Cache current yarn version
