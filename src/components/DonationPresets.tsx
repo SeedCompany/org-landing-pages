@@ -66,11 +66,14 @@ export const DonationPresets = ({
         amount="Other"
       />
       {otherAmount && (
-        <div>
-          <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
+        <div className="px-2">
+          <label
+            htmlFor="amount"
+            className="block text-sm/6 font-medium text-gray-900 whitespace-nowrap"
+          >
             Donation Amount
           </label>
-          <div className="mt-2">
+          <div className="my-2">
             <input
               id="amount"
               type="text"
