@@ -1,6 +1,6 @@
 import type { CardProps } from './ProjectCards.tsx';
 import { useState } from 'react';
-import { ProgressBar } from './atoms/ProgressBar.tsx';
+import { ProgressBar } from './atoms/ProgressBar';
 
 type FundingStatus = 'funded' | 'inProgress' | 'locked' | 'unknown';
 
@@ -123,7 +123,8 @@ export const DonationCardComponent = ({ projectData }: { projectData: CardProps 
           <ProgressBar
             maxNumber={projectData.endAmount}
             currentNumber={projectData.currentAmount}
-            backgroundType="image"
+            // TODO - fix background images
+            // backgroundType="image"
           >
             {(projectData.currentAmount / projectData.endAmount) * 100 > 100
               ? 100
@@ -132,7 +133,7 @@ export const DonationCardComponent = ({ projectData }: { projectData: CardProps 
           </ProgressBar>
         )}
         {fundingStatus === 'funded' && (
-          <ProgressBar maxNumber={100} currentNumber={100} backgroundType="image">
+          <ProgressBar maxNumber={100} currentNumber={100}>
             100% FUNDED!
           </ProgressBar>
         )}
