@@ -17,6 +17,9 @@ jobs:
       - name: Check for no duplicate dependencies
         run: yarn dedupe --check
 
+      - name: Verify Sanity schema
+        run: yarn sanity schema validate
+
       - name: Generate Sanity types
         run: yarn sanity:gen
 
