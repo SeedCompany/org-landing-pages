@@ -2,6 +2,26 @@
 
 Org Landing Pages is a dynamic and responsive web application for creating and managing landing pages for various campaigns. Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/), this project integrates with Sanity CMS to fetch and render campaign data, including rich text content and images.
 
+## Installation
+
+Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/org-landing-pages.git
+   cd org-landing-pages
+   ```
+
+Create a .env.local file - copy the environment variables found in the env.d.ts file and put into the .env.local with their appropriate values.
+
+Install dependencies:
+ ```bash
+   yarn
+ ```
+
+Run locally:
+   ```bash
+   yarn dev
+   ```
+
 ## Features
 
 - **Dynamic Campaign Pages**: Automatically generate landing pages based on campaign data from Sanity CMS.
@@ -16,12 +36,3 @@ Org Landing Pages is a dynamic and responsive web application for creating and m
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **CMS**: [Sanity](https://www.sanity.io/)
 - **Rich Text Rendering**: [@portabletext/to-html](https://github.com/portabletext/to-html)
-
-## Installation
-
-Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/org-landing-pages.git
-   cd org-landing-pages
-
-Create a .env.local file - copy the environment variables from the .env file and replace the values with the proper values in the .env.local
