@@ -10,6 +10,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { CampaignGivingInfo } from './CampaignGivingInfo.tsx';
+import { DonationButton } from './DonationButton.tsx';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -107,9 +108,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     mode: 'onBlur',
   });
 
-  const stripeReturnUrl = window.location.origin + '/thank-you';
-  console.log(stripeReturnUrl);
-
   const validateContactInfo = async () => {
     const isValid = await form.trigger();
     if (isValid) {
@@ -191,6 +189,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
 
   const onSubmit = form.handleSubmit(
     async (formData) => {
+      const stripeReturnUrl = window.location.origin + '/thank-you';
       try {
         if (!elements) {
           console.error('No Stripe Elements found');
@@ -323,189 +322,167 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
 
   return (
     <div className="my-3">
-      <div>
-        {donationStep === 'amount' ? (
-          <div className="m-2">
-            {formProps.campaignTotals && <CampaignGivingInfo />}
-            <RecurringDonationSwitcher
-              currentType={donationCadence}
-              setDonationType={setDonationCadence}
-            />
-            <DonationPresets
-              presetAmounts={formProps?.presetAmounts}
-              setAmount={setAmount}
-              recurring={donationCadence === 'Monthly'}
-              // showForm={setShowAmountInput}
-              currentAmount={amount}
-            />
-            <button
-              type="button"
-              onClick={() => {
-                setDonationStep('contact');
-              }}
-              className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-            >
-              Give Now
-            </button>
+      {donationStep === 'amount' ? (
+        <div className="m-2">
+          {formProps.campaignTotals && <CampaignGivingInfo />}
+          <RecurringDonationSwitcher
+            currentType={donationCadence}
+            setDonationType={setDonationCadence}
+          />
+          <DonationPresets
+            presetAmounts={formProps?.presetAmounts}
+            setAmount={setAmount}
+            recurring={donationCadence === 'Monthly'}
+            currentAmount={amount}
+          />
+          <DonationButton
+            onClick={() => {
+              setDonationStep('contact');
+            }}
+            type="button"
+          >
+            Give Now
+          </DonationButton>
+        </div>
+      ) : (
+        <div>
+          {!formProps.hideInvestorType && (
+            <>
+              <span>Give As:</span>
+              {/* this needs to be a selector */}
+              <div>
+                <span>Individual</span>
+                <span>Organization</span>
+              </div>
+            </>
+          )}
+          <div
+            className={`flex items-center justify-between gap-3 m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}
+          >
+            <div className="text-sm">
+              Input payment details for your{' '}
+              {donationCadence === 'Monthly' ? 'monthly' : 'one-time'} gift.{' '}
+            </div>
           </div>
-        ) : (
-          <>
-            {!formProps.hideInvestorType && (
+          <div className={`m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}>
+            <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
+              Donation Amount
+            </label>
+            <div>
+              <input
+                id="amount"
+                type="text"
+                required
+                value={amount}
+                onChange={(e) => setAmount(parseInt(e.target.value))}
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              />
+            </div>
+          </div>
+          <form
+            onSubmit={(e: React.FormEvent) => {
+              e.preventDefault();
+              void onSubmit();
+            }}
+          >
+            <DonationInput
+              placeholder="First name"
+              label="First name"
+              error={firstName.fieldState.error}
+              hidden={donationStep === 'payment'}
+              required
+              {...firstName.field}
+            />
+            <DonationInput
+              placeholder="Last name"
+              label="Last name"
+              error={lastName.fieldState.error}
+              hidden={donationStep === 'payment'}
+              required
+              {...lastName.field}
+            />
+            <DonationInput
+              placeholder="Email"
+              label="Email"
+              type="email"
+              error={email.fieldState.error}
+              hidden={donationStep === 'payment'}
+              {...email.field}
+            />
+            <DonationInput
+              placeholder="Address Line 1"
+              label="Address Line 1"
+              error={line1.fieldState.error}
+              hidden={donationStep === 'payment'}
+              {...line1.field}
+            />
+            <DonationInput
+              placeholder="Address Line 2"
+              label="Address Line 2"
+              error={line2.fieldState.error}
+              hidden={donationStep === 'payment'}
+              {...line2.field}
+            />
+            <DonationInput
+              placeholder="City"
+              label="City"
+              error={city.fieldState.error}
+              hidden={donationStep === 'payment'}
+              {...city.field}
+            />
+            <DonationInput
+              placeholder="State"
+              label="State"
+              error={state.fieldState.error}
+              hidden={donationStep === 'payment'}
+              {...state.field}
+            />
+            <DonationInput
+              placeholder="Zip Code"
+              label="Zip Code"
+              error={zip.fieldState.error}
+              hidden={donationStep === 'payment'}
+              {...zip.field}
+            />
+            {donationStep === 'payment' && (
               <>
-                <span>Give As:</span>
-                {/* this needs to be a selector */}
-                <div>
-                  <span>Individual</span>
-                  <span>Organization</span>
-                </div>
+                <h2 className="mx-2 mb-5">Select Payment Method and Input Details</h2>
+                <PaymentElement
+                  className="m-2"
+                  id="payment-element"
+                  options={paymentElementOptions}
+                />
+                <DonationButton
+                  buttonType="secondary"
+                  onClick={() => {
+                    setDonationStep('contact');
+                  }}
+                  type="button"
+                >
+                  Go Back
+                </DonationButton>
+                <DonationButton type="submit">Give Now</DonationButton>
               </>
             )}
-            <div
-              className={`flex items-center justify-between gap-3 m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}
-            >
-              <div className="text-sm">
-                Input payment details for your{' '}
-                {donationCadence === 'Monthly' ? 'monthly' : 'one-time'} gift.{' '}
-              </div>
-            </div>
-            <div className={`m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}>
-              <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
-                Donation Amount
-              </label>
-              <div>
-                <input
-                  id="amount"
-                  type="text"
-                  required
-                  value={amount}
-                  onChange={(e) => setAmount(parseInt(e.target.value))}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-            <form
-              onSubmit={(e: React.FormEvent) => {
-                e.preventDefault();
-                void onSubmit();
-              }}
-              onInvalid={(e: React.FormEvent) => {
-                e.preventDefault();
-                console.error('Form submission invalid:', e);
-                setDonationStep('contact');
-              }}
-              onError={(e) => {
-                e.preventDefault();
-                console.error('Form submission error:', e);
-                setDonationStep('contact');
-              }}
-            >
-              <DonationInput
-                placeholder="First name"
-                label="First name"
-                error={firstName.fieldState.error}
-                hidden={donationStep === 'payment'}
-                required
-                {...firstName.field}
-              />
-              <DonationInput
-                placeholder="Last name"
-                label="Last name"
-                error={lastName.fieldState.error}
-                hidden={donationStep === 'payment'}
-                required
-                {...lastName.field}
-              />
-              <DonationInput
-                placeholder="Email"
-                label="Email"
-                type="email"
-                error={email.fieldState.error}
-                hidden={donationStep === 'payment'}
-                {...email.field}
-              />
-              <DonationInput
-                placeholder="Address Line 1"
-                label="Address Line 1"
-                error={line1.fieldState.error}
-                hidden={donationStep === 'payment'}
-                {...line1.field}
-              />
-              <DonationInput
-                placeholder="Address Line 2"
-                label="Address Line 2"
-                error={line2.fieldState.error}
-                hidden={donationStep === 'payment'}
-                {...line2.field}
-              />
-              <DonationInput
-                placeholder="City"
-                label="City"
-                error={city.fieldState.error}
-                hidden={donationStep === 'payment'}
-                {...city.field}
-              />
-              <DonationInput
-                placeholder="State"
-                label="State"
-                error={state.fieldState.error}
-                hidden={donationStep === 'payment'}
-                {...state.field}
-              />
-              <DonationInput
-                placeholder="Zip Code"
-                label="Zip Code"
-                error={zip.fieldState.error}
-                hidden={donationStep === 'payment'}
-                {...zip.field}
-              />
-              {donationStep === 'payment' && (
-                <>
-                  <PaymentElement
-                    className="m-2"
-                    id="payment-element"
-                    options={paymentElementOptions}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setDonationStep('contact');
-                    }}
-                    className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                  >
-                    Go Back
-                  </button>
-                  <button
-                    type="submit"
-                    className="rounded-sm bg-emerald-600 px-3.5 py-2.5 m-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                  >
-                    Give Now
-                  </button>
-                </>
-              )}
-              {donationStep !== 'payment' && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setDonationStep('amount');
-                    }}
-                    className="m-2 rounded-sm bg-emerald-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                  >
-                    Go Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleNextClick}
-                    className="rounded-sm bg-emerald-600 px-3.5 py-2.5 m-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-                  >
-                    Go to Payment
-                  </button>
-                </>
-              )}
-            </form>
-          </>
-        )}
-      </div>
+            {donationStep !== 'payment' && (
+              <>
+                <DonationButton
+                  buttonType="secondary"
+                  onClick={() => {
+                    setDonationStep('amount');
+                  }}
+                  type="button"
+                >
+                  Go Back
+                </DonationButton>
+                <DonationButton onClick={handleNextClick} type="button">
+                  Go to Payment
+                </DonationButton>
+              </>
+            )}
+          </form>
+        </div>
+      )}
     </div>
   );
 };
