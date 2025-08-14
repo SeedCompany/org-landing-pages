@@ -11,6 +11,7 @@ import SustainersTemplate from '../../components/templates/SustainersTemplate.as
 import ChurchTemplate from '../../components/templates/ChurchTemplate.astro';
 import { campaignBySlug } from './campaignBySlug.groq';
 
+export const prerender = false; // Disable prerendering for dynamic content
 // Map templates from Sanity to Astro components
 const templateMap = {
   advocates: AdvocatesTemplate,
