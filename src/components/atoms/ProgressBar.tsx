@@ -16,12 +16,7 @@ export const ProgressBar = ({
   // backgroundType = 'solid',
   children,
 }: ProgressBarProps) => {
-  const [progress, setProgress] = React.useState((currentNumber / maxNumber || 0) * 100);
-  useEffect(() => {
-    if (progress > 100) {
-      setProgress(100);
-    }
-  }, [progress]);
+  const progress = Math.min((currentNumber / maxNumber || 0) * 100, 100);
   return (
     // TODO - fix background image stuff - no time to re-factor all the components right now to use the janky Astro files
     // <div
