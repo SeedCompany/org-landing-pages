@@ -31,7 +31,7 @@ let { campaign } = Astro.props;
 campaign ??= await sanity.fetch(campaignBySlug, { slug });
 
 if (!campaign) {
-  throw new Response(null, {
+  return new Response(null, {
     status: 404,
     statusText: 'Not Found',
   });
