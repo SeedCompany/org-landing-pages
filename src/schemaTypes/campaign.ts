@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import ImageRadioInput from '../components/ImageRadioInput.jsx';
+import { ImageRadioInput } from '../components/ImageRadioInput';
 import TemplateThumbnailMarketing from '../components/templates/MarketingTemplate.png';
 import TemplateThumbnailSustainers from '../components/templates/SustainersTemplate.png';
 
@@ -56,17 +56,23 @@ export default defineType({
           {
             title: 'Marketing Template',
             value: 'marketing',
-            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/99e113372471d08ff56150c0c7dc0cf895b341ab-265x159.png',
+            // @ts-expect-error fixme
+            imageSrc:
+              'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/99e113372471d08ff56150c0c7dc0cf895b341ab-265x159.png',
           },
           {
             title: 'Sustainers Template',
             value: 'sustainers',
-            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/ad2f9a0ecd9c0299f3264f8c0a5e43ef8feade63-265x159.png',
+            // @ts-expect-error fixme
+            imageSrc:
+              'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/ad2f9a0ecd9c0299f3264f8c0a5e43ef8feade63-265x159.png',
           },
           {
             title: 'Church Template',
             value: 'church',
-            imageSrc: 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/5c407b29b41d2723b538de4566e54058be399bb8-265x159.png',
+            // @ts-expect-error fixme
+            imageSrc:
+              'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/5c407b29b41d2723b538de4566e54058be399bb8-265x159.png',
           },
         ],
       },
@@ -203,7 +209,7 @@ export default defineType({
               validation: (Rule) =>
                 Rule.custom((value, context) => {
                   if (
-                    context.parent?.template !== 'aboutTextOnly' &&
+                    (context.parent as any)?.template !== 'aboutTextOnly' &&
                     context.document?.templateType === 'church' &&
                     !value
                   ) {
@@ -416,7 +422,7 @@ export default defineType({
       name: 'contactEmail',
       title: 'Contact Email',
       type: 'email',
-      validation: (Rule) => Rule.required().email().warning('A valid email is required'),
+      validation: (Rule) => Rule.required().warning('A valid email is required'),
     }),
     // Campaign Data
     defineField({
