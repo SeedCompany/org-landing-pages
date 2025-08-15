@@ -39,44 +39,38 @@ export const InvestorGroup = (props: InvestorGroupProps) => {
       <DonationInput
         placeholder="Email"
         label="Email"
-        fieldName="email"
         type="email"
-        error={email.fieldState.invalid}
+        error={email.fieldState.error}
         {...email.field}
       />
       <DonationInput
         placeholder="Address Line 1"
         label="Address Line 1"
-        fieldName="line1"
-        error={line1.fieldState.invalid}
+        error={line1.fieldState.error}
         {...line1.field}
       />
       <DonationInput
         placeholder="Address Line 2"
         label="Address Line 2"
-        fieldName="line2"
-        error={line2.fieldState.invalid}
+        error={line2.fieldState.error}
         {...line2.field}
       />
       <DonationInput
         placeholder="City"
         label="City"
-        fieldName="city"
-        error={city.fieldState.invalid}
+        error={city.fieldState.error}
         {...city.field}
       />
       <DonationInput
         placeholder="State"
         label="State"
-        fieldName="state"
-        error={state.fieldState.invalid}
+        error={state.fieldState.error}
         {...state.field}
       />
       <DonationInput
         placeholder="Zip Code"
         label="Zip Code"
-        fieldName="zip"
-        error={zip.fieldState.invalid}
+        error={zip.fieldState.error}
         {...zip.field}
       />
     </>

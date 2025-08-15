@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity';
-import ImageRadioInput from '../components/ImageRadioInput.jsx';
+import { ImageRadioInput } from '../components/ImageRadioInput';
 
 const richTextBlock = {
   type: 'block',
@@ -196,7 +196,7 @@ export default defineType({
       title: 'Contact Email',
       type: 'email',
       group: 'content',
-      validation: (Rule) => Rule.required().email().warning('A valid email is required'),
+      validation: (Rule) => Rule.required().warning('A valid email is required'),
     }),
     // FAQs
     defineField({
