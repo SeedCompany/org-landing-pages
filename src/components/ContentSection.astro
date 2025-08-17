@@ -13,10 +13,6 @@ const { title, content, htmlContent = false } = Astro.props;
     <div class="text-base leading-relaxed text-gray-700">
       <!-- Wrap content to handle potential undefined blocks -->
       <div class="content" set:html={content}></div>
-      <!-- Fallback for call-to-action if not in content -->
-      {content.includes("Let's translate the Bible together, church!") && (
-        <h3 class="text-xl font-semibold mt-6">Let's translate the Bible together, church!</h3>
-      )}
     </div>
   ) : (
     <p class="text-base">{content}</p>

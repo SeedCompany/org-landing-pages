@@ -290,9 +290,18 @@ Church page styles
   font-size: 3rem;
   line-height: 1;
 }
+.content h3 {
+  font-family: 'Gotham', sans-serif;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+.content strong {
+  font-weight: bold;
+}
 .content p {
   font-family: 'Gotham', sans-serif;
   font-size: 17px;
+  margin: 1.5rem 0px;
 }
 .gray-500 {
   color: var(--gray-500);
@@ -392,6 +401,9 @@ Church page styles
   }
   .content h2 {
     font-size: 2rem;
+  }
+  .content h3 {
+    font-size: 1.5rem;
   }
 }
 @media (max-width: 1720px) {
