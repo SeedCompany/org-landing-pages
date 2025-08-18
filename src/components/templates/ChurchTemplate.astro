@@ -222,7 +222,7 @@ const { campaignData } = Astro.props;
               </span>
             </button>
           </dt>
-          <el-disclosure id={`faq-${index}`} {index > 0 ? 'hidden' : ''} class="[&:not([hidden])]:contents">
+          <el-disclosure id={`faq-${index}`} hidden={index > 0} class="[&:not([hidden])]:contents">
             <dd class="mt-2 pr-12">
               <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
             </dd>
