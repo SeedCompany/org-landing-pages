@@ -10,7 +10,6 @@ import Layout from '../../layouts/Layout.astro';
 import Video from '../../components/Video.astro';
 import ContentSection from '../../components/ContentSection.astro';
 import DonationCard from '../../components/DonationCard.astro';
-import DonationFAQ from '../../components/DonationFAQ.astro';
 import Footer from '../../components/Footer.astro';
 
 interface Props {
@@ -35,7 +34,7 @@ const { campaignData } = Astro.props;
                   <Video
                     src={campaignData.video.src}
                     poster={campaignData.video.poster ? img(sanity).image(campaignData.video.poster).url() : 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg'}
-                    class="rounded-lg mb-4"
+                    class="rounded-lg mb-4 hero-video"
                   />
                 )}
               </div>
@@ -48,34 +47,36 @@ const { campaignData } = Astro.props;
       )}
       {campaignData.heroTemplate === 'heroSplit' && (
 
-        <section class="hero">
-            <div class="bg-[url('../assets/mask_group.png')] bg-cover">
+      <section class="hero">
+        <div class="relative bg-[url('../assets/mask_group.png')] bg-cover hero-bg">
+            <!-- Gradient overlay for fade effect -->
+            <div class="absolute inset-0" style="background: linear-gradient(to bottom, transparent 70%, white 100%)"></div>
             <div class="container mx-auto flex flex-col py-6 lg:flex-row">
             <div class="lg:w-1/2 w-full p-4 lg:p-8">
                 <div class="relative isolate">
-                    <div class="">
-                        <img
-                            src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/129f5599a20cf300112af5bd151253b44d5304c7-265x110.png"
-                            alt="Watermark Logo"
-                            class="mb-4 w-20 sm:w-40 lg:mx-0"
-                        />
-                        {campaignData.subheading && <h2 class="hero-sub-heading uppercase text-pretty">{campaignData.subheading}</h2>}
-                        <h1 class="hero-h1 text-pretty uppercase font-semibold" set:html={toHTML(campaignData.heading)}></h1>
-                        <div class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base red-hat-mono" set:html={toHTML(campaignData.heroCopy)}></div>
-                    </div>
+                <div class="">
+                    <img
+                    src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/129f5599a20cf300112af5bd151253b44d5304c7-265x110.png"
+                    alt="Watermark Logo"
+                    class="mb-4 w-20 sm:w-40 lg:mx-0"
+                    />
+                    {campaignData.subheading && <h2 class="hero-sub-heading uppercase text-pretty">{campaignData.subheading}</h2>}
+                    <h1 class="hero-h1 text-pretty uppercase font-semibold" set:html={toHTML(campaignData.heading)}></h1>
+                    <div class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base gotham" set:html={toHTML(campaignData.heroCopy)}></div>
+                </div>
                 </div>
                 <Video
                 src="https://vimeo.com/442493346?fl=pl&fe=sh"
                 poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
-                class="rounded-lg mb-4"
+                class="rounded-lg hero-video"
                 />
             </div>
-            </div>
             <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
-              <GiveFormWithTotals />
+                <GiveFormWithTotals />
             </div>
-          </div>
-        </section>
+            </div>
+        </div>
+      </section>
       )}
       {campaignData.heroTemplate === 'heroCentered' && (
         <section class="hero text-center py-12">
@@ -107,13 +108,13 @@ const { campaignData } = Astro.props;
 
   <!-- About Section -->
   {campaignData.aboutSections?.map((section) => (
-    <section class="py-16">
+    <section class="about-section">
       <div class="container mx-auto">
         {section.template === 'aboutTextOnly' && (
-          <div class="flex flex-col lg:flex-row gap-8">
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
+            // aboutTextOnly
+          <div class="flex flex-col lg:flex-row gap-8 aboutTextOnly">
+            <div class="lg:w-1/2 w-full p-4 lg:p-8 mr-[120px]">
               <ContentSection
-                title={toHTML(section.title)}
                 content={toHTML(section.content)}
                 htmlContent={true}
               />
@@ -124,7 +125,8 @@ const { campaignData } = Astro.props;
           </div>
         )}
         {section.template === 'aboutImageLeft' && (
-          <div class="flex flex-col lg:flex-row gap-8">
+            // aboutImageLeft
+          <div class="flex flex-col lg:flex-row gap-8 aboutImageLeft">
             <div class="lg:w-1/2 w-full p-4 lg:p-8">
 
             </div>
@@ -152,7 +154,8 @@ const { campaignData } = Astro.props;
 
         )}
         {section.template === 'aboutImageRight' && (
-          <div class="flex flex-col lg:flex-row gap-8">
+            // aboutImageRight
+          <div class="flex flex-col lg:flex-row gap-8 aboutImageRight">
             <div class="lg:w-1/2 w-full p-4 lg:p-8">
               <ContentSection
                 title={toHTML(section.title)}
@@ -166,7 +169,7 @@ const { campaignData } = Astro.props;
           </div>
         )}
         <div class="lg:w-1/2 w-full p-4 lg:p-8">
-          <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Unlock a Project.<br>Join the Mission.</h2>
+          <h2 class="text-4xl text-center md:text-left font-semibold tracking-tight text-gray-900 sm:text-5xl">Unlock a Project.<br>Join the Mission.</h2>
         </div>
         <div class="lg:w-1/2 w-full p-4 lg:p-8">
           <DonationCard />
@@ -201,11 +204,11 @@ const { campaignData } = Astro.props;
     <div class="mx-auto max-w-4xl">
       <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Frequently asked questions</h2>
       <dl class="mt-16 divide-y divide-gray-900/10">
-      {campaignData.faqs.map((faq) => (
+      {campaignData.faqs.map((faq, index) => (
         <div class="py-6 first:pt-0 last:pb-0">
           <dt>
 
-            <button type="button" command="--toggle" commandfor="faq-0" class="flex w-full items-start justify-between text-left text-gray-900">
+            <button type="button" command="--toggle" commandfor={`faq-${index}`} class="flex w-full items-start justify-between text-left text-gray-900">
 
                 <span class="text-base/7 font-semibold">{faq.question}</span>
 
@@ -219,7 +222,7 @@ const { campaignData } = Astro.props;
               </span>
             </button>
           </dt>
-          <el-disclosure id="faq-0" class="[&:not([hidden])]:contents">
+          <el-disclosure id={`faq-${index}`} class="[&:not([hidden])]:contents">
             <dd class="mt-2 pr-12">
               <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
             </dd>

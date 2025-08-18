@@ -179,6 +179,9 @@ Church page styles
 .form-card {
   background: #fff;
 }
+.hero-bg {
+  height: 884px;
+}
 .hero-h1 {
   font-size: 5rem;
   line-height: 0.85;
@@ -192,6 +195,12 @@ Church page styles
 .hero-p {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+.hero-video {
+  max-width: 100%;
+  height: auto;
+  margin-top: 5rem;
+  margin-bottom: 0px;
 }
 .heading-h2 {
   font-size: 2.25rem;
@@ -273,6 +282,27 @@ Church page styles
   background-color: var(--sus-green-text);
   border-radius: 50%;
 }
+.content {
+  margin-top: 5rem;
+}
+.content h2 {
+  font-family: 'Gotham', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+}
+.content h3 {
+  font-family: 'Gotham', sans-serif;
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+.content strong {
+  font-weight: bold;
+}
+.content p {
+  font-family: 'Gotham', sans-serif;
+  font-size: 17px;
+  margin: 1.5rem 0px;
+}
 .gray-500 {
   color: var(--gray-500);
 }
@@ -313,7 +343,7 @@ Church page styles
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/fonts/._GothamOffice-Regular') format('truetype');
+  src: url('/fonts/GothamOffice-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -350,6 +380,9 @@ Church page styles
   .mkt-primary-btn {
     font-size: 1.166rem;
   }
+  .hero-bg {
+    height: auto;
+  }
   .hero-h1 {
     font-size: 3rem;
     line-height: 1;
@@ -359,6 +392,18 @@ Church page styles
     font-size: 2rem;
     line-height: 1.2;
     color: var(--dark-green);
+  }
+  .hero-video {
+    margin-top: 2rem;
+  }
+  .content {
+    margin-top: 1rem;
+  }
+  .content h2 {
+    font-size: 2rem;
+  }
+  .content h3 {
+    font-size: 1.5rem;
   }
 }
 @media (max-width: 1720px) {
