@@ -198,7 +198,7 @@ const { campaignData } = Astro.props;
       {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqAccordion' && (
 
 
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
 <div class="bg-white">
   <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
     <div class="mx-auto max-w-4xl">
@@ -222,7 +222,7 @@ const { campaignData } = Astro.props;
               </span>
             </button>
           </dt>
-          <el-disclosure id={`faq-${index}`} class="[&:not([hidden])]:contents">
+          <el-disclosure id={`faq-${index}`} {index > 0 ? 'hidden' : ''} class="[&:not([hidden])]:contents">
             <dd class="mt-2 pr-12">
               <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
             </dd>
