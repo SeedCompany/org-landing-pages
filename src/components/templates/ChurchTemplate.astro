@@ -3,7 +3,6 @@ import img from '@sanity/image-url';
 import { sanityClient as sanity } from 'sanity:client';
 import { toHTML } from '../../lib/portableTextSerializer';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
-import PageHeader from '../../components/PageHeader.astro';
 import Hero from '../../components/Hero.astro';
 import GiveFormWithTotals from '../GiveFormWithTotals.astro';
 import '../../styles/global.css';
@@ -21,7 +20,6 @@ const { campaignData } = Astro.props;
 ---
 
 <Layout title={campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page'}>
-  <PageHeader />
 
   <!-- Hero Section -->
   {campaignData.templateType === 'church' && (

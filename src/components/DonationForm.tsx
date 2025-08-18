@@ -340,6 +340,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
               setDonationStep('contact');
             }}
             type="button"
+            className="w-full"
           >
             Give Now
           </DonationButton>
@@ -452,20 +453,22 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                   id="payment-element"
                   options={paymentElementOptions}
                 />
-                <DonationButton
-                  buttonType="secondary"
-                  onClick={() => {
-                    setDonationStep('contact');
-                  }}
-                  type="button"
-                >
-                  Go Back
-                </DonationButton>
-                <DonationButton type="submit">Give Now</DonationButton>
+                <div className="grid grid-cols-2">
+                  <DonationButton
+                    buttonType="secondary"
+                    onClick={() => {
+                      setDonationStep('contact');
+                    }}
+                    type="button"
+                  >
+                    Go Back
+                  </DonationButton>
+                  <DonationButton type="submit">Give Now</DonationButton>
+                </div>
               </>
             )}
             {donationStep !== 'payment' && (
-              <>
+              <div className="grid grid-cols-2">
                 <DonationButton
                   buttonType="secondary"
                   onClick={() => {
@@ -478,7 +481,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 <DonationButton onClick={handleNextClick} type="button">
                   Go to Payment
                 </DonationButton>
-              </>
+              </div>
             )}
           </form>
         </div>

@@ -1,12 +1,12 @@
-import React from 'react'
-import { set } from 'sanity'
+import React from 'react';
+import { set, type StringInputProps, type TitledListValue } from 'sanity';
 
 const styles = {
   container: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '10px',
-    marginTop: '5px', 
+    marginTop: '5px',
   },
   option: {
     border: '1px solid #ccc',
@@ -21,7 +21,7 @@ const styles = {
     boxShadow: '0 0 0 1px #36f',
   },
   image: {
-    maxWidth: '350px', 
+    maxWidth: '350px',
     maxHeight: '150px',
     display: 'block',
     marginBottom: '5px',
@@ -29,30 +29,28 @@ const styles = {
   },
   title: {
     fontSize: '0.8em',
-    color: '#666', 
-  }
-}
+    color: '#666',
+  },
+} as const;
 
-const ImageRadioInput = React.forwardRef((props, ref) => {
-  const {
-    schemaType,
-    value,
-    readOnly,
-    onChange,
-  } = props
+type Option = TitledListValue<string> & {
+  imageSrc?: string;
+};
+export const ImageRadioInput = React.forwardRef<HTMLDivElement, StringInputProps>((props, ref) => {
+  const { schemaType, value, readOnly, onChange } = props;
 
-  const options = schemaType.options?.list || []
+  const options = (schemaType.options?.list || []) as Option[];
 
-  const handleSelect = (optionValue) => {
+  const handleSelect = (optionValue: string) => {
     if (!readOnly) {
-      onChange(set(optionValue))
+      onChange(set(optionValue));
     }
-  }
+  };
 
   return (
     <div style={styles.container} ref={ref}>
       {options.map((option) => {
-        const isSelected = value === option.value
+        const isSelected = value === option.value;
         return (
           <div
             key={option.value}
@@ -60,20 +58,18 @@ const ImageRadioInput = React.forwardRef((props, ref) => {
               ...styles.option,
               ...(isSelected ? styles.optionSelected : {}),
             }}
-            onClick={() => handleSelect(option.value)}
+            onClick={() => handleSelect(option.value!)}
             role="radio"
             aria-checked={isSelected}
             tabIndex={0}
           >
             {option.imageSrc && (
-               <img src={option.imageSrc} alt={option.title} style={styles.image} />
+              <img src={option.imageSrc} alt={option.title} style={styles.image} />
             )}
             <div style={styles.title}>{option.title}</div>
           </div>
-        )
+        );
       })}
     </div>
-  )
-})
-
-export default ImageRadioInput
+  );
+});
