@@ -37,9 +37,6 @@ if (!campaign) {
   });
 }
 
-console.log('Campaign data:', JSON.stringify(campaign, null, 2));
-console.log('Fetched campaign templateType:', campaign.templateType);
-
 // Determine which template to use
 const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
 const pageTitle = campaign.heading ? toPlainText(campaign.heading) : 'Campaign Page';
