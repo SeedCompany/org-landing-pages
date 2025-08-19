@@ -320,10 +320,6 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     }
   }, [elements, form, donationCadence, amount]);
 
-  useEffect(() => {
-    console.log('form', form.formState.isSubmitting);
-  }, [form]);
-
   return (
     <div className="my-3">
       {donationStep === 'amount' ? (
