@@ -463,7 +463,9 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                   >
                     Go Back
                   </DonationButton>
-                  <DonationButton type="submit">Give Now</DonationButton>
+                  <DonationButton isSubmitting={form.formState.isSubmitting} type="submit">
+                    Give Now
+                  </DonationButton>
                 </div>
               </>
             )}
