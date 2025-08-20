@@ -179,6 +179,16 @@ Church page styles
 .form-card {
   background: #fff;
 }
+.form-wrapper {
+  display: flex
+;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    justify-content: center;
+    align-items: stretch;
+}
+.form-wrapper button
 .hero-bg {
   height: 884px;
 }
