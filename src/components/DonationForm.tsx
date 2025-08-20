@@ -323,7 +323,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   return (
     <div className="my-3">
       {donationStep === 'amount' ? (
-        <div className="m-2">
+        <div className="m-2 form-wrapper">
           {formProps.campaignTotals && <CampaignGivingInfo />}
           <RecurringDonationSwitcher
             currentType={donationCadence}
@@ -340,7 +340,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
               setDonationStep('contact');
             }}
             type="button"
-            className="w-full"
+            className=""
           >
             Give Now
           </DonationButton>
