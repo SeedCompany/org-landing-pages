@@ -15,18 +15,34 @@ import Footer from '../components/Footer.astro';
   <PageHeader />
   <section class="hero">
     <div class="bg-[url('../assets/mask_group.png')] bg-cover">
-      <div class="container mx-auto flex flex-col py-6 lg:flex-row">
-        <div class="lg:w-1/2 w-full p-4 lg:p-8">
-          <Hero />
-          <Video
-            src="https://vimeo.com/442493346?fl=pl&fe=sh"
-            poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
-            class="rounded-lg mb-4"
-          />
+      <div class="container mx-auto py-6">
+        <!-- Mobile layout: Hero text -> Form -> Video -->
+        <!-- Desktop layout: (Hero text + Video) | Form -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+          <!-- Content area -->
+          <div class="w-full p-4 lg:p-8 flex flex-col">
+            <!-- Hero content -->
+            <div class="order-1">
+              <Hero />
+            </div>
+            <!-- Form (mobile: between hero and video, desktop: moved to right column) -->
+            <div class="order-2 lg:hidden">
+              <GiveFormWithTotals />
+            </div>
+            <!-- Video -->
+            <div class="order-3">
+              <Video
+                src="https://vimeo.com/442493346?fl=pl&fe=sh"
+                poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
+                class="rounded-lg mb-4"
+              />
+            </div>
+          </div>
+          <!-- Form area (desktop only) -->
+          <div class="hidden lg:block w-full p-4 lg:p-8 lg:pl-0">
+            <GiveFormWithTotals />
+          </div>
         </div>
-      </div>
-      <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
-        <GiveFormWithTotals />
       </div>
     </div>
   </section>
