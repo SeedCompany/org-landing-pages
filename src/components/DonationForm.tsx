@@ -11,6 +11,7 @@ import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { CampaignGivingInfo } from './CampaignGivingInfo.tsx';
 import { DonationButton } from './DonationButton.tsx';
+import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -100,6 +101,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
   // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
+  const [amountError, setAmountError] = useState<string | null>(null);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [v3RecaptchaToken, setV3RecaptchaToken] = useState<string | null>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -312,6 +314,15 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
   };
   useEffect(() => {
+    setAmountError(null);
+    if (amount > 999999) {
+      setAmountError('For donations of $1M or more, please contact us directly.');
+      return;
+    }
+    if (amount < 1 || isNaN(amount)) {
+      setAmountError('Donation amount must be at least $1.');
+      return;
+    }
     if (elements) {
       elements.update({
         mode: donationCadence === 'Monthly' ? 'subscription' : 'payment',
@@ -334,6 +345,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
             setAmount={setAmount}
             recurring={donationCadence === 'Monthly'}
             currentAmount={amount}
+            amountError={amountError}
           />
           <DonationButton
             onClick={() => {
@@ -369,16 +381,27 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
             <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900">
               Donation Amount
             </label>
-            <div>
+            <div className="mt-2 grid grid-cols-1">
               <input
                 id="amount"
                 type="text"
                 required
                 value={amount}
-                onChange={(e) => setAmount(parseInt(e.target.value))}
-                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                onChange={(e) => setAmount(parseInt(e.target.value) || 0)}
+                className={`block w-full rounded-md bg-white px-3 py-1.5 text-base ${amountError ? 'text-red-900 outline-red-300 placeholder:text-red-300 focus:outline-red-600 col-start-1 row-start-1' : 'text-gray-900 outline-gray-300 placeholder:text-gray-400 focus:outline-indigo-600'} outline outline-1 -outline-offset-1 focus:outline focus:outline-2 focus:-outline-offset-2  sm:text-sm/6`}
               />
+              {amountError && (
+                <ExclamationCircleIcon
+                  aria-hidden="true"
+                  className="pointer-events-none col-start-1 row-start-1 mr-3 size-5 self-center justify-self-end text-red-500 sm:size-4"
+                />
+              )}
             </div>
+            {amountError && (
+              <p id={`amount-error`} className="mt-2 text-sm text-red-600">
+                {amountError}
+              </p>
+            )}
           </div>
           <form
             onSubmit={(e: React.FormEvent) => {
@@ -480,7 +503,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
                 >
                   Go Back
                 </DonationButton>
-                <DonationButton onClick={handleNextClick} type="button">
+                <DonationButton onClick={handleNextClick} type="button" disabled={!!amountError}>
                   Go to Payment
                 </DonationButton>
               </div>
