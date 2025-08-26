@@ -11724,7 +11724,7 @@ __metadata:
     lucide: "npm:^0.503.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
-    prettier-plugin-astro: "npm:0.14.1"
+    prettier-plugin-astro: "npm:^0.14.1"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     react-google-recaptcha-v3: "npm:^1.11.0"
@@ -12395,7 +12395,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-astro@npm:0.14.1":
+"prettier-plugin-astro@npm:^0.14.1":
   version: 0.14.1
   resolution: "prettier-plugin-astro@npm:0.14.1"
   dependencies:
