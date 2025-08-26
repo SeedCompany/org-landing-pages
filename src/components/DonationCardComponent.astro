@@ -1,0 +1,88 @@
+---
+import { type CardProps } from './ProjectCards.astro';
+import ProgressBar from './atoms/ProgressBar.astro';
+import { type FundingStatus, LockSection } from './LockSection.tsx';
+
+const compareTotals = ({
+  current,
+  end,
+  start,
+}: {
+  current: number;
+  end: number;
+  start: number;
+}): FundingStatus => {
+  if (current < start) {
+    return 'locked';
+  } else if (current >= start && current < end) {
+    return 'inProgress';
+  } else if (current >= end) {
+    return 'funded';
+  } else {
+    return 'unknown';
+  }
+};
+
+interface Props {
+  projectData: CardProps;
+}
+
+const { projectData } = Astro.props;
+const fundingStatus: FundingStatus = compareTotals({
+  current: projectData.currentAmount,
+  end: projectData.endAmount,
+  start: projectData.startAmount,
+});
+console.log(fundingStatus)
+---
+
+<div class="donation-card">
+  <div class="donation-card-image-wrapper">
+    <img
+      class="donation-card-image"
+      src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/eaffaaa131775759083460fbe8886c0d574ceee4-1080x809.jpg"
+      alt=""
+    />
+    {
+      fundingStatus === 'inProgress' && (
+        <ProgressBar
+          maxNumber={projectData.endAmount}
+          currentNumber={projectData.currentAmount}
+          backgroundType="image"
+        >
+          {(projectData.currentAmount / projectData.endAmount) * 100 > 100
+            ? 100
+            : `${Math.round((projectData.currentAmount / projectData.endAmount) * 100)}`}
+          % FUNDED!
+        </ProgressBar>
+      )
+    }
+    {
+      fundingStatus === 'funded' && (
+        <ProgressBar maxNumber={100} currentNumber={100} backgroundType="image">
+          100% FUNDED!
+        </ProgressBar>
+      )
+    }
+  </div>
+  <div class="donation-card-content">
+    <h3 class="donation-card-subheading">
+      {`${projectData.peopleGroups} People groups in ${projectData.region}`}
+    </h3>
+    <div class="flex justify-between gap-2">
+      <h2 class="donation-card-heading">{projectData.projectHeader}</h2>
+      <div class="flex items-center">
+        <LockSection client:load fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
+      </div>
+    </div>
+    <p class="donation-card-description">{projectData.projectDescription}</p>
+    <ul class="donation-card-ul">
+      {
+        projectData.projectBullets.map((bullet, index) => (
+          <li class="donation-card-li">{bullet}</li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+

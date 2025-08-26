@@ -1,16 +1,21 @@
 ---
-import { type CardProps, ProjectCards } from './ProjectCards';
+import ProjectCards, { type CardProps } from './ProjectCards.astro';
 const mockData: CardProps[] = [
   {
     currentAmount: 105000,
     startAmount: 0,
     endAmount: 100000,
-    peopleGroups: 5,
+    peopleGroups: 4,
     region: 'SouthEast Asia',
-    projectHeader: 'Opportunity One',
+    projectHeader: 'Light for the Unreached',
     projectDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    projectBullets: ['Lorem Ipsum', 'Lorem Ipsum'],
+      'Connect 332,200 people to the power of God’s Word in their language. This opportunity accomplishes milestones for four language groups, one of which has never had access to the Bible in their language:',
+    projectBullets: [
+      'One Sign Language',
+      'One First Scripture Engagement',
+      'One New Testament',
+      'One Full Bible',
+    ],
   },
   {
     currentAmount: 105000,
