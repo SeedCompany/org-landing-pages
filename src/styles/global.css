@@ -193,24 +193,28 @@ Church page styles
   height: 884px;
 }
 .hero-h1 {
-  font-size: 5rem;
-  line-height: 0.85;
+  font-size: 5.5rem;
+  line-height: 0.95;
+  font-family: 'Gotham', san-serif;
+  font-weight: bold;
   color: var(--mkt-primary-text);
 }
 .hero-sub-heading {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   line-height: 0.85;
+  font-weight: normal;
   color: var(--dark-green);
 }
 .hero-p {
-  font-size: 1.25rem;
+  font-family: 'Gotham', san-serif;
+  font-size: 1.15rem;
   line-height: 1.75rem;
 }
 .hero-video {
-  max-width: 100%;
+  max-width: 100% !important;
   height: auto;
-  margin-top: 5rem;
-  margin-bottom: 0px;
+  border-radius: 20px;
+  margin: 0px !important;
 }
 .heading-h2 {
   font-size: 2.25rem;
@@ -292,23 +296,24 @@ Church page styles
   background-color: var(--sus-green-text);
   border-radius: 50%;
 }
-.content {
+.content-wrapper {
   margin-top: 5rem;
+  margin-right: 10rem;
 }
-.content h2 {
+.content-wrapper h2 {
   font-family: 'Gotham', sans-serif;
   font-size: 3rem;
   line-height: 1;
 }
-.content h3 {
+.content-wrapper h3 {
   font-family: 'Gotham', sans-serif;
   font-size: 1.75rem;
   font-weight: bold;
 }
-.content strong {
+.content-wrapper strong {
   font-weight: bold;
 }
-.content p {
+.content-wrapper p {
   font-family: 'Gotham', sans-serif;
   font-size: 17px;
   margin: 1.5rem 0px;
@@ -323,6 +328,7 @@ Church page styles
   background-color: var(--footer-bg);
   color: var(--footer-text);
 }
+
 @font-face {
   font-family: 'Rader Bold';
   src: url('/fonts/PPRader-Bold.otf') format('opentype');
@@ -394,8 +400,10 @@ Church page styles
     height: auto;
   }
   .hero-h1 {
-    font-size: 3rem;
-    line-height: 1;
+    font-size: 4rem;
+    line-height: 1.2;
+    font-family: 'Gotahm', sans-serif;
+    font-weight: bold;
     color: var(--mkt-primary-text);
   }
   .hero-sub-heading {
@@ -403,16 +411,13 @@ Church page styles
     line-height: 1.2;
     color: var(--dark-green);
   }
-  .hero-video {
-    margin-top: 2rem;
+  .content-wrapper {
+    margin-right: 0px;
   }
-  .content {
-    margin-top: 1rem;
-  }
-  .content h2 {
+  .content-wrapper h2 {
     font-size: 2rem;
   }
-  .content h3 {
+  .content-wrapper h3 {
     font-size: 1.5rem;
   }
 }

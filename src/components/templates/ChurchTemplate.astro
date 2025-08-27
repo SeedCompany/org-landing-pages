@@ -19,213 +19,179 @@ interface Props {
 const { campaignData } = Astro.props;
 ---
 
+<style>
+  .page {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  /* Left content column */
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .donation-faq {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  /* Right form column (Sticky) */
+  @media (min-width: 768px) {
+  .form-desktop {
+    position: sticky;
+    top: 0%;
+    transform: translateY(-20%);
+    align-self: start;
+  }
+  .content {
+    padding: 60px;
+  }
+  /* Hide the inline mobile version */
+  .content .form {
+    display: none;
+  }
+  .faq-wrapper {
+    max-width: 60%;
+  }
+    .hero-bg {
+    background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 800px;
+    z-index: -1;
+  }
+  .hero-bg-overlay {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 800px;
+    z-index: -1;
+  }
+  }
+/* mobile */
+@media (max-width: 767px) {
+  .page {
+    display: block;
+    gap: 0;
+  }
+  .content {
+    gap: 0;
+    padding: 60px 30px;
+  }
+  .form-desktop {
+    display: none; /* hide sticky desktop version */
+  }
+  .content .form {
+    display: block;
+    margin: 1.5rem 0;
+    position: static;
+    transform: none;
+    width: 100%;
+  }
+    .hero-bg {
+    background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 800px;
+    z-index: -1;
+  }
+  .hero-bg-overlay {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 100%, rgba(255, 255, 255, 1) 0%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 800px;
+    z-index: -1;
+  }
+}
+</style>
 <Layout title={campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page'}>
-
-  <!-- Hero Section -->
-  {campaignData.templateType === 'church' && (
-    <>
-      {campaignData.heroTemplate === 'heroFullWidth' && (
-        <section class="hero">
-          <div class="bg-[url('../assets/mask_group.png')] bg-cover bg-center" style={campaignData.heroImage ? `background-image: url(${img(sanity).image(campaignData.heroImage).url()});` : 'background-image: url("../assets/mask_group.png");'}>
-            <div class="container mx-auto flex flex-col py-6 lg:flex-row">
-              <div class="lg:w-1/2 w-full p-4 lg:p-8">
-                <Hero />
-                {campaignData.video && (
-                  <Video
-                    src={campaignData.video.src}
-                    poster={campaignData.video.poster ? img(sanity).image(campaignData.video.poster).url() : 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg'}
-                    class="rounded-lg mb-4 hero-video"
-                  />
-                )}
-              </div>
-              <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
-                <GiveFormWithTotals />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-      {campaignData.heroTemplate === 'heroSplit' && (
-
-      <section class="hero">
-        <div class="relative bg-[url('../assets/mask_group.png')] bg-cover hero-bg">
-            <!-- Gradient overlay for fade effect -->
-            <div class="absolute inset-0 -z-10" style="background: linear-gradient(to bottom, transparent 70%, white 100%)"></div>
-            <div class="container mx-auto flex flex-col py-6 lg:flex-row">
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-                <div class="relative isolate">
-                <div class="">
-                    <img
-                    src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/129f5599a20cf300112af5bd151253b44d5304c7-265x110.png"
-                    alt="Watermark Logo"
-                    class="mb-4 w-20 sm:w-40 lg:mx-0"
-                    />
-                    {campaignData.subheading && <h2 class="hero-sub-heading uppercase text-pretty">{campaignData.subheading}</h2>}
-                    <h1 class="hero-h1 text-pretty uppercase font-semibold" set:html={toHTML(campaignData.heading)}></h1>
-                    <div class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base gotham" set:html={toHTML(campaignData.heroCopy)}></div>
-                </div>
-                </div>
-                <Video
-                src="https://vimeo.com/442493346?fl=pl&fe=sh"
-                poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
-                class="rounded-lg hero-video"
-                />
-            </div>
-            <div class="lg:w-1/2 w-full p-4 lg:p-8 lg:pl-0">
-                <GiveFormWithTotals />
-            </div>
-            </div>
-        </div>
-      </section>
-      )}
-      {campaignData.heroTemplate === 'heroCentered' && (
-        <section class="hero text-center py-12">
-          <div class="container mx-auto">
-            <h1 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl" set:html={toHTML(campaignData.heading)}></h1>
-            {campaignData.subheading && <h2 class="mt-4 text-xl">{campaignData.subheading}</h2>}
-            <div class="mt-6 prose mx-auto max-w-2xl" set:html={toHTML(campaignData.heroCopy)}></div>
-            {campaignData.heroImage && (
-              <img class="mx-auto mt-8 w-full max-w-md rounded-lg" src={img(sanity).image(campaignData.heroImage).url()} alt={campaignData.heroImageAlt} />
-            )}
-            {campaignData.video && (
-              <Video
-                src={campaignData.video.src}
-                poster={campaignData.video.poster ? img(sanity).image(campaignData.video.poster).url() : 'https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg'}
-                class="mx-auto mt-8 max-w-md rounded-lg"
-              />
-            )}
-            {campaignData.ctaText && campaignData.ctaLink && (
-              <a href={campaignData.ctaLink} class="mt-6 inline-block bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">{campaignData.ctaText}</a>
-            )}
-            <div class="mt-8">
-              <GiveFormWithTotals />
-            </div>
-          </div>
-        </section>
-      )}
-    </>
-  )}
-
-  <!-- About Section -->
-  {campaignData.aboutSections?.map((section) => (
-    <section class="about-section">
-      <div class="container mx-auto">
-        {section.template === 'aboutTextOnly' && (
-            // aboutTextOnly
-          <div class="flex flex-col lg:flex-row gap-8 aboutTextOnly">
-            <div class="lg:w-1/2 w-full p-4 lg:p-8 mr-[120px]">
-              <ContentSection
+  <div class="page">
+    <main class="content">
+      <div class="hero-bg"></div>
+      <div class="hero-bg-overlay"></div>
+      <Hero />
+      <aside class="form">
+        <GiveFormWithTotals />
+      </aside>
+      <Video
+        src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/files/9d23b34a8293243e7110172ae332ea014f02f765.mp4"
+        poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
+        class="hero-video"
+        />
+        {campaignData.aboutSections?.map((section) => (
+         <ContentSection
                 content={toHTML(section.content)}
                 htmlContent={true}
+                className="content-body"
               />
-            </div>
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-
-            </div>
-          </div>
-        )}
-        {section.template === 'aboutImageLeft' && (
-            // aboutImageLeft
-          <div class="flex flex-col lg:flex-row gap-8 aboutImageLeft">
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-
-            </div>
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-              <ContentSection
-                title={toHTML(section.title)}
-                content={toHTML(section.content)}
-                htmlContent={true}
-              />
-            </div>
-          </div>
-
-          <div class="container mx-auto flex flex-col py-6 lg:flex-row">
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-            <ContentSection
-              title={toHTML(section.title)}
-              content={toHTML(section.content)}
-              htmlContent={true}
-            />
-            </div>
-          </div>
-        )}
-        {section.template === 'aboutImageRight' && (
-            // aboutImageRight
-          <div class="flex flex-col lg:flex-row gap-8 aboutImageRight">
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-              <ContentSection
-                title={toHTML(section.title)}
-                content={toHTML(section.content)}
-                htmlContent={true}
-              />
-            </div>
-            <div class="lg:w-1/2 w-full p-4 lg:p-8">
-              <img class="w-full rounded-lg" src={img(sanity).image(section.image).url()} alt={section.imageAlt} />
-            </div>
-          </div>
-        )}
-        <div class="lg:w-1/2 w-full p-4 lg:p-8">
-          <h2 class="text-4xl text-center md:text-left font-semibold tracking-tight text-gray-900 sm:text-5xl">Unlock a Project.<br>Join the Mission.</h2>
-        </div>
-        <div class="lg:w-1/2 w-full p-4 lg:p-8">
-          <DonationCard />
-        </div>
-      </div>
-    </section>
-  ))}
-
-  <!-- Body Section -->
-  <section class="container mx-auto flex flex-col lg:flex-row gap-8">
-    <div class="mkt-primary-content lg:w-1/2 w-full p-4 lg:p-8">
-      <div class="prose">
-        <div set:html={toHTML(campaignData.body)}></div>
-      </div>
-    </div>
-    <div class="lg:w-1/2 w-full p-4 lg:p-8"></div>
-  </section>
-
-  <!-- FAQ Section -->
-
-  {campaignData.faqs && (
-    <section class="donation-faq bg-gray-50 pb-16 z-100">
-      {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqAccordion' && (
-
-
-<script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
-<div class="bg-white">
-  <div class="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
-    <div class="mx-auto max-w-4xl">
-      <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Frequently asked questions</h2>
-      <dl class="mt-16 divide-y divide-gray-900/10">
-      {campaignData.faqs.map((faq, index) => (
-        <div class="py-6 first:pt-0 last:pb-0">
-          <dt>
-            <button type="button" command="--toggle" commandfor={`faq-${index}`} class="flex w-full items-start justify-between text-left text-gray-900">
-                <span class="text-base/7 font-semibold">{faq.question}</span>
-              <span class="ml-6 flex h-7 items-center">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
-                  <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
-                  <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-            </button>
-          </dt>
-          <el-disclosure id={`faq-${index}`} hidden={index > 0} class="[&:not([hidden])]:contents">
-            <dd class="mt-2 pr-12">
-              <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
-            </dd>
-          </el-disclosure>
-        </div>
         ))}
-      </dl>
-    </div>
-  </div>
+        <h2 class="text-4xl text-center md:text-left font-bold tracking-tight sm:text-5xl py-4">Unlock a Project.<br>Join the Mission.</h2>
+        <DonationCard />
+        <div class="prose">
+          <div set:html={toHTML(campaignData.body)}></div>
+        </div>
+    </main>
+    <aside class="form form-desktop">
+      <GiveFormWithTotals />
+    </aside>
 </div>
+    <section class="w-full bg-gray-50 ">
+         {campaignData.faqs && (
+    <section class="donation-faq pb-16 z-100">
+      {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqAccordion' && (
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+      <div class="faq-wrapper">
+        <div class="px-6 py-24 sm:py-32 lg:px-8 lg:py-40">
+          <div>
+            <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">Frequently asked questions</h2>
+            <dl class="mt-16 divide-y divide-gray-900/10">
+            {campaignData.faqs.map((faq, index) => (
+              <div class="py-6 first:pt-0 last:pb-0">
+                <dt>
+                  <button type="button" command="--toggle" commandfor={`faq-${index}`} class="flex w-full items-start justify-between text-left text-gray-900">
+
+                      <span class="text-base/7 font-semibold">{faq.question}</span>
+
+                    <span class="ml-6 flex h-7 items-center">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
+                        <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [&:not([aria-expanded='true']_*)]:hidden">
+                        <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </button>
+                </dt>
+                <el-disclosure id={`faq-${index}`} hidden={index > 0} class="[&:not([hidden])]:contents">
+                  <dd class="mt-2 pr-12">
+                    <div class="prose mt-2" set:html={toHTML(faq.answer)}></div>
+                  </dd>
+                </el-disclosure>
+              </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </div>
       )}
       {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqGrid' && (
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">Frequently Asked Questions</h2>
           {campaignData.faqs.map((faq) => (
             <div>
@@ -236,7 +202,7 @@ const { campaignData } = Astro.props;
         </div>
       )}
       {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqList' && (
-        <div class="container mx-auto">
+        <div>
           <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Frequently Asked Questions</h2>
           <ul class="mt-4 space-y-4">
             {campaignData.faqs.map((faq) => (
@@ -248,9 +214,9 @@ const { campaignData } = Astro.props;
           </ul>
         </div>
       )}
-      {/* {campaignData.templateType !== 'church' && <DonationFAQ />} */}
     </section>
   )}
-
+    </section>
   <Footer />
 </Layout>
+

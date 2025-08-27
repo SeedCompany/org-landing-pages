@@ -1,8 +1,8 @@
 ---
-const { title, content, htmlContent = false } = Astro.props;
+const { title, content, htmlContent = false, className } = Astro.props;
 ---
 
-<section class="mb-8">
+<section class={`mb-8 ${className}`}>
   {htmlContent ? (
     <h2 set:html={title}></h2>
   ) : (
@@ -11,7 +11,7 @@ const { title, content, htmlContent = false } = Astro.props;
   
   {htmlContent ? (
     <div class="text-base leading-relaxed text-gray-700">
-      <div class="content" set:html={content}></div>
+      <div class="content-wrapper" set:html={content}></div>
     </div>
   ) : (
     <p class="text-base">{content}</p>
