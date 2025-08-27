@@ -1,8 +1,15 @@
 import { ClientStripeWrapper } from './ClientStripeWrapper.tsx';
 import { type DonateProps, DonationForm } from '../DonationForm.tsx';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import type { ReactNode } from 'react';
 
-export const StripeClientIsland = ({ formProps }: { formProps: DonateProps }) => {
+export const StripeClientIsland = ({
+  formProps,
+  campaignProgress,
+}: {
+  formProps: DonateProps;
+  campaignProgress?: ReactNode;
+}) => {
   return (
     <ClientStripeWrapper>
       <GoogleReCaptchaProvider
@@ -13,7 +20,7 @@ export const StripeClientIsland = ({ formProps }: { formProps: DonateProps }) =>
           appendTo: 'head',
         }}
       >
-        <DonationForm formProps={formProps} />
+        <DonationForm campaignProgress={campaignProgress} formProps={formProps} />
       </GoogleReCaptchaProvider>
     </ClientStripeWrapper>
   );

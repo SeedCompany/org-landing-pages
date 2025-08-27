@@ -1,0 +1,21 @@
+---
+import DonationCardComponent from './DonationCardComponent.astro';
+
+export interface CardProps {
+  currentAmount: number;
+  startAmount: number;
+  endAmount: number;
+  peopleGroups: number;
+  projectHeader: string;
+  projectDescription: string;
+  projectBullets: string[];
+}
+
+interface Props {
+  projectData: CardProps[];
+}
+
+const { projectData } = Astro.props;
+---
+
+{projectData.map((data) => <DonationCardComponent projectData={data} />)}

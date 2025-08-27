@@ -147,11 +147,7 @@ const { campaignData } = Astro.props;
               htmlContent={true}
             />
             </div>
-</div>
-
-
-
-
+          </div>
         )}
         {section.template === 'aboutImageRight' && (
             // aboutImageRight
@@ -204,11 +200,8 @@ const { campaignData } = Astro.props;
       {campaignData.faqs.map((faq, index) => (
         <div class="py-6 first:pt-0 last:pb-0">
           <dt>
-
             <button type="button" command="--toggle" commandfor={`faq-${index}`} class="flex w-full items-start justify-between text-left text-gray-900">
-
                 <span class="text-base/7 font-semibold">{faq.question}</span>
-
               <span class="ml-6 flex h-7 items-center">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6 [[aria-expanded='true']_&]:hidden">
                   <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />

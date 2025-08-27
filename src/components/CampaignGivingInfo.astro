@@ -1,0 +1,30 @@
+---
+import ProgressBar from './atoms/ProgressBar.astro';
+interface Props {
+  campaignTotals: {
+    totalRaised: number;
+    goalAmount: number;
+  };
+}
+const { campaignTotals } = Astro.props;
+---
+
+<div class="px-2">
+  <div class="grid grid-cols-2">
+    <span class="text-2xl font-bold mb-4">Total Raised</span>
+    <span class="text-xl mb-4 text-right">{`$${campaignTotals.totalRaised}`}</span>
+  </div>
+  <ProgressBar
+    currentNumber={campaignTotals.totalRaised}
+    maxNumber={campaignTotals.goalAmount}
+    backgroundType="image"
+  />
+  <div class="grid grid-cols-2">
+    <span class="text-2xl font-bold mb-4">Projects Unlocked</span>
+    <span class="text-xl mb-4 text-right">2</span>
+  </div>
+  <div class="grid grid-cols-2">
+    <span class="text-2xl font-bold mb-4">People Impacted</span>
+    <span class="text-xl mb-4 text-right">27</span>
+  </div>
+</div>
