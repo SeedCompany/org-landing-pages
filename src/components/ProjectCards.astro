@@ -1,12 +1,11 @@
 ---
 import DonationCardComponent from './DonationCardComponent.astro';
 
-interface CardProps {
+export interface CardProps {
   currentAmount: number;
   startAmount: number;
   endAmount: number;
   peopleGroups: number;
-  region: string;
   projectHeader: string;
   projectDescription: string;
   projectBullets: string[];
