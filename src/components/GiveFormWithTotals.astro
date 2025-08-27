@@ -1,5 +1,12 @@
 ---
 import { StripeClientIsland } from './stripe/StripeClientIsland';
+import CampaignGivingInfo from './CampaignGivingInfo.astro';
+// TODO - API call should go here and it will look something like:
+// const campaignTotals = await fromAPICall...(...);
+const campaignTotals = {
+  totalRaised: 105000,
+  goalAmount: 2000000,
+};
 ---
 
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
@@ -15,6 +22,8 @@ import { StripeClientIsland } from './stripe/StripeClientIsland';
       telemetry: { referrer: 'Watermark' },
     }}
     client:load
-  />
+  >
+    <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />
+  </StripeClientIsland>
 </div>
 <style></style>

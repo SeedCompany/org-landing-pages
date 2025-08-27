@@ -9,7 +9,7 @@ import { DonationInput } from './DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
-import { CampaignGivingInfo } from './CampaignGivingInfo.astro';
+import CampaignGivingInfo from './CampaignGivingInfo.astro';
 import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 

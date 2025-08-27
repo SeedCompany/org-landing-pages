@@ -1,5 +1,4 @@
 ---
-import { type CardProps } from './ProjectCards.astro';
 import ProgressBar from './atoms/ProgressBar.astro';
 import { type FundingStatus, LockSection } from './LockSection.tsx';
 
@@ -23,6 +22,17 @@ const compareTotals = ({
   }
 };
 
+interface CardProps {
+  currentAmount: number;
+  startAmount: number;
+  endAmount: number;
+  peopleGroups: number;
+  region: string;
+  projectHeader: string;
+  projectDescription: string;
+  projectBullets: string[];
+}
+
 interface Props {
   projectData: CardProps;
 }
@@ -33,7 +43,6 @@ const fundingStatus: FundingStatus = compareTotals({
   end: projectData.endAmount,
   start: projectData.startAmount,
 });
-console.log(fundingStatus)
 ---
 
 <div class="donation-card">
@@ -50,10 +59,8 @@ console.log(fundingStatus)
           currentNumber={projectData.currentAmount}
           backgroundType="image"
         >
-          {(projectData.currentAmount / projectData.endAmount) * 100 > 100
-            ? 100
-            : `${Math.round((projectData.currentAmount / projectData.endAmount) * 100)}`}
-          % FUNDED!
+          {Math.min((projectData.currentAmount / projectData.endAmount) * 100, 100).toFixed(0)} %
+          FUNDED!
         </ProgressBar>
       )
     }
@@ -85,4 +92,3 @@ console.log(fundingStatus)
     </ul>
   </div>
 </div>
-

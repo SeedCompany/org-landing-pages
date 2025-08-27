@@ -1,18 +1,28 @@
 ---
-import backgroundImage from '../../assets/progress-background.png'
-interface ProgressBarProps {
+import backgroundImage from '../../assets/progress-background.png';
+interface Props {
   color?: string;
   currentNumber: number;
   maxNumber: number;
   fullWidth?: string;
   backgroundType?: 'solid' | 'image';
-  children?: string;
+  children?: string | string[];
 }
 
-const { color, currentNumber, maxNumber, fullWidth, backgroundType = 'solid', children } = Astro.props as ProgressBarProps;
+const {
+  color,
+  currentNumber,
+  maxNumber,
+  fullWidth,
+  backgroundType = 'solid',
+  children,
+} = Astro.props;
 const progress = Math.min((currentNumber / maxNumber || 0) * 100, 100);
 ---
-<div class={`w-[${fullWidth || '100%'}] rounded-xs h-10 mx-auto ${backgroundType === 'solid' ? 'bg-gray-200 dark:bg-gray-200' : `bg-[url(${backgroundImage})] bg-cover bg-center`}`}>
+
+<div
+  class={`w-[${fullWidth || '100%'}] rounded-xs h-10 mx-auto ${backgroundType === 'solid' ? 'bg-gray-200 dark:bg-gray-200' : `bg-[url(${backgroundImage})] bg-cover bg-center`}`}
+>
   <div class={`h-10 rounded-xs ${color || 'bg-watermarkGreen'}`} style={{ width: `${progress}%` }}>
     {children}
   </div>
