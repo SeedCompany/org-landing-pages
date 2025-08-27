@@ -73,7 +73,7 @@ const fundingStatus: FundingStatus = compareTotals({
   </div>
   <div class="donation-card-content">
     <h3 class="donation-card-subheading">
-      {`${projectData.peopleGroups} People groups in ${projectData.region}`}
+      {`${projectData.peopleGroups} People groups`}
     </h3>
     <div class="flex justify-between gap-2">
       <h2 class="donation-card-heading">{projectData.projectHeader}</h2>
@@ -84,7 +84,7 @@ const fundingStatus: FundingStatus = compareTotals({
     <p class="donation-card-description">{projectData.projectDescription}</p>
     <ul class="donation-card-ul">
       {
-        projectData.projectBullets.map((bullet, index) => (
+        projectData.projectBullets.map((bullet) => (
           <li class="donation-card-li">{bullet}</li>
         ))
       }
