@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import type { StripePaymentElementOptions } from '@stripe/stripe-js';
-import { useCallback, useEffect, useState } from 'react';
+import { type ReactNode, useCallback, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
@@ -9,7 +9,6 @@ import { DonationInput } from './DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
-import CampaignGivingInfo from './CampaignGivingInfo.astro';
 import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 
@@ -96,7 +95,13 @@ export type DonateProps = {
   };
 };
 
-export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
+export const DonationForm = ({
+  formProps,
+  campaignProgress,
+}: {
+  formProps: DonateProps;
+  campaignProgress?: ReactNode;
+}) => {
   // this will be used eventually but is not a part of the initial Watermark use case
   // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
@@ -335,7 +340,7 @@ export const DonationForm = ({ formProps }: { formProps: DonateProps }) => {
     <div className="my-3">
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
-          {formProps.campaignTotals && <CampaignGivingInfo />}
+          {formProps.campaignTotals && campaignProgress}
           <RecurringDonationSwitcher
             currentType={donationCadence}
             setDonationType={setDonationCadence}
