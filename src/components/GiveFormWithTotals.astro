@@ -1,10 +1,45 @@
 ---
 import { StripeClientIsland } from './stripe/StripeClientIsland';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
-// TODO - API call should go here, and it will look something like:
-// const campaignTotals = await fromAPICall...(...);
+const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
+
+interface WatermarkCampaignTotals {
+  amount: number;
+}
+
+interface GraphQLResponse {
+  data?: {
+    watermarkCampaignTotals: WatermarkCampaignTotals;
+  };
+  errors?: Array<{ message: string }>;
+}
+
+const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
+const response = await fetch(GQL_API, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    // Add authentication if needed, e.g.:
+    // 'Authorization': `Bearer ${yourToken}`,
+  },
+  body: JSON.stringify({
+    query: `
+          query Query {
+            watermarkCampaignTotals {
+              amount
+            }
+          }
+        `,
+  }),
+});
+const data = (await response.json()) as GraphQLResponse;
+if (data.errors) {
+  console.error('GraphQL Errors:', data.errors);
+  throw new Error('Failed to fetch watermark campaign totals');
+}
+const amount = data.data?.watermarkCampaignTotals.amount;
 const campaignTotals = {
-  totalRaised: 105000,
+  totalRaised: typeof amount === 'number' ? amount : 0,
   goalAmount: 2000000,
 };
 ---
