@@ -22,7 +22,7 @@ export const LockSection = ({
               clipRule="evenodd"
             />
           </svg>
-          <span className="ml-1 donation-card-locked font-medium">{endAmount}</span>
+          <span className="ml-1 donation-card-locked font-medium">${endAmount}</span>
         </div>
       );
     case 'inProgress':

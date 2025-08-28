@@ -30,6 +30,7 @@ interface CardProps {
   projectHeader: string;
   projectDescription: string;
   projectBullets: string[];
+  image: string;
 }
 
 interface Props {
@@ -42,13 +43,17 @@ const fundingStatus: FundingStatus = compareTotals({
   end: projectData.endAmount,
   start: projectData.startAmount,
 });
+const currentProgress = Math.min(
+  (projectData.currentAmount / projectData.endAmount) * 100,
+  100,
+).toFixed(0);
 ---
 
-<div class="donation-card">
+<div class={`donation-card ${fundingStatus === 'locked' && 'donation-card-grey'}`}>
   <div class="donation-card-image-wrapper">
     <img
-      class="donation-card-image"
-      src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/eaffaaa131775759083460fbe8886c0d574ceee4-1080x809.jpg"
+      class={`donation-card-image ${(fundingStatus === 'locked' || fundingStatus === 'unknown') && 'grayscale'}`}
+      src={projectData.image}
       alt=""
     />
     {
@@ -57,37 +62,39 @@ const fundingStatus: FundingStatus = compareTotals({
           maxNumber={projectData.endAmount}
           currentNumber={projectData.currentAmount}
           backgroundType="image"
-        >
-          {Math.min((projectData.currentAmount / projectData.endAmount) * 100, 100).toFixed(0)} %
-          FUNDED!
-        </ProgressBar>
+          currentProgress={currentProgress}
+        />
       )
     }
     {
       fundingStatus === 'funded' && (
-        <ProgressBar maxNumber={100} currentNumber={100} backgroundType="image">
-          100% FUNDED!
-        </ProgressBar>
+        <ProgressBar
+          maxNumber={100}
+          currentNumber={100}
+          backgroundType="image"
+          currentProgress="100"
+        />
       )
     }
   </div>
-  <div class="donation-card-content">
-    <h3 class="donation-card-subheading">
+  <div class="relative donation-card-content">
+    {
+      fundingStatus === 'inProgress' && (
+        <div class="absolute inset-0 bg-[url('../assets/card-bg-gradient.png')] bg-cover opacity-20 h-full"></div>
+      )
+    }
+    <div class="donation-card-subheading">
       {`${projectData.peopleGroups} People groups`}
-    </h3>
-    <div class="flex justify-between gap-2">
-      <h2 class="donation-card-heading">{projectData.projectHeader}</h2>
+    </div>
+    <div class="lg:flex justify-between gap-2">
+      <div class="donation-card-heading">{projectData.projectHeader}</div>
       <div class="flex items-center">
         <LockSection client:load fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
       </div>
     </div>
     <p class="donation-card-description">{projectData.projectDescription}</p>
     <ul class="donation-card-ul">
-      {
-        projectData.projectBullets.map((bullet) => (
-          <li class="donation-card-li">{bullet}</li>
-        ))
-      }
+      {projectData.projectBullets.map((bullet) => <li class="donation-card-li">{bullet}</li>)}
     </ul>
   </div>
 </div>
