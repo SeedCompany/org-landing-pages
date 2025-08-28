@@ -14,6 +14,7 @@ export default {
       colors: {
         watermarkGreen: '#29B67E',
         watermarkDarkBlue: '#1D3638',
+        watermarkAccentGrey: '#D6D4C9',
       },
     },
   },

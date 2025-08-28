@@ -9,6 +9,7 @@ export interface CardProps {
   projectHeader: string;
   projectDescription: string;
   projectBullets: string[];
+  image: string;
 }
 
 interface Props {
@@ -19,3 +20,13 @@ const { projectData } = Astro.props;
 ---
 
 {projectData.map((data) => <DonationCardComponent projectData={data} />)}
+<div class="donation-card donation-card-grey w-full border-gray-300">
+  <div class="donation-card-image-wrapper w-full relative">
+    <img
+      class={'more-to-come-card-image grayscale overflow-hidden'}
+      src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/eaffaaa131775759083460fbe8886c0d574ceee4-1080x809.jpg"
+      alt=""
+    />
+    <span class="more-to-come-card absolute inset-0 top-1/2">MORE TO COME</span>
+  </div>
+</div>
