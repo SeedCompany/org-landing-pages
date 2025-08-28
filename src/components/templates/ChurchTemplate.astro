@@ -37,6 +37,9 @@ const { campaignData } = Astro.props;
     max-width: 1440px;
     margin: 0 auto;
   }
+  .faq-bg {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgb(235, 235, 236) 100%);
+  }
   /* Right form column (Sticky) */
   @media (min-width: 768px) {
   .form-desktop {
@@ -151,7 +154,7 @@ const { campaignData } = Astro.props;
       <GiveFormWithTotals />
     </aside>
 </div>
-    <section class="w-full bg-gray-50 ">
+    <section class="faq-bg w-full">
          {campaignData.faqs && (
     <section class="donation-faq pb-16 z-100">
       {campaignData.templateType === 'church' && campaignData.faqs[0]?.template === 'faqAccordion' && (
