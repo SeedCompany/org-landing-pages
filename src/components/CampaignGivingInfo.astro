@@ -1,5 +1,6 @@
 ---
 import ProgressBar from './atoms/ProgressBar.astro';
+import { watermarkProjectCalculator } from '../lib/watermarkProjectCalculator';
 interface Props {
   campaignTotals: {
     totalRaised: number;
@@ -7,6 +8,7 @@ interface Props {
   };
 }
 const { campaignTotals } = Astro.props;
+const currentProgress = watermarkProjectCalculator(campaignTotals.totalRaised);
 ---
 
 <div class="px-2">
@@ -21,10 +23,10 @@ const { campaignTotals } = Astro.props;
   />
   <div class="grid grid-cols-2">
     <span class="text-2xl font-bold mb-4">Projects Unlocked</span>
-    <span class="text-xl mb-4 text-right">2</span>
+    <span class="text-xl mb-4 text-right">{currentProgress.projects}</span>
   </div>
   <div class="grid grid-cols-2">
     <span class="text-2xl font-bold mb-4">People Impacted</span>
-    <span class="text-xl mb-4 text-right">27</span>
+    <span class="text-xl mb-4 text-right">{currentProgress.people}</span>
   </div>
 </div>
