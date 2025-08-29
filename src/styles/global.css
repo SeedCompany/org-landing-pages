@@ -3,6 +3,7 @@
 @import '@fontsource/lato/700.css';
 @import '@fontsource/oswald/400.css';
 @import '@fontsource/oswald/700.css';
+@import '@fontsource/dm-serif-text/400.css';
 
 @tailwind base;
 @tailwind components;
@@ -261,7 +262,10 @@ Church page styles
   font-weight: 600;
 }
 .donation-card-content {
-  padding: 1.5rem;
+  @apply pb-6
+}
+.donation-card-content > :not(.progress-bar) {
+  @apply px-6;
 }
 .donation-card-funded-percent-header {
   font-family: 'Gotham', san-serif;
@@ -277,14 +281,15 @@ Church page styles
   text-transform: uppercase;
   font-weight: 700;
   line-height: 100%;
-  margin: 0.5rem 0;
+  @apply mb-2 mt-4;
 }
 .donation-card-heading {
   font-size: 2.25rem;
-  font-family: 'Librebaskerville', serif;
-  line-height: 1.2;
+  line-height: 1;
+  letter-spacing: -1%;
   margin: 0.5rem 0;
   color: var(--sus-primary-heading);
+  @apply font-dm-serif;
 }
 .donation-card-amount {
   font-size: 1.5rem;

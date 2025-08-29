@@ -19,6 +19,7 @@ export default {
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
         oswald: ['Oswald', 'sans-serif'],
+        'dm-serif': ['DM Serif Text', 'serif'],
       },
     },
   },

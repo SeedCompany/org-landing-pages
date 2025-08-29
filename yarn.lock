@@ -2167,6 +2167,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/dm-serif-text@npm:^5.2.6":
+  version: 5.2.6
+  resolution: "@fontsource/dm-serif-text@npm:5.2.6"
+  checksum: 10c0/3f71b8c62d44cd9b03d09d96891cb7929b92be486c4445bba301daee3b4246318a3dc6ad11a07ea95e8d1e76b36c6ea44631b54ff16f27ab12889d649576bdd8
+  languageName: node
+  linkType: hard
+
 "@fontsource/lato@npm:^5.2.6":
   version: 5.2.6
   resolution: "@fontsource/lato@npm:5.2.6"
@@ -11708,6 +11715,7 @@ __metadata:
     "@astrojs/react": "npm:^4.2.7"
     "@astrojs/tailwind": "npm:^5.1.5"
     "@eslint/js": "npm:^9.26.0"
+    "@fontsource/dm-serif-text": "npm:^5.2.6"
     "@fontsource/lato": "npm:^5.2.6"
     "@fontsource/oswald": "npm:^5.2.6"
     "@heroicons/react": "npm:^2.2.0"

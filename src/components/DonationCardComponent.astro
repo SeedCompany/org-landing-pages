@@ -49,13 +49,15 @@ const currentProgress = Math.min(
 ).toFixed(0);
 ---
 
-<div class={`donation-card ${fundingStatus === 'locked' && 'donation-card-grey'}`}>
+<div class={`donation-card w-full mx-0 ${fundingStatus === 'locked' && 'donation-card-grey'}`}>
   <div class="donation-card-image-wrapper">
     <img
       class={`donation-card-image ${(fundingStatus === 'locked' || fundingStatus === 'unknown') && 'grayscale'}`}
       src={projectData.image}
       alt=""
     />
+  </div>
+  <div class="relative donation-card-content">
     {
       fundingStatus === 'inProgress' && (
         <ProgressBar
@@ -76,14 +78,12 @@ const currentProgress = Math.min(
         />
       )
     }
-  </div>
-  <div class="relative donation-card-content">
     {
       fundingStatus === 'inProgress' && (
-        <div class="absolute inset-0 bg-[url('../assets/card-bg-gradient.png')] bg-cover opacity-20 h-full"></div>
+        <div class="absolute inset-0 bg-[url('../assets/card-bg-gradient.png')] bg-cover opacity-20 h-full" />
       )
     }
-    <div class="donation-card-subheading">
+    <div class="donation-card-subheading mt-2">
       {`${projectData.peopleGroups} People groups`}
     </div>
     <div class="lg:flex justify-between gap-2">
