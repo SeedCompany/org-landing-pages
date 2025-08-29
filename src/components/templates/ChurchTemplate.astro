@@ -10,6 +10,7 @@ import Layout from '../../layouts/Layout.astro';
 import Video from '../../components/Video.astro';
 import ContentSection from '../../components/ContentSection.astro';
 import DonationCard from '../../components/DonationCard.astro';
+import { DonationButton } from '../../components/DonationButton.tsx';
 import Footer from '../../components/Footer.astro';
 
 interface Props {
@@ -20,6 +21,19 @@ const { campaignData } = Astro.props;
 ---
 
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+  @font-face {
+    font-family: 'Gotham Bold';
+    src: url('/fonts/Gotham-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  .gotham-bold {
+    font-family: 'Gotham Bold', sans-serif;
+  }
   .page {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -79,6 +93,8 @@ const { campaignData } = Astro.props;
     min-height: 800px;
     z-index: -1;
   }
+  .mobile-donation-cta {
+    display: none; /* hide mobile CTA on desktop */}
   }
 /* mobile */
 @media (max-width: 767px) {
@@ -100,7 +116,7 @@ const { campaignData } = Astro.props;
     transform: none;
     width: 100%;
   }
-    .hero-bg {
+  .hero-bg {
     background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -121,6 +137,31 @@ const { campaignData } = Astro.props;
     min-height: 800px;
     z-index: -1;
   }
+  .mobile-donation-cta {
+    position: sticky;
+    bottom: 1rem;
+    left: 0;
+    width: 90%;
+    margin: auto;
+    background: white;
+    padding: .5rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+  .mobile-donation-cta a {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    font-size: 1.1rem;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000;
+    font-family: 'Gotham Bold', sans-serif;
+    font-weight: bold;
+  }
+  .footer-wrapper {
+    margin-bottom: -140px !important;;
+  }
 }
 </style>
 <Layout title={campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page'}>
@@ -129,7 +170,7 @@ const { campaignData } = Astro.props;
       <div class="hero-bg"></div>
       <div class="hero-bg-overlay"></div>
       <Hero />
-      <aside class="form">
+      <aside class="form" id="give-form-mobile">
         <GiveFormWithTotals />
       </aside>
       <Video
@@ -154,6 +195,8 @@ const { campaignData } = Astro.props;
       <GiveFormWithTotals />
     </aside>
 </div>
+
+
     <section class="faq-bg w-full">
          {campaignData.faqs && (
     <section class="donation-faq pb-16 z-100">
@@ -220,6 +263,14 @@ const { campaignData } = Astro.props;
     </section>
   )}
     </section>
+<section class="footer-wrapper">
   <Footer />
+</section>
+
+  <div class="mobile-donation-cta">
+  <a href="#give-form-mobile" class="donation-button bg-watermarkGreen text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold">
+      Ready to Give?
+  </a>
+</div>
 </Layout>
 
