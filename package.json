@@ -19,6 +19,7 @@
   "dependencies": {
     "@astrojs/node": "^9.2.1",
     "@astrojs/react": "^4.2.7",
+    "@fontsource/dm-serif-text": "^5.2.6",
     "@fontsource/lato": "^5.2.6",
     "@fontsource/oswald": "^5.2.6",
     "@heroicons/react": "^2.2.0",
