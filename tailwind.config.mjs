@@ -16,6 +16,10 @@ export default {
         watermarkDarkBlue: '#1D3638',
         watermarkAccentGrey: '#D6D4C9',
       },
+      fontFamily: {
+        lato: ['Lato', 'sans-serif'],
+        oswald: ['Oswald', 'sans-serif'],
+      },
     },
   },
   plugins: [typography],

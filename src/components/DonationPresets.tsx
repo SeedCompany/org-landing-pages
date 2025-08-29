@@ -49,7 +49,7 @@ export const DonationPresets = ({
   }, [recurring, presetAmounts]);
   return (
     <>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 font-lato text-sm tracking-wider font-bold">
         {amountPresets.map((amount) => (
           <AmountButton
             key={amount}
