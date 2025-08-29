@@ -11,7 +11,7 @@ export const LockSection = ({
   switch (fundingStatus) {
     case 'locked':
       return (
-        <div className="flex items-center">
+        <div className="flex items-center mb-2 lg:pb-2 lg:mb-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -28,7 +28,7 @@ export const LockSection = ({
       );
     case 'inProgress':
       return (
-        <div className="flex items-center">
+        <div className="flex items-center mb-2 lg:pb-2 lg:mb-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -45,7 +45,7 @@ export const LockSection = ({
       );
     case 'funded':
       return (
-        <div className="flex items-center">
+        <div className="flex items-center mb-2 lg:pb-2 lg:mb-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
