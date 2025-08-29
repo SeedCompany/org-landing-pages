@@ -2167,6 +2167,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/lato@npm:^5.2.6":
+  version: 5.2.6
+  resolution: "@fontsource/lato@npm:5.2.6"
+  checksum: 10c0/078d3c901910e8692b34af90664929aace04c747e24f008585ca9aec08b65febf77fd8a3e80fbe22b182711122c6e1cdf9980161334472891cd19409561b6107
+  languageName: node
+  linkType: hard
+
+"@fontsource/oswald@npm:^5.2.6":
+  version: 5.2.6
+  resolution: "@fontsource/oswald@npm:5.2.6"
+  checksum: 10c0/45527ce27fbf00d20239a444d2da8ee9903777c95caf472501eab762c11c46b5c7f71b9ce5d2891412c0e7e1fb28d32ba8b28c5601dbb1a268dbd0cfa86aede5
+  languageName: node
+  linkType: hard
+
 "@heroicons/react@npm:^2.2.0":
   version: 2.2.0
   resolution: "@heroicons/react@npm:2.2.0"
@@ -11694,6 +11708,8 @@ __metadata:
     "@astrojs/react": "npm:^4.2.7"
     "@astrojs/tailwind": "npm:^5.1.5"
     "@eslint/js": "npm:^9.26.0"
+    "@fontsource/lato": "npm:^5.2.6"
+    "@fontsource/oswald": "npm:^5.2.6"
     "@heroicons/react": "npm:^2.2.0"
     "@hookform/resolvers": "npm:^5.1.1"
     "@iconify-json/lucide": "npm:^1.2.38"

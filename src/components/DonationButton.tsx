@@ -14,7 +14,7 @@ export const DonationButton = ({
   return (
     <button
       disabled={isSubmitting}
-      className={`${className} disabled:text-gray-300 disabled:hover:bg-emerald-600 disabled:hover:text-gray-300 h-14 donation-button m-2 rounded-sm px-3.5 py-2.5 text-sm font-semibold  ${buttonType === 'primary' ? 'bg-watermarkGreen text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600' : 'border-black border hover:text-gray-800 hover:border-gray-800 hover:bg-emerald-50'}`}
+      className={`${className} uppercase text-sm font-lato tracking-wider text-black disabled:text-gray-300 disabled:hover:bg-emerald-600 disabled:hover:text-gray-300 h-14 donation-button m-2 rounded-sm px-3.5 py-2.5 font-bold  ${buttonType === 'primary' ? 'bg-watermarkGreen shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600' : 'border-black border hover:text-gray-800 hover:border-gray-800 hover:bg-emerald-50'}`}
       {...rest}
     >
       {children}
