@@ -328,7 +328,6 @@ Church page styles
   background-color: var(--footer-bg);
   color: var(--footer-text);
 }
-
 @font-face {
   font-family: 'Rader Bold';
   src: url('/fonts/PPRader-Bold.otf') format('opentype');
