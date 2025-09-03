@@ -13,8 +13,10 @@ const currentProgress = watermarkProjectCalculator(campaignTotals.totalRaised);
 
 <div class="px-2">
   <div class="grid grid-cols-2">
-    <span class="text-2xl mb-4 font-oswald uppercase">Total Raised</span>
-    <span class="text-xl mb-4 text-right font-lato"
+    <span class="tiny:text-2xl max-tiny:text-md tiny:mb-4 font-oswald uppercase text-nowrap"
+      >Total Raised</span
+    >
+    <span class="tiny:text-xl max-tiny:text-sm tiny:mb-4 text-right font-lato"
       >{`$${campaignTotals.totalRaised.toLocaleString('en-US')}`}</span
     >
   </div>
@@ -24,13 +26,19 @@ const currentProgress = watermarkProjectCalculator(campaignTotals.totalRaised);
     backgroundType="image"
   />
   <div class="grid grid-cols-2 my-2">
-    <span class="text-2xl font-oswald uppercase text-nowrap">Projects Unlocked</span>
-    <span class="text-xl text-right font-lato">{currentProgress.projects}</span>
+    <span class="tiny:text-2xl max-tiny:text-md font-oswald uppercase text-nowrap"
+      >Projects Unlocked</span
+    >
+    <span class="tiny:text-xl max-tiny:text-sm text-right font-lato"
+      >{currentProgress.projects}</span
+    >
   </div>
   <hr />
   <div class="grid grid-cols-2 my-2">
-    <span class="text-2xl font-oswald uppercase text-nowrap">People Impacted</span>
-    <span class="text-xl text-right font-lato"
+    <span class="tiny:text-2xl max-tiny:text-md font-oswald uppercase text-nowrap"
+      >People Impacted</span
+    >
+    <span class="tiny:text-xl max-tiny:text-sm text-right font-lato"
       >{currentProgress.people.toLocaleString('en-US')}</span
     >
   </div>

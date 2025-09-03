@@ -1,6 +1,4 @@
 ---
-import img from '@sanity/image-url';
-import { sanityClient as sanity } from 'sanity:client';
 import { toHTML } from '../../lib/portableTextSerializer';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import Hero from '../../components/Hero.astro';
@@ -10,7 +8,6 @@ import Layout from '../../layouts/Layout.astro';
 import Video from '../../components/Video.astro';
 import ContentSection from '../../components/ContentSection.astro';
 import DonationCard from '../../components/DonationCard.astro';
-import { DonationButton } from '../../components/DonationButton.tsx';
 import Footer from '../../components/Footer.astro';
 
 interface Props {
@@ -55,7 +52,7 @@ const { campaignData } = Astro.props;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgb(235, 235, 236) 100%);
   }
   /* Right form column (Sticky) */
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
   .form-desktop {
     position: sticky;
     top: 0%;
@@ -97,7 +94,7 @@ const { campaignData } = Astro.props;
     display: none; /* hide mobile CTA on desktop */}
   }
 /* mobile */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .page {
     display: block;
     gap: 0;
@@ -108,6 +105,9 @@ const { campaignData } = Astro.props;
   }
   .form-desktop {
     display: none; /* hide sticky desktop version */
+  }
+  .form-card {
+    max-width: 750px;
   }
   .content .form {
     display: block;
@@ -267,10 +267,32 @@ const { campaignData } = Astro.props;
   <Footer />
 </section>
 
-  <div class="mobile-donation-cta">
+  <div class="mobile-donation-cta hidden">
   <a href="#give-form-mobile" class="donation-button bg-watermarkGreen text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold">
       Ready to Give?
   </a>
 </div>
+<script>
+  const form = document.querySelector('#give-form-mobile');
+  const button = document.querySelector('.mobile-donation-cta');
+
+  const observer = new IntersectionObserver(
+  (entries) => {
+      const isFormVisible = entries[0].isIntersecting;
+      if (isFormVisible) {
+        button.classList.add('hidden')
+      } else {
+        button.classList.remove('hidden')
+      }
+   },
+  {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0,
+    }
+  );
+
+  observer.observe(form);
+</script>
 </Layout>
 
