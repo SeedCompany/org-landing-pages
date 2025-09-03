@@ -21,6 +21,10 @@ export default {
         oswald: ['Oswald', 'sans-serif'],
         'dm-serif': ['DM Serif Text', 'serif'],
       },
+      screens: {
+        xxs: '430px',
+        tiny: '400px',
+      },
     },
   },
   plugins: [typography],
