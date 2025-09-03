@@ -30,6 +30,8 @@ const currentProgress = watermarkProjectCalculator(campaignTotals.totalRaised);
   <hr />
   <div class="grid grid-cols-2 my-2">
     <span class="text-2xl font-oswald uppercase text-nowrap">People Impacted</span>
-    <span class="text-xl text-right font-lato">{currentProgress.people}</span>
+    <span class="text-xl text-right font-lato"
+      >{currentProgress.people.toLocaleString('en-US')}</span
+    >
   </div>
 </div>
