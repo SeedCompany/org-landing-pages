@@ -108,7 +108,6 @@ export const DonationForm = ({
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
-  const [v3RecaptchaToken, setV3RecaptchaToken] = useState<string | null>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema),
@@ -131,26 +130,6 @@ export const DonationForm = ({
 
   const stripe = useStripe();
   const elements = useElements();
-
-  const handleReCaptcha = useCallback(async () => {
-    if (!executeRecaptcha) {
-      console.error('reCAPTCHA not loaded yet');
-      return;
-    }
-    try {
-      const token = await executeRecaptcha('donate');
-      setV3RecaptchaToken(token);
-    } catch (error) {
-      console.error('Recaptcha error:', error);
-    }
-  }, [executeRecaptcha]);
-
-  useEffect(() => {
-    const initializeRecaptcha = async () => {
-      await handleReCaptcha();
-    };
-    void initializeRecaptcha();
-  }, [handleReCaptcha]);
 
   const submitForm = async ({
     variables,
@@ -221,6 +200,20 @@ export const DonationForm = ({
           console.error('Confirmation Token Error:', error);
           return;
         }
+        let captchaToken;
+        if (!executeRecaptcha) {
+          console.error('reCAPTCHA not loaded yet');
+          return;
+        }
+        try {
+          captchaToken = await executeRecaptcha('donate');
+        } catch (error) {
+          console.error('Recaptcha error:', error);
+        }
+        if (!captchaToken) {
+          console.error('No captcha token');
+          return;
+        }
         // I think data should be the DonateFormValues type here, but struggling to implement it
         const { data } = await submitForm({
           variables: {
@@ -250,7 +243,7 @@ export const DonationForm = ({
               ],
               captcha: {
                 v2: null,
-                v3: v3RecaptchaToken || '',
+                v3: captchaToken,
               },
               telemetry: { ...formProps.telemetry },
             },
