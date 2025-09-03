@@ -1,6 +1,7 @@
 /// <reference types="astro/client" />
 /// <reference types="@sanity/astro/module" />
 /// <reference types="../sanity.types.ts" />
+/// <reference types="./components/posthog/posthog.d.ts" />
 
 interface ViteTypeOptions {
   strictImportMetaEnv: unknown;
@@ -12,6 +13,10 @@ interface ImportMetaEnv {
   readonly PUBLIC_STRIPE_KEY: string;
   readonly PUBLIC_RECAPTCHA_SITE_KEY: string;
   readonly PUBLIC_API_URL: string;
+
+  readonly PUBLIC_POSTHOG_KEY?: string;
+  readonly PUBLIC_POSTHOG_UI_HOST?: string;
+  readonly PUBLIC_POSTHOG_API_HOST?: string;
 }
 
 interface ImportMeta {
