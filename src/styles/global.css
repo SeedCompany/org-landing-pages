@@ -324,6 +324,9 @@ Church page styles
   background-color: var(--sus-green-text);
   border-radius: 50%;
 }
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
 .more-to-come-card {
   color: #ffffff;
   font-family: 'Gotham', san-serif;
