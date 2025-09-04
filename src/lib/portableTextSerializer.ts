@@ -40,9 +40,8 @@ const components = {
     textColor: ({ value, children }) => `<span style="color: ${value.value};">${children}</span>`,
     strong: ({ children }) => `<strong>${children}</strong>`,
     em: ({ children }) => `<em>${children}</em>`,
-    // @ts-expect-error fixme
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    link: ({ mark, children }) => `<a href="${mark.href}">${children}</a>`,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- fixme
+    link: ({ value, children }) => `<a href="${value.href}">${children}</a>`,
   },
 } satisfies Partial<Components>;
 
