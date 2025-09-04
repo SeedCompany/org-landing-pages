@@ -25,18 +25,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     },
   );
 
-  const injection = `<meta name="ph:distinct-id" content="${distinctId}" />`;
-
   const response = await next();
   if (!response.headers.get('Content-Type')?.includes('text/html')) {
     return response;
   }
-  const html = await response.text();
 
-  const marker = '</head>';
-  const injectedHtml = html.includes(marker)
-    ? html.replace(marker, `${injection}\n${marker}`)
-    : `${injection}\n${html}`;
+  const injector = new HtmlHeadInjector(`<meta name="ph:distinct-id" content="${distinctId}" />`);
+  const injectedHtml = response.body?.pipeThrough(injector);
 
   const headers = new Headers(response.headers);
   headers.delete('content-length'); // avoid mismatched length
@@ -46,3 +41,28 @@ export const onRequest = defineMiddleware(async (context, next) => {
     headers,
   });
 });
+
+class HtmlHeadInjector extends TransformStream {
+  constructor(injection: string) {
+    let injected = false;
+    const marker = '<head>';
+    super({
+      transform(chunk: AllowSharedBufferSource, controller) {
+        if (injected) {
+          controller.enqueue(chunk);
+          return;
+        }
+        let text = new TextDecoder().decode(chunk);
+        // Assuming <head> is declared
+        // and not split across chunks since it is basically the first thing sent.
+        if (text.includes(marker)) {
+          text = text.replace(marker, marker + injection);
+          controller.enqueue(new TextEncoder().encode(text));
+          injected = true;
+        } else {
+          controller.enqueue(chunk);
+        }
+      },
+    });
+  }
+}
