@@ -22,6 +22,13 @@ EOF
 WORKDIR /app
 ENV NODE_ENV=production
 
+ARG POSTHOG_KEY
+ARG POSTHOG_UI_HOST
+ARG POSTHOG_API_HOST
+ENV PUBLIC_POSTHOG_KEY=$POSTHOG_KEY \
+    PUBLIC_POSTHOG_UI_HOST=$POSTHOG_UI_HOST \
+    PUBLIC_POSTHOG_API_HOST=$POSTHOG_API_HOST
+
 FROM base-runtime AS builder
 
 # Install dependencies (in separate docker layer from app code)
