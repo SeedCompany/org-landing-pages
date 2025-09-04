@@ -1,5 +1,5 @@
 import { useController, type UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
+import { z } from 'zod/v4/mini';
 import type { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
 

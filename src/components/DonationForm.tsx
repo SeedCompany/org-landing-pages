@@ -3,7 +3,7 @@ import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { type ReactNode, useCallback, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { z } from 'zod/v4/mini';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
