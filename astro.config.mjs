@@ -31,4 +31,13 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  session: {
+    ...(env.REDIS_URL && {
+      driver: 'redis',
+      options: {
+        url: env.REDIS_URL,
+        base: env.REDIS_NS,
+      },
+    }),
+  },
 });
