@@ -31,11 +31,29 @@ interface CardProps {
   projectDescription: string;
   projectBullets: string[];
   image: string;
+  index: number;
 }
 
 interface Props {
   projectData: CardProps;
 }
+
+const numberToString = (num: number): string => {
+  const numberWords: { [key: number]: string } = {
+    1: 'One',
+    2: 'Two',
+    3: 'Three',
+    4: 'Four',
+    5: 'Five',
+    6: 'Six',
+    7: 'Seven',
+    8: 'Eight',
+    9: '9ine',
+    10: 'Ten',
+  };
+
+  return numberWords[num] || 'Number out of range';
+};
 
 const { projectData } = Astro.props;
 const fundingStatus: FundingStatus = compareTotals({
@@ -84,10 +102,12 @@ const currentProgress = Math.min(
       )
     }
     <div class="donation-card-subheading mt-2">
-      {`${projectData.peopleGroups} People groups`}
+      {projectData.projectHeader}
     </div>
     <div class="lg:flex justify-between gap-2">
-      <div class="donation-card-heading">{projectData.projectHeader}</div>
+      <div class="donation-card-heading">
+        {`Opportunity ${numberToString(projectData.index + 1)}`}
+      </div>
       <div class="flex items-center">
         <LockSection client:load fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
       </div>

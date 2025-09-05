@@ -19,7 +19,7 @@ interface Props {
 const { projectData } = Astro.props;
 ---
 
-{projectData.map((data) => <DonationCardComponent projectData={data} />)}
+{projectData.map((data, index) => <DonationCardComponent projectData={{ ...data, index }} />)}
 <div class="donation-card donation-card-grey w-full border-gray-300">
   <div class="donation-card-image-wrapper w-full relative">
     <img
