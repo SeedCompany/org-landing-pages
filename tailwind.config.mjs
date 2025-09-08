@@ -24,7 +24,6 @@ export default {
       screens: {
         xxs: '430px',
         tiny: '400px',
-        short: { raw: '(max-height: 900px)' },
       },
     },
   },

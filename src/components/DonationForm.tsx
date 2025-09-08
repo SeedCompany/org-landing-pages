@@ -376,10 +376,7 @@ export const DonationForm = ({
             </div>
           </div>
           <div className={`m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}>
-            <label
-              htmlFor="amount"
-              className="block text-sm/6 font-medium text-gray-900 short:sr-only"
-            >
+            <label htmlFor="amount" className="block text-sm/6 font-medium text-gray-900 sr-only">
               Amount
             </label>
             <div className="mt-2">
@@ -409,7 +406,7 @@ export const DonationForm = ({
                 )}
                 <div
                   id="price-currency"
-                  className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"
+                  className={`shrink-0 select-none text-base ${amountError ? 'text-red-900' : 'text-gray-500'} sm:text-sm/6`}
                 >
                   USD
                 </div>
@@ -433,6 +430,7 @@ export const DonationForm = ({
               error={firstName.fieldState.error}
               hidden={donationStep === 'payment'}
               required
+              hideLabel
               {...firstName.field}
             />
             <DonationInput
@@ -441,6 +439,7 @@ export const DonationForm = ({
               error={lastName.fieldState.error}
               hidden={donationStep === 'payment'}
               required
+              hideLabel
               {...lastName.field}
             />
             <DonationInput
@@ -449,6 +448,7 @@ export const DonationForm = ({
               type="email"
               error={email.fieldState.error}
               hidden={donationStep === 'payment'}
+              hideLabel
               {...email.field}
             />
             <DonationInput
@@ -456,6 +456,7 @@ export const DonationForm = ({
               label="Address Line 1"
               error={line1.fieldState.error}
               hidden={donationStep === 'payment'}
+              hideLabel
               {...line1.field}
             />
             <DonationInput
@@ -463,6 +464,7 @@ export const DonationForm = ({
               label="Address Line 2"
               error={line2.fieldState.error}
               hidden={donationStep === 'payment'}
+              hideLabel
               {...line2.field}
             />
             <DonationInput
@@ -470,6 +472,7 @@ export const DonationForm = ({
               label="City"
               error={city.fieldState.error}
               hidden={donationStep === 'payment'}
+              hideLabel
               {...city.field}
             />
             <DonationInput
@@ -477,6 +480,7 @@ export const DonationForm = ({
               label="State"
               error={state.fieldState.error}
               hidden={donationStep === 'payment'}
+              hideLabel
               {...state.field}
             />
             <DonationInput
@@ -484,6 +488,7 @@ export const DonationForm = ({
               label="Zip Code"
               error={zip.fieldState.error}
               hidden={donationStep === 'payment'}
+              hideLabel
               {...zip.field}
             />
             {donationStep === 'payment' && (
