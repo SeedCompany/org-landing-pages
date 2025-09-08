@@ -21,7 +21,10 @@ export const DonationInput = ({
     <>
       {error ? (
         <div className="m-2">
-          <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
+          <label
+            htmlFor={field.name}
+            className="block text-sm/6 font-medium text-gray-900 short:sr-only"
+          >
             {label}
           </label>
           <div className="mt-2 grid grid-cols-1">
@@ -46,7 +49,10 @@ export const DonationInput = ({
         </div>
       ) : (
         <div className={`m-2 ${hidden ? 'hidden' : ''}`}>
-          <label htmlFor={field.name} className="block text-sm/6 font-medium text-gray-900">
+          <label
+            htmlFor={field.name}
+            className="block text-sm/6 font-medium text-gray-900 short:sr-only"
+          >
             {label}
           </label>
           <div className="mt-2">
