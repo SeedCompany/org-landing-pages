@@ -469,7 +469,7 @@ Church page styles
     font-size: 1.5rem;
   }
   .content-body {
-    margin-top: -3rem;
+    margin-top: -2rem;
   }
 }
 @media (max-width: 1720px) {
