@@ -205,7 +205,7 @@ Church page styles
   font-size: 5.5rem;
   line-height: 0.95;
   font-family: 'Gotham', san-serif;
-  font-weight: bold;
+  font-weight: 900 !important;
   color: var(--mkt-primary-text);
 }
 .hero-sub-heading {
@@ -229,6 +229,9 @@ Church page styles
   font-size: 2.25rem;
   line-height: 1.2;
   color: var(--mkt-primary-text);
+}
+.content-body {
+  margin-top: -4rem;
 }
 .donation-card {
   border: 1px solid var(--mkt-button-primary-hover);
@@ -465,6 +468,9 @@ Church page styles
   .content-wrapper h3 {
     font-size: 1.5rem;
   }
+  .content-body {
+    margin-top: -2rem;
+  }
 }
 @media (max-width: 1720px) {
   .form-card {
@@ -488,5 +494,10 @@ Church page styles
     right: auto !important;
     top: auto !important;
     margin: 1rem auto !important;
+  }
+}
+@media (max-width: 350px) {
+  .hero-h1 {
+    font-size: 2.75rem;
   }
 }
