@@ -10,6 +10,7 @@ export type Campaign = ClientReturn<typeof campaignBySlug> & {};
 export const campaignBySlug = defineQuery(`*[_type == "campaign" && slug.current == $slug][0] {
   templateType,
   heroTemplate,
+  pageTitle,
   heading,
   subheading,
   heroCopy,
