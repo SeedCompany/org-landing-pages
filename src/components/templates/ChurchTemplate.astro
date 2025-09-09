@@ -16,7 +16,6 @@ interface Props {
 
 const { campaignData } = Astro.props;
 ---
-
 <style>
   html {
     scroll-behavior: smooth;
@@ -173,7 +172,7 @@ const { campaignData } = Astro.props;
     }
   }
 </style>
-<Layout title={campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page'}>
+<Layout title={campaignData.pageTitle || (campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page')}>
   <div class="page">
     <main class="content">
       <div class="hero-bg"></div>

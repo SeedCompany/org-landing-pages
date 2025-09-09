@@ -44,6 +44,12 @@ export default defineType({
       title: 'Campaign Name',
       type: 'string',
     }),
+    defineField({
+      name: 'pageTitle',
+      title: 'Page Title',
+      type: 'string',
+      description: 'This title appears in the browser tab and is important for SEO.',
+    }),
     // Template Selection
     defineField({
       name: 'templateType',
