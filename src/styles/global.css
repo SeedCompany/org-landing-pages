@@ -367,11 +367,17 @@ Church page styles
   font-size: 17px;
   margin: 1.5rem 0px;
 }
+.content-body {
+  margin-top: -4rem;
+}
 .gray-500 {
   color: var(--gray-500);
 }
 .prose {
   max-width: 100% !important;
+}
+.faq-heading {
+  line-height: 0 !important;
 }
 .footer {
   background-color: var(--footer-bg);
