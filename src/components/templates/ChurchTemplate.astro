@@ -211,7 +211,7 @@ const { campaignData } = Astro.props;
                 <div class="faq-wrapper">
                   <div class="px-6 py-2 lg:px-8">
                     <div>
-                      <h2 class="faq-heading text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                      <h2 class="faq-heading uppercase text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
                         Frequently asked questions
                       </h2>
                       <dl class="mt-16 divide-y divide-gray-900/10">
@@ -224,7 +224,7 @@ const { campaignData } = Astro.props;
                                 commandfor={`faq-${index}`}
                                 class="flex w-full items-start justify-between text-left text-gray-900"
                               >
-                                <span class="text-base/7 font-semibold">{faq.question}</span>
+                                <span class="text-base/7 faq-question">{faq.question}</span>
 
                                 <span class="ml-6 flex h-7 items-center">
                                   <svg
@@ -266,7 +266,7 @@ const { campaignData } = Astro.props;
                               class="[&:not([hidden])]:contents"
                             >
                               <dd class="mt-2 pr-12">
-                                <div class="prose mt-2" set:html={toHTML(faq.answer)} />
+                                <div class="prose mt-4 faq-answer" set:html={toHTML(faq.answer)} />
                               </dd>
                             </el-disclosure>
                           </div>
