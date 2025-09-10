@@ -216,7 +216,7 @@ Church page styles
   color: var(--mkt-primary-text);
 }
 .hero-p {
-  font-family: 'Gotham', san-serif;
+  font-family: 'Gotham', sans-serif;
   font-size: 1.15rem;
   line-height: 1.75rem;
 }
@@ -251,7 +251,7 @@ Church page styles
   color: var(--mkt-primary-text);
 }
 .donation-card-image {
-  border-radius: 8px 8px 0 0;
+  border-radius: 7px 7px 0 0;
   width: 100%;
   height: 250px;
   object-fit: cover;
@@ -272,14 +272,14 @@ Church page styles
   @apply px-6;
 }
 .donation-card-funded-percent-header {
-  font-family: 'Gotham', san-serif;
+  font-family: 'Gotham Bold', sans-serif;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 11%;
   line-height: 100%;
 }
 .donation-card-subheading {
-  font-family: 'Gotham', san-serif;
+  font-family: 'Gotham Bold', sans-serif;
   letter-spacing: 11%;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -333,7 +333,7 @@ Church page styles
 }
 .more-to-come-card {
   color: #ffffff;
-  font-family: 'Gotham', san-serif;
+  font-family: 'Gotham', sans-serif;
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1rem;
@@ -341,7 +341,7 @@ Church page styles
   text-align: center;
 }
 .more-to-come-card-image {
-  border-radius: 8px;
+  border-radius: 7px 7px 0 0;
   width: 100%;
   height: 250px;
   object-fit: cover;
