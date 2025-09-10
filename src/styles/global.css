@@ -351,13 +351,16 @@ Church page styles
   margin-right: 10rem;
 }
 .content-wrapper h2 {
-  font-family: 'Gotham', sans-serif;
+  font-family: 'Gotham Book', sans-serif;
   font-size: 3rem;
   line-height: 1;
 }
-.content-wrapper h3 {
-  font-family: 'Gotham', sans-serif;
-  font-size: 1.75rem;
+.content-wrapper h2 strong {
+  font-family: 'Gotham Bold', sans-serif;
+  font-weight: bold;
+}
+.content-wrapper h3 strong {
+  font-family: 'Gotham Bold', sans-serif;
   font-weight: bold;
 }
 .content-wrapper strong {
