@@ -348,6 +348,10 @@ export const DonationForm = ({
     const day = String(today.getDate()).padStart(2, '0');
     const todayFormatted = `${month}/${day}`;
     const sept19 = '09/19';
+    console.log(window.location);
+    if (window.location.origin.includes(`dev.`) || window.location.origin.includes(`localhost`)) {
+      setFormOverlay(false);
+    }
     if (queryParams.get('form') === 'enable' || todayFormatted >= sept19) {
       setFormOverlay(false);
     }
