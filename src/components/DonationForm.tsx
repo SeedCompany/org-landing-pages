@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import type { StripePaymentElementOptions } from '@stripe/stripe-js';
-import { type ReactNode, useCallback, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
 import { z } from 'zod/v4/mini';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
@@ -309,6 +309,7 @@ export const DonationForm = ({
   });
 
   const paymentElementOptions: StripePaymentElementOptions = {
+    layout: 'tabs',
     paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
   };
   useEffect(() => {
@@ -329,8 +330,18 @@ export const DonationForm = ({
     }
   }, [elements, form, donationCadence, amount]);
 
+  useEffect(() => {
+    if (window.innerWidth <= 1023) {
+      const formTop = document.querySelector('.top-of-form');
+      if (formTop) {
+        const topPosition = formTop.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: topPosition - 40, behavior: 'smooth' });
+      }
+    }
+  }, [donationStep]);
+
   return (
-    <div className="my-3">
+    <div className="my-3 top-of-form">
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
@@ -539,6 +550,7 @@ export const DonationForm = ({
           </form>
         </div>
       )}
+      <span className="bottom-of-form"></span>
     </div>
   );
 };
