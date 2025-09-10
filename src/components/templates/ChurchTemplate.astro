@@ -20,16 +20,6 @@ const { campaignData } = Astro.props;
   html {
     scroll-behavior: smooth;
   }
-  @font-face {
-    font-family: 'Gotham Bold';
-    src: url('/fonts/Gotham-Bold.otf') format('opentype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-  .gotham-bold {
-    font-family: 'Gotham Bold', sans-serif;
-  }
   .page {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -124,7 +114,7 @@ const { campaignData } = Astro.props;
       background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
       background-size: cover;
       background-repeat: no-repeat;
-      background-position: center;
+      background-position: right;
       position: absolute;
       top: 0;
       left: 0;

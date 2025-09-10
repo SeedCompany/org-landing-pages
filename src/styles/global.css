@@ -204,15 +204,16 @@ Church page styles
 .hero-h1 {
   font-size: 5.5rem;
   line-height: 0.95;
-  font-family: 'Gotham', san-serif;
-  font-weight: 900 !important;
+  font-family: 'Gotham Bold', sans-serif;
+  font-weight: bold !important;
   color: var(--mkt-primary-text);
 }
 .hero-sub-heading {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   line-height: 0.85;
+  font-family: 'Gotham Book', sans-serif;
   font-weight: normal;
-  color: var(--dark-green);
+  color: var(--mkt-primary-text);
 }
 .hero-p {
   font-family: 'Gotham', san-serif;
@@ -419,6 +420,20 @@ Church page styles
   font-display: swap;
 }
 @font-face {
+  font-family: 'Gotham Bold';
+  src: url('/fonts/Gotham-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham Book';
+  src: url('/fonts/Gotham-Book.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
   font-family: 'Red Hat Mono';
   src: url('/fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
   font-weight: 100;
@@ -437,6 +452,12 @@ Church page styles
 .gotham {
   font-family: 'Gotham', sans-serif;
 }
+.gotham-book {
+  font-family: 'Gotham Book', sans-serif;
+}
+.gotham-bold {
+  font-family: 'Gotham Bold', sans-serif;
+}
 .red-hat-mono {
   font-family: 'Red Hat Mono', sans-serif;
 }
@@ -454,9 +475,10 @@ Church page styles
     height: auto;
   }
   .hero-h1 {
+    padding-top: 2rem;
     font-size: 3.25rem;
-    line-height: 1.2;
-    font-family: 'Gotahm', sans-serif;
+    line-height: 1;
+    font-family: 'Gotham Bold', sans-serif;
     font-weight: bold;
     color: var(--mkt-primary-text);
   }
