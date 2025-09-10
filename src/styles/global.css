@@ -201,6 +201,13 @@ Church page styles
 .hero-bg {
   height: 884px;
 }
+.logo {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  image-rendering: crisp-edges; 
+  shape-rendering: geometricPrecision; 
+  -webkit-font-smoothing: antialiased; 
+}
 .hero-h1 {
   font-size: 5.5rem;
   line-height: 0.95;
