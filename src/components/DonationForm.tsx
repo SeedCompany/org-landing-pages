@@ -350,9 +350,7 @@ export const DonationForm = ({
     const sept19 = '09/19';
     if (queryParams.get('form') === 'enable' || todayFormatted >= sept19) {
       setFormOverlay(false);
-      console.log('tis enabled');
     }
-    console.log(queryParams);
   }, []);
 
   return (
