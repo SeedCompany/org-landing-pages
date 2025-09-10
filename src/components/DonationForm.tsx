@@ -550,7 +550,6 @@ export const DonationForm = ({
           </form>
         </div>
       )}
-      <span className="bottom-of-form"></span>
     </div>
   );
 };
