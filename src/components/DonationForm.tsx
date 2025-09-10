@@ -107,6 +107,7 @@ export const DonationForm = ({
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
+  const [formOverlay, setFormOverlay] = useState(true);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<DonateFormValues>({
@@ -333,15 +334,36 @@ export const DonationForm = ({
   useEffect(() => {
     if (window.innerWidth <= 1023) {
       const formTop = document.querySelector('.top-of-form');
-      if (formTop) {
+      if (formTop && donationStep !== 'amount') {
         const topPosition = formTop.getBoundingClientRect().top + window.scrollY;
         window.scrollTo({ top: topPosition - 40, behavior: 'smooth' });
       }
     }
   }, [donationStep]);
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+    const todayFormatted = `${month}/${day}`;
+    const sept19 = '09/19';
+    if (queryParams.get('form') === 'enable' || todayFormatted >= sept19) {
+      setFormOverlay(false);
+      console.log('tis enabled');
+    }
+    console.log(queryParams);
+  }, []);
+
   return (
-    <div className="my-3 top-of-form">
+    <div className="my-3 top-of-form relative">
+      {formOverlay && (
+        <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
+          <p className="text-white text-lg bg-watermarkDarkBlue font-semibold h-14 w-1/2 text-center py-3 rounded-md">
+            Giving starts 9/21
+          </p>
+        </div>
+      )}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
