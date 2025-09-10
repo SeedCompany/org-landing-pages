@@ -5,9 +5,9 @@ export const LockSection = ({
   endAmount,
 }: {
   fundingStatus: FundingStatus;
-  endAmount: number;
+  endAmount?: number;
 }) => {
-  const localeAmount = endAmount.toLocaleString('en-US');
+  const localeAmount = endAmount ? endAmount.toLocaleString('en-US') : ' ???';
   switch (fundingStatus) {
     case 'locked':
       return (
