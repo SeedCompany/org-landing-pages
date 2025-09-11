@@ -107,7 +107,7 @@ export const DonationForm = ({
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
-  const [formOverlay, setFormOverlay] = useState(true);
+  const [disableForm, setDisableForm] = useState(true);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<DonateFormValues>({
@@ -349,23 +349,16 @@ export const DonationForm = ({
     const todayFormatted = `${month}/${day}`;
     const sept19 = '09/19';
     console.log(window.location);
-    if (window.location.origin.includes(`dev.`) || window.location.origin.includes(`localhost`)) {
-      setFormOverlay(false);
-    }
+    // if (window.location.origin.includes(`dev.`) || window.location.origin.includes(`localhost`)) {
+    //   setDisableForm(false);
+    // }
     if (queryParams.get('form') === 'enable' || todayFormatted >= sept19) {
-      setFormOverlay(false);
+      setDisableForm(false);
     }
   }, []);
 
   return (
     <div className="my-3 top-of-form relative">
-      {formOverlay && (
-        <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
-          <p className="text-white text-lg bg-watermarkDarkBlue font-semibold h-14 w-1/2 text-center py-3 rounded-md">
-            Giving starts 9/21
-          </p>
-        </div>
-      )}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
@@ -384,10 +377,11 @@ export const DonationForm = ({
             onClick={() => {
               setDonationStep('contact');
             }}
+            disabled={disableForm}
             type="button"
             className=""
           >
-            Give Now
+            {disableForm ? 'Giving Starts 9/21' : 'Give Now'}
           </DonationButton>
         </div>
       ) : (
