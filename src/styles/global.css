@@ -369,6 +369,8 @@ Church page styles
 .content-wrapper h3 strong {
   font-family: 'Gotham Bold', sans-serif;
   font-weight: bold;
+  line-height: 1.2;
+  font-size: 1.5rem;
 }
 .content-wrapper strong {
   font-weight: bold;

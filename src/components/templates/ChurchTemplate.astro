@@ -38,7 +38,8 @@ const { campaignData } = Astro.props;
     margin: 0 auto;
   }
   .faq-bg {
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgb(235, 235, 236) 100%);
+    height: 100%;
+    background: linear-gradient(to top, #EBEBEC 0%, #EBEBEC 50%, #FFFFFF 100%);
   }
   /* Right form column (Sticky) */
   @media (min-width: 1024px) {
@@ -58,6 +59,15 @@ const { campaignData } = Astro.props;
     .faq-wrapper {
       max-width: 60%;
     }
+    .bg-gradient {
+      background: linear-gradient(to bottom, #EBEBEC 0%, #EBEBEC 50%, #FFFFFF 100%);
+      position: absolute;
+      top: 800px;
+      left: 0;
+      width: 100%;
+      min-height: 800px;
+      z-index: -1;
+    }
     .hero-bg {
       background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
       background-size: cover;
@@ -74,7 +84,7 @@ const { campaignData } = Astro.props;
       background: linear-gradient(
         to bottom,
         rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 1) 100%
+        #EBEBEB 100%
       );
       position: absolute;
       top: 0;
@@ -176,6 +186,7 @@ const { campaignData } = Astro.props;
         poster="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6c8fd52213687696807aa5996b0ab64625573af5-1110x625.jpg"
         class="hero-video"
       />
+      <div class="bg-gradient"></div>
       {
         campaignData.aboutSections?.map((section) => (
           <ContentSection
