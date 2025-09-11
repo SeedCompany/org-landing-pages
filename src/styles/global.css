@@ -204,9 +204,9 @@ Church page styles
 .logo {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: optimize-contrast;
-  image-rendering: crisp-edges; 
-  shape-rendering: geometricPrecision; 
-  -webkit-font-smoothing: antialiased; 
+  image-rendering: crisp-edges;
+  shape-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
 }
 .hero-h1 {
   font-size: 5.5rem;
@@ -524,17 +524,20 @@ Church page styles
 }
 @media (max-width: 1720px) {
   .form-card {
-    max-width: 35rem !important;
+    max-width: 42rem !important;
+    min-width: 450px !important;
   }
 }
 @media (min-width: 1300px) and (max-width: 1720px) {
   .form-card {
-    max-width: 39rem !important;
+    max-width: 42rem !important;
+    min-width: 450px !important;
   }
 }
 @media (min-width: 1024px) and (max-width: 1299px) {
   .form-card {
     max-width: 29rem !important;
+    min-width: 24rem !important;
   }
 }
 @media (max-width: 1023px) {
@@ -544,6 +547,7 @@ Church page styles
     right: auto !important;
     top: auto !important;
     margin: 1rem auto !important;
+    min-width: auto !important;
   }
 }
 @media (max-width: 350px) {
