@@ -13,7 +13,7 @@ export const RecurringDonationSwitcher = ({
         onClick={() => setDonationType('OneTime')}
         className={`uppercase ${currentType === 'OneTime' ? 'bg-white text-watermarkDarkBlue hover:text-emerald-900' : 'bg-watermarkDarkBlue text-white  active:border-emerald-500 hover:text-emerald-100 active:text-emerald-200'} border-watermarkDarkBlue  border rounded-sm m-2 px-2 py-3 min-w-32`}
       >
-        One Time Donation
+        One-Time Donation
       </button>
       <button
         onClick={() => setDonationType('Monthly')}
