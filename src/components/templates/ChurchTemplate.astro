@@ -59,6 +59,9 @@ const { campaignData } = Astro.props;
     .faq-wrapper {
       max-width: 60%;
     }
+    .faq-heading {
+      margin-top: 2rem;
+    }
     .bg-gradient {
       background: linear-gradient(to bottom, #EBEBEC 0%, #EBEBEC 50%, #FFFFFF 100%);
       position: absolute;
@@ -171,6 +174,15 @@ const { campaignData } = Astro.props;
       margin-bottom: -140px !important;
     }
   }
+  @media (max-width: 640px) {
+    .faq-heading {
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+    .faq-question {
+      font-size: 1rem;
+    }
+  }
 </style>
 <Layout title={campaignData.pageTitle || (campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page')}>
   <div class="page">
@@ -197,7 +209,7 @@ const { campaignData } = Astro.props;
         ))
       }
       <h2
-        class="text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl py-4"
+        class="text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl pt-12 pb-8 lg:py-4"
       >
         Unlock a Project.<br />Join the Mission.
       </h2>
@@ -220,7 +232,7 @@ const { campaignData } = Astro.props;
               <>
                 <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module" />
                 <div class="faq-wrapper">
-                  <div class="px-6 py-2 lg:px-8">
+                  <div class="px-6 py-2 lg:pl-14 lg:pr-0">
                     <div>
                       <h2 class="faq-heading uppercase text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
                         Frequently asked questions
