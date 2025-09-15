@@ -22,6 +22,7 @@ const todayFormatted = `${month}/${day}`;
 const sept19 = '09/19';
 const isAfterSept19 = todayFormatted >= sept19;
 ---
+
 <style>
   html {
     scroll-behavior: smooth;
@@ -45,7 +46,7 @@ const isAfterSept19 = todayFormatted >= sept19;
   }
   .faq-bg {
     height: 100%;
-    background: linear-gradient(to top, #EBEBEC 0%, #EBEBEC 50%, #FFFFFF 100%);
+    background: linear-gradient(to top, #ebebec 0%, #ebebec 50%, #ffffff 100%);
   }
   /* Right form column (Sticky) */
   @media (min-width: 1024px) {
@@ -69,7 +70,7 @@ const isAfterSept19 = todayFormatted >= sept19;
       margin-top: 2rem;
     }
     .bg-gradient {
-      background: linear-gradient(to bottom, #EBEBEC 0%, #EBEBEC 50%, #FFFFFF 100%);
+      background: linear-gradient(to bottom, #ebebec 0%, #ebebec 50%, #ffffff 100%);
       position: absolute;
       top: 800px;
       left: 0;
@@ -90,11 +91,7 @@ const isAfterSept19 = todayFormatted >= sept19;
       z-index: -1;
     }
     .hero-bg-overlay {
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0) 0%,
-        #EBEBEB 100%
-      );
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ebebeb 100%);
       position: absolute;
       top: 0;
       left: 0;
@@ -190,7 +187,10 @@ const isAfterSept19 = todayFormatted >= sept19;
     }
   }
 </style>
-<Layout title={campaignData.pageTitle || (campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page')}>
+<Layout
+  title={campaignData.pageTitle ||
+    (campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page')}
+>
   <div class="page">
     <main class="content">
       <div class="hero-bg"></div>

@@ -2,13 +2,18 @@
 import { ImageLink } from './ImageLink';
 import { NavLinkList } from './NavLinkList';
 ---
+
 <header class="md:fixed absolute inset-x-0 top-0 z-50">
   <nav
     class="flex items-center justify-between p-4 lg:px-8 bg-transparent bg-[linear-gradient(89deg,#192D2F59_0%,#D2DCCF52_100%)] my-4 w-[98%] mx-auto rounded-[30px] transition-colors duration-300"
     aria-label="Global"
     id="nav"
   >
-    <ImageLink linkUrl="#" imageUrl="https://seedcompany.com/wp-content/uploads/2025/01/sc-full-logo-white-1.svg" altText="Seed Company" />
+    <ImageLink
+      linkUrl="#"
+      imageUrl="https://seedcompany.com/wp-content/uploads/2025/01/sc-full-logo-white-1.svg"
+      altText="Seed Company"
+    />
     <div class="flex lg:hidden">
       <button
         type="button"
@@ -32,7 +37,13 @@ import { NavLinkList } from './NavLinkList';
       </button>
     </div>
     <!-- TODO figure out how to put this array into a variable in the astro files -->
-    <NavLinkList ItemList={[{title: "Impact", href: "#"}, {title: "Approach", href: "#"}, {title: "Stories", href: "#"}]} />
+    <NavLinkList
+      ItemList={[
+        { title: 'Impact', href: '#' },
+        { title: 'Approach', href: '#' },
+        { title: 'Stories', href: '#' },
+      ]}
+    />
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
       <a
         href="#"
@@ -78,7 +89,14 @@ import { NavLinkList } from './NavLinkList';
           </svg>
         </button>
       </div>
-      <NavLinkList mobile ItemList={[{title: "Impact", href: "#"}, {title: "Approach", href: "#"}, {title: "Stories", href: "#"}]} />
+      <NavLinkList
+        mobile
+        ItemList={[
+          { title: 'Impact', href: '#' },
+          { title: 'Approach', href: '#' },
+          { title: 'Stories', href: '#' },
+        ]}
+      />
     </div>
   </div>
 </header>
