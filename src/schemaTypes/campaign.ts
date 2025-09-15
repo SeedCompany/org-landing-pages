@@ -15,7 +15,26 @@ const richTextBlock = {
         name: 'link',
         type: 'object',
         title: 'URL',
-        fields: [{ title: 'URL', name: 'href', type: 'url' }],
+        fields: [
+          { 
+            title: 'URL', 
+            name: 'href', 
+            type: 'url' 
+          },
+          {
+            name: 'target',
+            type: 'string',
+            title: 'Open in new tab',
+            options: {
+              list: [
+                { title: 'Same tab', value: '_self' },
+                { title: 'New tab', value: '_blank' },
+              ],
+              layout: 'radio',
+            },
+            initialValue: '_self',
+          },
+        ],
       },
       {
         name: 'textColor',
