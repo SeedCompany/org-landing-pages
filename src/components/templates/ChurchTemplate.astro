@@ -15,6 +15,12 @@ interface Props {
 }
 
 const { campaignData } = Astro.props;
+const today = new Date();
+const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+const day = String(today.getDate()).padStart(2, '0');
+const todayFormatted = `${month}/${day}`;
+const sept19 = '09/19';
+const isAfterSept19 = todayFormatted >= sept19;
 ---
 <style>
   html {
@@ -338,14 +344,27 @@ const { campaignData } = Astro.props;
     <Footer />
   </section>
 
-  <div class="mobile-donation-cta hidden">
-    <a
-      href="#give-form-mobile"
-      class="donation-button bg-watermarkGreen text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold"
-    >
-      Ready to Give?
-    </a>
-  </div>
+  {
+    isAfterSept19 ? (
+      <div class="mobile-donation-cta hidden">
+        <a
+          href="#give-form-mobile"
+          class="donation-button bg-watermarkGreen text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold"
+        >
+          Ready to Give?
+        </a>
+      </div>
+    ) : (
+      <div class="mobile-donation-cta hidden">
+        <a
+          href="#give-form-mobile"
+          class="donation-button text-gray-500 bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold"
+        >
+          Giving Starts 9/21
+        </a>
+      </div>
+    )
+  }
   <script>
     const form = document.querySelector('#give-form-mobile');
     const button = document.querySelector('.mobile-donation-cta');
