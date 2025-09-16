@@ -32,7 +32,7 @@ export const CheckPaymentModal = ({
                   </DialogTitle>
                   <div className="mt-2 gotham">
                     <p className="text-left text-gray-900">
-                      Kindly send your checks to the following address:
+                      Kindly send checks to the following address:
                     </p>
                     <p className="text-sm text-left mt-2 mb-3 text-gray-900 ml-2">
                       Seed Company
@@ -42,10 +42,11 @@ export const CheckPaymentModal = ({
                       Suite 100
                       <br />
                       Arlington, TX 76018
+                      <br />
+                      <br />
+                      Memo: Watermark - YOTW
                     </p>
                     <p className="text-left text-gray-900">
-                      <b>Note:</b> Year of the Word
-                      <br />
                       You may contact us at{' '}
                       <a
                         className="text-blue-600 hover:text-blue-400 visited:text-purple-600"

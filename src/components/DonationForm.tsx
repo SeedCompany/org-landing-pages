@@ -389,7 +389,9 @@ export const DonationForm = ({
             className="text-xs ml-2 gotham mt-3 text-center"
             onClick={() => setCheckInstructions(true)}
           >
-            <span className="hover:cursor-pointer">Want to give by check?</span>
+            <span className="hover:cursor-pointer text-blue-600 hover:text-blue-400">
+              Want to give by check?
+            </span>
           </div>
         </div>
       ) : (
