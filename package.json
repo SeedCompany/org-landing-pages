@@ -22,6 +22,7 @@
     "@fontsource/dm-serif-text": "^5.2.6",
     "@fontsource/lato": "^5.2.6",
     "@fontsource/oswald": "^5.2.6",
+    "@headlessui/react": "^2.2.8",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.1.1",
     "@iconify-json/lucide": "^1.2.38",

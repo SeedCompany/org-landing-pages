@@ -11,6 +11,7 @@ import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
+import { CheckPaymentModal } from './atoms/CheckPaymentModal.tsx';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -109,6 +110,7 @@ export const DonationForm = ({
   const [amountError, setAmountError] = useState<string | null>(null);
   const [disableForm, setDisableForm] = useState(true);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
+  const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema),
@@ -358,6 +360,7 @@ export const DonationForm = ({
 
   return (
     <div className="my-3 top-of-form relative">
+      {checkInstructions && <CheckPaymentModal setOpen={setCheckInstructions} />}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
@@ -382,6 +385,12 @@ export const DonationForm = ({
           >
             {disableForm ? 'Giving Starts 9/21' : 'Give Now'}
           </DonationButton>
+          <div
+            className="text-xs ml-2 gotham mt-3 text-center"
+            onClick={() => setCheckInstructions(true)}
+          >
+            <span className="hover:cursor-pointer">Want to give by check?</span>
+          </div>
         </div>
       ) : (
         <div>
