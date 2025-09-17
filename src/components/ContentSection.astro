@@ -10,7 +10,7 @@ const { title, content, htmlContent = false, className } = Astro.props;
   )}
   
   {htmlContent ? (
-    <div class="text-base leading-relaxed text-gray-700">
+    <div class="text-base leading-relaxed text-black">
       <div class="content-wrapper" set:html={content}></div>
     </div>
   ) : (
