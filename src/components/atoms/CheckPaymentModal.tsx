@@ -32,10 +32,12 @@ export const CheckPaymentModal = ({
                   </DialogTitle>
                   <div className="mt-2 gotham">
                     <p className="text-left text-gray-900">
-                      Kindly send checks to the following address:
+                      Please make your check payable to Seed Company and send to the following address:
                     </p>
                     <p className="text-sm text-left mt-2 mb-3 text-gray-900 ml-2">
                       Seed Company
+                      <br />
+                      ATTN: Finance
                       <br />
                       220 Westway Place
                       <br />
