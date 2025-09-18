@@ -7,7 +7,7 @@ Org Landing Pages is a dynamic web application for creating and managing campaig
 ## Working Effectively
 
 ### Bootstrap and Setup
-- Check Node.js version: `node --version` (requires Node 24+, current environment has Node 20.19.4)
+- Check Node.js version: `node --version` (requires Node 24+, current environment has Node 20.19.5)
 - Enable Corepack for Yarn: `corepack enable`
 - Copy environment variables from `src/env.d.ts` to `.env.local` with appropriate values:
   ```bash
@@ -19,7 +19,7 @@ Org Landing Pages is a dynamic web application for creating and managing campaig
   ```
 
 ### Install Dependencies
-- `yarn install` -- takes 1 minute 8 seconds. NEVER CANCEL. Set timeout to 5+ minutes.
+- `yarn install` -- takes 1 minute 7 seconds. NEVER CANCEL. Set timeout to 5+ minutes.
 - Check for duplicates: `yarn dedupe --check` -- takes < 1 second
 
 ### Development Workflow
@@ -31,18 +31,18 @@ Org Landing Pages is a dynamic web application for creating and managing campaig
   - Tailwind CSS processing
 
 ### Build and Production
-- Build application: `yarn build` -- takes 29 seconds. NEVER CANCEL. Set timeout to 10+ minutes.
+- Build application: `yarn build` -- takes 26 seconds. NEVER CANCEL. Set timeout to 10+ minutes.
 - Preview production build: `yarn preview` -- starts preview server on http://localhost:4321
 - Start production server: `yarn start` -- runs production build on http://localhost:4321
 - Build creates `dist/` directory with client and server assets (~11MB total)
 
 ### Code Quality and Validation
-- TypeScript check: `yarn type-check` -- takes 5 seconds. NEVER CANCEL. Set timeout to 5+ minutes.
-- Lint code: `yarn lint` -- takes 20 seconds. **WARNING**: Currently has pre-existing ESLint error in `src/pages/campaigns/[slug].astro:34` with TypeScript rule. This is a known issue.
+- TypeScript check: `yarn type-check` -- takes 5-7 seconds. NEVER CANCEL. Set timeout to 5+ minutes.
+- Lint code: `yarn lint` -- takes 60 seconds. **WARNING**: Currently has pre-existing ESLint error in `src/pages/campaigns/[slug].astro:34` with TypeScript rule. This is a known issue.
 - **ALWAYS run both type-check and lint before committing** even though lint currently fails
 
 ### Sanity CMS Integration
-- Validate schema: `yarn sanity schema validate` -- takes 5 seconds
+- Validate schema: `yarn sanity schema validate` -- takes 5 seconds. Shows warnings about import.meta in CJS format (expected).
 - Generate types: `yarn sanity:gen` -- **FAILS in restricted environments** due to network access to Sanity API (fgpinugl.api.sanity.io)
 - **NOTE**: Sanity commands require network access to Sanity Cloud. In restricted environments, they will fail with `ENOTFOUND` errors.
 
@@ -62,7 +62,7 @@ Org Landing Pages is a dynamic web application for creating and managing campaig
 5. Stop dev server (Ctrl+C)
 
 ### Production Build Flow
-1. Run `yarn build` and wait for completion (29 seconds)
+1. Run `yarn build` and wait for completion (26 seconds)
 2. Run `yarn preview` to test production build
 3. Verify same functionality as development
 4. Stop preview server
@@ -136,7 +136,7 @@ The `.github/workflows/ci.yml` runs:
 ### Troubleshooting
 - If `yarn install` fails, ensure Corepack is enabled: `corepack enable`
 - If Sanity commands fail, check network connectivity to `*.sanity.io`
-- If build is slow, this is normal - builds can take up to 30+ seconds
+- If build is slow, this is normal - builds can take up to 26 seconds
 - If dev server seems unresponsive, wait at least 30 seconds for startup
 
 ## Package Manager Details
