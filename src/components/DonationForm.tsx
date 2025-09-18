@@ -386,10 +386,10 @@ export const DonationForm = ({
             {disableForm ? 'Giving Starts 9/21' : 'Give Now'}
           </DonationButton>
           <div
-            className="text-xs ml-2 gotham mt-3 text-center"
+            className="text-xs ml-2 mt-3 text-center"
             onClick={() => setCheckInstructions(true)}
           >
-            <span className="hover:cursor-pointer text-blue-600 hover:text-blue-400">
+            <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
               Want to give by check?
             </span>
           </div>

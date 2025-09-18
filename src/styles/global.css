@@ -230,8 +230,8 @@ Church page styles
 .hero-video {
   max-width: 100% !important;
   height: auto;
-  border-radius: 20px;
   margin: 0px !important;
+  overflow: hidden;
 }
 .heading-h2 {
   font-size: 2.25rem;
