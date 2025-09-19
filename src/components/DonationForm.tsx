@@ -345,15 +345,15 @@ export const DonationForm = ({
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const day = String(today.getDate()).padStart(2, '0');
-    const todayFormatted = `${month}/${day}`;
-    const sept19 = '09/19';
-    if (window.location.origin.includes(`dev.`) || window.location.origin.includes(`localhost`)) {
-      setDisableForm(false);
-    }
-    if (queryParams.get('form') === 'enable' || todayFormatted >= sept19) {
+    // 9am Central Time (CDT, UTC-5) on 09/21/2025 is 2025-09-21T14:00:00Z
+    const unlockTimeUTC = new Date('2025-09-21T14:00:00Z');
+    const now = new Date();
+    if (
+      window.location.origin.includes('dev.') ||
+      window.location.origin.includes('localhost') ||
+      queryParams.get('form') === 'enable' ||
+      now >= unlockTimeUTC
+    ) {
       setDisableForm(false);
     }
   }, []);
