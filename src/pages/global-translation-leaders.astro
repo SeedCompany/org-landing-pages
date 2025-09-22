@@ -2,13 +2,23 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <style>
+    :root {
+        --dark-green: #1d3738;
+    }
+    .container {
+        max-width: 1440px;
+        margin: 0 auto;
+    }
     .gtl-logo-wrapper {
         max-width: 1440px;
         margin: 0 auto;
     }
+    .bg-green {
+        background-color: var(--dark-green);
+    }
 </style>
 <Layout>
-    <div class="bg-black">
+    <section class="bg-black">
         <div class="relative isolate overflow-hidden pt-14">
             <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/72e8dba1bc6a051b39d379968185c56eceb6cc4f-2560x1440.jpg" alt="" class="absolute inset-0 -z-10 size-full object-cover opacity-70" />
             <div aria-hidden="true" class="">
@@ -17,17 +27,27 @@ import Layout from '../layouts/Layout.astro';
             <div class="gtl-logo-wrapper px-6">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0fa6e1351fb91829fbdcca10d29d727c26cd1e25-2048x336.png" alt="Seed Company Logo" class="max-w-xs" />
             </div>
-            <div class="mx-auto sm:flex max-w-[1440px] h-screen md:h-full px-6 lg:px-8">
+            <div class="sm:flex container h-screen md:h-full px-6 lg:px-8">
                 <div class="w-full sm:w-1/2 py-24">
-                    
                     <div>
-                        <h1 class="text-balance rader tracking-tight text-7xl md:text-9xl text-white">Global Translation Leaders</h1>
-                        <p class="mt-8 text-pretty text-lg text-white sm:text-xl/8">Sponsorship is a personal way to be part of today's global Bible translation work!</p>
+                        <h1 class="text-balance rader uppercase tracking-tight text-5xl md:text-9xl text-white">Global Translation Leaders</h1>
+                        <p class="mt-8 gotham text-pretty text-lg text-white sm:text-xl/8">Sponsorship is a personal way to be part of today's global Bible translation work!</p>
                     </div>
                 </div>
                 <div class="w-1/2 py-0 sm:py-48 lg:py-56"></div>
             </div>
-            </div>
         </div>
-    </div>
+    </section>
+    <section class="bg-green px-6 py-24 lg:py-32 lg:px-8">
+        <div class="container justify-center items-center sm:flex gap-6 sm:px-6 text-white">
+            <div class="w-full sm:w-1/2 pr-0 sm:pr-24">
+                <h2 class="text-balance rader uppercase tracking-tight text-5xl md:text-9xl text-white mb-8">About GTL</h2>
+                <p class="gotham text-lg">Seed Company's Global Translation Leaders (GTL) program is supported by generous investors who understand the power of training and leadership in Bible translation. Sponsors include individuals, families, small groups, churches, businesses, and foundations who are committed to seeing Bible translation advance around the globe.</p>
+            </div>
+            <div class="w-full sm:w-1/2">
+                <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6a2b5347a724680dd15c5ee4581d4533529c8673-1456x816.png" alt="Woman reading a Bible" class="rounded-lg shadow-lg mt-6 sm:mt-0" />
+            </div>
+            
+        </div>
+    </section>
 </Layout>
