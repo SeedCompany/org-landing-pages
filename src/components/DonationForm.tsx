@@ -108,7 +108,6 @@ export const DonationForm = ({
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
-  const [disableForm, setDisableForm] = useState(true);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -343,21 +342,6 @@ export const DonationForm = ({
     }
   }, [donationStep]);
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    // 9am Central Time (CDT, UTC-5) on 09/21/2025 is 2025-09-21T14:00:00Z
-    const unlockTimeUTC = new Date('2025-09-21T14:00:00Z');
-    const now = new Date();
-    if (
-      window.location.origin.includes('dev.') ||
-      window.location.origin.includes('localhost') ||
-      queryParams.get('form') === 'enable' ||
-      now >= unlockTimeUTC
-    ) {
-      setDisableForm(false);
-    }
-  }, []);
-
   return (
     <div className="my-3 top-of-form relative">
       {checkInstructions && <CheckPaymentModal setOpen={setCheckInstructions} />}
@@ -379,16 +363,12 @@ export const DonationForm = ({
             onClick={() => {
               setDonationStep('contact');
             }}
-            disabled={disableForm}
             type="button"
             className=""
           >
-            {disableForm ? 'Giving Starts 9/21' : 'Give Now'}
+            Give Now
           </DonationButton>
-          <div
-            className="text-xs ml-2 mt-3 text-center"
-            onClick={() => setCheckInstructions(true)}
-          >
+          <div className="text-xs ml-2 mt-3 text-center" onClick={() => setCheckInstructions(true)}>
             <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
               Want to give by check?
             </span>
