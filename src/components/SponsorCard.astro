@@ -1,0 +1,90 @@
+---
+import { imageBuilder } from '../lib/sanity';
+
+interface Props {
+  name: string;
+  region: string;
+  gender: string;
+  gtlId: string;
+  focus: string;
+  bio: string;
+  image: any;
+  isSponsored: boolean;
+}
+
+const { name, region, gender, gtlId, focus, bio, image, isSponsored } = Astro.props;
+
+// Build image URL using Sanity's image builder
+const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
+---
+<style>
+  * {
+    font-family: 'Gotham Office', sans-serif;
+  }
+  .sponsored {
+    border: 2px solid var(--light-green);
+    position: relative;
+  }
+  .sponsored::after {
+    content: 'Sponsored';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(42,42,42,0.9);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-family: 'Rader Medium', sans-serif;
+    text-transform: uppercase;
+    font-size: 2rem;
+  }
+  .sponsor-card.sponsored {
+    color: #888; 
+  }
+  .sponsor-card.sponsored img {
+    filter: grayscale(100%);
+    opacity: 0.4;
+  }
+  .sponsor-card.sponsored strong,
+  .sponsor-card.sponsored h3,
+  .sponsor-card.sponsored p,
+  .sponsor-card.sponsored span {
+    color: #888;
+  }
+  @font-face {
+    font-family: 'Rader Medium';
+    src: url('/fonts/PPRader-Medium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+  @media (max-width: 640px) {
+    .sponsor-card.sponsored::after {
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+</style>
+<div class={`sponsor-card p-3 bg-transparent rounded-lg ${isSponsored ? 'sponsored' : ''}`}>
+  <div class="flex gap-4 items-center text-white pb-4">
+    <img src={imageUrl} class="rounded-lg w-1/3 md:pb-0" alt={`Photo of ${name}`} />
+    <div class="sponsor-card-info w-full">
+      <h3 class="sponsor-name text-lg md:text-2xl">{name}</h3>
+      <p class="sponsor-region text-sm md:text-md md:py-2"><strong>Region:</strong> {region}</p>
+      <hr />
+      <div class="flex items-center gap-2 md:gap-4">
+        <p class="sponsor-gender text-sm md:text-md py-2"><strong>Gender:</strong> {gender}</p>
+        <span class="text-sm md:text-lg">|</span>
+        <p class="sponsor-id text-xs md:text-md">{gtlId}</p>
+      </div>
+    </div>
+</div>
+
+  <div class="sponsor-card-content">
+    <div class="sponsor-card-body">
+      <p class="sponsor-focus text-lg font-bold"><strong>Focus: {focus}</strong></p>
+      <p class="text-md md:text-lg">{bio}</p>
+    </div>
+  </div>
+</div>

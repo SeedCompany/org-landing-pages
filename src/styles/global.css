@@ -408,6 +408,19 @@ Church page styles
   background-color: var(--footer-bg);
   color: var(--footer-text);
 }
+/*
+Sponsor a Global Translation Leader Section
+*/
+.sponsor-card {
+    border: 1px solid #FFF;
+}
+.sponsor-card-content {
+    font-family: 'Gotham', sans-serif;
+    color: #FFF;
+}
+.sponsor-focus {
+    font-weight: 700 !important;
+}
 @font-face {
   font-family: 'Rader Bold';
   src: url('/fonts/PPRader-Bold.otf') format('opentype');
