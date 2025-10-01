@@ -479,7 +479,7 @@ export const DonationForm = ({
             <DonationInput
               placeholder="Phone*"
               label="Phone"
-              error={email.fieldState.error}
+              error={phone.fieldState.error}
               hidden={donationStep === 'payment'}
               hideLabel
               {...phone.field}
