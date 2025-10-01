@@ -27,6 +27,7 @@ interface DonateInput {
       firstName: string | null;
       lastName: string;
       email: string;
+      phone: string;
       mailingAddress: {
         line1: string;
         line2: string | null | undefined;
@@ -225,6 +226,7 @@ export const DonationForm = ({
                 firstName: formData.investor.firstName,
                 lastName: formData.investor.lastName,
                 email: formData.investor.email,
+                phone: formData.investor.phone,
                 mailingAddress: {
                   line1: formData.investor.mailingAddress.line1,
                   line2: formData.investor.mailingAddress.line2,
@@ -288,6 +290,10 @@ export const DonationForm = ({
   const email = useController({
     control: form.control,
     name: 'investor.email',
+  });
+  const phone = useController({
+    control: form.control,
+    name: 'investor.phone',
   });
   const line1 = useController({
     control: form.control,
@@ -444,7 +450,7 @@ export const DonationForm = ({
             }}
           >
             <DonationInput
-              placeholder="First name"
+              placeholder="First name*"
               label="First name"
               error={firstName.fieldState.error}
               hidden={donationStep === 'payment'}
@@ -453,7 +459,7 @@ export const DonationForm = ({
               {...firstName.field}
             />
             <DonationInput
-              placeholder="Last name"
+              placeholder="Last name*"
               label="Last name"
               error={lastName.fieldState.error}
               hidden={donationStep === 'payment'}
@@ -462,7 +468,7 @@ export const DonationForm = ({
               {...lastName.field}
             />
             <DonationInput
-              placeholder="Email"
+              placeholder="Email*"
               label="Email"
               type="email"
               error={email.fieldState.error}
@@ -471,7 +477,15 @@ export const DonationForm = ({
               {...email.field}
             />
             <DonationInput
-              placeholder="Address Line 1"
+              placeholder="Phone*"
+              label="Phone"
+              error={phone.fieldState.error}
+              hidden={donationStep === 'payment'}
+              hideLabel
+              {...phone.field}
+            />
+            <DonationInput
+              placeholder="Address Line 1*"
               label="Address Line 1"
               error={line1.fieldState.error}
               hidden={donationStep === 'payment'}
@@ -487,7 +501,7 @@ export const DonationForm = ({
               {...line2.field}
             />
             <DonationInput
-              placeholder="City"
+              placeholder="City*"
               label="City"
               error={city.fieldState.error}
               hidden={donationStep === 'payment'}
@@ -495,7 +509,7 @@ export const DonationForm = ({
               {...city.field}
             />
             <DonationInput
-              placeholder="State"
+              placeholder="State*"
               label="State"
               error={state.fieldState.error}
               hidden={donationStep === 'payment'}
@@ -503,7 +517,7 @@ export const DonationForm = ({
               {...state.field}
             />
             <DonationInput
-              placeholder="Zip Code"
+              placeholder="Zip Code*"
               label="Zip Code"
               error={zip.fieldState.error}
               hidden={donationStep === 'payment'}

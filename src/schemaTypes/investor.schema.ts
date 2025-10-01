@@ -88,5 +88,12 @@ export const investorSchema = z.object({
   email: z.email('Email is required'),
   firstName: z.nullable(z.string('First name is required')),
   lastName: z.string('Last name is required'),
+  phone: z
+    .string('Phone number is required')
+    .check(
+      z.trim(),
+      z.minLength(10, 'Please enter phone number with area code (10 digits)'),
+      z.maxLength(10, 'Please enter phone number with area code (10 digits)'),
+    ),
   mailingAddress: mailingAddress,
 });
