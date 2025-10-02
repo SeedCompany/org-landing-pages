@@ -354,10 +354,12 @@ export const DonationForm = ({
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
-          <RecurringDonationSwitcher
-            currentType={donationCadence}
-            setDonationType={setDonationCadence}
-          />
+          {formProps.enableRecurring && (
+            <RecurringDonationSwitcher
+              currentType={donationCadence}
+              setDonationType={setDonationCadence}
+            />
+          )}
           <DonationPresets
             presetAmounts={formProps?.presetAmounts}
             setAmount={setAmount}
