@@ -20,16 +20,7 @@ const { sponsors } = Astro.props;
 <div>
   <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
     {sponsors.map((sponsor) => (
-      <SponsorCard
-        name={sponsor.name}
-        region={sponsor.region}
-        gender={sponsor.gender}
-        gtlId={sponsor.gtlId}
-        focus={sponsor.focus}
-        bio={sponsor.bio}
-        image={sponsor.image}
-        isSponsored={sponsor.isSponsored}
-      />
+      <SponsorCard {...sponsor} />
     ))}
   </div>
 </div>

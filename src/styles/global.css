@@ -411,15 +411,25 @@ Church page styles
 /*
 Sponsor a Global Translation Leader Section
 */
-.sponsor-card {
-    border: 1px solid #FFF;
+.sponsored-badge::before {
+  content: 'Sponsored';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(42, 42, 42, 0.9);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  font-family: 'Rader Medium', sans-serif;
+  text-transform: uppercase;
+  font-size: 2rem;
 }
-.sponsor-card-content {
-    font-family: 'Gotham', sans-serif;
-    color: #FFF;
-}
-.sponsor-focus {
-    font-weight: 700 !important;
+@media (max-width: 640px) {
+  .sponsored-badge::before {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+  }
 }
 @font-face {
   font-family: 'Rader Bold';

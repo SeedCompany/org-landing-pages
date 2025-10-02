@@ -20,6 +20,8 @@ export default {
         lato: ['Lato', 'sans-serif'],
         oswald: ['Oswald', 'sans-serif'],
         'dm-serif': ['DM Serif Text', 'serif'],
+        gotham: ['Gotham', 'sans-serif'],
+        'gotham-office': ['Gotham Office', 'sans-serif'],
       },
       screens: {
         xxs: '430px',
