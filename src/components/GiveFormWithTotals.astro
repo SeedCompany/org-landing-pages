@@ -47,14 +47,15 @@ const campaignTotals = {
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
   <StripeClientIsland
     formProps={{
-      enableRecurring: false,
-      hideInvestorType: 'Organization',
+      forceDonationType: 'OneTime',
+      forceInvestorType: 'Individual',
       presetAmounts: {
         oneTime: [50, 100, 300, 500, 1000],
         recurring: [50, 100, 300, 500, 1000],
       },
       campaignTotals: true,
       telemetry: { referrer: 'Watermark' },
+      checkMemo: 'Watermark - YOTW',
     }}
     client:load
   >

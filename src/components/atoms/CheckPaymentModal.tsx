@@ -3,8 +3,10 @@ import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
 export const CheckPaymentModal = ({
   setOpen,
+  memo,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  memo?: string;
 }) => {
   return (
     <div>
@@ -46,8 +48,12 @@ export const CheckPaymentModal = ({
                       <br />
                       Arlington, TX 76018
                       <br />
-                      <br />
-                      Memo: Watermark - YOTW
+                      {memo && (
+                        <>
+                          <br />
+                          Memo: {memo}
+                        </>
+                      )}
                     </p>
                     <p className="text-left text-gray-900">
                       You may contact us at{' '}
