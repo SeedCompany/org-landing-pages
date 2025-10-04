@@ -42,9 +42,9 @@ interface DonateInput {
       stripe: { confirmationToken: string };
     };
     targets: { amount: number }[];
-    captcha: {
-      v2: string | null;
-      v3: string;
+    captcha?: {
+      v2?: string;
+      v3?: string;
     };
     telemetry?: {
       app?: string | null;
@@ -206,16 +206,11 @@ export const DonationForm = ({
         let captchaToken;
         if (!executeRecaptcha) {
           console.error('reCAPTCHA not loaded yet');
-          return;
         }
         try {
-          captchaToken = await executeRecaptcha('donate');
+          captchaToken = await executeRecaptcha?.('donate');
         } catch (error) {
           console.error('Recaptcha error:', error);
-        }
-        if (!captchaToken) {
-          console.error('No captcha token');
-          return;
         }
         // I think data should be the DonateFormValues type here, but struggling to implement it
         const { data } = await submitForm({
@@ -246,7 +241,6 @@ export const DonationForm = ({
                 },
               ],
               captcha: {
-                v2: null,
                 v3: captchaToken,
               },
               telemetry: { ...formProps.telemetry },
