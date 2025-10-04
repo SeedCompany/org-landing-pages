@@ -86,7 +86,7 @@ const mailingAddress = z.object({
 
 export const investorSchema = z.object({
   email: z.email('Email is required'),
-  firstName: z.nullable(z.string('First name is required')),
+  firstName: z.nullish(z.string()),
   lastName: z.string('Last name is required'),
   phone: z
     .string('Phone number is required')

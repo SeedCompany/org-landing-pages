@@ -12,6 +12,7 @@ import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 import { CheckPaymentModal } from './atoms/CheckPaymentModal.tsx';
+import { DonorTypeSwitcher } from './DonorTypeSwitcher.tsx';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -83,8 +84,8 @@ interface SubmitFormResponse {
 }
 
 export type DonateProps = {
-  hideInvestorType?: 'Individual' | 'Organization';
-  enableRecurring?: boolean;
+  forceInvestorType?: 'Individual' | 'Organization';
+  forceDonationType?: 'OneTime' | 'Monthly';
   campaignTotals?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
@@ -95,6 +96,7 @@ export type DonateProps = {
     sourceName?: string | null;
     sourceUrl?: string | null;
   };
+  checkMemo?: string;
 };
 
 export const DonationForm = ({
@@ -104,9 +106,12 @@ export const DonationForm = ({
   formProps: DonateProps;
   campaignProgress?: ReactNode;
 }) => {
-  // this will be used eventually but is not a part of the initial Watermark use case
-  // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
-  const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
+  const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>(
+    formProps.forceInvestorType ?? 'Individual',
+  );
+  const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>(
+    formProps.forceDonationType || 'OneTime',
+  );
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
@@ -223,7 +228,7 @@ export const DonationForm = ({
             input: {
               cadence: donationCadence,
               investor: {
-                firstName: formData.investor.firstName,
+                firstName: formData.investor.firstName ?? '',
                 lastName: formData.investor.lastName,
                 email: formData.investor.email,
                 phone: formData.investor.phone,
@@ -235,7 +240,7 @@ export const DonationForm = ({
                   zip: formData.investor.mailingAddress.zip,
                   country: 'US', // Assuming US for simplicity, adjust as needed
                 },
-                type: 'Individual',
+                type: giveAs,
               },
               payment: {
                 stripe: { confirmationToken: confirmationToken.id },
@@ -350,11 +355,16 @@ export const DonationForm = ({
 
   return (
     <div className="my-3 top-of-form relative">
-      {checkInstructions && <CheckPaymentModal setOpen={setCheckInstructions} />}
+      {checkInstructions && (
+        <CheckPaymentModal setOpen={setCheckInstructions} memo={formProps.checkMemo} />
+      )}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
-          {formProps.enableRecurring && (
+          {!formProps.forceInvestorType && (
+            <DonorTypeSwitcher currentType={giveAs} setDonorType={setGiveAs} />
+          )}
+          {!formProps.forceDonationType && (
             <RecurringDonationSwitcher
               currentType={donationCadence}
               setDonationType={setDonationCadence}
@@ -384,16 +394,6 @@ export const DonationForm = ({
         </div>
       ) : (
         <div>
-          {!formProps.hideInvestorType && (
-            <>
-              <span>Give As:</span>
-              {/* this needs to be a selector */}
-              <div>
-                <span>Individual</span>
-                <span>Organization</span>
-              </div>
-            </>
-          )}
           <div
             className={`flex items-center justify-between gap-3 m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}
           >
@@ -455,14 +455,14 @@ export const DonationForm = ({
               placeholder="First name*"
               label="First name"
               error={firstName.fieldState.error}
-              hidden={donationStep === 'payment'}
-              required
+              hidden={donationStep === 'payment' || giveAs !== 'Individual'}
+              required={giveAs === 'Individual'}
               hideLabel
               {...firstName.field}
             />
             <DonationInput
-              placeholder="Last name*"
-              label="Last name"
+              placeholder={giveAs === 'Individual' ? 'Last name*' : 'Organization name*'}
+              label={giveAs === 'Individual' ? 'Last name' : 'Organization name'}
               error={lastName.fieldState.error}
               hidden={donationStep === 'payment'}
               required

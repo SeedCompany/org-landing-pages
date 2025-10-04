@@ -1,19 +1,17 @@
 ---
 import { StripeClientIsland } from '../components/stripe/StripeClientIsland';
-
-const url = Astro.url;
-const referrer = url.searchParams.get('referrer');
 ---
 
 <div>
   <StripeClientIsland
     formProps={{
+      forceDonationType: 'Monthly',
       campaignTotals: false,
       presetAmounts: {
-        oneTime: [35, 500, 2500, 10000, 20000],
+        oneTime: [25, 50, 100, 500, 1000],
         recurring: [25, 50, 100, 500, 1000],
       },
-      telemetry: { referrer },
+      telemetry: { referrer: 'Canopy' },
     }}
     client:load
   />
