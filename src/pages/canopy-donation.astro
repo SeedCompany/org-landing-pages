@@ -1,0 +1,18 @@
+---
+import { CanopyStripeClientIsland } from '../components/stripe/CanopyStripeClientIsland';
+---
+
+<div>
+  <CanopyStripeClientIsland
+    formProps={{
+      forceDonationType: 'Monthly',
+      campaignTotals: false,
+      presetAmounts: {
+        oneTime: [40, 75, 100, 200],
+        recurring: [40, 75, 100, 200],
+      },
+      telemetry: { referrer: 'Canopy' },
+    }}
+    client:load
+  />
+</div>
