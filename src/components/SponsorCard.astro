@@ -11,9 +11,10 @@ interface Props {
   bio: string;
   image: any;
   isSponsored: boolean;
+  slug: string;
 }
 
-const { name, region, gender, gtlId, focus, bio, image, isSponsored } = Astro.props;
+const { name, region, gender, gtlId, focus, bio, image, isSponsored, slug } = Astro.props;
 
 const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
 ---
@@ -78,6 +79,20 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
       >
         {bio}
       </p>
+    </div>
+
+    <!-- Add View Details Button -->
+    <div class="mt-4 flex justify-end">
+      <a
+        href={`/sponsors/${slug}`}
+        class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+          isSponsored
+            ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+            : 'bg-[var(--light-green)] text-black hover:bg-green-400'
+        }`}
+      >
+        View Details
+      </a>
     </div>
   </div>
 </div>

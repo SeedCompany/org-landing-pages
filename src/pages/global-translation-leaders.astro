@@ -2,10 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import SponsorCards from '../components/SponsorCards.astro';
 import { sanityClient as sanity } from 'sanity:client';
-import { toHTML } from '../lib/portableTextSerializer';
 
 const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
   name,
+  slug,
   region,
   gender,
   gtlId,
