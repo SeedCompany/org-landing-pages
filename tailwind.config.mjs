@@ -15,6 +15,11 @@ export default {
         watermarkGreen: '#29B67E',
         watermarkDarkBlue: '#1D3638',
         watermarkAccentGrey: '#D6D4C9',
+        canopySelected: '#D8E1BE',
+        canopySelectedBorder: '#64b145',
+        canopyBase: '#F4F3E7',
+        canopyTextColor: '#323232',
+        canopyActionButtons: '#006268',
       },
       fontFamily: {
         lato: ['Lato', 'sans-serif'],

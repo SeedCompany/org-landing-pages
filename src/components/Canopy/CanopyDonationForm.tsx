@@ -4,14 +4,14 @@ import type { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { type ReactNode, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
 import { z } from 'zod/v4/mini';
-import { donateSchema } from '../schemaTypes/donate.schema.ts';
-import { DonationInput } from './DonationInput.tsx';
+import { donateSchema } from '../../schemaTypes/donate.schema.ts';
+import { DonationInput } from '../DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { DonationPresets } from './DonationPresets.tsx';
-import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
-import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
-import { CheckPaymentModal } from './atoms/CheckPaymentModal.tsx';
+import { CheckPaymentModal } from '../atoms/CheckPaymentModal.tsx';
+import { DonorTypeSwitcher } from './DonationTypeSwitcher.tsx';
+import { CanopyDonationPresets } from './CanopyDonationPresets.tsx';
+import { CanopyDonationButton } from './CanopyDonationButton.tsx';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -82,8 +82,9 @@ interface SubmitFormResponse {
   };
 }
 
-export type DonateProps = {
-  hideInvestorType?: 'Individual' | 'Organization';
+export type CanopyDonateProps = {
+  forceInvestorType?: 'Individual' | 'Organization';
+  forceDonationType?: 'OneTime' | 'Monthly';
   enableRecurring?: boolean;
   campaignTotals?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
@@ -98,16 +99,19 @@ export type DonateProps = {
   checkMemo?: string;
 };
 
-export const DonationForm = ({
+export const CanopyDonationForm = ({
   formProps,
   campaignProgress,
 }: {
-  formProps: DonateProps;
+  formProps: CanopyDonateProps;
   campaignProgress?: ReactNode;
 }) => {
-  // this will be used eventually but is not a part of the initial Watermark use case
-  // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
-  const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
+  const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>(
+    formProps.forceInvestorType ?? 'Individual',
+  );
+  const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>(
+    formProps.forceDonationType || 'OneTime',
+  );
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
@@ -231,7 +235,7 @@ export const DonationForm = ({
                   zip: formData.investor.mailingAddress.zip,
                   country: 'US', // Assuming US for simplicity, adjust as needed
                 },
-                type: 'Individual',
+                type: giveAs,
               },
               payment: {
                 stripe: { confirmationToken: confirmationToken.id },
@@ -351,46 +355,31 @@ export const DonationForm = ({
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
-          {formProps.enableRecurring && (
-            <RecurringDonationSwitcher
-              currentType={donationCadence}
-              setDonationType={setDonationCadence}
-            />
+          {!formProps.forceInvestorType && (
+            <DonorTypeSwitcher currentType={giveAs} setDonorType={setGiveAs} />
           )}
-          <DonationPresets
+          <p className="px-2 font-lato">Choose a monthly amount to give</p>
+          <CanopyDonationPresets
             presetAmounts={formProps?.presetAmounts}
             setAmount={setAmount}
             recurring={donationCadence === 'Monthly'}
             currentAmount={amount}
             amountError={amountError}
           />
-          <DonationButton
-            onClick={() => {
-              setDonationStep('contact');
-            }}
-            type="button"
-            className=""
-          >
-            Give Now
-          </DonationButton>
-          <div className="text-xs ml-2 mt-3 text-center" onClick={() => setCheckInstructions(true)}>
-            <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
-              Want to give by check?
-            </span>
+          <div className="flex justify-center mt-2">
+            <CanopyDonationButton
+              onClick={() => {
+                setDonationStep('contact');
+              }}
+              type="button"
+              className="w-full mx-auto"
+            >
+              Give Now
+            </CanopyDonationButton>
           </div>
         </div>
       ) : (
         <div>
-          {!formProps.hideInvestorType && (
-            <>
-              <span>Give As:</span>
-              {/* this needs to be a selector */}
-              <div>
-                <span>Individual</span>
-                <span>Organization</span>
-              </div>
-            </>
-          )}
           <div
             className={`flex items-center justify-between gap-3 m-2 ${donationStep === 'payment' ? 'hidden' : ''}`}
           >
@@ -452,14 +441,14 @@ export const DonationForm = ({
               placeholder="First name*"
               label="First name"
               error={firstName.fieldState.error}
-              hidden={donationStep === 'payment'}
-              required
+              hidden={donationStep === 'payment' || giveAs !== 'Individual'}
+              required={giveAs === 'Individual'}
               hideLabel
               {...firstName.field}
             />
             <DonationInput
-              placeholder="Last name*"
-              label="Last name"
+              placeholder={giveAs === 'Individual' ? 'Last name*' : 'Organization name*'}
+              label={giveAs === 'Individual' ? 'Last name' : 'Organization name'}
               error={lastName.fieldState.error}
               hidden={donationStep === 'payment'}
               required
@@ -532,7 +521,7 @@ export const DonationForm = ({
                   options={paymentElementOptions}
                 />
                 <div className="grid grid-cols-2">
-                  <DonationButton
+                  <CanopyDonationButton
                     buttonType="secondary"
                     onClick={() => {
                       setDonationStep('contact');
@@ -540,10 +529,10 @@ export const DonationForm = ({
                     type="button"
                   >
                     Go Back
-                  </DonationButton>
-                  <DonationButton isSubmitting={form.formState.isSubmitting} type="submit">
+                  </CanopyDonationButton>
+                  <CanopyDonationButton isSubmitting={form.formState.isSubmitting} type="submit">
                     Give Now
-                  </DonationButton>
+                  </CanopyDonationButton>
                 </div>
                 <div className="text-xs text-center my-2 mt-3 text-gray-600">
                   This site is protected by reCAPTCHA and the Google{' '}
@@ -554,7 +543,7 @@ export const DonationForm = ({
             )}
             {donationStep !== 'payment' && (
               <div className="grid grid-cols-2">
-                <DonationButton
+                <CanopyDonationButton
                   buttonType="secondary"
                   onClick={() => {
                     setDonationStep('amount');
@@ -562,10 +551,14 @@ export const DonationForm = ({
                   type="button"
                 >
                   Go Back
-                </DonationButton>
-                <DonationButton onClick={handleNextClick} type="button" disabled={!!amountError}>
+                </CanopyDonationButton>
+                <CanopyDonationButton
+                  onClick={handleNextClick}
+                  type="button"
+                  disabled={!!amountError}
+                >
                   Go to Payment
-                </DonationButton>
+                </CanopyDonationButton>
               </div>
             )}
           </form>
