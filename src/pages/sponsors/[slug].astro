@@ -25,7 +25,7 @@ const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).ur
 
 <Layout>
   <div class="bg-[var(--sus-primary-heading)] min-h-screen text-white py-12">
-    <div class="container border-white border-2 rounded-lg mx-auto px-6 py-24">
+    <div class="container border-white border-2 rounded-lg mx-auto p-8 md:py-12">
       <div class="mb-8">
         <a href="/global-translation-leaders" class="text-[var(--sus-button-secondary-bg)] hover:underline">
           ← Back to Global Translation Leaders
@@ -33,37 +33,52 @@ const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).ur
       </div>
       
       <div class="block md:flex gap-12">
-        <div class="w-full md:w-1/4">
-          {imageUrl && (
+        <div class="w-full md:w-1/2">
+          {imageUrl &&  (
             <img 
               src={imageUrl} 
               alt={`Photo of ${sponsor.name}`}
-              class="rounded-lg w-full mb-6"
+              class=`rounded-lg w-full mb-6 ${sponsor.isSponsored ? 'grayscale opacity-40' : ''}`
             />
           )}
         </div>
         
         <div class="w-full">
-          <h1 class="text-4xl lg:text-6xl font-bold mb-4">{sponsor.name}</h1>
-          <div class="space-y-4 mb-6">
-            <p><strong>Region:</strong> {sponsor.region}</p>
-            <p><strong>Gender:</strong> {sponsor.gender}</p>
-            <p><strong>GTL ID:</strong> {sponsor.gtlId}</p>
-            <p><strong>Focus:</strong> {sponsor.focus}</p>
-          </div>
-          
-          <div class="mb-8">
-            <h2 class="text-2xl font-bold mb-4">Biography</h2>
-            <p class="text-lg leading-relaxed">{sponsor.bio}</p>
-          </div>
-          
-          {sponsor.isSponsored && (
-            <div class="bg-[var(--sus-button-secondary-bg)] text-black p-4 rounded-lg">
-              <p class="font-semibold">This leader is currently sponsored!</p>
+          <div>
+            <div class="w-full">
+                <h1 class="text-4xl lg:text-6xl font-bold mb-4">{sponsor.name}</h1>
+            </div>  
+            <div class="space-y-2 mb-8 md:grid grid-cols-2">
+                <p class="mt-2"><strong>Region:</strong> {sponsor.region}</p>
+                <p><strong>Gender:</strong> {sponsor.gender}</p>
+                <p><strong>GTL ID:</strong> {sponsor.gtlId}</p>
+                <p><strong>Focus:</strong> {sponsor.focus}</p>
             </div>
-          )}
+          </div>
+        </div>
+        <div class="w-full">
+          <div>
+            <div class="space-y-4 mb-6">
+                {!sponsor.isSponsored && (
+                <form action="">
+                    <input type="text" placeholder="Your message..." class="border border-gray-300 p-2 rounded-lg w-full" />
+                </form>   
+                )}
+                {sponsor.isSponsored && (
+                    <div class="bg-[var(--sus-button-secondary-bg)] text-black p-4 rounded-lg">
+                    <p class="font-semibold">This leader is currently sponsored!</p>
+                    </div>
+                )}
+            </div>
+          </div>
         </div>
       </div>
+    
+      <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Biography</h2>
+        <p class="text-lg leading-relaxed">{sponsor.bio}</p>
+      </div>
     </div>
+    
   </div>
 </Layout>
