@@ -62,7 +62,19 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
       </div>
     </div>
   </div>
-
+    <div class="my-4 flex justify-between items-center">
+      <a
+        href={`/sponsors/${slug}`}
+        class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+          isSponsored
+            ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+            : 'bg-[var(--light-green)] text-black hover:bg-green-400'
+        }`}
+      >
+        View Details
+      </a>
+      <p class="text-white font-gotham-office">$1,000 month needed</p>
+    </div>
   <div class={`text-white font-gotham-office ${isSponsored ? 'text-gray-500' : ''}`}>
     <div>
       <p
@@ -81,18 +93,6 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
       </p>
     </div>
 
-    <!-- Add View Details Button -->
-    <div class="mt-4 flex justify-end">
-      <a
-        href={`/sponsors/${slug}`}
-        class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-          isSponsored
-            ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
-            : 'bg-[var(--light-green)] text-black hover:bg-green-400'
-        }`}
-      >
-        View Details
-      </a>
-    </div>
+
   </div>
 </div>
