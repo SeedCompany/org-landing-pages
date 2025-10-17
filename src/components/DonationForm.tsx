@@ -12,6 +12,7 @@ import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 import { CheckPaymentModal } from './atoms/CheckPaymentModal.tsx';
+import { CampaignEndedModal } from './atoms/CampaignEndedModal.tsx';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -109,6 +110,8 @@ export const DonationForm = ({
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
+  const [campaignEnded, setCampaignEnded] = useState<boolean>(false);
+  const [showEndModal, setShowEndModal] = useState<boolean>(false);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -342,9 +345,30 @@ export const DonationForm = ({
     }
   }, [donationStep]);
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    // NEW DATE
+    // Midnight Central Time (CDT, UTC-5) on 10/19/2025 is 2025-10-19T05:00:00Z
+    const unlockTimeUTC = new Date('2025-10-19T05:00:00Z');
+
+    const now = new Date();
+    if (
+      window.location.origin.includes('dev.') ||
+      window.location.origin.includes('localhost') ||
+      queryParams.get('form') === 'disabled' ||
+      now >= unlockTimeUTC
+    ) {
+      setCampaignEnded(true);
+      setShowEndModal(true);
+    }
+  }, []);
+
   return (
     <div className="my-3 top-of-form relative">
       {checkInstructions && <CheckPaymentModal setOpen={setCheckInstructions} />}
+      {showEndModal && (
+        <CampaignEndedModal campaignProgress={campaignProgress} setOpen={setShowEndModal} />
+      )}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
@@ -365,10 +389,11 @@ export const DonationForm = ({
             onClick={() => {
               setDonationStep('contact');
             }}
+            disabled={campaignEnded}
             type="button"
             className=""
           >
-            Give Now
+            {campaignEnded ? 'Campaign Ended 10/18' : 'Give Now'}
           </DonationButton>
           <div className="text-xs ml-2 mt-3 text-center" onClick={() => setCheckInstructions(true)}>
             <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
