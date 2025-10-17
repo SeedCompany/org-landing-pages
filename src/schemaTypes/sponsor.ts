@@ -12,6 +12,16 @@ export default {
       validation: (Rule: Rule) => Rule.required(),
     },
     {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'gtlId',
+        maxLength: 96,
+      },
+      validation: (Rule: Rule) => Rule.required(),
+    },
+    {
       name: 'region',
       title: 'Region',
       type: 'string',

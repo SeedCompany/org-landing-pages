@@ -4,6 +4,7 @@ import SponsorCard from './SponsorCard.astro';
 interface Props {
   sponsors: Array<{
     name: string;
+    slug?: { current: string };
     region: string;
     gender: string;
     gtlId: string;
@@ -19,8 +20,11 @@ const { sponsors } = Astro.props;
 
 <div>
   <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-    {sponsors.map((sponsor) => (
-      <SponsorCard {...sponsor} />
-    ))}
+    {sponsors.map((sponsor) => {
+      const { slug, ...rest } = sponsor;
+      return (
+        <SponsorCard {...rest} slug={slug?.current || ''} />
+      );
+    })}
   </div>
 </div>
