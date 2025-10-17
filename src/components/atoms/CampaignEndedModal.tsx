@@ -1,4 +1,4 @@
-import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import type { ReactNode } from 'react';
 
 export const CampaignEndedModal = ({
@@ -31,12 +31,12 @@ export const CampaignEndedModal = ({
                   />
                 </div>
                 <div className="mt-3 text-center sm:mt-5">
-                  {/*<DialogTitle*/}
-                  {/*  as="h3"*/}
-                  {/*  className="text-base font-semibold text-gray-900 gotham uppercase"*/}
-                  {/*>*/}
-                  {/*  Campaign has ended*/}
-                  {/*</DialogTitle>*/}
+                  <DialogTitle
+                    as="h3"
+                    className="text-base font-semibold text-gray-900 gotham uppercase"
+                  >
+                    Giving has ended
+                  </DialogTitle>
                   <div className="mt-2 gotham">
                     <p className="text-left text-gray-900">
                       Thank you for investing in the men, women, and children who don’t yet have
