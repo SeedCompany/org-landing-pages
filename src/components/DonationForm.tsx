@@ -367,13 +367,15 @@ export const DonationForm = ({
               setDonationType={setDonationCadence}
             />
           )}
-          <DonationPresets
-            presetAmounts={formProps?.presetAmounts}
-            setAmount={setAmount}
-            recurring={donationCadence === 'Monthly'}
-            currentAmount={amount}
-            amountError={amountError}
-          />
+          {!campaignEnded && (
+            <DonationPresets
+              presetAmounts={formProps?.presetAmounts}
+              setAmount={setAmount}
+              recurring={donationCadence === 'Monthly'}
+              currentAmount={amount}
+              amountError={amountError}
+            />
+          )}
           <DonationButton
             onClick={() => {
               setDonationStep('contact');
@@ -384,11 +386,16 @@ export const DonationForm = ({
           >
             {campaignEnded ? 'Campaign Ended 10/18' : 'Give Now'}
           </DonationButton>
-          <div className="text-xs ml-2 mt-3 text-center" onClick={() => setCheckInstructions(true)}>
-            <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
-              Want to give by check?
-            </span>
-          </div>
+          {!campaignEnded && (
+            <div
+              className="text-xs ml-2 mt-3 text-center"
+              onClick={() => setCheckInstructions(true)}
+            >
+              <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
+                Want to give by check?
+              </span>
+            </div>
+          )}
         </div>
       ) : (
         <div>
