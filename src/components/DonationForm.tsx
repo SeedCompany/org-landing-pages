@@ -365,10 +365,12 @@ export const DonationForm = ({
 
   return (
     <div className="my-3 top-of-form relative">
-      {checkInstructions && <CheckPaymentModal setOpen={setCheckInstructions} />}
-      {showEndModal && (
-        <CampaignEndedModal campaignProgress={campaignProgress} setOpen={setShowEndModal} />
-      )}
+      <CheckPaymentModal open={checkInstructions} onClose={() => setCheckInstructions(false)} />
+      <CampaignEndedModal
+        campaignProgress={campaignProgress}
+        open={showEndModal}
+        onClose={() => setShowEndModal(false)}
+      />
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
