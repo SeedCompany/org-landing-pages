@@ -87,6 +87,7 @@ export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
   enableRecurring?: boolean;
   campaignTotals?: boolean;
+  campaignEnded?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
   telemetry?: {
@@ -105,13 +106,14 @@ export const DonationForm = ({
   formProps: DonateProps;
   campaignProgress?: ReactNode;
 }) => {
+  const { campaignEnded = false } = formProps;
+
   // this will be used eventually but is not a part of the initial Watermark use case
   // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
-  const [campaignEnded, setCampaignEnded] = useState<boolean>(false);
-  const [showEndModal, setShowEndModal] = useState<boolean>(false);
+  const [showEndModal, setShowEndModal] = useState(false);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -345,23 +347,8 @@ export const DonationForm = ({
     }
   }, [donationStep]);
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    // NEW DATE
-    // Midnight Central Time (CDT, UTC-5) on 10/19/2025 is 2025-10-19T05:00:00Z
-    const unlockTimeUTC = new Date('2025-10-19T05:00:00Z');
-
-    const now = new Date();
-    if (
-      window.location.origin.includes('dev.') ||
-      window.location.origin.includes('localhost') ||
-      queryParams.get('form') === 'disabled' ||
-      now >= unlockTimeUTC
-    ) {
-      setCampaignEnded(true);
-      setShowEndModal(true);
-    }
-  }, []);
+  // Only run on the client because the dialog uses a portal which doesn't support SSR
+  useEffect(() => void (campaignEnded && setShowEndModal(true)), []);
 
   return (
     <div className="my-3 top-of-form relative">
