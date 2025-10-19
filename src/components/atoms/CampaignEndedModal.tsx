@@ -35,7 +35,7 @@ export const CampaignEndedModal = ({
                 as="h3"
                 className="text-base font-semibold text-gray-900 gotham uppercase"
               >
-                Giving has ended
+                Our Campaign has Concluded
               </DialogTitle>
               <div className="mt-2 gotham">
                 <p className="text-left text-gray-900">
