@@ -6,9 +6,11 @@ import type { ReactNode } from 'react';
 export const StripeClientIsland = ({
   formProps,
   campaignProgress,
+  disableDialog,
 }: {
   formProps: DonateProps;
   campaignProgress?: ReactNode;
+  disableDialog?: boolean;
 }) => {
   return (
     <ClientStripeWrapper>
@@ -20,7 +22,11 @@ export const StripeClientIsland = ({
           appendTo: 'head',
         }}
       >
-        <DonationForm campaignProgress={campaignProgress} formProps={formProps} />
+        <DonationForm
+          campaignProgress={campaignProgress}
+          formProps={formProps}
+          disableDialog={disableDialog}
+        />
       </GoogleReCaptchaProvider>
     </ClientStripeWrapper>
   );

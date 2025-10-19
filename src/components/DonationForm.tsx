@@ -12,6 +12,7 @@ import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { DonationButton } from './DonationButton.tsx';
 import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 import { CheckPaymentModal } from './atoms/CheckPaymentModal.tsx';
+import { CampaignEndedModal } from './atoms/CampaignEndedModal.tsx';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
@@ -86,6 +87,7 @@ export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
   enableRecurring?: boolean;
   campaignTotals?: boolean;
+  campaignEnded?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
   telemetry?: {
@@ -100,15 +102,20 @@ export type DonateProps = {
 export const DonationForm = ({
   formProps,
   campaignProgress,
+  disableDialog,
 }: {
   formProps: DonateProps;
   campaignProgress?: ReactNode;
+  disableDialog?: boolean;
 }) => {
+  const { campaignEnded = false } = formProps;
+
   // this will be used eventually but is not a part of the initial Watermark use case
   // const [giveAs, setGiveAs] = useState<'Individual' | 'Organization'>('Individual');
   const [donationCadence, setDonationCadence] = useState<'OneTime' | 'Monthly'>('OneTime');
   const [amount, setAmount] = useState(1);
   const [amountError, setAmountError] = useState<string | null>(null);
+  const [showEndModal, setShowEndModal] = useState(false);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -342,9 +349,19 @@ export const DonationForm = ({
     }
   }, [donationStep]);
 
+  // Only run on the client because the dialog uses a portal which doesn't support SSR
+  useEffect(() => void (campaignEnded && setShowEndModal(true)), []);
+
   return (
     <div className="my-3 top-of-form relative">
-      {checkInstructions && <CheckPaymentModal setOpen={setCheckInstructions} />}
+      <CheckPaymentModal open={checkInstructions} onClose={() => setCheckInstructions(false)} />
+      {!disableDialog && (
+        <CampaignEndedModal
+          campaignProgress={campaignProgress}
+          open={showEndModal}
+          onClose={() => setShowEndModal(false)}
+        />
+      )}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
@@ -354,27 +371,35 @@ export const DonationForm = ({
               setDonationType={setDonationCadence}
             />
           )}
-          <DonationPresets
-            presetAmounts={formProps?.presetAmounts}
-            setAmount={setAmount}
-            recurring={donationCadence === 'Monthly'}
-            currentAmount={amount}
-            amountError={amountError}
-          />
+          {!campaignEnded && (
+            <DonationPresets
+              presetAmounts={formProps?.presetAmounts}
+              setAmount={setAmount}
+              recurring={donationCadence === 'Monthly'}
+              currentAmount={amount}
+              amountError={amountError}
+            />
+          )}
           <DonationButton
             onClick={() => {
               setDonationStep('contact');
             }}
+            disabled={campaignEnded}
             type="button"
             className=""
           >
-            Give Now
+            {campaignEnded ? 'Campaign Ended 10/18' : 'Give Now'}
           </DonationButton>
-          <div className="text-xs ml-2 mt-3 text-center" onClick={() => setCheckInstructions(true)}>
-            <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
-              Want to give by check?
-            </span>
-          </div>
+          {!campaignEnded && (
+            <div
+              className="text-xs ml-2 mt-3 text-center"
+              onClick={() => setCheckInstructions(true)}
+            >
+              <span className="font-lato hover:cursor-pointer text-blue-600 hover:text-blue-400">
+                Want to give by check?
+              </span>
+            </div>
+          )}
         </div>
       ) : (
         <div>

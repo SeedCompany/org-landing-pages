@@ -1,7 +1,15 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import { EnvelopeIcon } from '@heroicons/react/24/outline';
+import type { ReactNode } from 'react';
 
-export const CheckPaymentModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => (
+export const CampaignEndedModal = ({
+  open,
+  onClose,
+  campaignProgress,
+}: {
+  open: boolean;
+  onClose: () => void;
+  campaignProgress?: ReactNode;
+}) => (
   <Dialog open={open} onClose={onClose} className="relative z-10">
     <DialogBackdrop
       transition
@@ -14,43 +22,36 @@ export const CheckPaymentModal = ({ open, onClose }: { open: boolean; onClose: (
           className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-sm sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
         >
           <div>
-            <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-green-100">
-              <EnvelopeIcon aria-hidden="true" className="size-6 text-watermarkGreen" />
+            <div className="mx-auto flex items-center justify-center">
+              <img
+                src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/3c79f83596cb48bc6ded50d6b2ac7917f113b1e9-265x110.svg"
+                alt="Company Logo"
+                width="100"
+                height="100"
+              />
             </div>
             <div className="mt-3 text-center sm:mt-5">
               <DialogTitle
                 as="h3"
                 className="text-base font-semibold text-gray-900 gotham uppercase"
               >
-                Give by check
+                Our Campaign has Concluded
               </DialogTitle>
               <div className="mt-2 gotham">
                 <p className="text-left text-gray-900">
-                  Please make your check payable to Seed Company and send to the following address:
+                  Thank you for investing in the men, women, and children who don’t yet have
+                  Scripture in their heart language!
                 </p>
-                <p className="text-sm text-left mt-2 mb-3 text-gray-900 ml-2">
-                  Seed Company
-                  <br />
-                  ATTN: Finance
-                  <br />
-                  220 Westway Place
-                  <br />
-                  Suite 100
-                  <br />
-                  Arlington, TX 76018
-                  <br />
-                  <br />
-                  Memo: Watermark - YOTW
-                </p>
+                {campaignProgress ? <div className="my-6 text-left">{campaignProgress}</div> : null}
                 <p className="text-left text-gray-900">
-                  You may contact us at{' '}
+                  If you have questions, please contact the Seed Company team at{' '}
                   <a
                     className="text-blue-600 hover:text-blue-400 visited:text-purple-600"
                     href="tel:+1(817)557-2121"
                   >
                     (817) 557-2121
                   </a>{' '}
-                  for further information. Email:{' '}
+                  or{' '}
                   <a
                     className="text-blue-600 hover:text-blue-400 visited:text-purple-600"
                     href="mailto:info@tsco.org"
