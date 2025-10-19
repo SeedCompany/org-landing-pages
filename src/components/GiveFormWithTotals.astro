@@ -48,6 +48,8 @@ const campaignEnded =
   Astro.url.origin.includes('dev.') ||
   Astro.url.searchParams.get('form') === 'disabled' ||
   new Date() >= new Date('2025-10-19T05:00:00Z');
+
+const { disableDialog } = Astro.props;
 ---
 
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
@@ -63,6 +65,7 @@ const campaignEnded =
       campaignEnded,
       telemetry: { referrer: 'Watermark' },
     }}
+    disableDialog={disableDialog}
     client:load
   >
     <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />

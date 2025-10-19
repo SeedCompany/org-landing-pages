@@ -102,9 +102,11 @@ export type DonateProps = {
 export const DonationForm = ({
   formProps,
   campaignProgress,
+  disableDialog,
 }: {
   formProps: DonateProps;
   campaignProgress?: ReactNode;
+  disableDialog?: boolean;
 }) => {
   const { campaignEnded = false } = formProps;
 
@@ -353,11 +355,13 @@ export const DonationForm = ({
   return (
     <div className="my-3 top-of-form relative">
       <CheckPaymentModal open={checkInstructions} onClose={() => setCheckInstructions(false)} />
-      <CampaignEndedModal
-        campaignProgress={campaignProgress}
-        open={showEndModal}
-        onClose={() => setShowEndModal(false)}
-      />
+      {!disableDialog && (
+        <CampaignEndedModal
+          campaignProgress={campaignProgress}
+          open={showEndModal}
+          onClose={() => setShowEndModal(false)}
+        />
+      )}
       {donationStep === 'amount' ? (
         <div className="m-2 form-wrapper">
           {formProps.campaignTotals && campaignProgress}
