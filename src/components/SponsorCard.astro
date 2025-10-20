@@ -11,9 +11,10 @@ interface Props {
   bio: string;
   image: any;
   isSponsored: boolean;
+  slug: string;
 }
 
-const { name, region, gender, gtlId, focus, bio, image, isSponsored } = Astro.props;
+const { name, region, gender, gtlId, focus, bio, image, isSponsored, slug } = Astro.props;
 
 const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
 ---
@@ -61,7 +62,19 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
       </div>
     </div>
   </div>
-
+    <div class="my-4 flex justify-between items-center">
+      <a
+        href={`/sponsors/${slug}`}
+        class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+          isSponsored
+            ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+            : 'bg-[var(--light-green)] text-black hover:bg-green-400'
+        }`}
+      >
+        View Details
+      </a>
+      <p class="text-white font-gotham-office">$1,000 month needed</p>
+    </div>
   <div class={`text-white font-gotham-office ${isSponsored ? 'text-gray-500' : ''}`}>
     <div>
       <p
@@ -79,5 +92,7 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
         {bio}
       </p>
     </div>
+
+
   </div>
 </div>
