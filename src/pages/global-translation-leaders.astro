@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SponsorCards from '../components/SponsorCards.astro';
 import { sanityClient as sanity } from 'sanity:client';
+import '../styles/global.css'
 
 const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
   name,
@@ -16,13 +17,8 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
 }`);
 ---
 <style>
-    :root {
-        --dark-green: #1d3738;
-        --light-green: #29b77c;
-        --light-gray: #636466;
-        --cream: #f7f1e7;
-    }
-    .container {
+
+    /* .gtl-container {
         max-width: 1440px;
         margin: 0 auto;
     }
@@ -30,17 +26,17 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
         max-width: 1440px;
         margin: 0 auto;
     }
-    .bg-green {
-        background-color: var(--dark-green);
+    .bg-gtl-green {
+        background-color: var(--gtl-dark-green);
     }
-    .bg-light-green {
-        background-color: var(--light-green);
+    .bg-gtl-light-green {
+        background-color: var(--gtl-light-green);
     }
-    .bg-light-gray {
-        background-color: var(--light-gray);
+    .bg-gtl-light-gray {
+        background-color: var(--gtl-light-gray);
     }
-    .bg-cream {
-        background-color: var(--cream);
+    .bg-gtl-cream {
+        background-color: var(--gtl-cream);
     }
     .icon {
         width: 50px;
@@ -56,9 +52,9 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
         font-weight: 900;
         height: 0.6em;
         line-height: 1;
-        color: var(--light-green);
+        color: var(--gtl-light-green);
         font-size: calc(1px * 100);
-    }
+    } */
 </style>
 <Layout>
     <section class="bg-black">
@@ -70,7 +66,7 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
             <div class="gtl-logo-wrapper px-6">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0fa6e1351fb91829fbdcca10d29d727c26cd1e25-2048x336.png" alt="Seed Company Logo" class="w-1/2 md:max-w-xs" />
             </div>
-            <div class="sm:flex container min-h-screen md:h-full px-6 lg:px-8">
+            <div class="sm:flex gtl-container min-h-screen md:h-full px-6 lg:px-8">
                 <div class="w-full sm:w-1/2 py-24">
                     <div>
                         <h1 class="text-balance rader uppercase tracking-tight text-5xl md:text-9xl text-white">Global Translation Leaders</h1>
@@ -81,8 +77,8 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
             </div>
         </div>
     </section>
-    <section class="bg-green px-6 py-24 lg:py-32 lg:px-8">
-        <div class="container justify-center items-center sm:flex gap-6 sm:px-6 text-white">
+    <section class="bg-gtl-green px-6 py-24 lg:py-32 lg:px-8">
+        <div class="gtl-container justify-center items-center sm:flex gap-6 sm:px-6 text-white">
             <div class="w-full sm:w-1/2 pr-0 sm:pr-24">
                 <h2 class="text-balance rader uppercase tracking-tight text-5xl lg:text-8xl text-white mb-8">About GTL</h2>
                 <p class="gotham text-lg">Seed Company's Global Translation Leaders (GTL) program is supported by generous investors who understand the power of training and leadership in Bible translation. Sponsors include individuals, families, small groups, churches, businesses, and foundations who are committed to seeing Bible translation advance around the globe.</p>
@@ -95,20 +91,20 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
     </section>
     <section class="w-full">
         <div class="block lg:flex text-white text-center gotham">
-            <div class="w-full bg-light-green px-8 py-16 sm:px-32">
+            <div class="w-full bg-gtl-light-green px-8 py-16 sm:px-32">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/a952fd2db09a56eff39b8ec843f47cefaeb55ae4-500x462.png" alt="seedling icon" class="icon mx-auto mb-6" />
                 <h3 class="text-2xl sm:text-4xl gotham-bold my-6">Our Approach</h3>
                 <p class="gotham text-lg">There's no one-size-fits-all approach to Bible translation. Each people group and culture is different. That's why Seed Company works alongside local partners—who know their own languages and cultures best—to translate Scripture efficiently and accurately.</p>
             </div>
-            <div class="w-full bg-light-gray px-8 py-16 sm:px-32">
+            <div class="w-full bg-gtl-light-gray px-8 py-16 sm:px-32">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/c7979f089a6938b674eda8058541c9ed54fed802-500x462.png" alt="seedling icon" class="icon mx-auto mb-6" />
               <h3 class="text-2xl sm:text-4xl gotham-bold my-6">900+ Leaders</h3>  
               <p class="gotham text-lg font-weight-light">Over the past thirty years, Seed Company has been honored to support Bible translation leaders through internship-focused training. To date, we've supported over 900 translation leaders (and counting!) in this program. Now, we're excited to share the ability to sponsor individual participants, giving investors a unique opportunity to understand the culture, the language, the challenges, and the opportunities an individual translation leader is navigating!</p>
             </div>
         </div>
     </section>
-    <section class="w-full bg-cream px-6 sm:px-8 py-24 lg:py-32">
-        <div class="w-full sm:flex container">
+    <section class="w-full bg-gtl-cream px-6 sm:px-8 py-24 lg:py-32">
+        <div class="w-full sm:flex gtl-container">
             <div class="w-full sm:w-1/4 ">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/961a15b21d6110384890c187034926a22e62b785-924x1080.jpg" alt="Woman smiling" class="rounded-lg shadow-lg mb-6 sm:mb-0" />
                 <blockquote class="quote gotham-office mb-8 text-md italic pt-4">
@@ -122,8 +118,8 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
             </div>
         </div>
     </section>
-    <section class="w-full bg-green px-6 sm:px-8 py-24 lg:py-32 bg-green">
-        <div class="container">
+    <section class="w-full bg-gtl-green px-6 sm:px-8 py-24 lg:py-32 bg-green">
+        <div id="sponsors" class="gtl-container">
             <h2 class="text-balance text-white rader uppercase text-5xl lg:text-8xl text-black mb-8">Sponsor a Global Translation Leader:</h2>
             <SponsorCards sponsors={sponsors} />
         </div>
