@@ -7,6 +7,12 @@
     // "exactOptionalPropertyTypes": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
+    "plugins": [
+      {
+        "name": "@0no-co/graphqlsp",
+        "schema": "./schema.graphql",
+      },
+    ],
   },
   "include": [".astro/types.d.ts", "**/*", "*.mjs", ".prettierrc.mjs"],
   "exclude": ["dist"]
