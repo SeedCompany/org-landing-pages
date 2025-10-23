@@ -1,5 +1,6 @@
 ---
 import DonationCardComponent from './DonationCardComponent.astro';
+import { LockSection } from './LockSection';
 
 export interface CardProps {
   currentAmount: number;
@@ -20,6 +21,36 @@ const { projectData } = Astro.props;
 ---
 
 {projectData.map((data, index) => <DonationCardComponent projectData={{ ...data, index }} />)}
+<div class="donation-card w-full mx-0">
+  <div class="donation-card-image-wrapper">
+    <img
+      class="donation-card-image"
+      src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4e42888750b57d97a81617a6a33f270921722b91-5760x3840.jpg"
+      alt=""
+    />
+  </div>
+  <div class="relative donation-card-content">
+    <div class="lg:flex justify-between gap-2 mt-2">
+      <div class="donation-card-heading">Opportunity Eight</div>
+      <div class="flex items-center">
+        <LockSection client:load fundingStatus="funded" />
+      </div>
+    </div>
+    <p class="donation-card-description">
+      The members of Watermark Church exceed all expectations! Our generosity will now reach 60
+      people groups - bringing God's Word to 17,102,597 people. The following milestones will be
+      completed:
+    </p>
+    <ul class="donation-card-ul">
+      <li class="donation-card-li">10 first Scripture engagements</li>
+      <li class="donation-card-li">10 New Testaments</li>
+      <li class="donation-card-li">3 Full Bibles</li>
+      <li class="donation-card-li">
+        4 engagements towards completing a full Bible in 4 sign languages
+      </li>
+    </ul>
+  </div>
+</div>
 <div class="donation-card donation-card-grey w-full border-gray-300">
   <div class="donation-card-image-wrapper w-full relative">
     <div class="relative">

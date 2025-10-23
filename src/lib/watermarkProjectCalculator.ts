@@ -10,7 +10,7 @@ export const watermarkProjectCalculator = (amount: number): Impact => {
     { total: 800000, peopleHelpedTotal: 2493158, projectsUnlockedTotal: 25 },
     { total: 1000000, peopleHelpedTotal: 3691458, projectsUnlockedTotal: 30 },
     { total: 1500000, peopleHelpedTotal: 7043858, projectsUnlockedTotal: 43 },
-    { total: 2000000, peopleHelpedTotal: 12471597, projectsUnlockedTotal: 51 },
+    { total: 2000000, peopleHelpedTotal: 17102597, projectsUnlockedTotal: 60 },
   ];
   const currentProjectIndex = projectMarkers.findIndex((marker) => amount < marker.total);
   if (currentProjectIndex === 0) {

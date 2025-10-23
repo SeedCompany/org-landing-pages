@@ -44,7 +44,7 @@ export const LockSection = ({
               fill="black"
             />
           </svg>
-          <span className="ml-1 sus-green-text font-medium">${localeAmount}</span>
+          {endAmount && <span className="ml-1 sus-green-text font-medium">${localeAmount}</span>}
         </div>
       );
     case 'inProgress':
