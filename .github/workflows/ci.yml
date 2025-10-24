@@ -23,6 +23,9 @@ jobs:
       - name: Generate Sanity types
         run: yarn sanity:gen
 
+      - name: Generate GraphQL
+        run: yarn gql:gen
+
       - name: Check TypeScript
         run: yarn type-check
 

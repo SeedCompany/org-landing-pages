@@ -1,7 +1,9 @@
 {
-    "github.copilot.chat.commitMessageGeneration.instructions": [
-        {
-            "text": "Be extremely detailed with the file changes and the reason for the changes. Add lots of emojis to make it more engaging. Use a friendly tone and be very descriptive. For example, instead of saying 'fixed bug', say '🔧 Fixed a pesky bug that was causing the app to crash when users clicked the submit button! 🚀 Now everything runs smoothly! 🎉'"
-        }
-    ]
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Be extremely detailed with the file changes and the reason for the changes. Add lots of emojis to make it more engaging. Use a friendly tone and be very descriptive. For example, instead of saying 'fixed bug', say '🔧 Fixed a pesky bug that was causing the app to crash when users clicked the submit button! 🚀 Now everything runs smoothly! 🎉'"
+    }
+  ]
 }

@@ -15,5 +15,5 @@ dist
 
 # Generated
 schema.graphql
-*.generated.ts
-*.graphql.ts
+generated
+*.generated.*
