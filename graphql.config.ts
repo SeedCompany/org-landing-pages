@@ -1,4 +1,5 @@
 import type { CodegenConfig as Codegen } from '@graphql-codegen/cli';
+import { preset as clientPreset } from '@graphql-codegen/client-preset';
 import {
   addTypenameSelectionDocumentTransform,
   type ClientPresetConfig,
@@ -23,8 +24,6 @@ const commonGenConfig = {
   useTypeImports: true,
   immutableTypes: true,
   enumsAsTypes: true,
-  // Don't create types that could be used mistakenly instead of result selection
-  onlyOperationTypes: true,
   scalars,
   defaultScalarType: 'unknown',
 } satisfies CodegenConfig;
@@ -41,6 +40,13 @@ const schema: Project = {
         './schema.graphql': {
           plugins: ['schema-ast'],
         },
+        './src/graphql/generated/schema.ts': {
+          plugins: ['typescript'],
+          config: {
+            onlyOperationTypes: true,
+            inputMaybeValue: 'T | null | undefined',
+          } satisfies TypeScriptPluginConfig,
+        },
       },
     } satisfies Codegen,
   },
@@ -54,7 +60,74 @@ const ops: Project = {
       config: commonGenConfig,
       generates: {
         './src/graphql/generated/': {
-          preset: 'client',
+          preset: {
+            ...clientPreset,
+            //region Re-work client preset
+            // gql -> graphql-fn-typed
+            // graphql -> operations & schema
+            buildGeneratesSection: async (options) => {
+              let entries = await clientPreset.buildGeneratesSection(options);
+
+              // we will do our own index file, since we're adjusting filenames, this is easier.
+              entries = entries.filter((x) => !x.filename.endsWith('index.ts'));
+
+              const gqlTag = entries.find((x) => x.filename.endsWith('gql.ts'))!;
+              gqlTag.filename = gqlTag.filename.replace('gql.ts', 'graphql-fn-typed.ts');
+
+              const gqlTagPlugin = gqlTag.pluginMap['gen-dts']!;
+              gqlTag.pluginMap['gen-dts'] = {
+                ...gqlTagPlugin,
+                plugin: async (...args) => {
+                  const res = (await gqlTagPlugin.plugin(...args)) as string;
+                  return (
+                    "import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';\n" +
+                    "import * as ops from './operations';\n\n" +
+                    res
+                      .replace(/^(.|\n)+(?=type Documents =)/, '')
+                      .replaceAll(/types\./g, 'ops.')
+                      .replaceAll("import('./graphql')", "import('./operations')")
+                  );
+                },
+              };
+
+              const fragmentMasking = entries.find((x) =>
+                x.filename.endsWith('fragment-masking.ts'),
+              )!;
+              const fragmentMaskingPlugin = fragmentMasking.pluginMap['fragment-masking']!;
+              fragmentMasking.pluginMap['fragment-masking'] = {
+                ...fragmentMaskingPlugin,
+                plugin: async (...args) => {
+                  const res = (await fragmentMaskingPlugin.plugin(...args)) as string;
+                  return (
+                    `import type { Incremental } from './schema';\n` +
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    (args[2].isStringDocumentMode
+                      ? `import type { TypedDocumentString } from './operations';\n`
+                      : '') +
+                    res.replace(/import .+ from '.\/graphql';/, ``)
+                  );
+                },
+              };
+
+              const ops = entries[0]!;
+              ops.filename = ops.filename.replace('graphql.ts', 'operations.ts');
+              ops.plugins.shift(); // no eslint disable
+              ops.plugins.shift(); // no typescript schema
+              ops.plugins.shift(); // replacing typescript-operations below
+              ops.plugins.unshift({
+                'typescript-operations': {
+                  // preResolveTypes: true,
+                  namespacedImportName: 'Schema',
+                } satisfies TypeScriptDocumentsPluginConfig,
+              });
+              ops.plugins.unshift({
+                ['add']: { content: `import type * as Schema from './schema.ts';\n` },
+              });
+
+              return entries;
+            },
+            //endregion
+          },
           presetConfig: {
             persistedDocuments: {
               hashAlgorithm: 'sha256',
