@@ -1,6 +1,7 @@
 ---
 import DonationCardComponent from './DonationCardComponent.astro';
 import { LockSection } from './LockSection';
+import ProgressBar from './atoms/ProgressBar.astro';
 
 export interface CardProps {
   currentAmount: number;
@@ -30,6 +31,7 @@ const { projectData } = Astro.props;
     />
   </div>
   <div class="relative donation-card-content">
+    <ProgressBar maxNumber={100} currentNumber={100} backgroundType="image" />
     <div class="donation-card-subheading mt-2">
       Above and Beyond
     </div>
@@ -37,6 +39,7 @@ const { projectData } = Astro.props;
       <div class="donation-card-heading">Opportunity Eight</div>
       <div class="flex items-center">
         <LockSection client:load fundingStatus="funded" />
+        <span class="ml-2 sus-green-text font-medium">$2,000,000 +</span>
       </div>
     </div>
     <p class="donation-card-description">
