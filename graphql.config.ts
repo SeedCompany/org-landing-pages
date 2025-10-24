@@ -71,9 +71,7 @@ const ops: Project = {
               // we will do our own index file, since we're adjusting filenames, this is easier.
               entries = entries.filter((x) => !x.filename.endsWith('index.ts'));
 
-              const gqlTag = entries.find((x) => x.filename.endsWith('gql.ts'))!;
-              gqlTag.filename = gqlTag.filename.replace('gql.ts', 'graphql-fn-typed.ts');
-
+              const gqlTag = entries.find((x) => x.filename.endsWith('graphql-fn-typed.ts'))!;
               const gqlTagPlugin = gqlTag.pluginMap['gen-dts']!;
               gqlTag.pluginMap['gen-dts'] = {
                 ...gqlTagPlugin,
@@ -90,27 +88,7 @@ const ops: Project = {
                 },
               };
 
-              const fragmentMasking = entries.find((x) =>
-                x.filename.endsWith('fragment-masking.ts'),
-              )!;
-              const fragmentMaskingPlugin = fragmentMasking.pluginMap['fragment-masking']!;
-              fragmentMasking.pluginMap['fragment-masking'] = {
-                ...fragmentMaskingPlugin,
-                plugin: async (...args) => {
-                  const res = (await fragmentMaskingPlugin.plugin(...args)) as string;
-                  return (
-                    `import type { Incremental } from './schema';\n` +
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    (args[2].isStringDocumentMode
-                      ? `import type { TypedDocumentString } from './operations';\n`
-                      : '') +
-                    res.replace(/import .+ from '.\/graphql';/, ``)
-                  );
-                },
-              };
-
               const ops = entries[0]!;
-              ops.filename = ops.filename.replace('graphql.ts', 'operations.ts');
               ops.plugins.shift(); // no eslint disable
               ops.plugins.shift(); // no typescript schema
               ops.plugins.shift(); // replacing typescript-operations below
