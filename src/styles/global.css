@@ -54,10 +54,52 @@
   --footer-bg: #000;
   --footer-text: #fff;
   --mkt-primary-heading-size: 8rem;
-
+  --cream: #f7f1e7;
+  --black: #000000;
   --border-accent: #d6d4c9;
-}
 
+  --gtl-dark-green: #1d3738;
+  --gtl-light-green: #29b77c;
+  --gtl-light-gray: #636466;
+  --gtl-cream: #f7f1e7;
+}
+    .gtl-container {
+        max-width: 1440px;
+        margin: 0 auto;
+    }
+    .gtl-logo-wrapper {
+        max-width: 1440px;
+        margin: 0 auto;
+    }
+    .bg-gtl-green {
+        background-color: var(--gtl-dark-green);
+    }
+    .bg-gtl-light-green {
+        background-color: var(--gtl-light-green);
+    }
+    .bg-gtl-light-gray {
+        background-color: var(--gtl-light-gray);
+    }
+    .bg-gtl-cream {
+        background-color: var(--gtl-cream);
+    }
+    .icon {
+        width: 50px;
+        height: 50px;
+    }
+    .quote {
+        font-weight: 300;
+    }
+    .quote::before {
+        content: "“";
+        display: block;
+        font-family: 'Times New Roman', serif;
+        font-weight: 900;
+        height: 0.6em;
+        line-height: 1;
+        color: var(--gtl-light-green);
+        font-size: calc(1px * 100);
+    }
 /* Sustainers Template Styles */
 .sus-primary-bg {
   background-color: var(--sus-primary-bg);
