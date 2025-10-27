@@ -6,11 +6,25 @@ import node from '@astrojs/node';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
 import { posthogAstro as posthog } from './src/components/posthog/posthog.astro-plugin.js';
+import { babelOptimizerPlugin } from '@graphql-codegen/client-preset';
 
 export default defineConfig({
   integrations: [
     tailwind(),
-    react(),
+    react({
+      babel: {
+        plugins: [
+          [
+            babelOptimizerPlugin,
+            {
+              artifactDirectory: './src/graphql/generated',
+              gqlTagName: 'graphql',
+            },
+          ],
+          //
+        ],
+      },
+    }),
     sanity({
       projectId: env.PUBLIC_SANITY_PROJECT_ID,
       dataset: env.PUBLIC_SANITY_DATASET,

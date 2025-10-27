@@ -1,42 +1,9 @@
 ---
+import { fetchWatermarkTotals } from '../legacy/watermark-totals.ts';
 import ProjectCards, { type CardProps } from './ProjectCards.astro';
-const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
-interface WatermarkCampaignTotals {
-  amount: number;
-}
+const { amount } = await fetchWatermarkTotals();
 
-interface GraphQLResponse {
-  data?: {
-    watermarkCampaignTotals: WatermarkCampaignTotals;
-  };
-  errors?: Array<{ message: string }>;
-}
-
-const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
-const response = await fetch(GQL_API, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    // Add authentication if needed, e.g.:
-    // 'Authorization': `Bearer ${yourToken}`,
-  },
-  body: JSON.stringify({
-    query: `
-          query Query {
-            watermarkCampaignTotals {
-              amount
-            }
-          }
-        `,
-  }),
-});
-const data = (await response.json()) as GraphQLResponse;
-if (data.errors) {
-  console.error('GraphQL Errors:', data.errors);
-  throw new Error('Failed to fetch watermark campaign totals');
-}
-const amount = data.data?.watermarkCampaignTotals.amount || 0;
 const mockData: CardProps[] = [
   {
     currentAmount: amount,
