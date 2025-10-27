@@ -4,6 +4,7 @@ import { sanityClient as sanity } from 'sanity:client';
 import { sponsorBySlug, type Sponsor } from './sponsorBySlug.groq';
 import { imageBuilder } from '../../lib/sanity';
 import '../../styles/global.css';
+import { DonationFormWrapper } from '../../components/DonationFormWrapper';
 
 export async function getStaticPaths() {
   const sponsors = await sanity.fetch(`*[_type == "sponsor"]{ slug }`);
@@ -22,12 +23,11 @@ if (!sponsor) {
 
 const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).url() : '';
 ---
-
 <Layout>
   <div class="bg-[var(--sus-primary-heading)] min-h-screen text-white py-12">
-    <div class="container border-white border-2 rounded-lg mx-auto p-8 md:py-12">
+    <div class="container bg-[var(--cream)] border-white border-2 rounded-lg mx-auto p-8 md:py-12">
       <div class="mb-8">
-        <a href="/global-translation-leaders" class="text-[var(--sus-button-secondary-bg)] hover:underline">
+        <a href="/global-translation-leaders#sponsors" class="text-[var(--sus-button-secondary-bg)] hover:underline">
           ← Back to Global Translation Leaders
         </a>
       </div>
@@ -46,9 +46,9 @@ const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).ur
         <div class="w-full">
           <div>
             <div class="w-full">
-                <h1 class="text-4xl lg:text-6xl font-bold mb-4">{sponsor.name}</h1>
+                <h1 class="text-4xl text-[var(--black)] lg:text-6xl font-bold mb-4">{sponsor.name}</h1>
             </div>  
-            <div class="space-y-2 mb-8 md:grid grid-cols-2">
+            <div class="space-y-2 mb-8 md:grid grid-cols-2 text-[var(--black)] ">
                 <p class="mt-2"><strong>Region:</strong> {sponsor.region}</p>
                 <p><strong>Gender:</strong> {sponsor.gender}</p>
                 <p><strong>GTL ID:</strong> {sponsor.gtlId}</p>
@@ -56,13 +56,25 @@ const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).ur
             </div>
           </div>
         </div>
-        <div class="w-full">
+        <div class="w-full ">
           <div>
             <div class="space-y-4 mb-6">
                 {!sponsor.isSponsored && (
-                <form action="">
-                    <input type="text" placeholder="Your message..." class="border border-gray-300 p-2 rounded-lg w-full" />
-                </form>   
+                  <div class="mb-8 bg-white p-4 rounded-lg">
+                    <DonationFormWrapper 
+                      client:load
+                      formProps={{
+                        enableRecurring: true,
+                        campaignTotals: false,
+                        telemetry: {
+                          app: 'sponsor-page',
+                          feature: 'sponsor-donation',
+                          sourceName: sponsor.name,
+                          sourceUrl: Astro.url.href
+                        }
+                      }}
+                    />
+                  </div>
                 )}
                 {sponsor.isSponsored && (
                     <div class="bg-[var(--sus-button-secondary-bg)] text-black p-4 rounded-lg">
@@ -74,7 +86,7 @@ const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).ur
         </div>
       </div>
     
-      <div class="mb-8">
+      <div class="mb-8 text-[var(--black)] ">
         <h2 class="text-2xl font-bold mb-4">Biography</h2>
         <p class="text-lg leading-relaxed">{sponsor.bio}</p>
       </div>

@@ -19,11 +19,11 @@ const { name, region, gender, gtlId, focus, bio, image, isSponsored, slug } = As
 const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
 ---
 <div
-  class={`border border-1 border-white p-3 bg-transparent font-gotham-office rounded-lg relative ${
+  class={`border border-1 border-white p-4 bg-[var(--cream)] font-gotham-office rounded-lg relative ${
     isSponsored ? 'border-2 border-[var(--light-green)] sponsored-badge' : ''
   }`}
 >
-  <div class={`flex gap-4 items-center ${isSponsored ? 'text-gray-500' : 'text-white'} pb-4`}>
+  <div class={`flex gap-4 items-center ${isSponsored ? 'text-gray-500' : 'text-black'} pb-4`}>
     <img
       src={imageUrl}
       class={`rounded-lg w-1/3 md:pb-0 ${isSponsored ? 'grayscale opacity-40' : ''}`}
@@ -31,13 +31,13 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
     />
     <div class="w-full">
       <h3
-        class={`text-lg md:text-2xl ${isSponsored ? 'text-gray-500' : 'text-white'}`}
+        class={`text-lg md:text-2xl ${isSponsored ? 'text-gray-500' : 'text-black'}`}
       >
         {name}
       </h3>
       <p
         class={`text-sm md:text-base md:py-2 ${
-          isSponsored ? 'text-gray-500' : 'text-white'
+          isSponsored ? 'text-gray-500' : 'text-black'
         }`}
       >
         <strong>Region:</strong> {region}
@@ -46,47 +46,49 @@ const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
       <div class="flex items-center gap-2 md:gap-4">
         <p
           class={`text-sm md:text-base py-2 ${
-            isSponsored ? 'text-gray-500' : 'text-white'
+            isSponsored ? 'text-gray-500' : 'text-black'
           }`}
         >
           <strong>Gender:</strong> {gender}
         </p>
-        <span class={`text-sm md:text-lg ${isSponsored ? 'text-gray-500' : 'text-white'}`}>
+        <span class={`text-sm md:text-lg ${isSponsored ? 'text-gray-500' : 'text-black'}`}>
           |
         </span>
         <p
-          class={`text-xs md:text-base ${isSponsored ? 'text-gray-500' : 'text-white'}`}
+          class={`text-xs md:text-base ${isSponsored ? 'text-gray-500' : 'text-black'}`}
         >
           {gtlId}
         </p>
       </div>
     </div>
   </div>
-    <div class="my-4 flex justify-between items-center">
+    <div class="mt-4 mb-6 block md:flex justify-between items-center">
       <a
         href={`/sponsors/${slug}`}
         class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
           isSponsored
             ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
-            : 'bg-[var(--light-green)] text-black hover:bg-green-400'
+            : 'bg-[var(--gtl-light-green)] text-black hover:bg-green-400'
         }`}
       >
         View Details
       </a>
-      <p class="text-white font-gotham-office">$1,000 month needed</p>
+      {!isSponsored && (
+        <p class="text-black mt-4 md:mt-0 md:text-xl font-gotham-office">$1,000 month needed</p>
+      )}
     </div>
-  <div class={`text-white font-gotham-office ${isSponsored ? 'text-gray-500' : ''}`}>
+  <div class={`text-black font-gotham-office ${isSponsored ? 'text-gray-500' : ''}`}>
     <div>
       <p
         class={`text-lg font-gotham-office font-bold ${
-          isSponsored ? 'text-gray-500' : 'text-white'
+          isSponsored ? 'text-gray-500' : 'text-black'
         }`}
       >
         <strong>Focus: {focus}</strong>
       </p>
       <p
         class={`text-base md:text-lg font-gotham-office font-light ${
-          isSponsored ? 'text-gray-500' : 'text-white'
+          isSponsored ? 'text-gray-500' : 'text-black'
         }`}
       >
         {bio}
