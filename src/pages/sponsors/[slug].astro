@@ -3,7 +3,6 @@ import { defineQuery } from 'groq';
 import Layout from '../../layouts/Layout.astro';
 import { sanityClient as sanity } from '../../sanity';
 import { sponsorBySlug } from './sponsorBySlug.groq';
-import { imageBuilder } from '../../lib/sanity';
 import '../../styles/global.css';
 
 export async function getStaticPaths() {
@@ -22,7 +21,7 @@ if (!sponsor) {
   return Astro.redirect('/404');
 }
 
-const imageUrl = sponsor.image ? imageBuilder.image(sponsor.image).width(800).url() : '';
+const imageUrl = sponsor.image ? sanity.image(sponsor.image).width(800).url() : '';
 ---
 
 <Layout>
