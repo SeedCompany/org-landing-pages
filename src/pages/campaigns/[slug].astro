@@ -1,6 +1,5 @@
 ---
-import type { ClientReturn } from '@sanity/client';
-import { sanityClient as sanity } from 'sanity:client';
+import { sanityClient as sanity } from '../../sanity';
 import { toPlainText } from '../../lib/portableTextSerializer.js';
 
 // Import the templates for different campaign types
@@ -20,16 +19,9 @@ const templateMap = {
   church: ChurchTemplate,
 };
 
-interface Props {
-  campaign?: ClientReturn<typeof campaignBySlug>;
-}
+const { slug } = Astro.params as { slug: string };
 
-const { slug } = Astro.params;
-let { campaign } = Astro.props;
-
-// Fetch campaign data if not provided via props
-campaign ??= await sanity.fetch(campaignBySlug, { slug });
-
+const campaign = await sanity.fetch(campaignBySlug, { slug });
 if (!campaign) {
   return new Response(null, {
     status: 404,

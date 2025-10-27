@@ -1,7 +1,7 @@
 import type { ClientReturn } from '@sanity/client';
 import { defineQuery } from 'groq';
 
-export type Sponsor = ClientReturn<typeof sponsorBySlug> & {};
+export type Sponsor = NonNullable<ClientReturn<typeof sponsorBySlug, unknown>>;
 
 export const sponsorBySlug = defineQuery(`*[_type == "sponsor" && slug.current == $slug][0] {
   name,
