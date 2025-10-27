@@ -1,4 +1,5 @@
 ---
+import { defineQuery } from 'groq';
 import Layout from '../../layouts/Layout.astro';
 import { sanityClient as sanity } from '../../sanity';
 import { sponsorBySlug } from './sponsorBySlug.groq';
@@ -6,11 +7,13 @@ import { imageBuilder } from '../../lib/sanity';
 import '../../styles/global.css';
 
 export async function getStaticPaths() {
-  const sponsors = await sanity.fetch(`*[_type == "sponsor"]{ slug }`);
+  const sponsorSlugs = defineQuery(`*[_type == "sponsor"]{ slug }`);
+  const sponsors = await sanity.fetch(sponsorSlugs);
 
-  return sponsors.map((sponsor: { slug: { current: string } }) => ({
-    params: { slug: sponsor.slug.current },
-  }));
+  return sponsors.flatMap((sponsor) =>{
+    let slug = sponsor.slug?.current;
+    return slug ? { params: { slug } } : [];
+  });
 }
 
 const { slug } = Astro.params as { slug: string };
