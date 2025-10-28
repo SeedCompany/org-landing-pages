@@ -1,14 +1,23 @@
-import { fetchExchange, Client } from '@urql/core';
+import { fetchExchange, Client, mapExchange } from '@urql/core';
 import { persistedExchange } from '@urql/exchange-persisted';
 
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
 
+const clientInfo = {
+  name: 'seed.bible',
+};
+
 export const graphqlClient = new Client({
   url: GQL_API.toString(),
   exchanges: [
+    mapExchange({
+      onOperation: (operation) => {
+        operation.extensions ??= {};
+        operation.extensions.client = clientInfo;
+      },
+    }),
     persistedExchange({
-      preferGetForPersistedQueries: false,
       enableForMutation: true,
       enableForSubscriptions: true,
       generateHash: (query, doc) => {
@@ -18,5 +27,9 @@ export const graphqlClient = new Client({
     }),
     fetchExchange,
   ],
-  preferGetMethod: false,
+  fetchOptions: {
+    headers: {
+      'graphql-client-name': clientInfo.name,
+    },
+  },
 });
