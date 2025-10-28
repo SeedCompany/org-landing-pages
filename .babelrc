@@ -1,0 +1,7 @@
+{
+  // Fix sanity type gen compat with Astro
+  // https://github.com/sanity-io/sanity/issues/9267
+  "parserOpts": {
+    "allowReturnOutsideFunction": true,
+  },
+}

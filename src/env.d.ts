@@ -1,6 +1,6 @@
 /// <reference types="astro/client" />
 /// <reference types="@sanity/astro/module" />
-/// <reference types="../sanity.types.ts" />
+/// <reference types="./sanity/generated/sanity.types.ts" />
 /// <reference types="./components/posthog/posthog.d.ts" />
 
 interface ViteTypeOptions {

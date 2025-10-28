@@ -1,5 +1,6 @@
 ---
-import { imageBuilder } from '../lib/sanity';
+import type { SanityImageObject } from '@sanity/image-url/lib/types/types';
+import { sanityClient as sanity } from '../sanity';
 import '../styles/global.css';
 
 interface Props {
@@ -9,14 +10,14 @@ interface Props {
   gtlId: string;
   focus: string;
   bio: string;
-  image: any;
+  image: SanityImageObject;
   isSponsored: boolean;
   slug: string;
 }
 
 const { name, region, gender, gtlId, focus, bio, image, isSponsored, slug } = Astro.props;
 
-const imageUrl = imageBuilder.image(image).width(600).fit('crop').url();
+const imageUrl = sanity.image(image).width(600).fit('crop').url();
 ---
 <div
   class={`border border-1 border-white p-3 bg-transparent font-gotham-office rounded-lg relative ${
