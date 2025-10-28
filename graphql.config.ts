@@ -1,15 +1,18 @@
 import type { CodegenConfig as Codegen } from '@graphql-codegen/cli';
-import { preset as clientPreset } from '@graphql-codegen/client-preset';
 import {
   addTypenameSelectionDocumentTransform,
   type ClientPresetConfig,
+  preset as clientPreset,
 } from '@graphql-codegen/client-preset';
 import type { TypeScriptTypedDocumentNodesConfig } from '@graphql-codegen/typed-document-node';
 import type { TypeScriptPluginConfig } from '@graphql-codegen/typescript';
 import type { TypeScriptDocumentsPluginConfig } from '@graphql-codegen/typescript-operations';
+import { stringifyDocument as urqlPrint } from '@urql/core';
+import { parse } from 'graphql';
 import { type IGraphQLConfig as Config, type IGraphQLProject as Project } from 'graphql-config';
+import { createHash } from 'node:crypto';
 import { env } from 'node:process';
-// WebStorm wants this installed to evaluate this file.
+// noinspection ES6UnusedImports -- WebStorm wants this installed to evaluate this file.
 import type {} from 'ts-node';
 
 type CodegenConfig = TypeScriptTypedDocumentNodesConfig &
@@ -108,7 +111,21 @@ const ops: Project = {
           },
           presetConfig: {
             persistedDocuments: {
-              hashAlgorithm: 'sha256',
+              hashAlgorithm: (normalizedPrintedDoc) => {
+                /**
+                 * GraphQL codegen gives us their version of a normalized document which replaces
+                 * all whitespace/newlines with a single space.
+                 * urql's persisted exchange does something different. It replaces leading indentation
+                 * but keeps line breaks and internal indentation.
+                 * Because of this, we need to reparse and print the document according to urql.
+                 * The hash has to match the printed query the client will send when the server
+                 * doesn't have the hash saved.
+                 * The performance of this doesn't matter because this hashing happens at build time.
+                 * The deployed process also only prints the doc when the server doesn't have it saved.
+                 */
+                const printedDoc = urqlPrint(parse(normalizedPrintedDoc));
+                return createHash('sha256').update(printedDoc).digest('hex');
+              },
             },
           } satisfies ClientPresetConfig,
           config: {
