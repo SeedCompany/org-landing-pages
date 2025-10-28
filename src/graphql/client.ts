@@ -10,8 +10,10 @@ export const graphqlClient = new Client({
     persistedExchange({
       enableForMutation: true,
       enableForSubscriptions: true,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
-      generateHash: (query, document) => (document as any).__meta__.hash,
+      generateHash: (query, doc) => {
+        const { hash } = (doc as unknown as { __meta__: { hash: string } }).__meta__;
+        return Promise.resolve(hash);
+      },
     }),
     fetchExchange,
   ],
