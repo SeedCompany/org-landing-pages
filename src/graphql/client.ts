@@ -4,8 +4,13 @@ import { persistedExchange } from '@urql/exchange-persisted';
 const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
 
+const git = {
+  hash: import.meta.env.PUBLIC_GIT_HASH || undefined,
+  branch: import.meta.env.PUBLIC_GIT_BRANCH || undefined,
+};
 const clientInfo = {
   name: 'seed.bible',
+  version: git.hash && git.branch ? `${git.hash} (${git.branch})` : 'local',
 };
 
 export const graphqlClient = new Client({
@@ -30,6 +35,7 @@ export const graphqlClient = new Client({
   fetchOptions: {
     headers: {
       'graphql-client-name': clientInfo.name,
+      'graphql-client-version': clientInfo.version,
     },
   },
 });
