@@ -8,6 +8,7 @@ export const graphqlClient = new Client({
   url: GQL_API.toString(),
   exchanges: [
     persistedExchange({
+      preferGetForPersistedQueries: false,
       enableForMutation: true,
       enableForSubscriptions: true,
       generateHash: (query, doc) => {
@@ -17,4 +18,5 @@ export const graphqlClient = new Client({
     }),
     fetchExchange,
   ],
+  preferGetMethod: false,
 });
