@@ -21,7 +21,12 @@ const {
 const progress = Math.min((currentNumber / maxNumber || 0) * 100, 100);
 ---
 
-<div class={`relative w-[${fullWidth || '100%'}] rounded-sm h-10 mx-auto progress-bar`}>
+<div
+  role="progressbar"
+  aria-valuenow={currentNumber}
+  aria-valuemax={maxNumber}
+  class={`relative w-[${fullWidth || '100%'}] rounded-sm h-10 mx-auto`}
+>
   <div
     class="bg-gray-200 dark:bg-gray-200 h-full rounded-[inherit]"
     style={{
