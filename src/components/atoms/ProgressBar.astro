@@ -22,10 +22,10 @@ const {
 const progress = Math.min((currentNumber / maxNumber || 0) * 100, 100);
 ---
 
-<div class={`relative w-[${fullWidth || '100%'}] rounded-xs h-10 mx-auto progress-bar`}>
+<div class={`relative w-[${fullWidth || '100%'}] rounded-sm h-10 mx-auto progress-bar`}>
   {
     backgroundType === 'solid' ? (
-      <div class="bg-gray-200 dark:bg-gray-200 w-full h-full rounded-xs" />
+      <div class="bg-gray-200 dark:bg-gray-200 w-full h-full rounded-[inherit]" />
     ) : (
       <div
         class="w-full h-full rounded-xs"
@@ -39,9 +39,8 @@ const progress = Math.min((currentNumber / maxNumber || 0) * 100, 100);
       />
     )
   }
-  <!-- continer 2 children image and one being the below div and position it - relative inset 0-->
   <div
-    class={`absolute inset-0 h-10 rounded-xs ${color || 'bg-watermarkGreen'}`}
+    class={`absolute inset-0 h-10 rounded-[inherit] ${color || 'bg-watermarkGreen'}`}
     style={{ width: `${progress}%` }}
   >
     {children}
