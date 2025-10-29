@@ -1,5 +1,4 @@
 ---
-import backgroundImage from '../../assets/Dot_05.png';
 interface Props {
   color?: string;
   currentNumber: number;
@@ -23,22 +22,15 @@ const progress = Math.min((currentNumber / maxNumber || 0) * 100, 100);
 ---
 
 <div class={`relative w-[${fullWidth || '100%'}] rounded-sm h-10 mx-auto progress-bar`}>
-  {
-    backgroundType === 'solid' ? (
-      <div class="bg-gray-200 dark:bg-gray-200 w-full h-full rounded-[inherit]" />
-    ) : (
-      <div
-        class="w-full h-full rounded-xs"
-        style={{
-          backgroundImage: `url(${backgroundImage.src})`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '8px 8px',
-          backgroundPosition: 'center',
-          backgroundColor: 'transparent',
-        }}
-      />
-    )
-  }
+  <div
+    class="bg-gray-200 dark:bg-gray-200 h-full rounded-[inherit]"
+    style={{
+      ...(backgroundType === 'dots' && {
+        mask: 'radial-gradient(circle, #000 1.25px, transparent 0px) 0 0 / 8px 8px',
+      }),
+    }}
+  >
+  </div>
   <div
     class={`absolute inset-0 h-10 rounded-[inherit] ${color || 'bg-watermarkGreen'}`}
     style={{ width: `${progress}%` }}
