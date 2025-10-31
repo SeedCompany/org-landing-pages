@@ -7,13 +7,19 @@ import {
 import type { TypeScriptTypedDocumentNodesConfig } from '@graphql-codegen/typed-document-node';
 import type { TypeScriptPluginConfig } from '@graphql-codegen/typescript';
 import type { TypeScriptDocumentsPluginConfig } from '@graphql-codegen/typescript-operations';
+import { sortExecutableDocument } from '@graphql-tools/documents';
 import { stringifyDocument as urqlPrint } from '@urql/core';
+import { configDotenv as dotenv } from 'dotenv';
 import { parse } from 'graphql';
 import { type IGraphQLConfig as Config, type IGraphQLProject as Project } from 'graphql-config';
 import { createHash } from 'node:crypto';
 import { env } from 'node:process';
 // noinspection ES6UnusedImports -- WebStorm wants this installed to evaluate this file.
 import type {} from 'ts-node';
+import type { Writable } from 'type-fest';
+
+// WebStorm doesn't load .env files by default.
+dotenv({ path: ['.env.local', '.env'] });
 
 type CodegenConfig = TypeScriptTypedDocumentNodesConfig &
   TypeScriptPluginConfig &
@@ -59,6 +65,9 @@ const ops: Project = {
   schema: './schema.graphql',
   documents: ['./src/**/*.{astro,ts,tsx}'],
   extensions: {
+    endpoints: {
+      default: API_URL.toString(),
+    },
     codegen: {
       config: commonGenConfig,
       generates: {
@@ -110,6 +119,17 @@ const ops: Project = {
             //endregion
           },
           presetConfig: {
+            onExecutableDocumentNode: (docNode) => {
+              // Sort the document the same way the hashing algorithm does and
+              // then actually save that sorting in the printed JSON document.
+              // This way when printing at runtime for APQ, the document will be in the same order.
+              // https://github.com/dotansimha/graphql-code-generator/blob/76a71d9105059176e1265cc4eee78b334fd57d53/packages/presets/client/src/index.ts#L209
+              // See the comment block below for why.
+              const { definitions: oldDefs } = docNode;
+              const { definitions: newDefs } = sortExecutableDocument(docNode);
+              // Replace the definitions' array by mutating it in-place so that codegen picks it up.
+              (oldDefs as Writable<typeof oldDefs>).splice(0, oldDefs.length, ...newDefs);
+            },
             persistedDocuments: {
               hashAlgorithm: (normalizedPrintedDoc) => {
                 /**
