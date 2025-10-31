@@ -11,11 +11,14 @@ import type { SetOptional } from 'type-fest';
 // GROQ type gen makes children optional for some reason
 type TextBlock = SetOptional<PortableTextBlock, 'children'>;
 
-export const toPlainText = (blocks: TextBlock[]) =>
+export const toPlain = (blocks: TextBlock[]) =>
   blocks
     .flatMap((block) => (block._type === 'block' ? (block.children ?? []) : []))
     .flatMap((node) => (node._type === 'span' ? (node as TextSpan).text : []))
     .join('\n');
+
+export const toHTML = (portableText: TextBlock | TextBlock[]) =>
+  portableTextToHTML(portableText, { components });
 
 const components = {
   block: {
@@ -44,6 +47,3 @@ const components = {
     link: ({ value, children }) => `<a href="${value.href}" target="${value.target}">${children}</a>`,
   },
 } satisfies Partial<Components>;
-
-export const toHTML = (portableText: TextBlock | TextBlock[]) =>
-  portableTextToHTML(portableText, { components });

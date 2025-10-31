@@ -1,6 +1,5 @@
 ---
-import { sanityClient as sanity } from '~/sanity';
-import { toPlainText } from '../../lib/portableTextSerializer.js';
+import { sanityClient as sanity, portableText } from '~/sanity';
 
 // Import the templates for different campaign types
 import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
@@ -31,7 +30,7 @@ if (!campaign) {
 
 // Determine which template to use
 const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-const pageTitle = campaign.pageTitle || (campaign.heading ? toPlainText(campaign.heading) : 'Campaign Page');
+const pageTitle = campaign.pageTitle || (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
 ---
 
 <!doctype html>
