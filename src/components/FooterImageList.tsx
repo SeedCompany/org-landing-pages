@@ -1,8 +1,4 @@
 import React from 'react';
-import {sanityClient as sanity} from 'sanity:client';
-import imageUrlBuilder from '@sanity/image-url';
-
-const builder = imageUrlBuilder(sanity);
 
 interface ImageItem {
   image?: string;
