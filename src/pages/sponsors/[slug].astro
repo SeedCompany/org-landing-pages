@@ -1,5 +1,7 @@
 ---
+import * as editorJs from '~/editorjs';
 import { graphql, graphqlClient } from '~/graphql';
+import { portableText } from '~/sanity';
 import Layout from '~/layouts/Layout.astro';
 import '../../styles/global.css';
 
@@ -83,7 +85,8 @@ const isSponsored = sponsor.funding.remaining === 0;
 
       <div class="mb-8">
         <h2 class="text-2xl font-bold mb-4">Biography</h2>
-        <p class="text-lg leading-relaxed">{sponsor.biography}</p>
+        <p class="text-lg leading-relaxed"
+           set:html={portableText.toHTML(editorJs.toPortableText(sponsor.biography))} />
       </div>
     </div>
 

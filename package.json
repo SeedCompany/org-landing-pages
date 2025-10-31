@@ -50,6 +50,7 @@
     "astro-icon": "^1.1.5",
     "chart.js": "^4.4.9",
     "dotenv": "^16.5.0",
+    "editorjs-to-portabletext": "^0.0.4",
     "graphql": "^16.11.0",
     "groq": "^3.88.3",
     "ioredis": "^5.7.0",

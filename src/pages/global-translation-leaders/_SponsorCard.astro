@@ -1,5 +1,7 @@
 ---
+import * as editorJs from '~/editorjs';
 import { type FragmentType, graphql, useFragment } from '~/graphql';
+import { portableText } from '~/sanity';
 import '../../styles/global.css';
 
 const SponsorCardFragment = graphql(`
@@ -23,16 +25,7 @@ interface Props {
 }
 
 const sponsor = useFragment(SponsorCardFragment, Astro.props.sponsor);
-const {
-  name,
-  region,
-  gender,
-  shortCode: gtlId,
-  focus,
-  biography: bio,
-  image: imageUrl,
-  id: slug,
-} = sponsor;
+const { name, region, gender, shortCode: gtlId, focus, image: imageUrl, id: slug } = sponsor;
 const isSponsored = sponsor.funding.remaining === 0;
 ---
 <div
@@ -105,9 +98,8 @@ const isSponsored = sponsor.funding.remaining === 0;
         class={`text-base md:text-lg font-gotham-office font-light ${
           isSponsored ? 'text-gray-500' : 'text-white'
         }`}
-      >
-        {bio}
-      </p>
+        set:html={portableText.toHTML(editorJs.toPortableText(sponsor.biography))}
+      />
     </div>
 
 
