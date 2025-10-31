@@ -9,6 +9,7 @@ import type { TypeScriptPluginConfig } from '@graphql-codegen/typescript';
 import type { TypeScriptDocumentsPluginConfig } from '@graphql-codegen/typescript-operations';
 import { sortExecutableDocument } from '@graphql-tools/documents';
 import { stringifyDocument as urqlPrint } from '@urql/core';
+import { configDotenv as dotenv } from 'dotenv';
 import { parse } from 'graphql';
 import { type IGraphQLConfig as Config, type IGraphQLProject as Project } from 'graphql-config';
 import { createHash } from 'node:crypto';
@@ -16,6 +17,9 @@ import { env } from 'node:process';
 // noinspection ES6UnusedImports -- WebStorm wants this installed to evaluate this file.
 import type {} from 'ts-node';
 import type { Writable } from 'type-fest';
+
+// WebStorm doesn't load .env files by default.
+dotenv({ path: ['.env.local', '.env'] });
 
 type CodegenConfig = TypeScriptTypedDocumentNodesConfig &
   TypeScriptPluginConfig &
@@ -61,6 +65,9 @@ const ops: Project = {
   schema: './schema.graphql',
   documents: ['./src/**/*.{astro,ts,tsx}'],
   extensions: {
+    endpoints: {
+      default: API_URL.toString(),
+    },
     codegen: {
       config: commonGenConfig,
       generates: {
