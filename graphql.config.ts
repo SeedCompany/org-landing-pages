@@ -26,9 +26,10 @@ type CodegenConfig = TypeScriptTypedDocumentNodesConfig &
   TypeScriptDocumentsPluginConfig;
 
 const scalars = {
-  URL: 'string',
-  PositiveFloat: 'number',
+  EditorJsJSON: '~/editorjs#EditorJSDoc',
   NonNegativeFloat: 'number',
+  PositiveFloat: 'number',
+  URL: 'string',
 } satisfies CodegenConfig['scalars'];
 
 const commonGenConfig = {
@@ -113,8 +114,18 @@ const ops: Project = {
                 } satisfies TypeScriptDocumentsPluginConfig,
               });
               ops.plugins.unshift({
-                ['add']: { content: `import type * as Schema from './schema.ts';\n` },
+                ['add']: { content: `import type * as Schema from './schema.ts';` },
               });
+
+              // For some reason `typescript-operations` is not importing these scalars.
+              // Do it ourselves here.
+              for (const scalar of Object.values(scalars)) {
+                if (!scalar.includes('#')) continue;
+                const [path, local] = scalar.split('#');
+                ops.plugins.unshift({
+                  ['add']: { content: `import type { ${local} } from '${path}';` },
+                });
+              }
 
               return entries;
             },
