@@ -1,0 +1,21 @@
+---
+import { graphql, graphqlClient } from '~/graphql';
+import SponsorCard from './_SponsorCard.astro';
+
+const SponsorListDoc = graphql(`
+  query SponsorList {
+    globalTranslationLeaders {
+      items {
+        ...sponsorCard
+      }
+    }
+  }
+`);
+
+const { data } = await graphqlClient.query(SponsorListDoc, {}).toPromise();
+const sponsors = data?.globalTranslationLeaders.items ?? [];
+---
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+  {sponsors.map((sponsor) => <SponsorCard sponsor={sponsor} />)}
+</div>

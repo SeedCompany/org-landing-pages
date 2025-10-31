@@ -1,23 +1,39 @@
 ---
-import type { SanityImageObject } from '@sanity/image-url/lib/types/types';
-import { sanityClient as sanity } from '~/sanity';
-import '../styles/global.css';
+import { type FragmentType, graphql, useFragment } from '~/graphql';
+import '../../styles/global.css';
+
+const SponsorCardFragment = graphql(`
+  fragment sponsorCard on GlobalTranslationLeader {
+    id
+    shortCode
+    name
+    region
+    gender
+    focus
+    biography
+    image
+    funding {
+      remaining(applyPledges: true)
+    }
+  }
+`);
 
 interface Props {
-  name: string;
-  region: string;
-  gender: string;
-  gtlId: string;
-  focus: string;
-  bio: string;
-  image: SanityImageObject;
-  isSponsored: boolean;
-  slug: string;
+  sponsor: FragmentType<typeof SponsorCardFragment>;
 }
 
-const { name, region, gender, gtlId, focus, bio, image, isSponsored, slug } = Astro.props;
-
-const imageUrl = sanity.image(image).width(600).fit('crop').url();
+const sponsor = useFragment(SponsorCardFragment, Astro.props.sponsor);
+const {
+  name,
+  region,
+  gender,
+  shortCode: gtlId,
+  focus,
+  biography: bio,
+  image: imageUrl,
+  id: slug,
+} = sponsor;
+const isSponsored = sponsor.funding.remaining === 0;
 ---
 <div
   class={`border border-1 border-white p-3 bg-transparent font-gotham-office rounded-lg relative ${

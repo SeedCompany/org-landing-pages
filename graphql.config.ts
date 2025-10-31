@@ -27,6 +27,8 @@ type CodegenConfig = TypeScriptTypedDocumentNodesConfig &
 
 const scalars = {
   URL: 'string',
+  PositiveFloat: 'number',
+  NonNegativeFloat: 'number',
 } satisfies CodegenConfig['scalars'];
 
 const commonGenConfig = {
