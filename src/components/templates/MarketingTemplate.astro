@@ -1,7 +1,5 @@
 ---
-import img from '@sanity/image-url';
-import { sanityClient as sanity } from 'sanity:client';
-import { toHTML } from '../../lib/portableTextSerializer';
+import { sanityClient as sanity, portableText } from '~/sanity';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import Footer from "../Footer.astro";
 import '../../styles/global.css';
@@ -13,12 +11,12 @@ interface Props {
 
 const { campaignData } = Astro.props;
 ---
-<section class="bg-cover bg-center" style={campaignData.heroImage ? `background-image: url(${img(sanity).image(campaignData.heroImage).url()});` : ''}>
+<section class="bg-cover bg-center" style={campaignData.heroImage ? `background-image: url(${sanity.image(campaignData.heroImage).url()});` : ''}>
   <div class="w-full h-full bg-black/50 md:p-6 md:p-10 flex items-center">
     <div class="mkt-hero">
-      <h1 class="mt-10 rader-bold text-pretty mkt-primary-text w-full md:w-2/3" set:html={toHTML(campaignData.heading)}></h1>
+      <h1 class="mt-10 rader-bold text-pretty mkt-primary-text w-full md:w-2/3" set:html={portableText.toHTML(campaignData.heading)}></h1>
       <div class="prose">
-        <div class="mkt-hero-text mt-8 text-pretty red-hat-mono" set:html={toHTML(campaignData.heroCopy)}></div>
+        <div class="mkt-hero-text mt-8 text-pretty red-hat-mono" set:html={portableText.toHTML(campaignData.heroCopy)}></div>
       </div>
       <div class="mt-10 flex items-center gap-x-6">
         <a href={(campaignData.ctaLink)} class="mkt-primary-btn transition duration-300">{(campaignData.ctaText)}</a>
@@ -29,7 +27,7 @@ const { campaignData } = Astro.props;
 <section class="mkt-primary-bg">
   <div class="mkt-primary-content">
     <div class="prose">
-      <div class="" set:html={toHTML(campaignData.body)}></div>
+      <div class="" set:html={portableText.toHTML(campaignData.body)}></div>
       <p class="md:pt-0 pt-10">Questions? Please reach out to: <a href={`mailto:${campaignData.contactEmail}`} class="mkt-secondary-accent">{campaignData.contactEmail}</a></p>
     </div>
   </div>

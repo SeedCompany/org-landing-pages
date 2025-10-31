@@ -43,7 +43,7 @@ const schema: Project = {
         './schema.graphql': {
           plugins: ['schema-ast'],
         },
-        './src/graphql/generated/schema.ts': {
+        './src/integrations/graphql/generated/schema.ts': {
           plugins: ['typescript'],
           config: {
             onlyOperationTypes: true,
@@ -62,7 +62,7 @@ const ops: Project = {
     codegen: {
       config: commonGenConfig,
       generates: {
-        './src/graphql/generated/': {
+        './src/integrations/graphql/generated/': {
           preset: {
             ...clientPreset,
             //region Re-work client preset

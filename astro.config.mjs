@@ -5,24 +5,15 @@ import icon from 'astro-icon';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
-import { posthogAstro as posthog } from './src/components/posthog/posthog.astro-plugin.js';
-import { babelOptimizerPlugin } from '@graphql-codegen/client-preset';
+import { graphqlBabelPlugin as graphql } from './src/integrations/graphql/babel-plugin.js';
+import { posthogAstro as posthog } from './src/integrations/posthog/posthog.astro-plugin.js';
 
 export default defineConfig({
   integrations: [
     tailwind(),
     react({
       babel: {
-        plugins: [
-          [
-            babelOptimizerPlugin,
-            {
-              artifactDirectory: './src/graphql/generated',
-              gqlTagName: 'graphql',
-            },
-          ],
-          //
-        ],
+        plugins: [graphql],
       },
     }),
     sanity({

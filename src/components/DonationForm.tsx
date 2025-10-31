@@ -4,7 +4,7 @@ import type { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { type ReactNode, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
 import { z } from 'zod/v4/mini';
-import { graphqlClient, graphql, type Telemetry, type VariablesOf } from '../graphql';
+import { graphqlClient, graphql, type Telemetry, type VariablesOf } from '~/graphql';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';

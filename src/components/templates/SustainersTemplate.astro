@@ -1,7 +1,5 @@
 ---
-import img from '@sanity/image-url';
-import { sanityClient as sanity } from 'sanity:client';
-import { toHTML } from '../../lib/portableTextSerializer';
+import { sanityClient as sanity, portableText } from '~/sanity';
 import '../../styles/global.css';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import DonationThermometer from '../DonationThermometer.astro';
@@ -45,11 +43,11 @@ const steps = [
           <div class="space-y-2 text-center lg:text-left">
             <h1
               class="text-balance text-5xl font-semibold tracking-tight sus-secondary-text sm:text-7xl uppercase rader-bold"
-              set:html={toHTML(campaignData.heading)}
+              set:html={portableText.toHTML(campaignData.heading)}
             />
             <div
               class="max-w-[600px] text-lg md:text-xl"
-              set:html={toHTML(campaignData.heroCopy)}
+              set:html={portableText.toHTML(campaignData.heroCopy)}
             />
           </div>
           <CampaignButtons
@@ -66,7 +64,7 @@ const steps = [
         <div class="flex items-center justify-center">
           <div class="overflow-hidden rounded-lg shadow-xl">
             <img
-              src={campaignData.heroImage ? img(sanity).image(campaignData.heroImage).url() : ''}
+              src={campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : ''}
               alt={campaignData.heroImageAlt || 'Hero image'}
               class="aspect-[4/3] object-cover"
             />

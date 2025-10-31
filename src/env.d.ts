@@ -1,7 +1,7 @@
 /// <reference types="astro/client" />
 /// <reference types="@sanity/astro/module" />
-/// <reference types="./sanity/generated/sanity.types.ts" />
-/// <reference types="./components/posthog/posthog.d.ts" />
+/// <reference types="./integrations/sanity/generated/sanity.types.ts" />
+/// <reference types="./integrations/posthog/posthog.d.ts" />
 
 interface ViteTypeOptions {
   strictImportMetaEnv: unknown;

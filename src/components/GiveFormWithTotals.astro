@@ -1,6 +1,6 @@
 ---
 import { fetchWatermarkTotals } from '../legacy/watermark-totals.ts';
-import { StripeClientIsland } from './stripe/StripeClientIsland';
+import { DonationFormIsland } from './DonationFormIsland.tsx';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
 
 const totals = await fetchWatermarkTotals();
@@ -16,11 +16,15 @@ const campaignEnded =
   Astro.url.searchParams.get('form') === 'disabled' ||
   new Date() >= new Date('2025-10-19T05:00:00Z');
 
+interface Props {
+  disableDialog?: boolean;
+}
+
 const { disableDialog } = Astro.props;
 ---
 
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
-  <StripeClientIsland
+  <DonationFormIsland
     formProps={{
       enableRecurring: false,
       hideInvestorType: 'Organization',
@@ -36,6 +40,6 @@ const { disableDialog } = Astro.props;
     client:load
   >
     <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />
-  </StripeClientIsland>
+  </DonationFormIsland>
 </div>
 <style></style>
