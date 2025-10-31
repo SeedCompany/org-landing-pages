@@ -10,7 +10,7 @@ export const posthogAstro = (
   name: 'posthog',
   hooks: {
     'astro:config:setup': ({ injectScript, addMiddleware }) => {
-      const middleware = path.resolve('./src/components/posthog/posthog.middleware.ts');
+      const middleware = path.resolve('./src/integrations/posthog/posthog.middleware.ts');
       addMiddleware({
         order: 'pre',
         entrypoint: middleware,

@@ -1,4 +1,4 @@
-import { graphql, graphqlClient } from '../graphql';
+import { graphql, graphqlClient } from '~/graphql';
 
 export async function fetchWatermarkTotals() {
   const response = await graphqlClient

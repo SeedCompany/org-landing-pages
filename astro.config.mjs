@@ -5,7 +5,7 @@ import icon from 'astro-icon';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
-import { posthogAstro as posthog } from './src/components/posthog/posthog.astro-plugin.js';
+import { posthogAstro as posthog } from './src/integrations/posthog/posthog.astro-plugin.js';
 import { babelOptimizerPlugin } from '@graphql-codegen/client-preset';
 
 export default defineConfig({
