@@ -39,7 +39,6 @@ const components = {
     bullet: ({ children }) => `<li>${children}</li>`,
   },
   marks: {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- fixme
     textColor: ({ value, children }) => `<span style="color: ${value.value};">${children}</span>`,
     strong: ({ children }) => `<strong>${children}</strong>`,
     em: ({ children }) => `<em>${children}</em>`,
