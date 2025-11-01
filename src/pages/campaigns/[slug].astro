@@ -29,8 +29,10 @@ if (!campaign) {
 }
 
 // Determine which template to use
-const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-const pageTitle = campaign.pageTitle || (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
+const TemplateComponent = templateMap[campaign.templateType!] || MarketingTemplate;
+const pageTitle =
+  campaign.pageTitle ||
+  (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
 ---
 
 <!doctype html>
@@ -48,7 +50,7 @@ const pageTitle = campaign.pageTitle || (campaign.heading ? portableText.toPlain
 
       {/* Display warning if template type is unknown */}
       {
-        campaign && !templateMap[campaign.templateType] && (
+        campaign && !templateMap[campaign.templateType!] && (
           <div class="text-center py-10 text-orange-600">
             <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
           </div>

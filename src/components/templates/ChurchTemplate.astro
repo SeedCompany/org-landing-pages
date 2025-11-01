@@ -226,7 +226,7 @@ const isAfterSept19 = todayFormatted >= sept19;
       </div>
     </main>
     <aside class="form form-desktop">
-      <GiveFormWithTotals disabledDialog={true} />
+      <GiveFormWithTotals />
     </aside>
   </div>
 
@@ -250,8 +250,7 @@ const isAfterSept19 = todayFormatted >= sept19;
                             <dt>
                               <button
                                 type="button"
-                                command="--toggle"
-                                commandfor={`faq-${index}`}
+                                {...({ command: '--toggle', commandfor: `faq-${index}` } as object)}
                                 class="flex w-full items-start justify-between text-left text-gray-900"
                               >
                                 <span class="text-base/7 faq-question">{faq.question}</span>
@@ -296,7 +295,10 @@ const isAfterSept19 = todayFormatted >= sept19;
                               class="[&:not([hidden])]:contents"
                             >
                               <dd class="mt-2 pr-12">
-                                <div class="prose mt-4 faq-answer" set:html={portableText.toHTML(faq.answer)} />
+                                <div
+                                  class="prose mt-4 faq-answer"
+                                  set:html={portableText.toHTML(faq.answer)}
+                                />
                               </dd>
                             </el-disclosure>
                           </div>
@@ -367,12 +369,12 @@ const isAfterSept19 = todayFormatted >= sept19;
     )
   }
   <script>
-    const form = document.querySelector('#give-form-mobile');
-    const button = document.querySelector('.mobile-donation-cta');
+    const form = document.querySelector('#give-form-mobile')!;
+    const button = document.querySelector('.mobile-donation-cta')!;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const isFormVisible = entries[0].isIntersecting;
+        const isFormVisible = entries[0]!.isIntersecting;
         if (isFormVisible) {
           button.classList.add('hidden');
         } else {

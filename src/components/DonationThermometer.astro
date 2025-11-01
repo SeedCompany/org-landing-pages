@@ -103,7 +103,7 @@ const goal = 100000;
         if (totalDonationsEl) {
           totalDonationsEl.textContent = String(totalDonations);
         }
-        chart.data.datasets[0].data = [totalRaised]; // Assuming chart shows totalRaised
+        chart.data.datasets[0]!.data = [totalRaised]; // Assuming chart shows totalRaised
         chart.update();
       }
 

@@ -27,50 +27,45 @@ const { section } = Astro.props;
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl sus-primary-heading">
         {section.title || 'Why Become a Sustainer?'}
       </h2>
-      {section.description ? (
-        <p class="mt-4 text-lg text-gray-600">{section.description}</p>
-      ) : (
-        <p class="mt-4 text-lg text-gray-600">No description available.</p>
-      )}
+      {
+        section.description ? (
+          <p class="mt-4 text-lg text-gray-600">{section.description}</p>
+        ) : (
+          <p class="mt-4 text-lg text-gray-600">No description available.</p>
+        )
+      }
     </div>
-    {section.benefits?.length ? (
-      <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-        {section.benefits.map((benefit, index) => (
-          <div
-            class="flex flex-col items-start space-y-3 rounded-lg bg-white border border-gray-200 p-6 shadow-sm transition-all hover:shadow-md"
-            key={index}
-          >
-            <div class="rounded-full bg-emerald-100 p-2 sus-checkbox-text">
-              <Icon
-                name={
-                  benefit.icon === 'Check'
-                    ? 'lucide:check'
-                    : benefit.icon || 'lucide:check'
-                }
-                class="h-5 w-5 sus-checkbox-text"
-              />
+    {
+      section.benefits?.length ? (
+        <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {section.benefits.map((benefit) => (
+            <div class="flex flex-col items-start space-y-3 rounded-lg bg-white border border-gray-200 p-6 shadow-sm transition-all hover:shadow-md">
+              <div class="rounded-full bg-emerald-100 p-2 sus-checkbox-text">
+                <Icon
+                  name={benefit.icon === 'Check' ? 'lucide:check' : benefit.icon || 'lucide:check'}
+                  class="h-5 w-5 sus-checkbox-text"
+                />
+              </div>
+              <h3 class="text-xl font-bold">{benefit.title || 'Benefit Title'}</h3>
+              <p class="text-gray-600">{benefit.description || 'No description available.'}</p>
             </div>
-            <h3 class="text-xl font-bold">{benefit.title || 'Benefit Title'}</h3>
-            <p class="text-gray-600">
-              {benefit.description || 'No description available.'}
-            </p>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <p class="text-center text-gray-600 mt-12">No benefits available.</p>
-    )}
-    {section.quote?.text ? (
-      <div class="mx-auto mt-16 max-w-2xl rounded-lg bg-gray-50 p-8">
-        <blockquote class="space-y-2">
-          <p class="text-lg font-medium italic text-gray-700">{section.quote.text}</p>
-          {section.quote.source && (
-            <footer class="text-sm font-semibold text-gray-600">
-              — {section.quote.source}
-            </footer>
-          )}
-        </blockquote>
-      </div>
-    ) : null}
+          ))}
+        </div>
+      ) : (
+        <p class="text-center text-gray-600 mt-12">No benefits available.</p>
+      )
+    }
+    {
+      section.quote?.text ? (
+        <div class="mx-auto mt-16 max-w-2xl rounded-lg bg-gray-50 p-8">
+          <blockquote class="space-y-2">
+            <p class="text-lg font-medium italic text-gray-700">{section.quote.text}</p>
+            {section.quote.source && (
+              <footer class="text-sm font-semibold text-gray-600">— {section.quote.source}</footer>
+            )}
+          </blockquote>
+        </div>
+      ) : null
+    }
   </div>
 </section>

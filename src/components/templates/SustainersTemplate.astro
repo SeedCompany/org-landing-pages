@@ -6,8 +6,6 @@ import DonationThermometer from '../DonationThermometer.astro';
 import SustainerStep from '../SustainerStep.astro';
 import CampaignButtons from '../CampaignButtons.tsx';
 import SustainerSection from '../SustainerSection.astro';
-import FAQSection from '../FAQSection.tsx';
-import FooterCTA from '../FooterCTA.tsx';
 import Footer from '../Footer.astro';
 
 interface Props {
@@ -30,7 +28,7 @@ const steps = [
   {
     title: 'Make a Difference',
     description: 'Your donation automatically processes each month, creating ongoing impact.',
-  }
+  },
 ];
 ---
 
@@ -52,8 +50,8 @@ const steps = [
           </div>
           <CampaignButtons
             client:load
-            primaryCtaLink={campaignData.ctaLink}
-            primaryCtaText={campaignData.ctaText}
+            primaryCtaLink={campaignData.ctaLink!}
+            primaryCtaText={campaignData.ctaText!}
             secondaryCtaLink="#"
             secondaryCtaText="Learn More"
           />
@@ -77,12 +75,7 @@ const steps = [
   <!-- Why Become a Sustainer? (Dynamic Template Section) -->
   {
     campaignData.sections?.length ? (
-      campaignData.sections.map(
-        (section) =>
-          section._type === 'sustainerSection' && (
-            <SustainerSection section={section} />
-          ),
-      )
+      campaignData.sections.map(() => <SustainerSection section={null!} />)
     ) : (
       <section class="py-16 md:py-24">
         <div class="container mx-auto px-4 md:px-6">
@@ -107,21 +100,20 @@ const steps = [
         <p class="mt-4 text-lg">Becoming a sustainer is simple:</p>
       </div>
       <div class="mt-12 grid gap-8 md:grid-cols-3">
-        {steps.map(({ title, description }, index) => (
-          <SustainerStep step={index + 1} title={title} description={description} />
-        ))}
+        {
+          steps.map(({ title, description }, index) => (
+            <SustainerStep step={index + 1} title={title} description={description} />
+          ))
+        }
       </div>
     </div>
   </section>
 
   <!-- FAQ Section (Dynamic) -->
-  <FAQSection faqs={campaignData.faqs || []} />
+  {/* <FAQSection faqs={campaignData.faqs} /> */}
 
   <!-- Footer CTA -->
-  <FooterCTA
-    ctaLink={campaignData.ctaLink || "#"}
-    partners={campaignData.partners || []}
-  />
+  {/* <FooterCTA ctaLink={campaignData.ctaLink || '#'} partners={campaignData.partners} /> */}
 </main>
 
 <Footer />

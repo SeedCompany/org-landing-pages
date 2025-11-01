@@ -3,12 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "postinstall": "husky || true",
     "dev": "yarn gql:gen:schema && yarn gql:gen:ops --watch -s & astro dev",
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
-    "type-check": "tsc",
-    "lint": "eslint --max-warnings 0 --fix .",
+    "type-check": "astro check && tsc",
+    "lint": "yarn lint:check --fix",
+    "lint:check": "eslint --max-warnings 0",
     "sanity:gen": "yarn sanity:gen:schema && yarn sanity:gen:ops",
     "sanity:gen:schema": "mkdirp ./src/integrations/sanity/generated && sanity schema extract --path ./src/integrations/sanity/generated/schema.json",
     "sanity:gen:ops": "sanity typegen generate --config-path ./src/integrations/sanity/typegen.config.json",
@@ -70,6 +72,7 @@
     "zod": "^4.1.5"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.5",
     "@astrojs/tailwind": "^5.1.5",
     "@eslint/js": "^9.26.0",
     "@graphql-codegen/cli": "^6.0.1",
@@ -86,6 +89,8 @@
     "eslint-plugin-astro": "^1.3.1",
     "eslint-plugin-prettier": "^5.4.0",
     "graphql-config": "^5.1.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
     "mkdirp": "^1.0.4",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",

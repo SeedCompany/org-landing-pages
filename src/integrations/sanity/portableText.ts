@@ -17,8 +17,8 @@ export const toPlain = (blocks: TextBlock[]) =>
     .flatMap((node) => (node._type === 'span' ? (node as TextSpan).text : []))
     .join('\n');
 
-export const toHTML = (portableText: TextBlock | TextBlock[]) =>
-  portableTextToHTML(portableText, { components });
+export const toHTML = (portableText: TextBlock | TextBlock[] | null) =>
+  portableText == null ? '' : portableTextToHTML(portableText, { components });
 
 const components = {
   block: {
@@ -39,11 +39,10 @@ const components = {
     bullet: ({ children }) => `<li>${children}</li>`,
   },
   marks: {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- fixme
     textColor: ({ value, children }) => `<span style="color: ${value.value};">${children}</span>`,
     strong: ({ children }) => `<strong>${children}</strong>`,
     em: ({ children }) => `<em>${children}</em>`,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- fixme
-    link: ({ value, children }) => `<a href="${value.href}" target="${value.target}">${children}</a>`,
+    link: ({ value, children }) =>
+      `<a href="${value.href}" target="${value.target}">${children}</a>`,
   },
 } satisfies Partial<Components>;
