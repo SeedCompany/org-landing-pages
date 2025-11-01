@@ -250,8 +250,7 @@ const isAfterSept19 = todayFormatted >= sept19;
                             <dt>
                               <button
                                 type="button"
-                                command="--toggle"
-                                commandfor={`faq-${index}`}
+                                {...({ command: '--toggle', commandfor: `faq-${index}` } as object)}
                                 class="flex w-full items-start justify-between text-left text-gray-900"
                               >
                                 <span class="text-base/7 faq-question">{faq.question}</span>
