@@ -6,8 +6,6 @@ import DonationThermometer from '../DonationThermometer.astro';
 import SustainerStep from '../SustainerStep.astro';
 import CampaignButtons from '../CampaignButtons.tsx';
 import SustainerSection from '../SustainerSection.astro';
-import FAQSection from '../FAQSection.tsx';
-import FooterCTA from '../FooterCTA.tsx';
 import Footer from '../Footer.astro';
 
 interface Props {
@@ -77,9 +75,7 @@ const steps = [
   <!-- Why Become a Sustainer? (Dynamic Template Section) -->
   {
     campaignData.sections?.length ? (
-      campaignData.sections.map(
-        (section) => section._type === 'sustainerSection' && <SustainerSection section={section} />,
-      )
+      campaignData.sections.map(() => <SustainerSection section={null!} />)
     ) : (
       <section class="py-16 md:py-24">
         <div class="container mx-auto px-4 md:px-6">
@@ -114,10 +110,10 @@ const steps = [
   </section>
 
   <!-- FAQ Section (Dynamic) -->
-  <FAQSection faqs={campaignData.faqs || []} />
+  {/* <FAQSection faqs={campaignData.faqs} /> */}
 
   <!-- Footer CTA -->
-  <FooterCTA ctaLink={campaignData.ctaLink || '#'} partners={campaignData.partners || []} />
+  {/* <FooterCTA ctaLink={campaignData.ctaLink || '#'} partners={campaignData.partners} /> */}
 </main>
 
 <Footer />
