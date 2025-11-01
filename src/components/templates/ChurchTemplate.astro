@@ -369,12 +369,12 @@ const isAfterSept19 = todayFormatted >= sept19;
     )
   }
   <script>
-    const form = document.querySelector('#give-form-mobile');
-    const button = document.querySelector('.mobile-donation-cta');
+    const form = document.querySelector('#give-form-mobile')!;
+    const button = document.querySelector('.mobile-donation-cta')!;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const isFormVisible = entries[0].isIntersecting;
+        const isFormVisible = entries[0]!.isIntersecting;
         if (isFormVisible) {
           button.classList.add('hidden');
         } else {
