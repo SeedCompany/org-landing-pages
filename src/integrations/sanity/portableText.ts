@@ -17,8 +17,8 @@ export const toPlain = (blocks: TextBlock[]) =>
     .flatMap((node) => (node._type === 'span' ? (node as TextSpan).text : []))
     .join('\n');
 
-export const toHTML = (portableText: TextBlock | TextBlock[]) =>
-  portableTextToHTML(portableText, { components });
+export const toHTML = (portableText: TextBlock | TextBlock[] | null) =>
+  portableText == null ? '' : portableTextToHTML(portableText, { components });
 
 const components = {
   block: {
