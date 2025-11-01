@@ -35,8 +35,8 @@ export default tseslint.config(
   // Adjust rules when running in the commit hook
   env.LINT_STAGED
     ? {
-        // Disable the worst performers without fixers
         rules: {
+          // Disable the worst performers without fixers
           '@typescript-eslint/no-misused-promises': 'off',
           '@typescript-eslint/no-unsafe-assignment': 'off',
           '@typescript-eslint/no-unused-vars': 'off',
@@ -50,6 +50,9 @@ export default tseslint.config(
           'no-global-assign': 'off',
           '@typescript-eslint/no-unsafe-call': 'off',
           '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+
+          // We will run prettier separately for speed
+          'prettier/prettier': 'off',
         },
       }
     : [],
