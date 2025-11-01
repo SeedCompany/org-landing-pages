@@ -1,19 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import SponsorCards from '../components/SponsorCards.astro';
-import { sanityClient as sanity } from 'sanity:client';
-
-const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
-  name,
-  slug,
-  region,
-  gender,
-  gtlId,
-  focus,
-  bio,
-  image,
-  isSponsored
-}`);
+import Layout from '~/layouts/Layout.astro';
+import SponsorList from './_SponsorList.astro';
 ---
 <style>
     :root {
@@ -90,7 +77,7 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
             <div class="w-full sm:w-1/2">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6a2b5347a724680dd15c5ee4581d4533529c8673-1456x816.png" alt="Woman reading a Bible" class="rounded-lg shadow-lg mt-6 sm:mt-0" />
             </div>
-            
+
         </div>
     </section>
     <section class="w-full">
@@ -102,7 +89,7 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
             </div>
             <div class="w-full bg-light-gray px-8 py-16 sm:px-32">
                 <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/c7979f089a6938b674eda8058541c9ed54fed802-500x462.png" alt="seedling icon" class="icon mx-auto mb-6" />
-              <h3 class="text-2xl sm:text-4xl gotham-bold my-6">900+ Leaders</h3>  
+              <h3 class="text-2xl sm:text-4xl gotham-bold my-6">900+ Leaders</h3>
               <p class="gotham text-lg font-weight-light">Over the past thirty years, Seed Company has been honored to support Bible translation leaders through internship-focused training. To date, we've supported over 900 translation leaders (and counting!) in this program. Now, we're excited to share the ability to sponsor individual participants, giving investors a unique opportunity to understand the culture, the language, the challenges, and the opportunities an individual translation leader is navigating!</p>
             </div>
         </div>
@@ -125,7 +112,7 @@ const sponsors = await sanity.fetch(`*[_type == "sponsor"]{
     <section class="w-full bg-green px-6 sm:px-8 py-24 lg:py-32 bg-green">
         <div class="container">
             <h2 class="text-balance text-white rader uppercase text-5xl lg:text-8xl text-black mb-8">Sponsor a Global Translation Leader:</h2>
-            <SponsorCards sponsors={sponsors} />
+            <SponsorList />
         </div>
     </section>
 </Layout>

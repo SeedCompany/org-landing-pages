@@ -1,27 +1,35 @@
 ---
-import { defineQuery } from 'groq';
-import Layout from '../../layouts/Layout.astro';
-import { sanityClient as sanity } from '~/sanity';
-import { sponsorBySlug } from './sponsorBySlug.groq';
+import * as editorJs from '~/editorjs';
+import { graphql, graphqlClient } from '~/graphql';
+import { portableText } from '~/sanity';
+import Layout from '~/layouts/Layout.astro';
 import '../../styles/global.css';
 
-export async function getStaticPaths() {
-  const sponsorSlugs = defineQuery(`*[_type == "sponsor"]{ slug }`);
-  const sponsors = await sanity.fetch(sponsorSlugs);
-
-  return sponsors.flatMap((sponsor) =>{
-    let slug = sponsor.slug?.current;
-    return slug ? { params: { slug } } : [];
-  });
-}
+const SponsorDetailDoc = graphql(`
+  query SponsorDetail($id: ID!) {
+    globalTranslationLeader(id: $id) {
+      id
+      shortCode
+      name
+      region
+      gender
+      focus
+      biography
+      image
+      funding {
+        remaining(applyPledges: true)
+      }
+    }
+  }
+`);
 
 const { slug } = Astro.params as { slug: string };
-const sponsor = await sanity.fetch(sponsorBySlug, { slug });
+const { data } = await graphqlClient.query(SponsorDetailDoc, { id: slug }).toPromise();
+const sponsor = data?.globalTranslationLeader;
 if (!sponsor) {
   return Astro.redirect('/404');
 }
-
-const imageUrl = sponsor.image ? sanity.image(sponsor.image).width(800).url() : '';
+const isSponsored = sponsor.funding.remaining === 0;
 ---
 
 <Layout>
@@ -35,11 +43,11 @@ const imageUrl = sponsor.image ? sanity.image(sponsor.image).width(800).url() : 
 
       <div class="block md:flex gap-12">
         <div class="w-full md:w-1/2">
-          {imageUrl &&  (
+          {sponsor.image && (
             <img
-              src={imageUrl}
+              src={sponsor.image}
               alt={`Photo of ${sponsor.name}`}
-              class=`rounded-lg w-full mb-6 ${sponsor.isSponsored ? 'grayscale opacity-40' : ''}`
+              class=`rounded-lg w-full mb-6 ${isSponsored ? 'grayscale opacity-40' : ''}`
             />
           )}
         </div>
@@ -52,7 +60,7 @@ const imageUrl = sponsor.image ? sanity.image(sponsor.image).width(800).url() : 
             <div class="space-y-2 mb-8 md:grid grid-cols-2">
                 <p class="mt-2"><strong>Region:</strong> {sponsor.region}</p>
                 <p><strong>Gender:</strong> {sponsor.gender}</p>
-                <p><strong>GTL ID:</strong> {sponsor.gtlId}</p>
+                <p><strong>GTL ID:</strong> {sponsor.shortCode}</p>
                 <p><strong>Focus:</strong> {sponsor.focus}</p>
             </div>
           </div>
@@ -60,12 +68,12 @@ const imageUrl = sponsor.image ? sanity.image(sponsor.image).width(800).url() : 
         <div class="w-full">
           <div>
             <div class="space-y-4 mb-6">
-                {!sponsor.isSponsored && (
+                {!isSponsored && (
                 <form action="">
                     <input type="text" placeholder="Your message..." class="border border-gray-300 p-2 rounded-lg w-full" />
                 </form>
                 )}
-                {sponsor.isSponsored && (
+                {isSponsored && (
                     <div class="bg-[var(--sus-button-secondary-bg)] text-black p-4 rounded-lg">
                     <p class="font-semibold">This leader is currently sponsored!</p>
                     </div>
@@ -77,7 +85,8 @@ const imageUrl = sponsor.image ? sanity.image(sponsor.image).width(800).url() : 
 
       <div class="mb-8">
         <h2 class="text-2xl font-bold mb-4">Biography</h2>
-        <p class="text-lg leading-relaxed">{sponsor.bio}</p>
+        <p class="text-lg leading-relaxed"
+           set:html={portableText.toHTML(editorJs.toPortableText(sponsor.biography))} />
       </div>
     </div>
 
