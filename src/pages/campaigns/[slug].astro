@@ -30,7 +30,9 @@ if (!campaign) {
 
 // Determine which template to use
 const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-const pageTitle = campaign.pageTitle || (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
+const pageTitle =
+  campaign.pageTitle ||
+  (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
 ---
 
 <!doctype html>

@@ -296,7 +296,10 @@ const isAfterSept19 = todayFormatted >= sept19;
                               class="[&:not([hidden])]:contents"
                             >
                               <dd class="mt-2 pr-12">
-                                <div class="prose mt-4 faq-answer" set:html={portableText.toHTML(faq.answer)} />
+                                <div
+                                  class="prose mt-4 faq-answer"
+                                  set:html={portableText.toHTML(faq.answer)}
+                                />
                               </dd>
                             </el-disclosure>
                           </div>

@@ -28,6 +28,7 @@ const sponsor = useFragment(SponsorCardFragment, Astro.props.sponsor);
 const { name, region, gender, shortCode: gtlId, focus, image: imageUrl, id: slug } = sponsor;
 const isSponsored = sponsor.funding.remaining === 0;
 ---
+
 <div
   class={`border border-1 border-white p-3 bg-transparent font-gotham-office rounded-lg relative ${
     isSponsored ? 'border-2 border-[var(--light-green)] sponsored-badge' : ''
@@ -40,51 +41,41 @@ const isSponsored = sponsor.funding.remaining === 0;
       alt={`Photo of ${name}`}
     />
     <div class="w-full">
-      <h3
-        class={`text-lg md:text-2xl ${isSponsored ? 'text-gray-500' : 'text-white'}`}
-      >
+      <h3 class={`text-lg md:text-2xl ${isSponsored ? 'text-gray-500' : 'text-white'}`}>
         {name}
       </h3>
-      <p
-        class={`text-sm md:text-base md:py-2 ${
-          isSponsored ? 'text-gray-500' : 'text-white'
-        }`}
-      >
-        <strong>Region:</strong> {region}
+      <p class={`text-sm md:text-base md:py-2 ${isSponsored ? 'text-gray-500' : 'text-white'}`}>
+        <strong>Region:</strong>
+        {region}
       </p>
       <hr />
       <div class="flex items-center gap-2 md:gap-4">
-        <p
-          class={`text-sm md:text-base py-2 ${
-            isSponsored ? 'text-gray-500' : 'text-white'
-          }`}
-        >
-          <strong>Gender:</strong> {gender}
+        <p class={`text-sm md:text-base py-2 ${isSponsored ? 'text-gray-500' : 'text-white'}`}>
+          <strong>Gender:</strong>
+          {gender}
         </p>
         <span class={`text-sm md:text-lg ${isSponsored ? 'text-gray-500' : 'text-white'}`}>
           |
         </span>
-        <p
-          class={`text-xs md:text-base ${isSponsored ? 'text-gray-500' : 'text-white'}`}
-        >
+        <p class={`text-xs md:text-base ${isSponsored ? 'text-gray-500' : 'text-white'}`}>
           {gtlId}
         </p>
       </div>
     </div>
   </div>
-    <div class="my-4 flex justify-between items-center">
-      <a
-        href={`/sponsors/${slug}`}
-        class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
-          isSponsored
-            ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
-            : 'bg-[var(--light-green)] text-black hover:bg-green-400'
-        }`}
-      >
-        View Details
-      </a>
-      <p class="text-white font-gotham-office">$1,000 month needed</p>
-    </div>
+  <div class="my-4 flex justify-between items-center">
+    <a
+      href={`/sponsors/${slug}`}
+      class={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+        isSponsored
+          ? 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+          : 'bg-[var(--light-green)] text-black hover:bg-green-400'
+      }`}
+    >
+      View Details
+    </a>
+    <p class="text-white font-gotham-office">$1,000 month needed</p>
+  </div>
   <div class={`text-white font-gotham-office ${isSponsored ? 'text-gray-500' : ''}`}>
     <div>
       <p
@@ -101,7 +92,5 @@ const isSponsored = sponsor.funding.remaining === 0;
         set:html={portableText.toHTML(editorJs.toPortableText(sponsor.biography))}
       />
     </div>
-
-
   </div>
 </div>

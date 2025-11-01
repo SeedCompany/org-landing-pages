@@ -189,16 +189,14 @@ Church page styles
   background: #fff;
 }
 .form-wrapper {
-  display: flex
-;
-    flex-direction: column;
-    box-sizing: border-box;
-    overflow: hidden;
-    justify-content: center;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  justify-content: center;
+  align-items: stretch;
 }
-.form-wrapper button
-.hero-bg {
+.form-wrapper button .hero-bg {
   height: 884px;
 }
 .logo {
@@ -273,7 +271,7 @@ Church page styles
   font-weight: 600;
 }
 .donation-card-content {
-  @apply pb-6
+  @apply pb-6;
 }
 .donation-card-content > :not(.progress-bar) {
   @apply px-6;

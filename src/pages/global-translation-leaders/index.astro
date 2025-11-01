@@ -2,117 +2,182 @@
 import Layout from '~/layouts/Layout.astro';
 import SponsorList from './_SponsorList.astro';
 ---
+
 <style>
-    :root {
-        --dark-green: #1d3738;
-        --light-green: #29b77c;
-        --light-gray: #636466;
-        --cream: #f7f1e7;
-    }
-    .container {
-        max-width: 1440px;
-        margin: 0 auto;
-    }
-    .gtl-logo-wrapper {
-        max-width: 1440px;
-        margin: 0 auto;
-    }
-    .bg-green {
-        background-color: var(--dark-green);
-    }
-    .bg-light-green {
-        background-color: var(--light-green);
-    }
-    .bg-light-gray {
-        background-color: var(--light-gray);
-    }
-    .bg-cream {
-        background-color: var(--cream);
-    }
-    .icon {
-        width: 50px;
-        height: 50px;
-    }
-    .quote {
-        font-weight: 300;
-    }
-    .quote::before {
-        content: "“";
-        display: block;
-        font-family: 'Times New Roman', serif;
-        font-weight: 900;
-        height: 0.6em;
-        line-height: 1;
-        color: var(--light-green);
-        font-size: calc(1px * 100);
-    }
+  :root {
+    --dark-green: #1d3738;
+    --light-green: #29b77c;
+    --light-gray: #636466;
+    --cream: #f7f1e7;
+  }
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .gtl-logo-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .bg-green {
+    background-color: var(--dark-green);
+  }
+  .bg-light-green {
+    background-color: var(--light-green);
+  }
+  .bg-light-gray {
+    background-color: var(--light-gray);
+  }
+  .bg-cream {
+    background-color: var(--cream);
+  }
+  .icon {
+    width: 50px;
+    height: 50px;
+  }
+  .quote {
+    font-weight: 300;
+  }
+  .quote::before {
+    content: '“';
+    display: block;
+    font-family: 'Times New Roman', serif;
+    font-weight: 900;
+    height: 0.6em;
+    line-height: 1;
+    color: var(--light-green);
+    font-size: calc(1px * 100);
+  }
 </style>
 <Layout>
-    <section class="bg-black">
-        <div class="relative isolate overflow-hidden pt-14">
-            <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/72e8dba1bc6a051b39d379968185c56eceb6cc4f-2560x1440.jpg" alt="" class="absolute inset-0 -z-10 size-full object-cover opacity-70" />
-            <div aria-hidden="true">
-            <div></div>
-            </div>
-            <div class="gtl-logo-wrapper px-6">
-                <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0fa6e1351fb91829fbdcca10d29d727c26cd1e25-2048x336.png" alt="Seed Company Logo" class="w-1/2 md:max-w-xs" />
-            </div>
-            <div class="sm:flex container min-h-screen md:h-full px-6 lg:px-8">
-                <div class="w-full sm:w-1/2 py-24">
-                    <div>
-                        <h1 class="text-balance rader uppercase tracking-tight text-5xl md:text-9xl text-white">Global Translation Leaders</h1>
-                        <p class="mt-8 gotham text-pretty text-lg text-white sm:text-xl/8">Sponsorship is a personal way to be part of today's global Bible translation work!</p>
-                    </div>
-                </div>
-                <div class="w-1/2 py-0 sm:py-48 lg:py-56"></div>
-            </div>
+  <section class="bg-black">
+    <div class="relative isolate overflow-hidden pt-14">
+      <img
+        src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/72e8dba1bc6a051b39d379968185c56eceb6cc4f-2560x1440.jpg"
+        alt=""
+        class="absolute inset-0 -z-10 size-full object-cover opacity-70"
+      />
+      <div aria-hidden="true">
+        <div></div>
+      </div>
+      <div class="gtl-logo-wrapper px-6">
+        <img
+          src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0fa6e1351fb91829fbdcca10d29d727c26cd1e25-2048x336.png"
+          alt="Seed Company Logo"
+          class="w-1/2 md:max-w-xs"
+        />
+      </div>
+      <div class="sm:flex container min-h-screen md:h-full px-6 lg:px-8">
+        <div class="w-full sm:w-1/2 py-24">
+          <div>
+            <h1 class="text-balance rader uppercase tracking-tight text-5xl md:text-9xl text-white">
+              Global Translation Leaders
+            </h1>
+            <p class="mt-8 gotham text-pretty text-lg text-white sm:text-xl/8">
+              Sponsorship is a personal way to be part of today's global Bible translation work!
+            </p>
+          </div>
         </div>
-    </section>
-    <section class="bg-green px-6 py-24 lg:py-32 lg:px-8">
-        <div class="container justify-center items-center sm:flex gap-6 sm:px-6 text-white">
-            <div class="w-full sm:w-1/2 pr-0 sm:pr-24">
-                <h2 class="text-balance rader uppercase tracking-tight text-5xl lg:text-8xl text-white mb-8">About GTL</h2>
-                <p class="gotham text-lg">Seed Company's Global Translation Leaders (GTL) program is supported by generous investors who understand the power of training and leadership in Bible translation. Sponsors include individuals, families, small groups, churches, businesses, and foundations who are committed to seeing Bible translation advance around the globe.</p>
-            </div>
-            <div class="w-full sm:w-1/2">
-                <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6a2b5347a724680dd15c5ee4581d4533529c8673-1456x816.png" alt="Woman reading a Bible" class="rounded-lg shadow-lg mt-6 sm:mt-0" />
-            </div>
-
-        </div>
-    </section>
-    <section class="w-full">
-        <div class="block lg:flex text-white text-center gotham">
-            <div class="w-full bg-light-green px-8 py-16 sm:px-32">
-                <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/a952fd2db09a56eff39b8ec843f47cefaeb55ae4-500x462.png" alt="seedling icon" class="icon mx-auto mb-6" />
-                <h3 class="text-2xl sm:text-4xl gotham-bold my-6">Our Approach</h3>
-                <p class="gotham text-lg">There's no one-size-fits-all approach to Bible translation. Each people group and culture is different. That's why Seed Company works alongside local partners—who know their own languages and cultures best—to translate Scripture efficiently and accurately.</p>
-            </div>
-            <div class="w-full bg-light-gray px-8 py-16 sm:px-32">
-                <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/c7979f089a6938b674eda8058541c9ed54fed802-500x462.png" alt="seedling icon" class="icon mx-auto mb-6" />
-              <h3 class="text-2xl sm:text-4xl gotham-bold my-6">900+ Leaders</h3>
-              <p class="gotham text-lg font-weight-light">Over the past thirty years, Seed Company has been honored to support Bible translation leaders through internship-focused training. To date, we've supported over 900 translation leaders (and counting!) in this program. Now, we're excited to share the ability to sponsor individual participants, giving investors a unique opportunity to understand the culture, the language, the challenges, and the opportunities an individual translation leader is navigating!</p>
-            </div>
-        </div>
-    </section>
-    <section class="w-full bg-cream px-6 sm:px-8 py-24 lg:py-32">
-        <div class="w-full sm:flex container">
-            <div class="w-full sm:w-1/4 ">
-                <img src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/961a15b21d6110384890c187034926a22e62b785-924x1080.jpg" alt="Woman smiling" class="rounded-lg shadow-lg mb-6 sm:mb-0" />
-                <blockquote class="quote gotham-office mb-8 text-md italic pt-4">
-                    It's been such a joy for our family to support Aline on her journey to becoming a trained translator. Being able to share in her specific journey and needs has been a special way to connect with work happening on the other side of the globe!
-                    <div class="font-bold pt-4">Jamie H. GTL Sponsor</div>
-                </blockquote>
-            </div>
-            <div class="w-full sm:w-3/4 sm:px-10 md:px-12 lg:px-32">
-                <h2 class="text-balance rader uppercase tracking-tight text-5xl lg:text-8xl text-black mb-8">Become a Sponsor:</h2>
-                <p class="gotham-office text-lg pr-1 lg:pr-32">With a modest cost to cover translation mentorship, education, and practicums with hands-on application, a full GTL sponsorship provides the opportunity to change lives through training individuals collaborating. Sponsors make it possible for GTL participants to engage in a customized growth plan as they actively contribute to current Bible Translation projects. For many, this is a life-changing opportunity to support the work of God in their community while gaining marketable professional training. Most participants continue translation work in their local community after the program, providing longevity and generational impact.</p>
-            </div>
-        </div>
-    </section>
-    <section class="w-full bg-green px-6 sm:px-8 py-24 lg:py-32 bg-green">
-        <div class="container">
-            <h2 class="text-balance text-white rader uppercase text-5xl lg:text-8xl text-black mb-8">Sponsor a Global Translation Leader:</h2>
-            <SponsorList />
-        </div>
-    </section>
+        <div class="w-1/2 py-0 sm:py-48 lg:py-56"></div>
+      </div>
+    </div>
+  </section>
+  <section class="bg-green px-6 py-24 lg:py-32 lg:px-8">
+    <div class="container justify-center items-center sm:flex gap-6 sm:px-6 text-white">
+      <div class="w-full sm:w-1/2 pr-0 sm:pr-24">
+        <h2
+          class="text-balance rader uppercase tracking-tight text-5xl lg:text-8xl text-white mb-8"
+        >
+          About GTL
+        </h2>
+        <p class="gotham text-lg">
+          Seed Company's Global Translation Leaders (GTL) program is supported by generous investors
+          who understand the power of training and leadership in Bible translation. Sponsors include
+          individuals, families, small groups, churches, businesses, and foundations who are
+          committed to seeing Bible translation advance around the globe.
+        </p>
+      </div>
+      <div class="w-full sm:w-1/2">
+        <img
+          src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/6a2b5347a724680dd15c5ee4581d4533529c8673-1456x816.png"
+          alt="Woman reading a Bible"
+          class="rounded-lg shadow-lg mt-6 sm:mt-0"
+        />
+      </div>
+    </div>
+  </section>
+  <section class="w-full">
+    <div class="block lg:flex text-white text-center gotham">
+      <div class="w-full bg-light-green px-8 py-16 sm:px-32">
+        <img
+          src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/a952fd2db09a56eff39b8ec843f47cefaeb55ae4-500x462.png"
+          alt="seedling icon"
+          class="icon mx-auto mb-6"
+        />
+        <h3 class="text-2xl sm:text-4xl gotham-bold my-6">Our Approach</h3>
+        <p class="gotham text-lg">
+          There's no one-size-fits-all approach to Bible translation. Each people group and culture
+          is different. That's why Seed Company works alongside local partners—who know their own
+          languages and cultures best—to translate Scripture efficiently and accurately.
+        </p>
+      </div>
+      <div class="w-full bg-light-gray px-8 py-16 sm:px-32">
+        <img
+          src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/c7979f089a6938b674eda8058541c9ed54fed802-500x462.png"
+          alt="seedling icon"
+          class="icon mx-auto mb-6"
+        />
+        <h3 class="text-2xl sm:text-4xl gotham-bold my-6">900+ Leaders</h3>
+        <p class="gotham text-lg font-weight-light">
+          Over the past thirty years, Seed Company has been honored to support Bible translation
+          leaders through internship-focused training. To date, we've supported over 900 translation
+          leaders (and counting!) in this program. Now, we're excited to share the ability to
+          sponsor individual participants, giving investors a unique opportunity to understand the
+          culture, the language, the challenges, and the opportunities an individual translation
+          leader is navigating!
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="w-full bg-cream px-6 sm:px-8 py-24 lg:py-32">
+    <div class="w-full sm:flex container">
+      <div class="w-full sm:w-1/4">
+        <img
+          src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/961a15b21d6110384890c187034926a22e62b785-924x1080.jpg"
+          alt="Woman smiling"
+          class="rounded-lg shadow-lg mb-6 sm:mb-0"
+        />
+        <blockquote class="quote gotham-office mb-8 text-md italic pt-4">
+          It's been such a joy for our family to support Aline on her journey to becoming a trained
+          translator. Being able to share in her specific journey and needs has been a special way
+          to connect with work happening on the other side of the globe!
+          <div class="font-bold pt-4">Jamie H. GTL Sponsor</div>
+        </blockquote>
+      </div>
+      <div class="w-full sm:w-3/4 sm:px-10 md:px-12 lg:px-32">
+        <h2
+          class="text-balance rader uppercase tracking-tight text-5xl lg:text-8xl text-black mb-8"
+        >
+          Become a Sponsor:
+        </h2>
+        <p class="gotham-office text-lg pr-1 lg:pr-32">
+          With a modest cost to cover translation mentorship, education, and practicums with
+          hands-on application, a full GTL sponsorship provides the opportunity to change lives
+          through training individuals collaborating. Sponsors make it possible for GTL participants
+          to engage in a customized growth plan as they actively contribute to current Bible
+          Translation projects. For many, this is a life-changing opportunity to support the work of
+          God in their community while gaining marketable professional training. Most participants
+          continue translation work in their local community after the program, providing longevity
+          and generational impact.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="w-full bg-green px-6 sm:px-8 py-24 lg:py-32 bg-green">
+    <div class="container">
+      <h2 class="text-balance text-white rader uppercase text-5xl lg:text-8xl text-black mb-8">
+        Sponsor a Global Translation Leader:
+      </h2>
+      <SponsorList />
+    </div>
+  </section>
 </Layout>

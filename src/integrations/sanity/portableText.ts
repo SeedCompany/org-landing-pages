@@ -43,7 +43,7 @@ const components = {
     textColor: ({ value, children }) => `<span style="color: ${value.value};">${children}</span>`,
     strong: ({ children }) => `<strong>${children}</strong>`,
     em: ({ children }) => `<em>${children}</em>`,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- fixme
-    link: ({ value, children }) => `<a href="${value.href}" target="${value.target}">${children}</a>`,
+    link: ({ value, children }) =>
+      `<a href="${value.href}" target="${value.target}">${children}</a>`,
   },
 } satisfies Partial<Components>;

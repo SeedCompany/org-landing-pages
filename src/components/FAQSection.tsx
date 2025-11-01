@@ -52,7 +52,9 @@ const FAQSection: React.FC<Props> = ({ faqs }) => {
               </details>
             ))
           ) : (
-            <p className="text-center sus-primary-text">No FAQs available. Please check Sanity data.</p>
+            <p className="text-center sus-primary-text">
+              No FAQs available. Please check Sanity data.
+            </p>
           )}
         </div>
       </div>
