@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "postinstall": "husky || true",
     "dev": "yarn gql:gen:schema && yarn gql:gen:ops --watch -s & astro dev",
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
@@ -88,6 +89,8 @@
     "eslint-plugin-astro": "^1.3.1",
     "eslint-plugin-prettier": "^5.4.0",
     "graphql-config": "^5.1.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
     "mkdirp": "^1.0.4",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
