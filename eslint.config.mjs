@@ -25,4 +25,10 @@ export default tseslint.config(
       },
     },
   },
+  {
+    files: ['**/*.astro'],
+    // Don't attempt to use TypeScript rules in astro files
+    // https://github.com/ota-meshi/eslint-plugin-astro/issues/447
+    extends: [tseslint.configs.disableTypeChecked],
+  },
 );
