@@ -31,7 +31,6 @@ jobs:
 
       - name: Lint
         run: yarn eslint --max-warnings 0 .
-        continue-on-error: true
 
       - name: Build
         run: yarn build
