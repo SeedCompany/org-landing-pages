@@ -9,7 +9,7 @@
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "type-check": "astro check && tsc",
-    "lint": "yarn lint:check --fix",
+    "lint": "yarn lint:check --fix --prune-suppressions",
     "lint:check": "eslint --max-warnings 0",
     "sanity:gen": "yarn sanity:gen:schema && yarn sanity:gen:ops",
     "sanity:gen:schema": "mkdirp ./src/integrations/sanity/generated && sanity schema extract --path ./src/integrations/sanity/generated/schema.json",
