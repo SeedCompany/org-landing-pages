@@ -49,5 +49,20 @@ export default defineConfig({
   // region actual theme/styles
   preflight: true, // CSS reset
   ...setupTheme(),
+
+  plugins: [
+    // Park UI uses a different color system (Radix) than Panda's built-in preset.
+    // Strip out those preset colors but keep the other built-in stuff.
+    // https://www.radix-ui.com/colors
+    {
+      name: 'Remove Panda Preset Colors',
+      hooks: {
+        'preset:resolved': ({ utils, preset, name }) =>
+          name === '@pandacss/preset-panda'
+            ? utils.omit(preset, ['theme.tokens.colors', 'theme.semanticTokens.colors'])
+            : preset,
+      },
+    },
+  ],
   // endregion
 });

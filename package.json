@@ -19,13 +19,15 @@
     "gql:gen:ops": "graphql-codegen-esm -p ops",
     "gql-gen": "yarn gql:gen # run our script instead of the unconfigured, but auto-completed, binary from library",
     "panda:gen": "panda codegen",
-    "astro": "astro"
+    "astro": "astro",
+    "park-ui": "park-ui"
   },
   "engines": {
     "node": ">= 24"
   },
   "packageManager": "yarn@4.10.3",
   "dependencies": {
+    "@ark-ui/react": "^5.26.2",
     "@astrojs/node": "^9.2.1",
     "@astrojs/react": "^4.2.7",
     "@fontsource/dm-serif-text": "^5.2.6",
@@ -59,6 +61,7 @@
     "groq": "^3.88.3",
     "ioredis": "^5.7.0",
     "lucide": "^0.503.0",
+    "lucide-react": "^0.548.0",
     "posthog-js": "^1.261.6",
     "posthog-node": "^5.8.1",
     "react": "^19.1.0",
@@ -82,6 +85,7 @@
     "@pandacss/dev": "^1.4.3",
     "@pandacss/types": "^1.4.3",
     "@parcel/watcher": "^2.5.1",
+    "@park-ui/cli": "^1.0.0-next.7",
     "@types/node": "^24.9.1",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.4",
