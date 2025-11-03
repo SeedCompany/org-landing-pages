@@ -1,6 +1,7 @@
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import panda from '@pandacss/dev/postcss';
 
 export default {
-  plugins: [tailwindcss(), autoprefixer()],
+  plugins: [panda(), tailwindcss(), autoprefixer()],
 };

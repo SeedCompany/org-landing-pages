@@ -66,7 +66,7 @@ FROM env AS builder
 COPY --from=deps /app .
 COPY . .
 
-RUN yarn sanity:gen && yarn gql:gen && yarn build
+RUN yarn sanity:gen && yarn gql:gen && yarn panda:gen && yarn build
 
 # Clear all downloaded libraries to reduce image size
 RUN yarn cache clean --all

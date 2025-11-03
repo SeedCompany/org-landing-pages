@@ -15,9 +15,16 @@
     ],
     "baseUrl": ".",
     "paths": {
+      // See note in panda.config.ts about this mapping.
+      "styled-system/*": ["./generated/styled-system/*"],
       "~/*": ["./src/integrations/*", "./src/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*", "*.mjs", ".prettierrc.mjs"],
-  "exclude": ["dist"]
+  "exclude": [
+    "dist",
+    // These files are meant to be pre-built output. They have accompanying .d.ts files for types.
+    // If we changed the `checkJs` setting above, we could drop this.
+    "./generated/styled-system/**/*.mjs"
+  ]
 }
