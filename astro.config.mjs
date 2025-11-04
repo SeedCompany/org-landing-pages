@@ -10,7 +10,10 @@ import { posthogAstro as posthog } from './src/integrations/posthog/posthog.astr
 
 export default defineConfig({
   integrations: [
-    tailwind(),
+    tailwind({
+      // We import tw base styles in global.css - do not duplicate
+      applyBaseStyles: false,
+    }),
     react({
       babel: {
         plugins: [graphql],
