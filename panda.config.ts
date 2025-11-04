@@ -47,7 +47,13 @@ export default defineConfig({
   // endregion
 
   // region actual theme/styles
-  preflight: true, // CSS reset
+  // CSS reset
+  preflight: false, // need to migrate from tailwind's reset.
+  // avoid conflicts with tailwind for now.
+  layers: {
+    base: 'panda_base',
+    utilities: 'panda_utilities',
+  },
   ...setupTheme(),
 
   plugins: [

@@ -5,11 +5,11 @@
 @import '@fontsource/oswald/700.css';
 @import '@fontsource/dm-serif-text/400.css';
 
-@layer reset, base, tokens, recipes, utilities;
+@layer tw_reset, reset, panda_base, tokens, tw_components, recipes, tw_utilities, panda_utilities;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tw_reset { @tailwind base; }
+@layer tw_components { @tailwind components; }
+@layer tw_utilities { @tailwind utilities; }
 
 :root {
   /* Sustainers Template Colors */
