@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Sentinel';
+  src: url(./Superclarendon-Light.woff2) format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sentinel';
+  src: url(./Superclarendon-Light-Italic.woff2) format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}

@@ -2922,6 +2922,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/red-hat-mono@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@fontsource-variable/red-hat-mono@npm:5.2.8"
+  checksum: 10c0/0456d25ce9ff2dcdd711401462a8a436f553179ae2cb10cfa5942965d3fead102611a17925883bcf42de0ca06f608810768d0714475edaa195bcb37be05fe8a7
+  languageName: node
+  linkType: hard
+
 "@fontsource/dm-serif-text@npm:^5.2.6":
   version: 5.2.8
   resolution: "@fontsource/dm-serif-text@npm:5.2.8"
@@ -2933,6 +2940,13 @@ __metadata:
   version: 5.2.7
   resolution: "@fontsource/lato@npm:5.2.7"
   checksum: 10c0/2d3e3f8da0e5ce733377406619066222ebc8786477b33bd2131d0137c069bc0e31416ed3dfa3b2fd2f57d22029f8ecd33cc693dfa08c8b42b5d028f18bacc3d3
+  languageName: node
+  linkType: hard
+
+"@fontsource/montserrat@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@fontsource/montserrat@npm:5.2.8"
+  checksum: 10c0/a38ebdebbc4c14f9b48deb15609323b7125da76214e765c83fac879ffcc577abf4ce06a47d5a712d42b3116658a395e18beb6d360e7d73417ec197e21194870e
   languageName: node
   linkType: hard
 
@@ -4993,7 +5007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pandacss/preset-panda@npm:1.4.3":
+"@pandacss/preset-panda@npm:1.4.3, @pandacss/preset-panda@npm:^1.4.3":
   version: 1.4.3
   resolution: "@pandacss/preset-panda@npm:1.4.3"
   dependencies:
@@ -16428,8 +16442,10 @@ __metadata:
     "@astrojs/react": "npm:^4.2.7"
     "@astrojs/tailwind": "npm:^5.1.5"
     "@eslint/js": "npm:^9.26.0"
+    "@fontsource-variable/red-hat-mono": "npm:^5.2.8"
     "@fontsource/dm-serif-text": "npm:^5.2.6"
     "@fontsource/lato": "npm:^5.2.6"
+    "@fontsource/montserrat": "npm:^5.2.8"
     "@fontsource/oswald": "npm:^5.2.6"
     "@graphql-codegen/cli": "npm:^6.0.1"
     "@graphql-codegen/client-preset": "patch:@graphql-codegen/client-preset@npm%3A5.1.0#~/.yarn/patches/@graphql-codegen-client-preset-npm-5.1.0-3453453975.patch"
@@ -16439,6 +16455,7 @@ __metadata:
     "@hookform/resolvers": "npm:^5.1.1"
     "@iconify-json/lucide": "npm:^1.2.38"
     "@pandacss/dev": "npm:^1.4.3"
+    "@pandacss/preset-panda": "npm:^1.4.3"
     "@pandacss/studio": "npm:^1.4.3"
     "@pandacss/types": "npm:^1.4.3"
     "@parcel/watcher": "npm:^2.5.1"

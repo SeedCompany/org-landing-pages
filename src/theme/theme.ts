@@ -11,6 +11,7 @@ import { recipes, slotRecipes } from './recipes';
 import { textStyles } from './text-styles.ts';
 import { colors } from './tokens/colors.ts';
 import { durations } from './tokens/durations.ts';
+import { fonts } from './tokens/fonts.ts';
 import { shadows } from './tokens/shadows.ts';
 import { zIndex } from './tokens/z-index.ts';
 
@@ -23,6 +24,7 @@ const theme = {
   textStyles: textStyles,
 
   tokens: {
+    fonts,
     colors,
     durations,
     zIndex,
