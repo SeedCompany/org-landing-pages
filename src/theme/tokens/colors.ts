@@ -1,9 +1,46 @@
 import { defineTokens } from '@pandacss/dev';
 
-// "a" prefix here stands for "alpha"
+/**
+ * Seed Company Brand Colors
+ * https://www.figma.com/slides/QPk4bEjOUMcz3CY6vNQYTX/Brand-Guide-update-2025?node-id=1-1373&t=UOQ1dxiIQCIWj4eu-0
+ */
+const sc = defineTokens.colors({
+  // Primaries
+  green: { value: '#28b67e' },
+  darkBlue: { value: '#1d3638' },
+  // Neutrals
+  natural: { value: '#f7f1e7' },
+  stone: { value: '#cdc3b0' },
+  // Grays
+  white: { value: '#ffffff' },
+  lightGray: { value: '#ebebec' },
+  darkGray: { value: '#636466' },
+  black: { value: '#323232' },
+  // Pacific
+  sea: { value: '#03424b' },
+  gold: { value: '#b68b55' },
+  sand: { value: '#d4bc9d' },
+  // Americas
+  forest: { value: '#41452b' },
+  terracotta: { value: '#a8654c' },
+  granite: { value: '#c1b1a8' },
+  // Africa
+  burnt: { value: '#812f13' },
+  sun: { value: '#e35c2a' },
+  desert: { value: '#f7ae6c' },
+  // Europe and the Middle East
+  shadow: { value: '#5c3d34' },
+  dusk: { value: '#c08863' },
+  dawn: { value: '#d2cfaf' },
+  // Asia
+  depth: { value: '#414e46' },
+  coral: { value: '#e96c50' },
+  peach: { value: '#f8ae85' },
+});
 
 const black = defineTokens.colors({
   DEFAULT: { value: '#000000' },
+  // "a" prefix here stands for "alpha"
   a1: { value: 'rgba(0, 0, 0, 0.05)' },
   a2: { value: 'rgba(0, 0, 0, 0.1)' },
   a3: { value: 'rgba(0, 0, 0, 0.15)' },
@@ -37,5 +74,20 @@ const white = defineTokens.colors({
 const inherit = defineTokens.colors({
   DEFAULT: { value: 'inherit' },
 });
+const current = defineTokens.colors({
+  DEFAULT: { value: 'currentColor' },
+});
+const transparent = defineTokens.colors({
+  DEFAULT: { value: 'rgb(0 0 0 / 0)' },
+});
 
-export const colors = { black, white, inherit };
+export const colors = {
+  sc,
+
+  black,
+  white,
+
+  inherit,
+  current,
+  transparent,
+};
