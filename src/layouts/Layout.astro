@@ -1,24 +1,30 @@
 ---
 import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+const { title } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="icon"
       type="image/png"
       href="https://seedcompany.com/wp-content/uploads/2021/09/favicon.png"
     />
     <meta name="generator" content={Astro.generator} />
-    <title>Seed Campaigns</title>
+    <title>{title ?? 'Seed Campaigns'}</title>
     <script
       id="google-recaptcha-v3"
       src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}
       defer
       async></script>
+    <slot name="head" />
   </head>
   <body>
     <slot />

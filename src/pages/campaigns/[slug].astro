@@ -1,5 +1,6 @@
 ---
 import { sanityClient as sanity, portableText } from '~/sanity';
+import Layout from '~/layouts/Layout.astro';
 
 // Import the templates for different campaign types
 import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
@@ -35,27 +36,18 @@ const pageTitle =
   (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.png" type="image/svg+xml" />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <section>
-      {/* Render the template with campaign data */}
-      {campaign && TemplateComponent && <TemplateComponent campaignData={campaign} />}
+<Layout title={pageTitle}>
+  <main>
+    {/* Render the template with campaign data */}
+    {campaign && TemplateComponent && <TemplateComponent campaignData={campaign} />}
 
-      {/* Display warning if template type is unknown */}
-      {
-        campaign && !templateMap[campaign.templateType!] && (
-          <div class="text-center py-10 text-orange-600">
-            <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
-          </div>
-        )
-      }
-    </section>
-  </body>
-</html>
+    {/* Display warning if template type is unknown */}
+    {
+      campaign && !templateMap[campaign.templateType!] && (
+        <div class="text-center py-10 text-orange-600">
+          <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
+        </div>
+      )
+    }
+  </main>
+</Layout>
