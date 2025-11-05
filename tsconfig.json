@@ -1,7 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "checkJs": true,
     "noUncheckedIndexedAccess": true,
     // Temporary until GROQ type gen is compatible
     // "exactOptionalPropertyTypes": true,
@@ -21,10 +20,5 @@
     }
   },
   "include": [".astro/types.d.ts", "**/*", "*.mjs", ".prettierrc.mjs"],
-  "exclude": [
-    "dist",
-    // These files are meant to be pre-built output. They have accompanying .d.ts files for types.
-    // If we changed the `checkJs` setting above, we could drop this.
-    "./generated/styled-system/**/*.mjs"
-  ]
+  "exclude": ["dist"]
 }
