@@ -1,7 +1,8 @@
 import { type ExtendableOptions, type PartialTheme } from '@pandacss/types';
 import { animationStyles } from './animation-styles.ts';
-import { green } from './colors/green.ts';
 import { red } from './colors/red.ts';
+import { scDarkBlue } from './colors/sc-dark-blue.ts';
+import { scGreen } from './colors/sc-green.ts';
 import { slate } from './colors/slate.ts';
 import { conditions } from './conditions.ts';
 import { globalCss } from './global-css.ts';
@@ -33,42 +34,16 @@ const theme = {
   semanticTokens: {
     colors: {
       fg: {
-        default: {
-          value: {
-            _light: '{colors.gray.12}',
-            _dark: '{colors.gray.12}',
-          },
-        },
-
-        muted: {
-          value: {
-            _light: '{colors.gray.11}',
-            _dark: '{colors.gray.11}',
-          },
-        },
-
-        subtle: {
-          value: {
-            _light: '{colors.gray.10}',
-            _dark: '{colors.gray.10}',
-          },
-        },
+        default: { value: '{colors.gray.12}' },
+        muted: { value: '{colors.gray.11}' },
+        subtle: { value: '{colors.gray.10}' },
       },
-      border: {
-        value: {
-          _light: '{colors.gray.4}',
-          _dark: '{colors.gray.4}',
-        },
-      },
-      error: {
-        value: {
-          _light: '{colors.red.9}',
-          _dark: '{colors.red.9}',
-        },
-      },
+      border: { value: '{colors.gray.4}' },
+      error: red['9'],
 
-      green,
-      red,
+      primary: scGreen,
+      secondary: scDarkBlue,
+
       // Park UI requires a gray color available
       gray: slate,
     },
