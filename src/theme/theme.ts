@@ -38,7 +38,7 @@ const theme = {
         muted: { value: '{colors.gray.11}' },
         subtle: { value: '{colors.gray.10}' },
       },
-      border: { value: '{colors.gray.4}' },
+      border: { value: '{colors.gray.6}' },
       error: red['9'],
 
       primary: scGreen,

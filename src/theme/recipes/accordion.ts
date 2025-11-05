@@ -26,19 +26,14 @@ export const accordion = defineSlotRecipe({
       width: 'full',
       _focusVisible: {
         outline: '2px solid',
-        outlineColor: 'colorPalette.focusRing',
+        outlineColor: 'primary.7',
       },
       _disabled: {
         layerStyle: 'disabled',
       },
     },
     itemIndicator: {
-      transition: 'rotate 0.2s',
-      transformOrigin: 'center',
       color: 'fg.subtle',
-      _open: {
-        rotate: '180deg',
-      },
       _icon: {
         width: '1.2em',
         height: '1.2em',
@@ -64,12 +59,17 @@ export const accordion = defineSlotRecipe({
   defaultVariants: {
     size: 'md',
     variant: 'outline',
+    indicator: 'chevron',
   },
   variants: {
     variant: {
       outline: {
         item: {
+          borderColor: 'border',
           borderBottomWidth: '1px',
+          _lastOfType: {
+            borderBottomWidth: '0',
+          },
         },
       },
       plain: {},
@@ -83,6 +83,41 @@ export const accordion = defineSlotRecipe({
         itemTrigger: {
           textStyle: 'md',
           py: 'var(--accordion-padding-y)',
+        },
+      },
+      lg: {
+        root: {
+          '--accordion-padding-x': 'spacing.4',
+          '--accordion-padding-y': 'spacing.6',
+        },
+        itemTrigger: {
+          textStyle: 'xl',
+          py: 'var(--accordion-padding-y)',
+        },
+        itemBody: {
+          // don't double, as base does
+          pb: 'var(--accordion-padding-y)',
+        },
+      },
+    },
+    indicator: {
+      chevron: {
+        itemIndicator: {
+          transition: 'rotate 0.2s',
+          transformOrigin: 'center',
+          _open: {
+            rotate: '180deg',
+          },
+        },
+      },
+      plus: {
+        itemIndicator: {
+          '& [data-only-if-open]': {
+            transition: 'transform',
+            transitionDuration: 'normal',
+            transformOrigin: 'center',
+            '.accordion__item[data-state="open"] &': { transform: 'scaleY(0)' },
+          },
         },
       },
     },
