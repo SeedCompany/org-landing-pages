@@ -1,79 +1,64 @@
 ---
-// import { toHTML } from '../../../lib/portableTextSerializer';
-// import type { Campaign } from '../../../pages/campaigns/campaignBySlug.groq';
+// src/pages/campaigns/houston-first/index.astro
 import Hero from './_components/Hero.astro';
 import GiveFormWithTotals from '../../../components/GiveFormWithTotals.astro';
 import Layout from '../../../layouts/Layout.astro';
 import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
-// import HoustonFAQ from './_components/HoustonFAQ.astro';
 ---
 
 <Layout>
-  <div class="grid lg:grid-cols-[2fr_1fr] gap-8 max-w-screen-2xl mx-auto block lg:grid">
-    <main class="flex flex-col lg:gap-8 lg:p-[60px] gap-0 p-8 lg:p-[60px]">
-      <!-- Hero Image -->
+  <div class="min-h-screen bg-white">
+    <section class="relative bg-[#1a303a] overflow-hidden">
       <div
-        class="absolute top-0 left-0 w-full min-h-[800px] -z-10
-        bg-cover bg-no-repeat bg-center
-        lg:bg-center bg-right bg-gradient-to-b from-[#1a303a]
-        to-[#1a303a]"
+        class="absolute inset-0 bg-gradient-to-b from-transparent to-[#1a303a] pointer-events-none"
       >
       </div>
-      <!-- Hero Image Overlay -->
-      <div
-        class="absolute top-0 left-0 w-full min-h-[800px] -z-10
-        bg-gradient-to-b from-transparent to-[#1a303a]
-        lg:from-transparent lg:to-[#1a303a]
-        from-gray to-transparent"
-      >
+      <!-- Hero content -->
+      <div class="relative z-10 max-w-[1440px] mx-auto px-5 pt-0 pb-32 lg:pb-40">
+        <Hero />
       </div>
-      <Hero />
-      <!-- Give form mobile -->
-      <aside class="form" id="give-form-mobile">
-        <GiveFormWithTotals disableDialog={true} />
-      </aside>
-      <Video
-        src=""
-        poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
-        class="hero-video"
-        rounded={true}
-      />
-      <!-- BG Gradient -->
-      <div
-        class="hidden lg:block absolute top-[800px] left-0 w-full min-h-[800px] -z-10
-        bg-gradient-to-b from-[#ebebec] via-[#ebebec] to-white"
-      >
-      </div>
-      <!-- Main Content -->
-      <h2
-        class="text-4xl text-center md:text-left gotham-bold tracking-tight
-        sm:text-5xl pt-12 pb-8 lg:py-4"
-      >
-        Translate the <br />Book of Matthew.
-      </h2>
-      <div class="prose">
-        <p>
-          Partnering with a missions-focused church like Houston's First is a big step for Gospel
-          impact, but we're here to walk with you every part of the way.
-        </p>
-        <p>
-          On Sundays (and beyond), expect generous worship giving, biblical preaching on Matthew,
-          and a community passionate about global Scripture access. Whether pitching to leadership
-          or the full congregation, you'll find friendly pastors, eager volunteers, and channels
-          like World Mission Offering (historically millions raised for translation & missions).
-        </p>
-      </div>
-    </main>
-    <!-- Give form desktop -->
-    <aside class="hidden lg:block sticky top-0 -translate-y-1/5 self-start">
-      <GiveFormWithTotals disableDialog={true} />
-    </aside>
-  </div>
+    </section>
+    <div
+      class="grid lg:grid-cols-[2fr_1fr] gap-8 max-w-[1440px] mx-auto -mt-24 lg:-mt-32 relative z-20"
+    >
+      <main class="flex flex-col gap-10 px-5 lg:pr-12">
+        <aside
+          class="lg:block max-w-xl md:fixed lg:right-8 lg:top-32 max-lg:mx-auto max-lg:w-full max-lg:max-w-xl"
+        >
+          <div class="bg-white rounded-lg p-6 mt-8 shadow-lg">
+            <GiveFormWithTotals disableDialog={true} />
+          </div>
+        </aside>
 
-  <!-- FAQs -->
-  <!-- <HoustonFAQ campaignData={campaignData} /> -->
-  <section class="mb-[-140px] lg:mb-0">
-    <Footer />
-  </section>
+        <Video
+          src=""
+          poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
+          class="hero-video rounded-2xl shadow-xl"
+          rounded={true}
+        />
+
+        <h2 class="text-4xl gotham-bold tracking-tight sm:text-5xl">
+          Translate the <br />Book of Matthew.
+        </h2>
+
+        <div class="prose prose-lg max-w-none">
+          <p>
+            Partnering with a missions-focused church like Houston's First is a big step for Gospel
+            impact, but we're here to walk with you every part of the way.
+          </p>
+          <p>
+            On Sundays (and beyond), expect generous worship giving, biblical preaching on Matthew,
+            and a community passionate about global Scripture access. Whether pitching to leadership
+            or the full congregation, you'll find friendly pastors, eager volunteers, and channels
+            like World Mission Offering (historically millions raised for translation & missions).
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <section class="mt-20">
+      <Footer />
+    </section>
+  </div>
 </Layout>
