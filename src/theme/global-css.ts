@@ -7,7 +7,8 @@ export const globalCss = defineGlobalStyles({
       '--global-color-focus-ring': 'colors.colorPalette.solid.bg',
       '--global-color-placeholder': 'colors.fg.subtle',
       '--global-color-selection': 'colors.colorPalette.subtle.bg',
-      colorPalette: 'gray',
+      fontFamily: 'sans',
+      colorPalette: 'primary',
     },
     body: {
       background: 'gray.1',
