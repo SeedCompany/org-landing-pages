@@ -1,6 +1,7 @@
+import type { TextStyles } from '@pandacss/dev';
 import { defineTextStyles } from '@pandacss/dev';
 
-export const textStyles = defineTextStyles({
+const sizes = {
   xs: { value: { fontSize: 'xs', lineHeight: '1.125rem' } },
   sm: { value: { fontSize: 'sm', lineHeight: '1.25rem' } },
   md: { value: { fontSize: 'md', lineHeight: '1.5rem' } },
@@ -12,17 +13,36 @@ export const textStyles = defineTextStyles({
   '5xl': { value: { fontSize: '5xl', lineHeight: '3.75rem', letterSpacing: '-0.02em' } },
   '6xl': { value: { fontSize: '6xl', lineHeight: '4.5rem', letterSpacing: '-0.02em' } },
   '7xl': { value: { fontSize: '7xl', lineHeight: '5.75rem', letterSpacing: '-0.02em' } },
+} satisfies TextStyles;
+
+const titleBase = {
+  fontFamily: '{fonts.rader}',
+  textWrap: 'balance',
+  textTransform: 'uppercase',
+};
+
+export const textStyles = defineTextStyles({
+  ...sizes,
 
   title1: {
-    description: 'Page Titles. It should be used sparingly.',
+    description: 'Page Titles',
     value: {
-      fontFamily: '{fonts.rader}',
-      fontSize: { base: '5xl', sm: '7xl' },
-      letterSpacing: '-0.02em',
-      textWrap: 'balance',
-      textTransform: 'uppercase',
+      ...titleBase,
+      // TODO sometimes 5/sm:7, sometimes 5/md:9
+      ...sizes['5xl'],
+      sm: sizes['7xl'],
     },
-  } as const,
+  },
+
+  title2: {
+    description: 'Section Titles',
+    value: {
+      ...titleBase,
+      // TODO sometimes 4/sm:5, sometimes 5/lg:8
+      ...sizes['4xl'],
+      sm: sizes['5xl'],
+    },
+  },
 
   // TODO sizing??
 
@@ -60,4 +80,4 @@ export const textStyles = defineTextStyles({
       fontFamily: '{fonts.mono}',
     },
   },
-});
+} as const);
