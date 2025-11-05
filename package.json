@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "postinstall": "husky || true",
-    "dev": "yarn gql:gen:schema && yarn gql:gen:ops --watch -s & astro dev",
+    "dev": "yarn gql:gen:schema && yarn gql:gen:ops --watch -s & yarn panda:gen -w & astro dev",
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
