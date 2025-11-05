@@ -1,5 +1,8 @@
 import { defineConfig } from '@pandacss/dev';
 import { setupTheme } from '~/theme/theme';
+import { env } from 'node:process';
+
+const isProd = env.NODE_ENV === 'production';
 
 export default defineConfig({
   // region codegen config
@@ -44,6 +47,10 @@ export default defineConfig({
   // Certain CSS props allow loose values, block that.
   // The "[...]" escape hatch is still available when needed.
   strictPropertyValues: true,
+  // Shortens names.
+  // The only thing to consider is dev could reference a class name, and it is fine in dev,
+  // but then we build for prod, and it doesn't work.
+  hash: isProd,
   // endregion
 
   // region actual theme/styles
