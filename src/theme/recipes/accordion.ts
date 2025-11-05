@@ -116,7 +116,9 @@ export const accordion = defineSlotRecipe({
             transition: 'transform',
             transitionDuration: 'normal',
             transformOrigin: 'center',
-            '.accordion__item[data-state="open"] &': { transform: 'scaleY(0)' },
+            '[data-scope="accordion"][data-part="item"][data-state="open"] &': {
+              transform: 'scaleY(0)',
+            },
           },
         },
       },
