@@ -1,8 +1,9 @@
 ---
+import Layout from '~/layouts/Layout.astro';
 import { DonationFormIsland } from '../components/DonationFormIsland.tsx';
 ---
 
-<div>
+<Layout>
   <DonationFormIsland
     formProps={{
       enableRecurring: true,
@@ -16,4 +17,4 @@ import { DonationFormIsland } from '../components/DonationFormIsland.tsx';
     }}
     client:load
   />
-</div>
+</Layout>
