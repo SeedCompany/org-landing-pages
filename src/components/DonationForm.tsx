@@ -7,7 +7,7 @@ import { z } from 'zod/v4/mini';
 import { graphqlClient, graphql, type Telemetry, type VariablesOf } from '~/graphql';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useCaptchaAction } from '~/recaptcha';
 import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { DonationButton } from './DonationButton.tsx';
@@ -56,7 +56,7 @@ export const DonationForm = ({
   const [showEndModal, setShowEndModal] = useState(false);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const getCaptchaToken = useCaptchaAction('donate');
   const form = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema),
     mode: 'onBlur',
@@ -120,11 +120,8 @@ export const DonationForm = ({
           return;
         }
         let captchaToken;
-        if (!executeRecaptcha) {
-          console.error('reCAPTCHA not loaded yet');
-        }
         try {
-          captchaToken = await executeRecaptcha?.('donate');
+          captchaToken = await getCaptchaToken();
         } catch (error) {
           console.error('Recaptcha error:', error);
         }
