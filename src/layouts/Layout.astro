@@ -19,11 +19,6 @@ const { title } = Astro.props;
     />
     <meta name="generator" content={Astro.generator} />
     <title>{title ?? 'Seed Campaigns'}</title>
-    <script
-      id="google-recaptcha-v3"
-      src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}
-      defer
-      async></script>
     <slot name="head" />
   </head>
   <body>

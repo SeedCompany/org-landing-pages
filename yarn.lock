@@ -7219,6 +7219,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wojtekmaj/react-recaptcha-v3@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@wojtekmaj/react-recaptcha-v3@npm:0.1.4"
+  dependencies:
+    warning: "npm:^4.0.0"
+  peerDependencies:
+    "@types/react": ^18.0.0 || ^19.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/efa23374f396563237bd2e91757da3637637e1cf1493b171a3657de06e1990b56fde1f2856c557dc97fa964d36a31fe488489508d16dfa737ec5543264a4ccef
+  languageName: node
+  linkType: hard
+
 "@xstate/react@npm:^6.0.0":
   version: 6.0.0
   resolution: "@xstate/react@npm:6.0.0"
@@ -14314,6 +14330,7 @@ __metadata:
     "@types/serialize-javascript": "npm:^5.0.4"
     "@urql/core": "npm:^6.0.1"
     "@urql/exchange-persisted": "npm:^5.0.1"
+    "@wojtekmaj/react-recaptcha-v3": "npm:^0.1.4"
     astro: "npm:^5.7.9"
     astro-icon: "npm:^1.1.5"
     autoprefixer: "npm:^10.4.19"
@@ -14339,7 +14356,6 @@ __metadata:
     prettier-plugin-astro: "npm:^0.14.1"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
-    react-google-recaptcha-v3: "npm:^1.11.0"
     react-hook-form: "npm:^7.59.0"
     react-is: "npm:^19.1.0"
     sanity: "npm:^4.4.0"
@@ -15445,18 +15461,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/5a3e92fb0025042ab613c54b8ff0aa6c3a45a4d4785c51c024758b02ff83a89295b458ba609c48d11f1c6bbcab6a6b032c5c17d1f3d168a2835cbbec3dea6a46
-  languageName: node
-  linkType: hard
-
-"react-google-recaptcha-v3@npm:^1.11.0":
-  version: 1.11.0
-  resolution: "react-google-recaptcha-v3@npm:1.11.0"
-  dependencies:
-    hoist-non-react-statics: "npm:^3.3.2"
-  peerDependencies:
-    react: ^16.3 || ^17.0 || ^18.0 || ^19.0
-    react-dom: ^17.0 || ^18.0 || ^19.0
-  checksum: 10c0/8c14d4aae702cb4be150ec15794842947473c1fd8d9c65545fb17566beb6033982f418a4a2dea0b4e5b73c28cb3a7312f5ab2c32e45c6a4d4e115b2a6193a86b
   languageName: node
   linkType: hard
 
@@ -19109,6 +19113,15 @@ __metadata:
   dependencies:
     xml-name-validator: "npm:^5.0.0"
   checksum: 10c0/8712774c1aeb62dec22928bf1cdfd11426c2c9383a1a63f2bcae18db87ca574165a0fbe96b312b73652149167ac6c7f4cf5409f2eb101d9c805efe0e4bae798b
+  languageName: node
+  linkType: hard
+
+"warning@npm:^4.0.0":
+  version: 4.0.3
+  resolution: "warning@npm:4.0.3"
+  dependencies:
+    loose-envify: "npm:^1.0.0"
+  checksum: 10c0/aebab445129f3e104c271f1637fa38e55eb25f968593e3825bd2f7a12bd58dc3738bb70dc8ec85826621d80b4acfed5a29ebc9da17397c6125864d72301b937e
   languageName: node
   linkType: hard
 
