@@ -1,7 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "checkJs": true,
     "noUncheckedIndexedAccess": true,
     // Temporary until GROQ type gen is compatible
     // "exactOptionalPropertyTypes": true,
@@ -15,6 +14,8 @@
     ],
     "baseUrl": ".",
     "paths": {
+      // See note in panda.config.ts about this mapping.
+      "styled-system/*": ["./generated/styled-system/*"],
       "~/*": ["./src/integrations/*", "./src/*"]
     }
   },

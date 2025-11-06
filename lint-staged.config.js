@@ -1,3 +1,4 @@
+// @ts-check
 /** @type {import('lint-staged').Configuration} */
 export default {
   '**/*.{js,mjs,ts,tsx,astro}': (files) => {

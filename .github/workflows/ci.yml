@@ -26,6 +26,9 @@ jobs:
       - name: Generate GraphQL
         run: yarn gql:gen
 
+      - name: Generate Panda CSS
+        run: yarn panda:gen
+
       - name: Check TypeScript
         run: yarn type-check
 
