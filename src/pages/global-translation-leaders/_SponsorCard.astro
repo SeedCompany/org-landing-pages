@@ -101,11 +101,7 @@ const isSponsored = sponsor.funding.remaining === 0;
       </Stack>
     </HStack>
     <HStack justify="space-between" gap="[inherit]" css={{ flexWrap: 'wrap' }}>
-      <ButtonLink
-        href={`/global-translation-leaders/${slug}`}
-        variant={isSponsored ? 'outline' : 'solid'}
-        css={{ rounded: 'l3' }}
-      >
+      <ButtonLink href={slug} variant={isSponsored ? 'outline' : 'solid'} css={{ rounded: 'l3' }}>
         View Details
       </ButtonLink>
       <styled.p css={{ _groupDisabled: { display: 'none' } }}>$1,000 per month needed</styled.p>
