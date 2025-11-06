@@ -109,7 +109,7 @@ const currentProgress = Math.min(
         {`Opportunity ${numberToString(projectData.index + 1)}`}
       </div>
       <div class="flex items-center">
-        <LockSection client:load fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
+        <LockSection fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
       </div>
     </div>
     <p class="donation-card-description">{projectData.projectDescription}</p>
