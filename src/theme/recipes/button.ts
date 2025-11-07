@@ -2,7 +2,7 @@ import { defineRecipe } from '@pandacss/dev';
 
 export const button = defineRecipe({
   className: 'button',
-  jsx: ['Button', 'IconButton', 'CloseButton', 'ButtonGroup'],
+  jsx: ['Button', 'IconButton', 'CloseButton', 'ButtonGroup', 'ButtonLink'],
   base: {
     alignItems: 'center',
     appearance: 'none',
