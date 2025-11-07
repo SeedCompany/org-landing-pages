@@ -1,4 +1,5 @@
 ---
+import { Grid } from 'styled-system/jsx';
 import { graphql, graphqlClient } from '~/graphql';
 import SponsorCard from './_SponsorCard.astro';
 
@@ -16,6 +17,6 @@ const { data } = await graphqlClient.query(SponsorListDoc, {}).toPromise();
 const sponsors = data?.globalTranslationLeaders.items ?? [];
 ---
 
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+<Grid columns={{ base: 1, sm: 2, xl: 3 }} gap="8">
   {sponsors.map((sponsor) => <SponsorCard sponsor={sponsor} />)}
-</div>
+</Grid>

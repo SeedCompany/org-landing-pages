@@ -54,6 +54,7 @@ const theme = {
       l1: { value: '{radii.xs}' },
       l2: { value: '{radii.sm}' },
       l3: { value: '{radii.md}' },
+      l4: { value: '{radii.lg}' },
     },
   },
 } satisfies PartialTheme;
@@ -64,6 +65,12 @@ export const setupTheme = () =>
       extend: theme,
     },
 
+    globalVars: {
+      extend: {
+        // Declare this as a "well-known" var for us to use for spacing.
+        '--gap': { syntax: '<length>', inherits: true, initialValue: '0px' },
+      },
+    },
     globalCss: globalCss,
     conditions: conditions,
   }) satisfies ExtendableOptions;
