@@ -38,9 +38,6 @@ export const CheckPaymentModal = ({ open, onClose }: { open: boolean; onClose: (
                   Suite 100
                   <br />
                   Arlington, TX 76018
-                  <br />
-                  <br />
-                  Memo: Watermark - YOTW
                 </p>
                 <p className="text-left text-gray-900">
                   You may contact us at{' '}
