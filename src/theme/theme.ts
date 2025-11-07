@@ -64,6 +64,12 @@ export const setupTheme = () =>
       extend: theme,
     },
 
+    globalVars: {
+      extend: {
+        // Declare this as a "well-known" var for us to use for spacing.
+        '--gap': { syntax: '<length>', inherits: true, initialValue: '0px' },
+      },
+    },
     globalCss: globalCss,
     conditions: conditions,
   }) satisfies ExtendableOptions;
