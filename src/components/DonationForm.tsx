@@ -81,7 +81,7 @@ export const DonationForm = ({
 
   const createDonation = async (input: VariablesOf<typeof DonateDoc>['input']) => {
     try {
-      const result = await graphqlClient.query(DonateDoc, { input }).toPromise();
+      const result = await graphqlClient.mutation(DonateDoc, { input }).toPromise();
       if (result.error) {
         throw result.error;
       }
