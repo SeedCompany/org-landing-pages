@@ -1,13 +1,23 @@
 ---
-// src/pages/campaigns/houston-first/index.astro
+import { sanityClient as sanity, portableText } from '~/sanity';
 import Hero from './_components/Hero.astro';
 import GiveFormWithTotals from '../../../components/GiveFormWithTotals.astro';
 import Layout from '../../../layouts/Layout.astro';
 import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
+import { campaignBySlug } from '../campaignBySlug.groq';
+import FAQ from './_components/HoustonFAQ.astro';
+
+const slug = 'houston-first';
+const campaignData = await sanity.fetch(campaignBySlug, { slug });
+
+interface AboutSection {
+  title: string;
+  content: string;
+}
 ---
 
-<Layout>
+<Layout title={campaignData?.pageTitle || "Houston's First - Matthew Translation"}>
   <div class="min-h-screen bg-white">
     <section class="relative bg-[#1a303a] overflow-hidden">
       <div
@@ -16,7 +26,7 @@ import Footer from '../../../components/Footer.astro';
       </div>
       <!-- Hero content -->
       <div class="relative z-10 max-w-[1440px] mx-auto px-5 pt-0 pb-32 lg:pb-40">
-        <Hero />
+        <Hero campaignData={campaignData} />
       </div>
     </section>
     <div
@@ -24,39 +34,50 @@ import Footer from '../../../components/Footer.astro';
     >
       <main class="flex flex-col gap-10 px-5 lg:pr-12">
         <aside
-          class="lg:block max-w-xl md:fixed lg:right-8 lg:top-32 max-lg:mx-auto max-lg:w-full max-lg:max-w-xl"
+          class="lg:block max-w-xl lg:fixed lg:right-8 lg:top-32 max-lg:mx-auto max-lg:max-w-xl"
         >
           <div class="bg-white rounded-lg p-6 mt-8 shadow-lg">
             <GiveFormWithTotals disableDialog={true} />
           </div>
         </aside>
 
-        <Video
-          src=""
-          poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
-          class="hero-video rounded-2xl shadow-xl"
-          rounded={true}
-        />
-
-        <h2 class="text-4xl gotham-bold tracking-tight sm:text-5xl">
-          Translate the <br />Book of Matthew.
-        </h2>
-
-        <div class="prose prose-lg max-w-none">
-          <p>
-            Partnering with a missions-focused church like Houston's First is a big step for Gospel
-            impact, but we're here to walk with you every part of the way.
-          </p>
-          <p>
-            On Sundays (and beyond), expect generous worship giving, biblical preaching on Matthew,
-            and a community passionate about global Scripture access. Whether pitching to leadership
-            or the full congregation, you'll find friendly pastors, eager volunteers, and channels
-            like World Mission Offering (historically millions raised for translation & missions).
-          </p>
-        </div>
+        {
+          campaignData?.video ? (
+            <Video
+              src={campaignData.video.src || ''}
+              poster={
+                campaignData.video.poster ||
+                'https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high'
+              }
+              class="hero-video rounded-2xl shadow-xl"
+              rounded={true}
+            />
+          ) : (
+            <Video
+              src=""
+              poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
+              class="hero-video rounded-2xl shadow-xl"
+              rounded={true}
+            />
+          )
+        }
+        {
+          campaignData?.aboutSections &&
+            (campaignData.aboutSections as AboutSection[]).map((section) => (
+              <section>
+                <h2
+                  class="text-4xl pb-8 gotham-bold tracking-tight
+        sm:text-5xl pt-12"
+                >
+                  {section.title}
+                </h2>
+                {section.content && <div set:html={portableText.toHTML(section.content)} />}
+              </section>
+            ))
+        }
       </main>
     </div>
-
+    <FAQ faqs={campaignData?.faqs} />
     <section class="mt-20">
       <Footer />
     </section>
