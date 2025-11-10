@@ -1,24 +1,75 @@
 ---
 import { Image } from 'astro:assets';
-import Logo from '../_assets/houstons_first.png';
+import { portableText } from '~/sanity';
+import Logo from '../_assets/HF_Logo.png';
+
+interface PortableTextBlock {
+  _type: string;
+  children?: Array<{
+    _type: string;
+    text: string;
+  }>;
+}
+
+interface CampaignData {
+  subheading?: PortableTextBlock[] | string;
+  heroCopy?: PortableTextBlock[];
+  heading?: PortableTextBlock[] | string;
+  pageTitle?: string;
+}
+
+interface Props {
+  campaignData?: CampaignData;
+}
+
+const { campaignData } = Astro.props;
 ---
 
 <div class="md:w-3/4">
   <div>
-    <Image
-      src={Logo}
-      alt="Houston's First Baptist Church"
-      class="ml-0 md:ml-6 h-auto sm:-ml-5 w-3/4 sm:w-1/2 md:w-1/2"
-    />
-    <h1 class="text-4xl md:text-7xl gotham-bold text-white font-bold uppercase text-pretty">
-      <span class="text-xl md:text-4xl text-white gotham-book text-black uppercase text-pretty">
-        Translating
-      </span><br />
-      Matthew
-    </h1>
-    <p class="gotham text-white mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base">
-      Support the translation of the book of Matthew. Lorem ipsum dolor sit amet consectetur
-      adipisicing elit. Voluptas fugiat, illo hic et sint velit atque? Molestias eaque mollitia.
-    </p>
+    <Image src={Logo} alt="Houston's First Baptist Church" class="h-auto w-1/2 md:w-1/4" />
+
+    {
+      campaignData?.heading ? (
+        <h1 class="text-4xl md:text-7xl gotham-bold text-white font-bold uppercase text-pretty">
+          <span class="text-xl md:text-4xl text-white gotham-book uppercase text-pretty">
+            {campaignData.subheading && typeof campaignData.subheading === 'string'
+              ? campaignData.subheading
+              : campaignData.subheading && (
+                  <Fragment set:html={portableText.toHTML(campaignData.subheading)} />
+                )}
+          </span>
+          <br />
+          {typeof campaignData.heading === 'string' ? (
+            campaignData.heading
+          ) : (
+            <Fragment set:html={portableText.toHTML(campaignData.heading)} />
+          )}{' '}
+        </h1>
+      ) : (
+        <h1 class="text-4xl md:text-7xl gotham-bold text-white font-bold uppercase text-pretty">
+          <>
+            <span class="text-xl md:text-4xl text-white gotham-book uppercase text-pretty">
+              Translating
+            </span>
+            <br />
+          </>
+          Matthew's Gospel
+        </h1>
+      )
+    }
+
+    {
+      campaignData?.heroCopy ? (
+        <div class="gotham text-white mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base">
+          <Fragment set:html={portableText.toHTML(campaignData.heroCopy)} />
+        </div>
+      ) : (
+        <p class="gotham text-white mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base">
+          Support the translation of the book of Matthew. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Voluptas fugiat, illo hic et sint velit atque? Molestias eaque mollitia.
+        </p>
+      )
+    }
   </div>
 </div>

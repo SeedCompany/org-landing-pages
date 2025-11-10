@@ -8,6 +8,8 @@ export default {
     'template-advocates',
     'template-investor-reps',
     'template-marketing',
+    'hero-gradient',
+    'section-gradient',
   ],
   theme: {
     extend: {
@@ -15,6 +17,7 @@ export default {
         watermarkGreen: '#29B67E',
         watermarkDarkBlue: '#1D3638',
         watermarkAccentGrey: '#D6D4C9',
+        lightGray: '#ebebec',
       },
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
@@ -26,6 +29,10 @@ export default {
       screens: {
         xxs: '430px',
         tiny: '400px',
+      },
+      backgroundImage: {
+        'hero-bg-overlay': 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ebebeb 100%)',
+        'bg-gradient': 'linear-gradient(to bottom, #ebebec 0%, #ebebec 50%, #ffffff 100%)',
       },
     },
   },
