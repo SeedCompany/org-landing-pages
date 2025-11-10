@@ -38,7 +38,7 @@ export const dialog = defineSlotRecipe({
     },
 
     title: {
-      fontWeight: 'semibold',
+      // fontWeight: 'semibold',
       textStyle: 'lg',
     },
     description: {
@@ -60,7 +60,7 @@ export const dialog = defineSlotRecipe({
       my: 'var(--dialog-margin, var(--dialog-base-margin))',
       outline: 0,
       position: 'relative',
-      textStyle: 'sm',
+      // textStyle: 'sm',
       width: '100%',
       zIndex: 'calc(var(--dialog-z-index) + var(--layer-index, 0))',
       py: { base: '4', md: '6' },
