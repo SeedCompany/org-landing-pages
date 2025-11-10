@@ -1,6 +1,15 @@
 export { AbsoluteCenter, type AbsoluteCenterProps } from './absolute-center.tsx';
 export * as Accordion from './accordion.tsx';
 export * from './button.tsx';
+export * from './button-close.tsx';
+export * from './button-icon.tsx';
+export * from './button-link.tsx';
+export * as Dialog from './dialog.tsx';
+export * as Field from './field.tsx';
 export { Group, type GroupProps } from './group.tsx';
+export * from './icon.tsx';
+export * from './input.tsx';
+export * from './link.tsx';
 export { Loader, type LoaderProps } from './loader.tsx';
+export * as SegmentGroup from './segment-group.tsx';
 export { Spinner, type SpinnerProps } from './spinner.tsx';
