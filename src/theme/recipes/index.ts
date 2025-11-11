@@ -1,5 +1,6 @@
 import { absoluteCenter } from './absolute-center.ts';
 import { accordion } from './accordion.ts';
+import { alert } from './alert.ts';
 import { button } from './button.ts';
 import { dialog } from './dialog.ts';
 import { field } from './field.ts';
@@ -17,6 +18,7 @@ import { toggleGroup } from './toggle-group.ts';
 export const recipes = {
   absoluteCenter,
   accordion,
+  alert,
   button,
   dialog,
   field,

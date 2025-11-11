@@ -1,5 +1,6 @@
 export { AbsoluteCenter, type AbsoluteCenterProps } from './absolute-center.tsx';
 export * as Accordion from './accordion.tsx';
+export * as Alert from './alert.tsx';
 export * from './button.tsx';
 export * from './button-close.tsx';
 export * from './button-icon.tsx';
