@@ -1,4 +1,5 @@
 import { z } from 'zod/v4/mini';
+import type { CreateInvestor } from '~/graphql';
 
 const usStateCodes = [
   'AL',
@@ -63,10 +64,9 @@ const usStateCodes = [
 ];
 
 const mailingAddress = z.object({
-  city: z.string('City is required'),
-  country: z.nullish(z.string()),
   line1: z.string('Address line 1 is required'),
   line2: z.nullish(z.string()),
+  city: z.string('City is required'),
   state: z.string('State is required').check(
     z.trim(),
     z.refine(
@@ -82,9 +82,11 @@ const mailingAddress = z.object({
       z.trim(),
       z.toUpperCase(),
     ),
+  country: z.string(),
 });
 
-export const investorSchema = z.object({
+export const createInvestor = z.object({
+  type: z.enum(['Individual', 'Organization']),
   email: z.email('Email is required'),
   firstName: z.nullable(z.string('First name is required')),
   lastName: z.string('Last name is required'),
@@ -95,5 +97,11 @@ export const investorSchema = z.object({
       z.minLength(10, 'Please enter phone number with area code (10 digits)'),
       z.maxLength(10, 'Please enter phone number with area code (10 digits)'),
     ),
-  mailingAddress: mailingAddress,
+  mailingAddress,
 });
+
+// Check if the schema conforms to the GraphQL input type
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _conformsToGQLInput: CreateInvestor | undefined = undefined as
+  | z.input<typeof createInvestor>
+  | undefined;

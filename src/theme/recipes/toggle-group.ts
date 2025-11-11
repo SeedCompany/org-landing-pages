@@ -15,6 +15,9 @@ export const toggleGroup = defineSlotRecipe({
           borderWidth: '1px',
           gap: '1',
           p: '1',
+          _invalid: {
+            borderColor: 'error',
+          },
         },
       },
     },

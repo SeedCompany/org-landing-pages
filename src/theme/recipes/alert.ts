@@ -33,7 +33,7 @@ export const alert = defineSlotRecipe({
   defaultVariants: {
     size: 'md',
     // status: 'info',
-    variant: 'subtle',
+    variant: 'surface',
   },
   variants: {
     size: {

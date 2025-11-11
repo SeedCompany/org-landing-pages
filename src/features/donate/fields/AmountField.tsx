@@ -1,0 +1,126 @@
+import { DollarSignIcon } from 'lucide-react';
+import { useImperativeHandle, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { Button, ButtonGroup, InputGroup, NumberInput, ToggleGroup } from '~/common/ui';
+import { useController, controlType, Field } from '~/common/form';
+import { DonateInput } from '../donate.schema.ts';
+
+const formatOptions: Intl.NumberFormatOptions = {
+  useGrouping: true,
+  maximumFractionDigits: 0,
+};
+const formatter = new Intl.NumberFormat(undefined, {
+  ...formatOptions,
+  style: 'currency',
+  currency: 'USD',
+});
+
+export const AmountField = ({ presets }: { presets?: readonly number[] }) => {
+  const formCtx = useFormContext();
+  const props = useController({
+    control: controlType(DonateInput),
+    name: 'amount',
+  });
+  const {
+    field: { value, onChange, ref: fieldRef, onBlur, ...field },
+  } = props;
+
+  const isPresetValue = value && presets && presets.includes(value);
+  const [showOther, setShowOther] = useState(value && !isPresetValue);
+
+  const otherInputRef = useRef<HTMLInputElement>(null);
+  useImperativeHandle(fieldRef, () => otherInputRef.current);
+
+  const otherInput = (
+    <Field
+      {...props}
+      data-hidden={showOther ? undefined : true}
+      css={{
+        transitionProperty: '[max-height, opacity, margin]',
+        transitionDuration: 'fast',
+        opacity: '1',
+        maxHeight: '[500px]',
+        mt: '2',
+        _hidden: {
+          mt: '0',
+          maxHeight: '0',
+          pointerEvents: 'none',
+          opacity: '0',
+        },
+      }}
+    >
+      <NumberInput.Root
+        {...field}
+        required={false} // don't want to show HTML validation warning while invisible.
+        formatOptions={formatOptions}
+        clampValueOnBlur={false}
+        value={value ? new Intl.NumberFormat(undefined, formatOptions).format(value) : ''}
+        onValueChange={(e) => {
+          // Limit to 10 digits & convert ourselves so we can always get a number instead of NaN
+          // with too many digits.
+          onChange(e.value === '' ? null : Number(e.value.slice(0, 10).replaceAll(/[^0-9]/g, '')));
+        }}
+      >
+        <InputGroup startElement={<DollarSignIcon />}>
+          <NumberInput.Input placeholder="Amount" onBlur={onBlur} ref={otherInputRef} />
+        </InputGroup>
+      </NumberInput.Root>
+    </Field>
+  );
+
+  return (
+    <div>
+      {presets && presets.length > 0 && (
+        <ToggleGroup.Root
+          variant="outline"
+          deselectable={false}
+          value={isPresetValue ? [String(value)] : value || showOther ? ['other'] : []}
+          onValueChange={(e) => {
+            const v = e.value.at(0)!;
+            if (v === 'other') {
+              setShowOther(true);
+            } else {
+              setShowOther(false);
+              onChange(Number(v));
+            }
+          }}
+          data-invalid={
+            props.fieldState.invalid && props.formState.submitCount > 0 ? true : undefined
+          }
+        >
+          <ButtonGroup
+            variant="plain"
+            size="xl"
+            css={{
+              width: 'full',
+              '--group-gap': 'spacing.1',
+              flexWrap: 'wrap',
+              '& button': {
+                flex: '[1 0 25%]',
+              },
+            }}
+          >
+            {presets.map((amount) => (
+              <ToggleGroup.Item key={amount} value={String(amount)} asChild>
+                <Button>{formatter.format(amount)}</Button>
+              </ToggleGroup.Item>
+            ))}
+            <ToggleGroup.Item
+              value="other"
+              asChild
+              onClick={() => {
+                setTimeout(() => {
+                  otherInputRef.current?.focus();
+                  formCtx.resetField('amount');
+                });
+              }}
+            >
+              <Button>Other</Button>
+            </ToggleGroup.Item>
+          </ButtonGroup>
+        </ToggleGroup.Root>
+      )}
+      {otherInput}
+    </div>
+  );
+};
