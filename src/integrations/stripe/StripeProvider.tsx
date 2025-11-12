@@ -45,7 +45,13 @@ const elementsOptions: StripeElementsOptions = {
 
 export const StripeProvider = ({ children }: ChildrenProp) => {
   const [lib] = useState(async () => {
-    return await loadStripe(import.meta.env.PUBLIC_STRIPE_KEY);
+    return await loadStripe(import.meta.env.PUBLIC_STRIPE_KEY, {
+      developerTools: {
+        assistant: {
+          enabled: import.meta.env.DEV,
+        },
+      },
+    });
   });
 
   return (
