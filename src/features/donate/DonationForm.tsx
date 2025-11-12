@@ -4,8 +4,7 @@ import { styled } from 'styled-system/jsx';
 import { stack } from 'styled-system/patterns';
 import { type DonationCadence, type Telemetry } from '~/graphql';
 import { RecaptchaNotice } from '~/recaptcha';
-import { Alert, Button } from '~/common/ui';
-import { useForm } from '~/common/form';
+import { useForm, SubmitButton, SubmitError } from '~/common/form';
 import { AddressFields } from '~/features/address';
 import { InvestorFields } from '~/features/investor-input';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
@@ -67,19 +66,10 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
     },
   );
 
-  const state = form.formState;
-  // can submit if valid, or if a submission has not been tried yet.
-  const canSubmit = state.isValid || state.submitCount === 0;
-
   return (
     <FormProvider {...form}>
       <styled.form onSubmit={(e) => void onSubmit(e)} className={stack({})}>
-        {form.formState.errors.root && (
-          <Alert.Root status="error">
-            <Alert.Indicator />
-            <Alert.Content>{form.formState.errors.root.message}</Alert.Content>
-          </Alert.Root>
-        )}
+        <SubmitError />
         <CadenceField lens={lens.focus('cadence')} />
         <AmountField
           lens={lens.focus('amount')}
@@ -102,9 +92,7 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
         <PaymentFields lens={lens.focus('paymentComplete')} />
         <RecaptchaNotice />
         <GiveByCheck memo={telemetry?.referrer ?? undefined} />
-        <Button type="submit" disabled={!canSubmit}>
-          Submit
-        </Button>
+        <SubmitButton />
       </styled.form>
     </FormProvider>
   );
