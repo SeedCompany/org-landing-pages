@@ -9,9 +9,17 @@ export const createInvestor = z.object({
   email: z.pipe(z.string().check(...nonEmpty), z.email('Invalid email')),
   firstName: z.nullable(z.string()),
   lastName: z.string().check(...nonEmpty),
-  phone: z
-    .string()
-    .check(...nonEmpty, z.length(10, 'Please enter phone number with area code (10 digits)')),
+  phone: z.string().check(
+    ...nonEmpty,
+    z.overwrite((input) =>
+      input
+        // Remove US country code. We assume US in a lot of places :/
+        .replace(/^\+1/, '')
+        // Strip out phone number formatting symbols
+        .replaceAll(/[ )(-.]/g, ''),
+    ),
+    z.regex(/^[0-9]{10}$/, 'Please use a valid phone number with area code'),
+  ),
   mailingAddress: address,
 });
 
