@@ -66,7 +66,12 @@ export const AmountField = ({
         }}
       >
         <InputGroup startElement={<DollarSignIcon />}>
-          <NumberInput.Input placeholder="Amount" onBlur={onBlur} ref={otherInputRef} />
+          <NumberInput.Input
+            placeholder="Amount"
+            onBlur={onBlur}
+            ref={otherInputRef}
+            tabIndex={showOther ? 0 : -1} // so keyboard focus while hidden
+          />
         </InputGroup>
       </NumberInput.Root>
     </Field>
