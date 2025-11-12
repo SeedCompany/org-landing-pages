@@ -7,13 +7,14 @@ import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
 import { campaignBySlug } from '../campaignBySlug.groq';
 import FAQ from './_components/HoustonFAQ.astro';
+import type { PortableTextBlock } from '@portabletext/react';
 
-const slug = 'houston-first';
+const slug = 'houstons-first';
 const campaignData = await sanity.fetch(campaignBySlug, { slug });
 
 interface AboutSection {
   title: string;
-  content: string;
+  content: string | PortableTextBlock[] | null;
 }
 ---
 
@@ -26,7 +27,7 @@ interface AboutSection {
       </div>
       <!-- Hero content -->
       <div class="relative z-10 max-w-[1440px] mx-auto px-5 pt-0 pb-32 lg:pb-40">
-        <Hero campaignData={campaignData} />
+        {campaignData && <Hero campaignData={campaignData} />}
       </div>
     </section>
     <div
@@ -44,9 +45,9 @@ interface AboutSection {
         {
           campaignData?.video ? (
             <Video
-              src={campaignData.video.src || ''}
+              src={campaignData?.video?.src || ''}
               poster={
-                campaignData.video.poster ||
+                campaignData?.video?.poster ||
                 'https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high'
               }
               class="hero-video rounded-2xl shadow-xl"
@@ -71,13 +72,21 @@ interface AboutSection {
                 >
                   {section.title}
                 </h2>
-                {section.content && <div set:html={portableText.toHTML(section.content)} />}
+                {section.content && (
+                  <div
+                    set:html={portableText.toHTML(
+                      typeof section.content === 'string'
+                        ? [{ _type: 'block', children: [{ _type: 'span', text: section.content }] }]
+                        : section.content,
+                    )}
+                  />
+                )}
               </section>
             ))
         }
       </main>
     </div>
-    <FAQ faqs={campaignData?.faqs} />
+    <FAQ faqs={campaignData?.faqs ?? []} />
     <section class="mt-20">
       <Footer />
     </section>

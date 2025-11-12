@@ -36,7 +36,18 @@ const { campaignData } = Astro.props;
             {campaignData.subheading && typeof campaignData.subheading === 'string'
               ? campaignData.subheading
               : campaignData.subheading && (
-                  <Fragment set:html={portableText.toHTML(campaignData.subheading)} />
+                  <Fragment
+                    set:html={portableText.toHTML(
+                      typeof campaignData.subheading === 'string'
+                        ? [
+                            {
+                              _type: 'block',
+                              children: [{ _type: 'span', text: campaignData.subheading }],
+                            },
+                          ]
+                        : campaignData.subheading,
+                    )}
+                  />
                 )}
           </span>
           <br />
