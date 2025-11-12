@@ -1,9 +1,9 @@
+import type { Lens } from '@hookform/lenses';
 import { DollarSignIcon } from 'lucide-react';
 import { useImperativeHandle, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Button, ButtonGroup, InputGroup, NumberInput, ToggleGroup } from '~/common/ui';
-import { useController, controlType, Field } from '~/common/form';
-import { DonateInput } from '../donate.schema.ts';
+import { useController, Field } from '~/common/form';
 
 const formatOptions: Intl.NumberFormatOptions = {
   useGrouping: true,
@@ -15,12 +15,16 @@ const formatter = new Intl.NumberFormat(undefined, {
   currency: 'USD',
 });
 
-export const AmountField = ({ presets }: { presets?: readonly number[] }) => {
+export const AmountField = ({
+  lens,
+  presets,
+}: {
+  lens: Lens<number>;
+  presets?: readonly number[];
+}) => {
   const formCtx = useFormContext();
-  const props = useController({
-    control: controlType(DonateInput),
-    name: 'amount',
-  });
+  const { name, control } = lens.interop();
+  const props = useController({ name, control });
   const {
     field: { value, onChange, ref: fieldRef, onBlur, ...field },
   } = props;
@@ -111,7 +115,7 @@ export const AmountField = ({ presets }: { presets?: readonly number[] }) => {
               onClick={() => {
                 setTimeout(() => {
                   otherInputRef.current?.focus();
-                  formCtx.resetField('amount');
+                  formCtx.resetField(name);
                 });
               }}
             >

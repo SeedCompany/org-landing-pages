@@ -1,3 +1,4 @@
+import { useLens } from '@hookform/lenses';
 import { FormProvider } from 'react-hook-form';
 import { styled } from 'styled-system/jsx';
 import { stack } from 'styled-system/patterns';
@@ -31,6 +32,7 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
       },
     },
   });
+  const lens = useLens({ control: form.control });
 
   const { submit: submitDonation } = useSubmitDonationFn({
     telemetry,
@@ -70,8 +72,11 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
             <Alert.Content>{form.formState.errors.root.message}</Alert.Content>
           </Alert.Root>
         )}
-        <CadenceField />
-        <AmountField presets={presetAmounts[form.getValues('cadence')]} />
+        <CadenceField lens={lens.focus('cadence')} />
+        <AmountField
+          lens={lens.focus('amount')}
+          presets={presetAmounts[form.getValues('cadence')]}
+        />
         <PaymentFields />
         <RecaptchaNotice />
         <GiveByCheck memo={telemetry?.referrer ?? undefined} />

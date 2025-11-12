@@ -1,15 +1,12 @@
+import type { Lens } from '@hookform/lenses';
 import type { DonationCadence as Cadence } from '~/graphql';
 import { Button, ButtonGroup, ToggleGroup } from '~/common/ui';
-import { controlType, useController } from '~/common/form';
-import { DonateInput } from '../donate.schema.ts';
+import { useController } from '~/common/form';
 
-export const CadenceField = () => {
+export const CadenceField = ({ lens }: { lens: Lens<Cadence> }) => {
   const {
     field: { value, onChange, ...field },
-  } = useController({
-    control: controlType(DonateInput),
-    name: 'cadence',
-  });
+  } = useController(lens.interop());
   return (
     <ToggleGroup.Root
       variant="outline"
