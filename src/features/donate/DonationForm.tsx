@@ -42,7 +42,13 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
   });
 
   const onSubmit = form.handleSubmit(
-    async ({ amount, ...input }) => {
+    async ({
+      // Ignored, just for validation handling
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      paymentComplete: _,
+      amount,
+      ...input
+    }) => {
       console.log('Submitting', { amount, ...input });
       try {
         await submitDonation({
@@ -93,7 +99,7 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
             <AddressFields.ZipCode />
           </InvestorFields.Address>
         </InvestorFields.Root>
-        <PaymentFields />
+        <PaymentFields lens={lens.focus('paymentComplete')} />
         <RecaptchaNotice />
         <GiveByCheck memo={telemetry?.referrer ?? undefined} />
         <Button type="submit" disabled={!canSubmit}>

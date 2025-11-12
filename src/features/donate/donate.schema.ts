@@ -10,4 +10,5 @@ export const DonateInput = z.object({
       z.lt(1e6, 'For donations of $1M or more, please contact us directly.'),
     ),
   investor: createInvestor,
+  paymentComplete: z.boolean().check(z.refine((val) => val === true, 'Please complete payment')),
 });

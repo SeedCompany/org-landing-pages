@@ -1,7 +1,8 @@
+import type { Lens } from '@hookform/lenses';
 import { PaymentElement, useElements } from '@stripe/react-stripe-js';
 import type { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { useEffect } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useController, useWatch } from 'react-hook-form';
 import { css } from 'styled-system/css';
 import type { JsxStyleProps } from 'styled-system/types';
 import { controlType } from '~/common/form';
@@ -12,7 +13,8 @@ const options: StripePaymentElementOptions = {
   paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
 };
 
-export const PaymentFields = ({ css: cssProp }: JsxStyleProps) => {
+export const PaymentFields = ({ lens, css: cssProp }: { lens: Lens<boolean> } & JsxStyleProps) => {
+  const form = useController(lens.interop());
   const elements = useElements();
 
   const [cadence, amount] = useWatch({
@@ -32,5 +34,13 @@ export const PaymentFields = ({ css: cssProp }: JsxStyleProps) => {
     }
   }, [amount]);
 
-  return <PaymentElement options={options} className={css(cssProp)} />;
+  return (
+    <PaymentElement
+      options={options}
+      onChange={(e) => {
+        form.field.onChange(e.complete);
+      }}
+      className={css(cssProp)}
+    />
+  );
 };
