@@ -30,7 +30,7 @@ export const AmountField = ({
   } = props;
 
   const isPresetValue = value && presets && presets.includes(value);
-  const [showOther, setShowOther] = useState(value && !isPresetValue);
+  const [showOther, setShowOther] = useState((value && !isPresetValue) || !presets);
 
   const otherInputRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(fieldRef, () => otherInputRef.current);
@@ -44,7 +44,7 @@ export const AmountField = ({
         transitionDuration: 'fast',
         opacity: '1',
         maxHeight: '[500px]',
-        mt: '2',
+        mt: presets ? `[var(--gap, {spacing.2})]` : undefined,
         _hidden: {
           mt: '0',
           maxHeight: '0',
