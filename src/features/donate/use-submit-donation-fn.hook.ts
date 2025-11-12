@@ -27,59 +27,62 @@ export const useSubmitDonationFn = ({
   const stripe = useStripe();
   const elements = useElements();
 
-  const submit = useCallback(async (input: DonateFormInput) => {
-    if (!stripe) {
-      throw new Error('Stripe was not initialized properly');
-    }
-    if (!elements) {
-      throw new Error('No Stripe Elements found');
-    }
+  const submit = useCallback(
+    async (input: DonateFormInput) => {
+      if (!stripe) {
+        throw new Error('Stripe was not initialized properly');
+      }
+      if (!elements) {
+        throw new Error('No Stripe Elements found');
+      }
 
-    const { error: submitError } = await elements.submit();
-    if (submitError) {
-      throw Object.assign(new Error(), submitError);
-    }
-    const { error, confirmationToken } = await stripe.createConfirmationToken({ elements });
-    if (error) {
-      throw Object.assign(new Error(), error);
-    }
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        throw Object.assign(new Error(), submitError);
+      }
+      const { error, confirmationToken } = await stripe.createConfirmationToken({ elements });
+      if (error) {
+        throw Object.assign(new Error(), error);
+      }
 
-    let captchaToken;
-    try {
-      captchaToken = await getCaptchaToken();
-    } catch (error) {
-      console.error('Recaptcha error:', error);
-      // Continue on without a captcha token, because maybe the API is configured to not require it
-    }
+      let captchaToken;
+      try {
+        captchaToken = await getCaptchaToken();
+      } catch (error) {
+        console.error('Recaptcha error:', error);
+        // Continue on without a captcha token, because maybe the API is configured to not require it
+      }
 
-    const donation = await createDonation({
-      ...input,
-      payment: {
-        stripe: {
-          confirmationToken: confirmationToken.id,
+      const donation = await createDonation({
+        ...input,
+        payment: {
+          stripe: {
+            confirmationToken: confirmationToken.id,
+          },
         },
-      },
-      captcha: { v3: captchaToken },
-      telemetry,
-    });
-    const clientSecret = donation.intent?.clientSecret;
-    if (!clientSecret) {
-      console.warn('No intent secret given, assuming donation successful');
-      return;
-    }
+        captcha: { v3: captchaToken },
+        telemetry,
+      });
+      const clientSecret = donation.intent?.clientSecret;
+      if (!clientSecret) {
+        console.warn('No intent secret given, assuming donation successful');
+        return;
+      }
 
-    const { error: confirmError } = await stripe.confirmPayment({
-      clientSecret,
-      confirmParams: {
-        confirmation_token: confirmationToken.id,
-        return_url: window.location.origin + returnUrl,
-      },
-    });
-    if (confirmError.message) {
-      console.error('Stripe confirmation failed:', confirmError);
-      throw Object.assign(new Error(), confirmError);
-    }
-  }, []);
+      const { error: confirmError } = await stripe.confirmPayment({
+        clientSecret,
+        confirmParams: {
+          confirmation_token: confirmationToken.id,
+          return_url: window.location.origin + returnUrl,
+        },
+      });
+      if (confirmError.message) {
+        console.error('Stripe confirmation failed:', confirmError);
+        throw Object.assign(new Error(), confirmError);
+      }
+    },
+    [stripe, elements, returnUrl, getCaptchaToken, telemetry],
+  );
 
   return { submit };
 };
