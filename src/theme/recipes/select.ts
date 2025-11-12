@@ -111,7 +111,7 @@ export const select = defineSlotRecipe({
   },
   defaultVariants: {
     size: 'md',
-    variant: 'outline',
+    variant: 'surface',
   },
   variants: {
     variant: {
@@ -130,6 +130,19 @@ export const select = defineSlotRecipe({
           borderColor: 'gray.surface.border',
 
           focusVisibleRing: 'inside',
+          // Continue focusVisibleRing=inside styles while select is open
+          _open: {
+            outlineOffset: '0px',
+            outlineWidth: 'var(--focus-ring-width, 1px)',
+            outlineColor: 'var(--focus-ring-color)',
+            outlineStyle: 'var(--focus-ring-style, solid)',
+            borderColor: 'var(--focus-ring-color)',
+          },
+          // Show invalid outline while invalid, but only if closed
+          '[data-scope="select"][data-state="closed"][data-invalid] &': {
+            borderColor: 'red',
+            '--focus-ring-color': 'red',
+          },
         },
       },
     },

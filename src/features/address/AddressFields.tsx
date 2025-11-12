@@ -3,6 +3,7 @@ import { type Lens } from '@hookform/lenses';
 import { Controller, Field } from '~/common/form';
 import { Input } from '~/common/ui';
 import type { address } from './address.schema';
+import { StateSelect } from './StateSelect.tsx';
 
 export const AddressFields = ({
   lens,
@@ -65,16 +66,21 @@ export const AddressFields = ({
     {!hide?.includes('state') && (
       <Controller
         {...lens.focus('state').interop()}
-        render={(props) => (
-          <Field {...props}>
-            <Input
-              placeholder="State"
-              autoComplete={`${type ?? ''} address-level1`}
-              {...props.field}
-              value={props.field.value ?? ''}
-            />
-          </Field>
-        )}
+        render={(props) => {
+          const {
+            field: { onChange, value, ...field },
+          } = props;
+          return (
+            <Field {...props}>
+              <StateSelect
+                {...field}
+                value={value ? [value] : []}
+                onValueChange={(e) => onChange(e.value[0])}
+                autoCompetePrefix={type}
+              />
+            </Field>
+          );
+        }}
       />
     )}
 
