@@ -1,5 +1,5 @@
 import { z } from 'zod/v4/mini';
-import { createInvestor } from './investor.schema.ts';
+import { createInvestor } from '~/features/investor-input';
 
 export const DonateInput = z.object({
   cadence: z.enum(['OneTime', 'Monthly']),

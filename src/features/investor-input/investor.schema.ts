@@ -2,18 +2,16 @@ import { z } from 'zod/v4/mini';
 import type { CreateInvestor } from '~/graphql';
 import { address } from '~/features/address';
 
+const nonEmpty = [z.trim(), z.minLength(1, 'Required')];
+
 export const createInvestor = z.object({
   type: z.enum(['Individual', 'Organization']),
-  email: z.email('Email is required'),
-  firstName: z.nullable(z.string('First name is required')),
-  lastName: z.string('Last name is required'),
+  email: z.pipe(z.string().check(...nonEmpty), z.email('Invalid email')),
+  firstName: z.nullable(z.string()),
+  lastName: z.string().check(...nonEmpty),
   phone: z
-    .string('Phone number is required')
-    .check(
-      z.trim(),
-      z.minLength(10, 'Please enter phone number with area code (10 digits)'),
-      z.maxLength(10, 'Please enter phone number with area code (10 digits)'),
-    ),
+    .string()
+    .check(...nonEmpty, z.length(10, 'Please enter phone number with area code (10 digits)')),
   mailingAddress: address,
 });
 
