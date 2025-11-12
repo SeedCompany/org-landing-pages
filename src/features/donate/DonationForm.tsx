@@ -6,6 +6,7 @@ import { type DonationCadence, type Telemetry } from '~/graphql';
 import { RecaptchaNotice } from '~/recaptcha';
 import { Alert, Button } from '~/common/ui';
 import { useForm } from '~/common/form';
+import { AddressFields } from '~/features/address';
 import { InvestorFields } from '~/features/investor-input';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
 import { DonateInput } from './donate.schema.ts';
@@ -78,7 +79,20 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
           lens={lens.focus('amount')}
           presets={presetAmounts[form.getValues('cadence')]}
         />
-        <InvestorFields lens={lens.focus('investor')} />
+        <InvestorFields.Root lens={lens.focus('investor')}>
+          <InvestorFields.Type />
+          <InvestorFields.Email />
+          <InvestorFields.FirstName />
+          <InvestorFields.LastName />
+          <InvestorFields.Phone />
+          <InvestorFields.Address>
+            <AddressFields.Line1 />
+            <AddressFields.Line2 />
+            <AddressFields.City />
+            <AddressFields.State />
+            <AddressFields.ZipCode />
+          </InvestorFields.Address>
+        </InvestorFields.Root>
         <PaymentFields />
         <RecaptchaNotice />
         <GiveByCheck memo={telemetry?.referrer ?? undefined} />
