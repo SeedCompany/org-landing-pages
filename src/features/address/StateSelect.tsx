@@ -15,7 +15,7 @@ export const StateSelect = ({
 }: Omit<Select.RootProps<StateCode>, 'collection'> & {
   autoCompetePrefix?: 'billing' | 'shipping';
 }) => (
-  <Select.Root aria-label="State" lazyMount unmountOnExit {...props} collection={states}>
+  <Select.Root aria-label="State" lazyMount {...props} collection={states}>
     {/* Just for autocomplete */}
     <Select.HiddenSelect
       autoComplete={`${autoCompetePrefix ?? ''} address-level1`}

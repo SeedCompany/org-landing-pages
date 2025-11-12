@@ -28,7 +28,7 @@ export const select = defineSlotRecipe({
       },
       _closed: {
         animationStyle: 'slide-fade-out',
-        animationDuration: 'fastest',
+        animationDuration: 'faster',
       },
     },
     item: {

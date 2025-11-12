@@ -7,6 +7,16 @@
 
 @layer tw_reset, reset, panda_base, tokens, tw_components, recipes, tw_utilities, panda_utilities;
 
+@layer reset {
+  /* From of Panda's reset (that is currently disabled)
+     Park UI assumes this exists.
+     This deviates from TW reset, by using !important.
+   */
+  [hidden]:where(:not([hidden=until-found])) {
+    display: none !important;
+  }
+}
+
 @layer tw_reset { @tailwind base; }
 @layer tw_components { @tailwind components; }
 @layer tw_utilities { @tailwind utilities; }
