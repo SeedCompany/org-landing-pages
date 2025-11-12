@@ -270,7 +270,7 @@ Church page styles
 .donation-card-content {
   @apply pb-6;
 }
-.donation-card-content > :not(.progress-bar) {
+.donation-card-content > :not([role=progressbar]) {
   @apply px-6;
 }
 .donation-card-funded-percent-header {
