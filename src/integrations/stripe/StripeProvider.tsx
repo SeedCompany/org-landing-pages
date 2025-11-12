@@ -12,7 +12,9 @@ const elementsOptions: StripeElementsOptions = {
   amount: 7500,
   currency: 'usd',
   appearance: {
+    labels: 'floating',
     variables: {
+      colorPrimary: '#28b67e',
       fontFamily: [
         `'Montserrat'`,
         'ui-sans-serif',
