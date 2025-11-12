@@ -1,6 +1,6 @@
 import { useLens } from '@hookform/lenses';
 import { FormProvider } from 'react-hook-form';
-import { styled } from 'styled-system/jsx';
+import { Grid, styled } from 'styled-system/jsx';
 import { stack } from 'styled-system/patterns';
 import { type DonationCadence, type Telemetry } from '~/graphql';
 import { RecaptchaNotice } from '~/recaptcha';
@@ -85,8 +85,10 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
             <AddressFields.Line1 />
             <AddressFields.Line2 />
             <AddressFields.City />
-            <AddressFields.State />
-            <AddressFields.ZipCode />
+            <Grid columns={{ sm: 2 }}>
+              <AddressFields.State />
+              <AddressFields.ZipCode />
+            </Grid>
           </InvestorFields.Address>
         </InvestorFields.Root>
         <PaymentFields lens={lens.focus('paymentComplete')} />
