@@ -1,5 +1,4 @@
 import { z } from 'zod/v4/mini';
-import { Stack } from 'styled-system/jsx';
 import { Form, SubmitButton, SubmitError, useForm } from '~/common/form';
 import { RecaptchaNotice } from '~/recaptcha';
 import { DonateInput } from '../donate.schema.ts';
@@ -30,13 +29,11 @@ export const PaymentStep = ({
       <SubmitError />
 
       <PaymentFields lens={lens.focus('paymentComplete')} />
-      <Stack direction="column-reverse">
-        <Buttons>
-          <SubmitButton>Give Now</SubmitButton>
-          <BackButton onClick={() => onBack()} />
-        </Buttons>
-        <RecaptchaNotice />
-      </Stack>
+      <Buttons>
+        <SubmitButton>Give Now</SubmitButton>
+        <BackButton onClick={() => onBack()} />
+      </Buttons>
+      <RecaptchaNotice css={{ mt: '3' }} />
     </Form>
   );
 };
