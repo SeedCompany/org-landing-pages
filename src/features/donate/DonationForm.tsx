@@ -147,7 +147,7 @@ export const DonationForm = (props: DonateFormProps) => {
   };
 
   return (
-    <Stack data-scope="donate-form" data-step={step} ref={formRef}>
+    <Stack data-scope="donate-form" data-step={step} ref={formRef} css={{ scrollMarginTop: '10' }}>
       {props.before}
       {Object.entries(declareSteps).map(([key, Component]) => {
         const hideStep = key !== step;
