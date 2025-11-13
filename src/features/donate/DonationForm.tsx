@@ -1,4 +1,4 @@
-import { type FunctionComponent as Component, useReducer, useState } from 'react';
+import { type FunctionComponent as Component, type ReactNode, useReducer, useState } from 'react';
 import { Stack, styled } from 'styled-system/jsx';
 import { z } from 'zod/v4/mini';
 import { type DonationCadence, type Telemetry } from '~/graphql';
@@ -16,7 +16,10 @@ export type DonateCommonProps = {
   telemetry?: Telemetry;
 };
 
-export type DonateFormProps = DonateCommonProps;
+export type DonateFormProps = DonateCommonProps & {
+  before?: ReactNode;
+  after?: ReactNode;
+};
 
 const declareSteps = {
   intro: IntroStep,
@@ -103,12 +106,14 @@ export const DonationForm = (props: DonateFormProps) => {
   };
 
   return (
-    <Stack>
+    <Stack data-scope="donate-form" data-step={step}>
+      {props.before}
       {Object.entries(declareSteps).map(([key, Component]) => (
         <styled.div key={key} hidden={key !== step ? true : undefined}>
           <Component {...stepProps} />
         </styled.div>
       ))}
+      {props.after}
     </Stack>
   );
 };

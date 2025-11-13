@@ -18,6 +18,16 @@ import { DonationFormIsland2 } from '../components/DonationFormIsland.tsx';
         telemetry: { referrer: 'Carson Slush Fund' },
       }}
       client:load
-    />
+    >
+      <styled.div
+        slot="before"
+        css={{
+          display: 'none',
+          '[data-scope=donate-form][data-step=intro] &': { display: 'block' },
+        }}
+      >
+        Hello World!
+      </styled.div>
+    </DonationFormIsland2>
   </styled.main>
 </Layout>
