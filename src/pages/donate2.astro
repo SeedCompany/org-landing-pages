@@ -1,22 +1,17 @@
 ---
 import { styled } from 'styled-system/jsx';
 import Layout from '~/layouts/Layout.astro';
-import { DonationFormIsland2 } from '../components/DonationFormIsland.tsx';
+import { DonationForm } from '~/features/donate';
 ---
 
 <Layout title="Donate - Carson">
   <styled.main css={{ m: '4', maxWidth: 'lg' }}>
-    <DonationFormIsland2
-      {...{
-        enableRecurring: true,
-        hideInvestorType: 'Organization',
-        campaignTotals: false,
-        presetAmounts: {
-          OneTime: [35, 500, 2500, 10_000, 20_000],
-          Monthly: [25, 50, 100, 500, 1000],
-        },
-        telemetry: { referrer: 'Carson Slush Fund' },
+    <DonationForm
+      presetAmounts={{
+        OneTime: [35, 500, 2500, 10_000, 20_000],
+        Monthly: [25, 50, 100, 500, 1000],
       }}
+      telemetry={{ referrer: 'Carson Slush Fund' }}
       client:load
     >
       <styled.div
@@ -28,6 +23,6 @@ import { DonationFormIsland2 } from '../components/DonationFormIsland.tsx';
       >
         Hello World!
       </styled.div>
-    </DonationFormIsland2>
+    </DonationForm>
   </styled.main>
 </Layout>
