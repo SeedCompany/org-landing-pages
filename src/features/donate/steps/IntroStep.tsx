@@ -29,7 +29,13 @@ export const IntroStep = ({
       {showCadence && <CadenceField lens={lens.focus('cadence')} options={cadence} />}
       <AmountField
         lens={lens.focus('amount')}
-        presets={presetAmounts?.[form.getValues('cadence')]}
+        presets={
+          presetAmounts
+            ? Array.isArray(presetAmounts)
+              ? presetAmounts
+              : presetAmounts[form.getValues('cadence')]
+            : undefined
+        }
       />
       <Buttons>
         <SubmitButton>Give Now</SubmitButton>

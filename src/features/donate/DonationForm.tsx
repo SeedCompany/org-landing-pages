@@ -24,7 +24,12 @@ export type DonateCommonProps = {
    * cadence: 'OneTime'
    */
   cadence?: Many<Cadence>;
-  presetAmounts?: Record<Cadence, number[]>;
+
+  /**
+   * Amount preset buttons to show.
+   * Optionally vary by cadence.
+   */
+  presetAmounts?: number[] | Record<Cadence, number[]>;
 
   /** Customize Investor fields */
   investor?: {
