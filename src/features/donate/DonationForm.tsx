@@ -107,11 +107,32 @@ export const DonationForm = (props: DonateFormProps) => {
   return (
     <Stack data-scope="donate-form" data-step={step}>
       {props.before}
-      {Object.entries(declareSteps).map(([key, Component]) => (
-        <styled.div key={key} hidden={key !== step ? true : undefined}>
-          <Component {...stepProps} />
-        </styled.div>
-      ))}
+      {Object.entries(declareSteps).map(([key, Component]) => {
+        const hideStep = key !== step;
+        return (
+          <styled.div
+            key={key}
+            // force DOM to draw layout for all steps
+            // this allows stripe elements to show correctly without
+            // "popping in" when the step is first shown
+            css={
+              hideStep
+                ? {
+                    position: 'absolute',
+                    visibility: 'hidden',
+                    pointerEvents: 'none',
+                    insetY: '0',
+                    overflow: 'hidden',
+                  }
+                : {}
+            }
+            aria-hidden={hideStep ? true : undefined}
+            tabIndex={hideStep ? -1 : undefined}
+          >
+            <Component {...stepProps} />
+          </styled.div>
+        );
+      })}
       {props.after}
     </Stack>
   );
