@@ -1,10 +1,8 @@
-import { useLens } from '@hookform/lenses';
-import { FormProvider } from 'react-hook-form';
-import { Grid, styled } from 'styled-system/jsx';
-import { stack } from 'styled-system/patterns';
+import { Grid } from 'styled-system/jsx';
+import { z } from 'zod/v4/mini';
 import { type DonationCadence, type Telemetry } from '~/graphql';
 import { RecaptchaNotice } from '~/recaptcha';
-import { useForm, SubmitButton, SubmitError } from '~/common/form';
+import { useForm, SubmitButton, SubmitError, Form } from '~/common/form';
 import { AddressFields } from '~/features/address';
 import { InvestorFields } from '~/features/investor-input';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
@@ -13,6 +11,8 @@ import { GiveByCheck } from './GiveByCheck.tsx';
 import { PaymentFields } from './fields/PaymentFields.tsx';
 import { CadenceField } from './fields/CadenceField.tsx';
 import { AmountField } from './fields/AmountField.tsx';
+
+type DonationInput = z.infer<typeof DonateInput>;
 
 export type DonateFormProps = {
   presetAmounts: Record<DonationCadence, number[]>;
@@ -40,62 +40,45 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
     returnUrl: '/thank-you',
   });
 
-  const onSubmit = form.handleSubmit(
-    async ({
-      // Ignored, just for validation handling
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      paymentComplete: _,
-      amount,
-      ...input
-    }) => {
-      console.log('Submitting', { amount, ...input });
-      try {
-        await submitDonation({
-          ...input,
-          targets: [{ amount }],
-        });
-      } catch (e) {
-        console.error(e);
-        form.setError('root', {
-          message: (e as Error).message,
-        });
-      }
-    },
-    (errors) => {
-      console.warn('Not submitting, because invalid', errors);
-    },
-  );
+  const onSubmit = async ({
+    // Ignored, just for validation handling
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    paymentComplete: _,
+    amount,
+    ...input
+  }: DonationInput) => {
+    console.log('Submitting', { amount, ...input });
+    await submitDonation({
+      ...input,
+      targets: [{ amount }],
+    });
+  };
 
   return (
-    <FormProvider {...form}>
-      <styled.form onSubmit={(e) => void onSubmit(e)} className={stack({})}>
-        <SubmitError />
-        <CadenceField lens={lens.focus('cadence')} />
-        <AmountField
-          lens={lens.focus('amount')}
-          presets={presetAmounts[form.getValues('cadence')]}
-        />
-        <InvestorFields.Root lens={lens.focus('investor')}>
-          <InvestorFields.Type />
-          <InvestorFields.Email />
-          <InvestorFields.FirstName />
-          <InvestorFields.LastName />
-          <InvestorFields.Phone />
-          <InvestorFields.Address>
-            <AddressFields.Line1 />
-            <AddressFields.Line2 />
-            <AddressFields.City />
-            <Grid columns={{ sm: 2 }}>
-              <AddressFields.State />
-              <AddressFields.ZipCode />
-            </Grid>
-          </InvestorFields.Address>
-        </InvestorFields.Root>
-        <PaymentFields lens={lens.focus('paymentComplete')} />
-        <RecaptchaNotice />
-        <GiveByCheck memo={telemetry?.referrer ?? undefined} />
-        <SubmitButton />
-      </styled.form>
-    </FormProvider>
+    <Form form={form} onSubmit={onSubmit}>
+      <SubmitError />
+      <CadenceField lens={lens.focus('cadence')} />
+      <AmountField lens={lens.focus('amount')} presets={presetAmounts[form.getValues('cadence')]} />
+      <InvestorFields.Root lens={lens.focus('investor')}>
+        <InvestorFields.Type />
+        <InvestorFields.Email />
+        <InvestorFields.FirstName />
+        <InvestorFields.LastName />
+        <InvestorFields.Phone />
+        <InvestorFields.Address>
+          <AddressFields.Line1 />
+          <AddressFields.Line2 />
+          <AddressFields.City />
+          <Grid columns={{ sm: 2 }}>
+            <AddressFields.State />
+            <AddressFields.ZipCode />
+          </Grid>
+        </InvestorFields.Address>
+      </InvestorFields.Root>
+      <PaymentFields lens={lens.focus('paymentComplete')} />
+      <RecaptchaNotice />
+      <GiveByCheck memo={telemetry?.referrer ?? undefined} />
+      <SubmitButton />
+    </Form>
   );
 };
