@@ -38,9 +38,9 @@ export const IntroStep = ({
         }
       />
       <Buttons>
-        <SubmitButton>Give Now</SubmitButton>
+        <SubmitButton size="xl">Give Now</SubmitButton>
       </Buttons>
-      <GiveByCheck memo={telemetry?.referrer ?? undefined} css={{ alignSelf: 'center' }} />
+      <GiveByCheck memo={telemetry?.referrer ?? undefined} css={{ alignSelf: 'center', mt: '2' }} />
     </Form>
   );
 };
