@@ -78,9 +78,8 @@ export const DonationForm = (props: DonateFormProps) => {
     if (typeof next !== 'number') {
       return next;
     }
-    const stepList = Object.keys(declareSteps) as Step[];
-    const idx = Math.max(0, Math.min(stepList.length - 1, stepList.indexOf(prev) + next));
-    return stepList[idx]!;
+    const nextIndex = Math.max(0, Math.min(steps.length - 1, steps.indexOf(prev) + next));
+    return steps[nextIndex]!;
   }, steps[0]!);
 
   const stepProps: StepProps = {
