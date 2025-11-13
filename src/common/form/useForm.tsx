@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { DependencyList } from 'react';
 import {
   useForm as useRHForm,
   type FieldValues,
@@ -6,6 +7,7 @@ import {
   type Control,
 } from 'react-hook-form';
 import * as z from 'zod/v4/core';
+import { useLens } from '@hookform/lenses';
 
 /**
  * Like {@link import('react-hook-form').useForm},
@@ -26,7 +28,9 @@ export const useForm = <
   >,
 ) => {
   const context = { ...props?.context, schema } as Context & { schema: Schema };
-  return useRHForm<z.input<Schema>, Context & { schema: Schema }, z.output<Schema>>({
+  const form = useRHForm<z.input<Schema>, Context & { schema: Schema }, z.output<Schema>>({
+    mode: 'onTouched',
+
     ...props,
     context,
     resolver: zodResolver<Input, Context, Output, Schema>(schema, {
@@ -38,6 +42,10 @@ export const useForm = <
       },
     }),
   });
+  return {
+    ...form,
+    useLens: (deps?: DependencyList) => useLens({ control: form.control }, deps),
+  };
 };
 
 export type ControlOf<Schema extends z.$ZodType> = Control<

@@ -21,7 +21,6 @@ export type DonateFormProps = {
 
 export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
   const form = useForm(DonateInput, {
-    mode: 'onTouched',
     defaultValues: {
       cadence: 'OneTime',
       investor: {
@@ -33,7 +32,7 @@ export const DonationForm = ({ presetAmounts, telemetry }: DonateFormProps) => {
       },
     },
   });
-  const lens = useLens({ control: form.control });
+  const lens = form.useLens();
 
   const { submit: submitDonation } = useSubmitDonationFn({
     telemetry,
