@@ -1,18 +1,16 @@
 ---
 import Layout from '~/layouts/Layout.astro';
-import { DonationFormIsland } from '../components/DonationFormIsland.tsx';
+import { DonationForm } from '~/features/donate';
 ---
 
 <Layout>
-  <DonationFormIsland
-    formProps={{
-      enableRecurring: true,
-      hideInvestorType: 'Organization',
-      campaignTotals: false,
-      presetAmounts: {
-        oneTime: [35, 500, 2500, 10000, 20000],
-        recurring: [25, 50, 100, 500, 1000],
-      },
+  <DonationForm
+    presetAmounts={{
+      OneTime: [35, 500, 2500, 10000, 20000],
+      Monthly: [25, 50, 100, 500, 1000],
+    }}
+    investor={{
+      hide: ['type'],
     }}
     client:load
   />
