@@ -1,6 +1,8 @@
 import { many, type Many } from '@seedcompany/common';
 import { type FunctionComponent as Component, type ReactNode, useReducer, useState } from 'react';
+import { pickBy } from 'remeda';
 import { Stack, styled } from 'styled-system/jsx';
+import type { PartialDeep } from 'type-fest';
 import { z } from 'zod/v4/mini';
 import { type DonationCadence as Cadence, type Telemetry } from '~/graphql';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
@@ -23,6 +25,17 @@ export type DonateCommonProps = {
    */
   cadence?: Many<Cadence>;
   presetAmounts?: Record<Cadence, number[]>;
+
+  /** Customize Investor fields */
+  investor?: {
+    /** Default values. */
+    defaults?: PartialDeep<DonateInput['investor']>;
+    /** A custom-ordered list of fields to show */
+    include?: ReadonlyArray<keyof DonateInput['investor']>;
+    /** Hide these fields. Useful to override defaults. Takes precedence over `include`. */
+    hide?: ReadonlyArray<keyof DonateInput['investor']>;
+  };
+
   telemetry?: Telemetry;
 };
 
@@ -44,7 +57,7 @@ type Step = keyof typeof declareSteps;
 const steps = Object.keys(declareSteps) as Step[];
 
 export const DonationForm = (props: DonateFormProps) => {
-  const [state, setState] = useState<DonateInput>({
+  const [state, setState] = useState<DonateInput>(() => ({
     cadence: (props.cadence ? many(props.cadence) : undefined)?.at(0) ?? 'OneTime',
     amount: 0,
     investor: {
@@ -53,6 +66,7 @@ export const DonationForm = (props: DonateFormProps) => {
       firstName: '',
       lastName: '',
       phone: '',
+      ...pickBy(props.investor?.defaults ?? {}, (v) => v != null),
       mailingAddress: {
         line1: '',
         line2: '',
@@ -60,10 +74,11 @@ export const DonationForm = (props: DonateFormProps) => {
         state: '',
         zip: '',
         country: 'US',
+        ...pickBy(props.investor?.defaults?.mailingAddress ?? {}, (v) => v != null),
       },
     },
     paymentComplete: false,
-  });
+  }));
 
   const { submit: submitDonation } = useSubmitDonationFn({
     telemetry: props.telemetry,

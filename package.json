@@ -73,6 +73,7 @@
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.59.0",
     "react-is": "^19.1.0",
+    "remeda": "^2.32.0",
     "sanity": "^4.4.0",
     "sanity-plugin-media": "^4.0.0",
     "sanity-plugin-simpler-color-input": "^3.1.1",
