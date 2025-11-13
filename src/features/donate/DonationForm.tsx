@@ -1,7 +1,8 @@
+import { many, type Many } from '@seedcompany/common';
 import { type FunctionComponent as Component, type ReactNode, useReducer, useState } from 'react';
 import { Stack, styled } from 'styled-system/jsx';
 import { z } from 'zod/v4/mini';
-import { type DonationCadence, type Telemetry } from '~/graphql';
+import { type DonationCadence as Cadence, type Telemetry } from '~/graphql';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
 import { DonateInput } from './donate.schema.ts';
 import type { DonateStepProps } from './steps/_util.tsx';
@@ -12,7 +13,16 @@ import { PaymentStep } from './steps/PaymentStep.tsx';
 type DonateInput = z.infer<typeof DonateInput>;
 
 export type DonateCommonProps = {
-  presetAmounts?: Record<DonationCadence, number[]>;
+  /**
+   * Which cadence options should be shown?
+   * The default value is the first item given.
+   * If there is only one option, the field is hidden in the form.
+   *
+   * @example only one-time
+   * cadence: 'OneTime'
+   */
+  cadence?: Many<Cadence>;
+  presetAmounts?: Record<Cadence, number[]>;
   telemetry?: Telemetry;
 };
 
@@ -35,7 +45,7 @@ const steps = Object.keys(declareSteps) as Step[];
 
 export const DonationForm = (props: DonateFormProps) => {
   const [state, setState] = useState<DonateInput>({
-    cadence: 'OneTime',
+    cadence: (props.cadence ? many(props.cadence) : undefined)?.at(0) ?? 'OneTime',
     amount: 0,
     investor: {
       type: 'Individual',

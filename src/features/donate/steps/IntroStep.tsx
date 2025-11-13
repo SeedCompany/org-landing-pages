@@ -1,3 +1,4 @@
+import { asNonEmptyArray, many } from '@seedcompany/common';
 import { z } from 'zod/v4/mini';
 import { Form, SubmitButton, useForm } from '~/common/form';
 import { CadenceField } from '../fields/CadenceField.tsx';
@@ -12,6 +13,7 @@ const Shape = z.pick(DonateInput, {
 });
 
 export const IntroStep = ({
+  cadence: cadenceProp,
   presetAmounts,
   telemetry,
   values,
@@ -20,9 +22,11 @@ export const IntroStep = ({
   const form = useForm(Shape, { values });
   const lens = form.useLens();
 
+  const cadence = asNonEmptyArray(cadenceProp ? many(cadenceProp) : []);
+  const showCadence = !cadence || cadence.length !== 1;
   return (
     <Form form={form} onSubmit={onSubmit}>
-      <CadenceField lens={lens.focus('cadence')} />
+      {showCadence && <CadenceField lens={lens.focus('cadence')} options={cadence} />}
       <AmountField
         lens={lens.focus('amount')}
         presets={presetAmounts?.[form.getValues('cadence')]}

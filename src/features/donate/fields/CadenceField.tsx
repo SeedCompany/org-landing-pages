@@ -1,9 +1,22 @@
 import type { Lens } from '@hookform/lenses';
+import type { NonEmptyArray } from '@seedcompany/common';
+import type { ReactNode } from 'react';
 import type { DonationCadence as Cadence } from '~/graphql';
 import { Button, ButtonGroup, ToggleGroup } from '~/common/ui';
 import { useController } from '~/common/form';
 
-export const CadenceField = ({ lens }: { lens: Lens<Cadence> }) => {
+const cadenceLabels: Record<Cadence, ReactNode> = {
+  OneTime: 'One-Time Donation',
+  Monthly: 'Monthly Donation',
+};
+
+export const CadenceField = ({
+  lens,
+  options = ['OneTime', 'Monthly'],
+}: {
+  lens: Lens<Cadence>;
+  options?: NonEmptyArray<Cadence>;
+}) => {
   const {
     field: { value, onChange, ...field },
   } = useController(lens.interop());
@@ -25,12 +38,11 @@ export const CadenceField = ({ lens }: { lens: Lens<Cadence> }) => {
           },
         }}
       >
-        <ToggleGroup.Item value={'OneTime' satisfies Cadence} asChild>
-          <Button>One-Time Donation</Button>
-        </ToggleGroup.Item>
-        <ToggleGroup.Item value={'Monthly' satisfies Cadence} asChild>
-          <Button>Monthly Donation</Button>
-        </ToggleGroup.Item>
+        {options.map((cadence) => (
+          <ToggleGroup.Item key={cadence} value={cadence} asChild>
+            <Button>{cadenceLabels[cadence]}</Button>
+          </ToggleGroup.Item>
+        ))}
       </ButtonGroup>
     </ToggleGroup.Root>
   );
