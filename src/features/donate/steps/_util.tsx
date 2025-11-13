@@ -10,7 +10,10 @@ export type DonateStepProps<Values> = DonateCommonProps & {
 };
 
 export const Buttons = styled(HStack, {
-  base: { '& button': { flex: '1', textTransform: 'uppercase' } },
+  base: {
+    flexDir: 'row-reverse',
+    '& button': { flex: '1', textTransform: 'uppercase' },
+  },
 });
 
 export const BackButton = (props: ComponentProps<typeof Button>) => (

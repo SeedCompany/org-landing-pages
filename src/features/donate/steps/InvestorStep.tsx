@@ -40,8 +40,8 @@ export const InvestorStep = ({
         </InvestorFields.Address>
       </InvestorFields.Root>
       <Buttons>
-        <BackButton onClick={() => onBack(form.getValues())} />
         <SubmitButton>Go To Payment</SubmitButton>
+        <BackButton onClick={() => onBack(form.getValues())} />
       </Buttons>
     </Form>
   );
