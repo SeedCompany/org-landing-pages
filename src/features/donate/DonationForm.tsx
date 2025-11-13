@@ -1,5 +1,11 @@
 import { many, type Many } from '@seedcompany/common';
-import { type FunctionComponent as Component, type ReactNode, useReducer, useState } from 'react';
+import {
+  type FunctionComponent as Component,
+  type ReactNode,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { pickBy } from 'remeda';
 import { Stack, styled } from 'styled-system/jsx';
 import type { PartialDeep } from 'type-fest';
@@ -104,6 +110,9 @@ export const DonationForm = (props: DonateFormProps) => {
     });
   };
 
+  const formRef = useRef<HTMLDivElement>(null);
+  const scrollToTop = () => formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+
   const [step, setStep] = useReducer((prev, next: Step | number) => {
     if (typeof next !== 'number') {
       return next;
@@ -120,6 +129,7 @@ export const DonationForm = (props: DonateFormProps) => {
         setState((prev) => ({ ...prev, ...dirtyState }));
       }
       setStep(-1);
+      scrollToTop();
     },
     onSubmit: async (next: Partial<DonateInput>) => {
       const isLast = step === steps.at(-1);
@@ -131,11 +141,12 @@ export const DonationForm = (props: DonateFormProps) => {
       }
       setState((prev) => ({ ...prev, ...next }));
       setStep(+1);
+      scrollToTop();
     },
   };
 
   return (
-    <Stack data-scope="donate-form" data-step={step}>
+    <Stack data-scope="donate-form" data-step={step} ref={formRef}>
       {props.before}
       {Object.entries(declareSteps).map(([key, Component]) => {
         const hideStep = key !== step;
