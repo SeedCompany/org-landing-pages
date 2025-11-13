@@ -111,7 +111,8 @@ export const DonationForm = (props: DonateFormProps) => {
   };
 
   const formRef = useRef<HTMLDivElement>(null);
-  const scrollToTop = () => formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  const scrollToTop = () =>
+    formRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 
   const [step, setStep] = useReducer((prev, next: Step | number) => {
     if (typeof next !== 'number') {
