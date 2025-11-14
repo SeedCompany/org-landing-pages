@@ -1,18 +1,29 @@
 ---
 import { portableText } from '~/sanity';
 
+interface PortableTextMarkDef {
+  _key: string;
+  _type: string;
+  [key: string]: unknown;
+}
+
 interface PortableTextBlock {
   _type: string;
   children?: Array<{
+    marks?: string[];
     _type: string;
-    text: string;
+    _key: string;
+    text?: string;
   }>;
+  style?: string;
+  markDefs?: PortableTextMarkDef[];
+  _key: string;
 }
 
 interface FAQ {
-  template?: string;
+  template?: 'faqAccordion' | 'faqList' | 'faqGrid' | null;
   question?: string | null;
-  answer: PortableTextBlock[] | string;
+  answer: PortableTextBlock[] | null;
 }
 
 interface Props {

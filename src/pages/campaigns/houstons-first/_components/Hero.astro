@@ -11,7 +11,7 @@ interface PortableTextBlock {
   }>;
 }
 
-interface CampaignData {
+interface HeroCampaignData {
   subheading?: PortableTextBlock[] | string;
   heroCopy?: PortableTextBlock[];
   heading?: PortableTextBlock[] | string;
@@ -19,7 +19,7 @@ interface CampaignData {
 }
 
 interface Props {
-  campaignData?: CampaignData;
+  campaignData?: HeroCampaignData;
 }
 
 const { campaignData } = Astro.props;
