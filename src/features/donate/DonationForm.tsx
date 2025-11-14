@@ -21,15 +21,18 @@ import { PaymentStep } from './steps/PaymentStep.tsx';
 type DonateInput = z.infer<typeof DonateInput>;
 
 export type DonateCommonProps = {
-  /**
-   * Which cadence options should be shown?
-   * The default value is the first item given.
-   * If there is only one option, the field is hidden in the form.
-   *
-   * @example only one-time
-   * cadence: 'OneTime'
-   */
-  cadence?: Many<Cadence>;
+  cadence?: {
+    /**
+     * Which cadence options should be shown?
+     * The default value is the first item given.
+     * If there is only one option, the field is hidden in the form.
+     *
+     * @example only one-time
+     * cadence: 'OneTime'
+     */
+    options?: Many<Cadence>;
+    labels?: Record<Cadence, string>;
+  };
 
   /**
    * Amount preset buttons to show.
@@ -70,7 +73,7 @@ const steps = Object.keys(declareSteps) as Step[];
 
 export const DonationForm = (props: DonateFormProps) => {
   const [state, setState] = useState<DonateInput>(() => ({
-    cadence: (props.cadence ? many(props.cadence) : undefined)?.at(0) ?? 'OneTime',
+    cadence: (props.cadence?.options ? many(props.cadence.options) : undefined)?.at(0) ?? 'OneTime',
     amount: 0,
     investor: {
       type: 'Individual',

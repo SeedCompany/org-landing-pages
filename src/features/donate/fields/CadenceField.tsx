@@ -5,16 +5,18 @@ import type { DonationCadence as Cadence } from '~/graphql';
 import { Button, ButtonGroup, ToggleGroup } from '~/common/ui';
 import { useController } from '~/common/form';
 
-const cadenceLabels: Record<Cadence, ReactNode> = {
+const defaultLabels: Record<Cadence, ReactNode> = {
   OneTime: 'One-Time Donation',
   Monthly: 'Monthly Donation',
 };
 
 export const CadenceField = ({
   lens,
+  labels,
   options = ['OneTime', 'Monthly'],
 }: {
   lens: Lens<Cadence>;
+  labels?: typeof defaultLabels;
   options?: NonEmptyArray<Cadence>;
 }) => {
   const {
@@ -40,7 +42,7 @@ export const CadenceField = ({
       >
         {options.map((cadence) => (
           <ToggleGroup.Item key={cadence} value={cadence} asChild>
-            <Button>{cadenceLabels[cadence]}</Button>
+            <Button>{(labels ?? defaultLabels)[cadence]}</Button>
           </ToggleGroup.Item>
         ))}
       </ButtonGroup>

@@ -22,11 +22,13 @@ export const IntroStep = ({
   const form = useForm(Shape, { values });
   const lens = form.useLens();
 
-  const cadence = asNonEmptyArray(cadenceProp ? many(cadenceProp) : []);
+  const cadence = asNonEmptyArray(cadenceProp?.options ? many(cadenceProp.options) : []);
   const showCadence = !cadence || cadence.length !== 1;
   return (
     <Form form={form} onSubmit={onSubmit}>
-      {showCadence && <CadenceField lens={lens.focus('cadence')} options={cadence} />}
+      {showCadence && (
+        <CadenceField lens={lens.focus('cadence')} options={cadence} labels={cadenceProp?.labels} />
+      )}
       <AmountField
         lens={lens.focus('amount')}
         presets={

@@ -51,7 +51,7 @@ export const DonationForm = ({
         </>
       ) : (
         <NewDonationForm
-          cadence={formProps.enableRecurring ? undefined : 'OneTime'}
+          cadence={formProps.enableRecurring ? undefined : { options: 'OneTime' }}
           presetAmounts={
             formProps.presetAmounts
               ? {
