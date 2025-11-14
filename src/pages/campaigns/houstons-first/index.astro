@@ -1,0 +1,108 @@
+---
+import { sanityClient as sanity, portableText } from '~/sanity';
+import Hero from './_components/Hero.astro';
+import GiveFormWithTotals from '../../../components/GiveFormWithTotals.astro';
+import Layout from '../../../layouts/Layout.astro';
+import Video from '../../../components/Video.astro';
+import Footer from '../../../components/Footer.astro';
+import { campaignBySlug } from '../campaignBySlug.groq';
+import FAQ from './_components/HoustonFAQ.astro';
+
+const slug = 'houstons-first';
+const campaignData = await sanity.fetch(campaignBySlug, { slug });
+
+interface AboutSection {
+  title: string;
+  content: string | unknown[] | null;
+}
+
+interface VideoData {
+  src?: string;
+  poster?: string;
+}
+
+interface CampaignData {
+  subheading?: unknown[] | string;
+  heroCopy?: unknown[];
+  heading?: unknown[] | string;
+  pageTitle?: string;
+  video?: VideoData | null;
+  aboutSections?: AboutSection[] | null;
+  faqs?: unknown[] | null;
+  [key: string]: unknown;
+}
+
+const typedCampaignData = campaignData as CampaignData | undefined;
+---
+
+<Layout title={typedCampaignData?.pageTitle || "Houston's First - Matthew Translation"}>
+  <div class="min-h-screen bg-white">
+    <section class="relative bg-[#1a303a] overflow-hidden">
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-transparent to-[#1a303a] pointer-events-none"
+      >
+      </div>
+      <!-- Hero content -->
+      <div class="relative z-10 max-w-[1440px] mx-auto px-5 pt-0 pb-32 lg:pb-40">
+        <Hero campaignData={typedCampaignData as Parameters<typeof Hero>[0]['campaignData']} />
+      </div>
+    </section>
+    <div
+      class="grid lg:grid-cols-[2fr_1fr] gap-8 max-w-[1440px] mx-auto -mt-24 lg:-mt-32 relative z-20"
+    >
+      <main class="flex flex-col gap-10 px-5 lg:pr-12">
+        <aside
+          class="lg:block max-w-xl lg:fixed lg:right-8 lg:top-32 max-lg:mx-auto max-lg:max-w-xl"
+        >
+          <div class="bg-white rounded-lg p-6 mt-8 shadow-lg">
+            <GiveFormWithTotals disableDialog={true} />
+          </div>
+        </aside>
+
+        {
+          typedCampaignData?.video ? (
+            <Video
+              src={typedCampaignData.video.src || ''}
+              poster={
+                typedCampaignData.video.poster ||
+                'https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high'
+              }
+              class="hero-video rounded-2xl shadow-xl"
+              rounded={true}
+            />
+          ) : (
+            <Video
+              src=""
+              poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
+              class="hero-video rounded-2xl shadow-xl"
+              rounded={true}
+            />
+          )
+        }
+        {
+          typedCampaignData?.aboutSections &&
+            typedCampaignData.aboutSections.map((section: AboutSection) => (
+              <section>
+                <h2 class="text-4xl pb-8 gotham-bold tracking-tight sm:text-5xl pt-12">
+                  {section.title}
+                </h2>
+                {section.content && (
+                  <div
+                    set:html={portableText.toHTML(
+                      typeof section.content === 'string'
+                        ? [{ _type: 'block', children: [{ _type: 'span', text: section.content }] }]
+                        : (section.content as Parameters<typeof portableText.toHTML>[0]),
+                    )}
+                  />
+                )}
+              </section>
+            ))
+        }
+      </main>
+    </div>
+    <FAQ faqs={typedCampaignData?.faqs as Parameters<typeof FAQ>[0]['faqs']} />
+    <section class="mt-20">
+      <Footer />
+    </section>
+  </div>
+</Layout>

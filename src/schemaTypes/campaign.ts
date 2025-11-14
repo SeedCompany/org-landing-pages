@@ -1,7 +1,15 @@
-import { defineField, defineType } from 'sanity';
+import { defineField, defineType, type PortableTextBlock } from 'sanity';
 import { ImageRadioInput } from '../components/ImageRadioInput';
-import TemplateThumbnailMarketing from '../components/templates/MarketingTemplate.png';
-import TemplateThumbnailSustainers from '../components/templates/SustainersTemplate.png';
+
+type PortableTextChild = {
+  _type: string;
+  text: string;
+  marks?: string[];
+};
+
+type PortableTextBlockWithText = PortableTextBlock & {
+  children?: PortableTextChild[];
+};
 
 const richTextBlock = {
   type: 'block',
@@ -49,6 +57,21 @@ export default defineType({
   name: 'campaign',
   title: 'Campaign',
   type: 'document',
+  preview: {
+    select: {
+      title: 'campaignName',
+      subtitle: 'pageTitle',
+      media: 'heroImage',
+    },
+    prepare(selection: { title?: string | null; subtitle?: string | null; media?: any }) {
+      const { title, subtitle } = selection;
+      return {
+        title: title?.trim() || '(Untitled Campaign)',
+        subtitle: subtitle || undefined,
+        media: selection.media,
+      };
+    },
+  },
   groups: [
     { name: 'hero', title: 'Hero Section' },
     { name: 'cta', title: 'Call to Actions' },
@@ -404,12 +427,38 @@ export default defineType({
           type: 'object',
           name: 'faq',
           title: 'FAQ',
+          preview: {
+            select: {
+              title: 'question',
+              answer: 'answer',
+            },
+            prepare({
+              title,
+              answer,
+            }: {
+              title?: string | null;
+              answer?: PortableTextBlockWithText[];
+            }) {
+              const extractPlainText = (
+                blocks: PortableTextBlockWithText[] | undefined,
+                maxLength: number = 80,
+              ): string => {
+                const text = blocks?.[0]?.children?.[0]?.text || 'No answer';
+                return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+              };
+
+              return {
+                title: title?.trim() || '(No question)',
+                subtitle: extractPlainText(answer, 80),
+              };
+            },
+          },
           fields: [
             defineField({
               name: 'template',
               title: 'FAQ Template',
               type: 'string',
-              hidden: ({ parent, document }) => document?.templateType !== 'church',
+              hidden: ({ document }) => document?.templateType !== 'church',
               options: {
                 list: [
                   { title: 'Accordion', value: 'faqAccordion' },

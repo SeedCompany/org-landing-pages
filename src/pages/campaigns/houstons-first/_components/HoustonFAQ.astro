@@ -1,0 +1,106 @@
+---
+import { portableText } from '~/sanity';
+
+interface PortableTextMarkDef {
+  _key: string;
+  _type: string;
+  [key: string]: unknown;
+}
+
+interface PortableTextBlock {
+  _type: string;
+  children?: Array<{
+    marks?: string[];
+    _type: string;
+    _key: string;
+    text?: string;
+  }>;
+  style?: string;
+  markDefs?: PortableTextMarkDef[];
+  _key: string;
+}
+
+interface FAQ {
+  template?: 'faqAccordion' | 'faqList' | 'faqGrid' | null;
+  question?: string | null;
+  answer: PortableTextBlock[] | null;
+}
+
+interface Props {
+  faqs: FAQ[];
+}
+
+const { faqs } = Astro.props;
+---
+
+{
+  faqs && faqs.length > 0 && (
+    <section class="max-w-[1440px] mx-auto pb-16 z-100">
+      {/* Tailwind-Plus disclosure script – required for the toggle icons */}
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module" is:inline />
+
+      <div class="lg:max-w-[60%]">
+        <div class="py-8 md:pt-24 px-6 py-2 lg:pr-0 max-w-[1440px] mx-auto">
+          <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+            Frequently Asked Questions
+          </h2>
+
+          <dl class="mt-16 divide-y divide-gray-900/10">
+            {faqs.map((faq, index) => (
+              <div class="py-6 first:pt-0 last:pb-0">
+                <dt>
+                  <button
+                    type="button"
+                    {...({ command: '--toggle', commandfor: `faq-${index}` } as object)}
+                    class="flex w-full items-start justify-between text-left text-gray-900"
+                  >
+                    <span class="text-base/7 faq-question font-medium">{faq.question}</span>
+
+                    <span class="ml-6 flex h-7 items-center">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        class="size-6 [[aria-expanded='true']_&]:hidden"
+                        aria-hidden="true"
+                      >
+                        <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        class="size-6 [&:not([aria-expanded='true']_*)]:hidden"
+                        aria-hidden="true"
+                      >
+                        <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </button>
+                </dt>
+                <el-disclosure
+                  id={`faq-${index}`}
+                  hidden={index > 0}
+                  class="[&:not([hidden])]:contents"
+                >
+                  <dd class="mt-2 pr-12">
+                    <div
+                      class="prose mt-4 faq-answer text-gray-700"
+                      set:html={portableText.toHTML(
+                        typeof faq.answer === 'string'
+                          ? [{ _type: 'block', children: [{ _type: 'span', text: faq.answer }] }]
+                          : faq.answer,
+                      )}
+                    />
+                  </dd>
+                </el-disclosure>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+  )
+}
