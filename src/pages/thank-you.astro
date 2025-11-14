@@ -1,23 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { styled } from 'styled-system/jsx';
+import { token } from 'styled-system/tokens';
 ---
 
 <Layout>
-  <div
-    class="h-full flex justify-center items-center relative isolate overflow-hidden bg-white px-6 lg:px-8 bg-[url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png')] bg-cover md:bg-top bg-center"
-  >
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-5xl gotham-bold tracking-tight text-gray-900 sm:text-7xl">Thank You!</h2>
-      <p class="mt-8 text-pretty text-lg gotham-book text-gray-700 sm:text-xl/8">
+  <styled.div css={{ textAlign: 'center', m: '8', bgColor: token('colors.primary') }}>
+    <styled.div>
+      <styled.p css={{ textStyle: 'title1', fontSize: '5xl' }}>Thank You!</styled.p>
+      <styled.p css={{ p: '2' }}>
         Your receipt will arrive in your inbox shortly. If your donation is an ACH transfer, it may
         take several business days. For any additional questions or year-end giving statements,
         please contact Seed Company at <a href="mailto:info@tsco.org">info@tsco.org</a>.
-      </p>
-    </div>
-  </div>
-  <script>
-    if (window.location.search) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-  </script>
+        <styled.p />
+      </styled.p>
+      <script>
+        if (window.location.search) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      </script>
+    </styled.div>
+  </styled.div>
 </Layout>
