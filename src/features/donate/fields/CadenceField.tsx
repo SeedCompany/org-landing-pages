@@ -35,6 +35,7 @@ export const CadenceField = ({
         css={{
           width: 'full',
           '--group-gap': 'spacing.1',
+          flexWrap: 'wrap',
           '& button': {
             flexGrow: '1',
           },
