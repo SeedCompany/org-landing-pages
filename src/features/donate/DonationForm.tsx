@@ -10,7 +10,7 @@ import { pickBy } from 'remeda';
 import { Stack, styled } from 'styled-system/jsx';
 import type { PartialDeep } from 'type-fest';
 import { z } from 'zod/v4/mini';
-import { type DonationCadence as Cadence, type Telemetry } from '~/graphql';
+import { type DonationCadence as Cadence, type DonationIntent, type Telemetry } from '~/graphql';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
 import { DonateInput } from './donate.schema.ts';
 import type { DonateStepProps } from './steps/_util.tsx';
@@ -47,6 +47,7 @@ export type DonateCommonProps = {
     hide?: ReadonlyArray<keyof DonateInput['investor']>;
   };
 
+  intent?: DonationIntent;
   telemetry?: Telemetry;
 };
 
@@ -106,7 +107,7 @@ export const DonationForm = (props: DonateFormProps) => {
     console.log('Submitting', { amount, ...input });
     await submitDonation({
       ...input,
-      targets: [{ amount }],
+      targets: [{ amount, intent: props.intent }],
     });
   };
 
