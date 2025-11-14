@@ -5,9 +5,11 @@ import { DonationForm } from '~/features/donate';
 
 <Layout>
   <DonationForm
-    presetAmounts={{
-      OneTime: [35, 500, 2500, 10000, 20000],
-      Monthly: [25, 50, 100, 500, 1000],
+    amount={{
+      presets: {
+        OneTime: [35, 500, 2500, 10000, 20000],
+        Monthly: [25, 50, 100, 500, 1000],
+      },
     }}
     investor={{
       hide: ['type'],

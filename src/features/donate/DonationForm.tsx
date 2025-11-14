@@ -39,16 +39,16 @@ export type DonateCommonProps = {
    */
   amount?: {
     /**
+     * Amount preset buttons to show.
+     * Optionally vary by cadence.
+     */
+    presets?: readonly number[] | Record<Cadence, readonly number[]>;
+
+    /**
      * A custom minimum value & the message to show when it's not met.
      */
     min?: { value: number; message: string };
   };
-
-  /**
-   * Amount preset buttons to show.
-   * Optionally vary by cadence.
-   */
-  presetAmounts?: number[] | Record<Cadence, number[]>;
 
   /** Customize Investor fields */
   investor?: {

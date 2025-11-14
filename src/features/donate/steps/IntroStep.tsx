@@ -1,5 +1,6 @@
 import { asNonEmptyArray, many } from '@seedcompany/common';
 import { useMemo } from 'react';
+import { isArray } from 'remeda';
 import { z } from 'zod/v4/mini';
 import { Form, SubmitButton, useForm } from '~/common/form';
 import { CadenceField } from '../fields/CadenceField.tsx';
@@ -16,7 +17,7 @@ const getShape = (donateInput: typeof DonateInput) =>
 
 export const IntroStep = ({
   cadence: cadenceProp,
-  presetAmounts,
+  amount,
   telemetry,
   values,
   onSubmit,
@@ -36,10 +37,10 @@ export const IntroStep = ({
       <AmountField
         lens={lens.focus('amount')}
         presets={
-          presetAmounts
-            ? Array.isArray(presetAmounts)
-              ? presetAmounts
-              : presetAmounts[form.getValues('cadence')]
+          amount?.presets
+            ? isArray(amount.presets)
+              ? amount.presets
+              : amount.presets[form.getValues('cadence')]
             : undefined
         }
       />
