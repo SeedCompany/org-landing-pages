@@ -18,7 +18,7 @@ const getShape = (donateInput: typeof DonateInput) =>
 export const IntroStep = ({
   cadence: cadenceProp,
   amount,
-  telemetry,
+  giveByMail,
   values,
   onSubmit,
 }: DonateStepProps<z.infer<ReturnType<typeof getShape>>>) => {
@@ -47,7 +47,12 @@ export const IntroStep = ({
       <Buttons>
         <SubmitButton size="xl">Give Now</SubmitButton>
       </Buttons>
-      <GiveByCheck memo={telemetry?.referrer ?? undefined} css={{ alignSelf: 'center', mt: '2' }} />
+      {giveByMail !== false && (
+        <GiveByCheck
+          memo={typeof giveByMail === 'object' ? giveByMail.memo : undefined}
+          css={{ alignSelf: 'center', mt: '2' }}
+        />
+      )}
     </Form>
   );
 };

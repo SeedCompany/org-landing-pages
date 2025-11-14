@@ -60,6 +60,19 @@ export type DonateCommonProps = {
     hide?: ReadonlyArray<keyof DonateInput['investor']>;
   };
 
+  /**
+   * Whether to enable the "mail a check" info.
+   * @default true
+   */
+  giveByMail?:
+    | boolean
+    | {
+        /**
+         * A custom "memo" message to display
+         */
+        memo?: string;
+      };
+
   intent?: DonationIntent;
   telemetry?: Telemetry;
 };
