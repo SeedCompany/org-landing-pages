@@ -1,16 +1,18 @@
 import { asNonEmptyArray, many } from '@seedcompany/common';
+import { useMemo } from 'react';
 import { z } from 'zod/v4/mini';
 import { Form, SubmitButton, useForm } from '~/common/form';
 import { CadenceField } from '../fields/CadenceField.tsx';
 import { AmountField } from '../fields/AmountField.tsx';
 import { GiveByCheck } from '../GiveByCheck.tsx';
-import { DonateInput } from '../donate.schema.ts';
+import { DonateInput, useDonateSchema } from '../donate.schema.ts';
 import { Buttons, type DonateStepProps } from './_util.tsx';
 
-const Shape = z.pick(DonateInput, {
-  cadence: true,
-  amount: true,
-});
+const getShape = (donateInput: typeof DonateInput) =>
+  z.pick(donateInput, {
+    cadence: true,
+    amount: true,
+  });
 
 export const IntroStep = ({
   cadence: cadenceProp,
@@ -18,7 +20,9 @@ export const IntroStep = ({
   telemetry,
   values,
   onSubmit,
-}: DonateStepProps<z.infer<typeof Shape>>) => {
+}: DonateStepProps<z.infer<ReturnType<typeof getShape>>>) => {
+  const DonateInput = useDonateSchema();
+  const Shape = useMemo(() => getShape(DonateInput), [DonateInput]);
   const form = useForm(Shape, { values });
   const lens = form.useLens();
 

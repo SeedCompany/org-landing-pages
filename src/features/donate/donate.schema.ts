@@ -1,3 +1,4 @@
+import { createContext } from '@ark-ui/react/utils';
 import { z } from 'zod/v4/mini';
 import { createInvestor } from '~/features/investor-input';
 
@@ -12,3 +13,9 @@ export const DonateInput = z.object({
   investor: createInvestor,
   paymentComplete: z.boolean().check(z.refine((val) => val === true, 'Please complete payment')),
 });
+
+const [DonateSchemaProvider, useDonateSchema] = createContext<typeof DonateInput>({
+  name: 'DonateSchema',
+  defaultValue: DonateInput,
+});
+export { DonateSchemaProvider, useDonateSchema };

@@ -1,22 +1,27 @@
+import { useMemo } from 'react';
 import { z } from 'zod/v4/mini';
 import { Form, SubmitButton, SubmitError, useForm } from '~/common/form';
 import { RecaptchaNotice } from '~/recaptcha';
-import { DonateInput } from '../donate.schema.ts';
+import { DonateInput, useDonateSchema } from '../donate.schema.ts';
 import { PaymentFields } from '../fields/PaymentFields.tsx';
 import { BackButton, Buttons, type DonateStepProps } from './_util.tsx';
 
-const Shape = z.pick(DonateInput, {
-  paymentComplete: true,
-  // Stripe needs these two fields to inform its UI
-  amount: true,
-  cadence: true,
-});
+const getShape = (donateInput: typeof DonateInput) =>
+  z.pick(donateInput, {
+    paymentComplete: true,
+    // Stripe needs these two fields to inform its UI
+    amount: true,
+    cadence: true,
+  });
 
 export const PaymentStep = ({
   values,
   onBack,
   onSubmit,
-}: DonateStepProps<z.infer<typeof Shape>>) => {
+}: DonateStepProps<z.infer<ReturnType<typeof getShape>>>) => {
+  const DonateInput = useDonateSchema();
+  const Shape = useMemo(() => getShape(DonateInput), [DonateInput]);
+
   const form = useForm(Shape, { values });
   const lens = form.useLens();
 

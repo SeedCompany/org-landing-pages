@@ -6,7 +6,7 @@ import { Form, SubmitButton, useForm } from '~/common/form';
 import { AddressFields } from '~/features/address';
 import { InvestorFields } from '~/features/investor-input';
 import { AmountField } from '../fields/AmountField.tsx';
-import { DonateInput } from '../donate.schema.ts';
+import { DonateInput, useDonateSchema } from '../donate.schema.ts';
 import { BackButton, Buttons, type DonateStepProps } from './_util.tsx';
 
 const fieldComps: Record<string, Component> = {
@@ -38,6 +38,7 @@ export const InvestorStep = ({
   onBack,
   onSubmit,
 }: DonateStepProps<Pick<z.infer<typeof DonateInput>, 'amount' | 'investor'>>) => {
+  const DonateInput = useDonateSchema();
   const { subShape, components } = useMemo(() => {
     const fields: Array<keyof z.infer<typeof DonateInput>['investor']> = difference(
       investor?.include ?? ['type', 'email', 'firstName', 'lastName', 'phone', 'mailingAddress'],
@@ -53,7 +54,7 @@ export const InvestorStep = ({
 
     const components = fields.map((field) => ({ field, Comp: fieldComps[field]! }));
     return { subShape, components };
-  }, [investor]);
+  }, [investor, DonateInput]);
 
   const form = useForm(subShape, { values });
   const lens = form.useLens();

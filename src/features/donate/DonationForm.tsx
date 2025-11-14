@@ -12,7 +12,7 @@ import type { PartialDeep } from 'type-fest';
 import { z } from 'zod/v4/mini';
 import { type DonationCadence as Cadence, type DonationIntent, type Telemetry } from '~/graphql';
 import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
-import { DonateInput } from './donate.schema.ts';
+import { DonateInput, DonateSchemaProvider } from './donate.schema.ts';
 import type { DonateStepProps } from './steps/_util.tsx';
 import { IntroStep } from './steps/IntroStep.tsx';
 import { InvestorStep } from './steps/InvestorStep.tsx';
@@ -94,6 +94,7 @@ export const DonationForm = (props: DonateFormProps) => {
     },
     paymentComplete: false,
   }));
+  const [schema] = useState(() => DonateInput);
 
   const { submit: submitDonation } = useSubmitDonationFn({
     telemetry: props.telemetry,
@@ -151,35 +152,42 @@ export const DonationForm = (props: DonateFormProps) => {
   };
 
   return (
-    <Stack data-scope="donate-form" data-step={step} ref={formRef} css={{ scrollMarginTop: '10' }}>
-      {props.before}
-      {Object.entries(declareSteps).map(([key, Component]) => {
-        const hideStep = key !== step;
-        return (
-          <styled.div
-            key={key}
-            // force DOM to draw layout for all steps
-            // this allows stripe elements to show correctly without
-            // "popping in" when the step is first shown
-            css={
-              hideStep
-                ? {
-                    position: 'absolute',
-                    visibility: 'hidden',
-                    pointerEvents: 'none',
-                    insetY: '0',
-                    overflow: 'hidden',
-                  }
-                : {}
-            }
-            aria-hidden={hideStep ? true : undefined}
-            tabIndex={hideStep ? -1 : undefined}
-          >
-            <Component {...stepProps} />
-          </styled.div>
-        );
-      })}
-      {props.after}
-    </Stack>
+    <DonateSchemaProvider value={schema}>
+      <Stack
+        data-scope="donate-form"
+        data-step={step}
+        ref={formRef}
+        css={{ scrollMarginTop: '10' }}
+      >
+        {props.before}
+        {Object.entries(declareSteps).map(([key, Component]) => {
+          const hideStep = key !== step;
+          return (
+            <styled.div
+              key={key}
+              // force DOM to draw layout for all steps
+              // this allows stripe elements to show correctly without
+              // "popping in" when the step is first shown
+              css={
+                hideStep
+                  ? {
+                      position: 'absolute',
+                      visibility: 'hidden',
+                      pointerEvents: 'none',
+                      insetY: '0',
+                      overflow: 'hidden',
+                    }
+                  : {}
+              }
+              aria-hidden={hideStep ? true : undefined}
+              tabIndex={hideStep ? -1 : undefined}
+            >
+              <Component {...stepProps} />
+            </styled.div>
+          );
+        })}
+        {props.after}
+      </Stack>
+    </DonateSchemaProvider>
   );
 };
