@@ -13,7 +13,7 @@ import {
 import { styled } from 'styled-system/jsx';
 import { group } from 'styled-system/recipes';
 import type { SystemStyleObject } from 'styled-system/types';
-import { css } from 'styled-system/css';
+import { css, cx } from 'styled-system/css';
 
 type StyledGroupProps = ComponentProps<typeof StyledGroup>;
 const StyledGroup = styled(ark.div, group);
@@ -105,13 +105,16 @@ export const Group = memo(
       <StyledGroup
         ref={ref}
         {...rest}
-        className={css(
-          {
-            alignItems: align,
-            justifyContent: justify,
-            flexWrap: wrap,
-          },
-          cssProp,
+        className={cx(
+          css(
+            {
+              alignItems: align,
+              justifyContent: justify,
+              flexWrap: wrap,
+            },
+            cssProp,
+          ),
+          rest.className,
         )}
       >
         {enhancedChildren}

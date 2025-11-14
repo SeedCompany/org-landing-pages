@@ -39,11 +39,11 @@ const theme = {
         subtle: { value: '{colors.gray.10}' },
       },
       border: { value: '{colors.gray.6}' },
-      error: red['9'],
 
       primary: scGreen,
       secondary: scDarkBlue,
 
+      error: red,
       // Park UI requires a gray color available
       gray: slate,
     },
@@ -68,7 +68,7 @@ export const setupTheme = () =>
     globalVars: {
       extend: {
         // Declare this as a "well-known" var for us to use for spacing.
-        '--gap': { syntax: '<length>', inherits: true, initialValue: '0px' },
+        '--gap': { syntax: '<length>', inherits: true },
       },
     },
     globalCss: globalCss,
