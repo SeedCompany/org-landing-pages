@@ -35,6 +35,16 @@ export type DonateCommonProps = {
   };
 
   /**
+   * Amount input customization.
+   */
+  amount?: {
+    /**
+     * A custom minimum value & the message to show when it's not met.
+     */
+    min?: { value: number; message: string };
+  };
+
+  /**
    * Amount preset buttons to show.
    * Optionally vary by cadence.
    */
@@ -94,7 +104,23 @@ export const DonationForm = (props: DonateFormProps) => {
     },
     paymentComplete: false,
   }));
-  const [schema] = useState(() => DonateInput);
+  const [schema] = useState(() => {
+    const { amount, ...rest } = DonateInput.shape;
+    return z.object({
+      ...rest,
+      amount: props.amount?.min
+        ? amount.clone({
+            ...amount.def,
+            checks: [
+              // Cloned() to put this check before the default ones.
+              // That way we don't say "min is $1...no wait actually its $200"
+              z.minimum(props.amount.min.value, props.amount.min.message),
+              ...(amount.def.checks ?? []),
+            ],
+          })
+        : amount,
+    });
+  });
 
   const { submit: submitDonation } = useSubmitDonationFn({
     telemetry: props.telemetry,
