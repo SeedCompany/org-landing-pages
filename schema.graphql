@@ -1,0 +1,1557 @@
+type AccountImpactReportConnection {
+  automatedDelivery: Boolean!
+  current: QuarterlyInvestorImpactReport
+  historic(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: PaginationCursor
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: PaginationCursor
+
+    """
+    Returns the first n elements from the list.
+    Mutually exclusive with `last`.
+    """
+    first: Int
+
+    """
+    Returns the last n elements from the list.
+    Mutually exclusive with `first`.
+    """
+    last: Int
+    orderBy: ImpactReportOrder! = {direction: DESC, field: Quarter}
+  ): QuarterlyInvestorImpactReportList!
+  list(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: PaginationCursor
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: PaginationCursor
+
+    """
+    Returns the first n elements from the list.
+    Mutually exclusive with `last`.
+    """
+    first: Int
+
+    """
+    Returns the last n elements from the list.
+    Mutually exclusive with `first`.
+    """
+    last: Int
+    orderBy: ImpactReportOrder! = {direction: ASC, field: Quarter}
+  ): QuarterlyInvestorImpactReportList!
+}
+
+"""
+A date string indicating the birth month & day. The year is optional.
+Accepted Formats:
+    YYYY-MM-DDTHH:MM:SSZ)
+    YYYY-MM-DD
+    YYYYMMDD
+    --MM-DD
+    --MMDD
+    MMDD
+    MM/DD
+Output Format:
+    YYYY-MM-DD
+    --MMDD
+"""
+scalar Birthday
+
+"""The type of investor branding"""
+enum Brand {
+  IllumiNations
+  SeedCompany
+}
+
+type CancelSubscriptionOutput {
+  donationSubscription: DonationSubscription!
+}
+
+input Captcha {
+  v2: String
+  v3: String
+}
+
+enum CardBrand {
+  AmericanExpress
+  DinerClub
+  Discover
+  JCB
+  MasterCard
+  Unknown
+  Visa
+}
+
+type CardExpiration {
+  month: Int!
+  year: Int!
+}
+
+input CardExpirationInput {
+  month: Int!
+  year: Int!
+}
+
+enum CardFundingType {
+  Credit
+  Debit
+  Prepaid
+  Unknown
+}
+
+input ContactCorrespondenceInput {
+  investor: CreateInvestor!
+  message: String
+  subject: String
+  task: CreateSalesforceTask
+  telemetry: Telemetry
+}
+
+type ContactCorrespondenceOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input ContactPreferencesInput {
+  methods: [PreferredContactMethod!]
+  times: [PreferredContactTime!]
+}
+
+input CreateInvestor {
+  birthday: Birthday
+  contactPreferences: ContactPreferencesInput
+  email: EmailAddress!
+  firstName: String
+
+  """
+  give groups are just an Account we use to
+  aggregate other accounts and contacts
+  """
+  giveGroup: ID
+  lastName: String
+  mailingAddress: MailingAddressInput
+  name: String
+  ownerId: ID
+  phone: String
+  type: InvestorType! = Individual
+}
+
+input CreatePrayerCommitmentInput {
+  investor: CreateInvestor!
+  organization: String
+  organizationSize: Int
+  region: String
+  task: CreateSalesforceTask
+  telemetry: Telemetry
+}
+
+type CreatePrayerCommitmentOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input CreateSalesforceTask {
+  description: String
+  priority: String
+  status: String
+  type: String!
+}
+
+input CreateStripePaymentMethodInput {
+  confirmationToken: String
+
+  """Whether this should become the investor's default payment method"""
+  default: Boolean
+
+  """Whether we should save this payment method for the investor"""
+  save: Boolean
+  token: String
+}
+
+type CreateStripePaymentMethodOutput {
+  paymentMethod: PaymentMethod!
+}
+
+"""A range of plain dates formatted as an ISO 8601 string."""
+scalar DateInterval
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum DateTimeFormat {
+  Human
+  ISO
+}
+
+type DeletePaymentMethodOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+type Dimensions {
+  aspectRatio: Float!
+  height: Float!
+  width: Float!
+}
+
+input DonateInput {
+  cadence: DonationCadence!
+  captcha: Captcha
+  investor: CreateInvestor!
+
+  """Optional memo line from the donor."""
+  memo: String
+
+  """How this donation is being paid for."""
+  payment: PaymentMethodInput!
+  targets: [DonationTargetInput!]!
+  telemetry: Telemetry
+}
+
+type DonateOutput {
+  intent: StripeIntent
+}
+
+type Donation {
+  created: DateTime!
+  id: ID!
+  memo: String
+  paymentMethod: HistoricPaymentMethod
+  targets: [DonationTarget!]!
+
+  """The total amount of the donation in USD"""
+  totalAmount: Int!
+}
+
+enum DonationCadence {
+  Monthly
+  OneTime
+}
+
+input DonationIntent {
+  """
+  Free form input to try to describe where to give to that will be manually matched.
+  Also called "memo line" or "comment field"
+  """
+  custom: String
+
+  """A Department ID"""
+  deptId: String
+
+  """A CORD Engagement ID"""
+  engagement: String
+
+  """A GAU ID"""
+  gau: String
+
+  """A predefined code that represents something to give to"""
+  giveCode: String
+
+  """label that our website gives that we store"""
+  label: String
+
+  """A Seed Company program"""
+  program: MarketableProgram
+
+  """A CORD Project ID"""
+  project: String
+}
+
+type DonationList {
+  items: [Donation!]!
+  totalAmount: Int!
+}
+
+type DonationSubscription {
+  canceled: DateTime
+  created: DateTime!
+  id: ID!
+
+  """
+  The items that the investor is donating to as a part of this subscription
+  """
+  items: [DonationSubscriptionItem!]!
+
+  """A user message"""
+  memo: String
+  start: DateTime!
+  status: DonationSubscriptionStatus!
+
+  """The total amount in USD"""
+  total: Int!
+}
+
+type DonationSubscriptionItem {
+  """Amount in USD"""
+  amount: Int!
+  label: String!
+}
+
+enum DonationSubscriptionStatus {
+  Active
+  Canceled
+}
+
+type DonationTarget {
+  amount: Int!
+  label: String!
+}
+
+input DonationTargetInput {
+  amount: Int!
+  intent: DonationIntent
+}
+
+"""
+A string representing a duration conforming to the ISO8601 standard,
+
+such as: P1W1DT13H23M34S
+
+P is the duration designator (for period) placed at the start of the duration representation.
+
+Y is the year designator that follows the value for the number of years.
+
+M is the month designator that follows the value for the number of months.
+
+W is the week designator that follows the value for the number of weeks.
+
+D is the day designator that follows the value for the number of days.
+
+T is the time designator that precedes the time components of the representation.
+
+H is the hour designator that follows the value for the number of hours.
+
+M is the minute designator that follows the value for the number of minutes.
+
+S is the second designator that follows the value for the number of seconds.
+
+
+Note the time designator, T, that precedes the time value.
+
+
+Matches moment.js, Luxon and DateFns implementations
+
+,/. is valid for decimal places and +/- is a valid prefix
+
+For inputs, ISO strings are accepted, but also many other forms:
+
+An integer/float can be used to specify in milliseconds.
+
+An object declaring numeric values for each unit: `{ days: 2 }`
+
+Or a human-readable string: `"1 day 5 hours 3 mins 2s"`
+"""
+scalar Duration
+
+"""
+A JSON object containing data from Editor.js
+
+[Editor Website](https://editorjs.io/)
+
+[React Library](https://yarn.pm/editorjs-blocks-react-renderer)
+
+[Example implementation](https://github.com/SeedCompany/cord-field/blob/develop/src/components/RichText/RichTextView.tsx)
+"""
+scalar EditorJsJSON
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress
+
+type Engagement {
+  endDate: LocalDate!
+  id: ID!
+  language: Language!
+  products: [Product!]!
+  productsSummary: String!
+  project: Project!
+  startDate: LocalDate!
+}
+
+type EngagementProgressReportMetrics {
+  cumulative: ProgressMetric!
+  fiscalYear: ProgressMetric!
+  period: ProgressMetric!
+}
+
+"""The size of the expedition trip party"""
+enum ExpeditionTripPartySize {
+  Couple
+  Family
+  Single
+}
+
+"""The region of the expedition trip"""
+enum ExpeditionTripRegion {
+  Custom
+  Peru
+  SouthernAfrica
+  Tanzania
+}
+
+"""The season of the expedition trip"""
+enum ExpeditionTripSeason {
+  Fall
+  Spring
+  Summer
+  Winter
+}
+
+type FundingSummary {
+  """The total funds needed"""
+  goal: PositiveFloat!
+
+  """The total funds pledged, but not yet received"""
+  pledged: NonNegativeFloat!
+
+  """The total funds received so far"""
+  received: NonNegativeFloat!
+  remaining(applyPledges: Boolean!): NonNegativeFloat!
+}
+
+enum Gender {
+  Female
+  Male
+}
+
+type GlobalTranslationLeader {
+  biography: EditorJsJSON!
+  focus: String!
+  funding: FundingSummary!
+  gender: Gender!
+  id: ID!
+  image: URL!
+  name: String!
+  program: InternshipProgram!
+  region: String!
+
+  """
+  Aka "GTL ID"
+  """
+  shortCode: ID!
+}
+
+type GlobalTranslationLeaderList {
+  """
+  The page of global translation leader.
+  Note that this could include items that where also in sibling pages;
+  you should de-duplicate these based on ID.
+  """
+  items: [GlobalTranslationLeader!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total count of items"""
+  total: Int!
+}
+
+input GlobalTranslationLeaderOrder {
+  direction: OrderDirection!
+  field: GlobalTranslationLeaderOrderField!
+}
+
+enum GlobalTranslationLeaderOrderField {
+  Focus
+  Id
+  Name
+  Program
+  Region
+  ShortCode
+}
+
+type HistoricPaymentMethod {
+  address: MailingAddress
+  bank: String
+  brand: CardBrand
+  expiration: CardExpiration
+
+  """Uniquely identifies a particular card number (from Stripe)"""
+  fingerprint: String
+  funding: CardFundingType
+  id: ID
+  last4: String
+  type: PaymentMethodType!
+}
+
+type Image {
+  altText: String
+  caption: String
+  dimensions: Dimensions!
+  id: ID!
+  mimeType: String!
+  url: URL!
+}
+
+input ImpactReportOrder {
+  direction: OrderDirection!
+  field: ImpactReportOrderField!
+}
+
+enum ImpactReportOrderField {
+  Quarter
+}
+
+enum InternshipProgram {
+  CapacityBuilding
+  QualityAssurance
+}
+
+"""An investor's profile, and other info."""
+type Investor {
+  """List of investor's donation subscriptions"""
+  donationSubscriptions: [DonationSubscription!]!
+
+  """List of investor's previous donations"""
+  donations(quarter: Int, year: Int): DonationList!
+  email: String!
+  firstName: String
+  id: ID!
+  lastName: String
+  mailingAddress: MailingAddress
+
+  """Returns an investor's payment methods"""
+  paymentMethods: [PaymentMethod!]!
+  phone: String
+}
+
+type InvestorAccount {
+  brands: [Brand!]!
+  contacts: [InvestorContact!]
+  id: ID!
+  impactReports: AccountImpactReportConnection!
+  name: String!
+  primaryContact: InvestorContact
+  salesforceUrl: URL!
+  status: InvestorAccountStatus
+}
+
+type InvestorAccountList {
+  """
+  The page of accounts.
+  Note that this could include items that where also in sibling pages;
+  you should de-duplicate these based on ID.
+  """
+  items: [InvestorAccount!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total count of items"""
+  total: Int!
+}
+
+input InvestorAccountOrder {
+  direction: OrderDirection!
+  field: InvestorAccountOrderField!
+}
+
+enum InvestorAccountOrderField {
+  Id
+  LastName
+  Name
+}
+
+enum InvestorAccountStatus {
+  ParkingLot
+  Portfolio
+  Top50
+  Watchlist
+}
+
+type InvestorContact {
+  email: EmailAddress
+  firstName: String
+  id: ID!
+  lastName: String
+  mailingAddress: MailingAddress
+  phone: String
+}
+
+type InvestorRepresentative {
+  email: EmailAddress!
+  id: ID!
+  impactReports(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: PaginationCursor
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: PaginationCursor
+
+    """
+    Returns the first n elements from the list.
+    Mutually exclusive with `last`.
+    """
+    first: Int
+
+    """
+    Returns the last n elements from the list.
+    Mutually exclusive with `first`.
+    """
+    last: Int
+    orderBy: InvestorAccountOrder! = {direction: ASC, field: Id}
+
+    """The calendar quarter to view impact reports for"""
+    quarter: YearQuarter!
+  ): QuarterlyInvestorImpactReportList!
+
+  """An Investor's Account"""
+  investorAccount(id: ID!): InvestorAccount!
+
+  """Accounts that the investor representative is responsible for."""
+  investorAccounts(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: PaginationCursor
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: PaginationCursor
+
+    """
+    Returns the first n elements from the list.
+    Mutually exclusive with `last`.
+    """
+    first: Int
+
+    """
+    Returns the last n elements from the list.
+    Mutually exclusive with `first`.
+    """
+    last: Int
+    orderBy: InvestorAccountOrder! = {direction: ASC, field: Id}
+  ): InvestorAccountList!
+  name: String!
+  salesforceUrl: URL!
+}
+
+union InvestorSearchResult = InvestorAccount | InvestorRepresentative | ProgressReport
+
+input InvestorTripAcceptanceInput {
+  attendees: [String!]
+  investor: CreateInvestor!
+  preferences: InvestorTripPreferencesInput!
+  trip: String!
+}
+
+type InvestorTripAcceptanceOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input InvestorTripDeclinationInput {
+  investor: CreateInvestor!
+  trip: String!
+}
+
+type InvestorTripDeclinationOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input InvestorTripInterestInput {
+  investor: CreateInvestor!
+  preferences: InvestorTripInterestPreferencesInput!
+  trip: String!
+}
+
+type InvestorTripInterestOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input InvestorTripInterestPreferencesInput {
+  """Investor's desired trip experience limited to 255 characters"""
+  desiredExperience: String!
+  partySize: ExpeditionTripPartySize!
+  regions: [ExpeditionTripRegion!]!
+  seasons: [ExpeditionTripSeason!]!
+}
+
+input InvestorTripPreferencesInput {
+  accessibilityAssistance: Boolean!
+  activePassport: Boolean!
+  dietaryRestrictions: Boolean!
+  healthRequirements: Boolean!
+}
+
+enum InvestorType {
+  Individual
+  Organization
+}
+
+"""
+A JMESPath expression.
+
+See https://jmespath.org/ for details
+"""
+scalar JMESPath
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type JobModifier {
+  changeDelay(delay: Duration!): QueueJob!
+  changePriority(
+    """The new lifo value."""
+    lifo: Boolean
+
+    """The new priority. See `Job.priority` for details."""
+    priority: Int
+  ): QueueJob!
+
+  """
+  Promotes a delayed job so that it starts to be processed as soon as possible.
+  """
+  promote: QueueJob!
+
+  """
+  Completely remove the job from the queue.
+  
+  Note, this call will throw an exception if the job
+  is being processed when the call is performed.
+  """
+  remove: QueueJob!
+
+  """
+  Attempts to retry the job. Only a job that has failed or completed can be retried.
+  """
+  retry(
+    """
+    The expected job state: `failed` or `completed`.
+    
+    If the job is not in the provided state, then it's not reprocessed.
+    """
+    state: QueueJobState = Failed
+  ): QueueJob!
+  updateData(data: JSON!): QueueJob!
+  updateProgress(progress: JSON!): QueueJob!
+}
+
+type Language {
+  id: ID!
+  name: String!
+  pronunciation: String
+  sensitivity: Sensitivity!
+  speakers: Int!
+}
+
+"""
+A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`.
+"""
+scalar LocalDate
+
+type MailingAddress {
+  """City/Suburb/Town/Village"""
+  city: String
+
+  """2-letter country code"""
+  country: String
+
+  """Address line 1 (Street address/PO Box/Company name)"""
+  line1: String
+
+  """Address line 2 (Apartment/Suite/Unit/Building)"""
+  line2: String
+
+  """State/Province/County"""
+  state: String
+
+  """Zip/Postal Code"""
+  zip: String
+}
+
+input MailingAddressInput {
+  """City/Suburb/Town/Village"""
+  city: String
+
+  """2-letter country code"""
+  country: String
+
+  """Address line 1 (Street address/PO Box/Company name)"""
+  line1: String
+
+  """Address line 2 (Apartment/Suite/Unit/Building)"""
+  line2: String
+
+  """State/Province/County"""
+  state: String
+
+  """Zip/Postal Code"""
+  zip: String
+}
+
+enum MarketableProgram {
+  GlobalTranslationLeaders
+}
+
+type MondaySubscription {
+  board: String!
+  config: String
+  event: String!
+  hash: ID!
+}
+
+type Mutation {
+  acceptInvestorTripInvitation(input: InvestorTripAcceptanceInput!): InvestorTripAcceptanceOutput!
+
+  """Cancel an investor's donation subscription"""
+  cancelSubscription(
+    id: ID!
+
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    investorId: ID! = "me"
+  ): CancelSubscriptionOutput!
+
+  """Create a prayer commitment for an investor"""
+  createPrayerCommitment(input: CreatePrayerCommitmentInput!): CreatePrayerCommitmentOutput!
+
+  """Creates a new Stripe payment method for an investor"""
+  createStripePaymentMethod(
+    input: CreateStripePaymentMethodInput!
+
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    investorId: ID! = "me"
+  ): CreateStripePaymentMethodOutput!
+  declineInvestorTripInvitation(input: InvestorTripDeclinationInput!): InvestorTripDeclinationOutput!
+
+  """Delete an investor's payment method"""
+  deletePaymentMethod(
+    id: ID!
+
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    investorId: ID! = "me"
+  ): DeletePaymentMethodOutput!
+
+  """
+  Delete a webhook by its ID.
+  This will hopefully go away in the future, when we can do this automatically.
+  
+  Returns the newly created webhook ID or null if failed.
+  """
+  deregisterMondayWebhook(id: ID!): ID
+
+  """
+  Pay for a one-time donation or setup a recurring subscription
+  
+  1. Grab payment info from the client
+    - saved payment method
+    - stripe elements confirmation token
+  2. Call this mutation
+  3. If a payment intent is returned, confirm it with stripe elements
+  """
+  donate(input: DonateInput!): DonateOutput!
+  interestInInvestorTrip(input: InvestorTripInterestInput!): InvestorTripInterestOutput!
+  modifyQueue(name: String!): QueueModifier!
+  processContactCorrespondence(input: ContactCorrespondenceInput!): ContactCorrespondenceOutput!
+  processNewsletterCorrespondence(input: NewsletterCorrespondenceInput!): NewsletterCorrespondenceOutput!
+  processReportInquiryCorrespondence(input: ReportInquiryCorrespondenceInput!): ReportInquiryCorrespondenceOutput!
+  publishImpactReport(input: UpdateImpactReportInput!): UpdateImpactReportOutput!
+
+  """
+  Register a webhook to us for the board & event.
+  This will create duplicates, so be warned.
+  This will hopefully go away in the future, when we can do this automatically.
+  
+  Returns the newly created webhook ID or null if failed.
+  """
+  registerMondayWebhook(board: ID!, event: String!): ID
+
+  """
+  Register a webhook from the hash of a subscription we have declared.
+  This will create duplicates, so be warned.
+  This will hopefully go away in the future, when we can do this automatically.
+  
+  Returns the newly created webhook ID or null if failed.
+  """
+  registerMondayWebhookByHash(hash: ID!): ID
+
+  """Send verification email to investor"""
+  sendVerificationEmail(
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    investorId: ID! = "me"
+  ): Boolean!
+  shareImpactReport(input: UpdateImpactReportSharingInput!): UpdateImpactReportSharingOutput!
+  startTask(name: String!): Boolean!
+  syncMultiplicationRow(
+    """Sync all Monday rows."""
+    all: Boolean = false
+
+    """IDs or URLs of engagements. Will sync all found rows of these."""
+    engagements: [String!]
+    notifyWarnings: Boolean! = true
+
+    """
+    IDs or URLs of projects. Will sync all found rows of the engagements of these.
+    """
+    projects: [String!]
+
+    """IDs or URLs of Monday rows. Will sync all of these."""
+    rows: [String!]
+    sudo: Boolean! = false
+
+    """Wait for jobs to finish before returning. Defaults to 0."""
+    wait: Duration
+  ): [QueueJob!]!
+
+  """Toggle automatic delivery of Investor's Impact Reports"""
+  toggleImpactReportAutomaticDelivery(accountId: ID!, automatic: Boolean!): InvestorAccount!
+
+  """Update an investor"""
+  updateInvestor(
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    id: ID! = "me"
+    input: UpdateInvestorInput!
+  ): UpdateInvestorOutput!
+
+  """Update an investor's payment method"""
+  updatePaymentMethod(
+    input: UpdatePaymentMethodInput!
+
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    investorId: ID! = "me"
+  ): UpdatePaymentMethodOutput!
+}
+
+input NewsletterCorrespondenceInput {
+  investor: CreateInvestor!
+  telemetry: Telemetry
+}
+
+type NewsletterCorrespondenceOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+"""Floats that will have a value of 0 or more."""
+scalar NonNegativeFloat
+
+"""An order direction either ascending or descending"""
+enum OrderDirection {
+  ASC
+  DESC
+}
+
+type PageInfo {
+  """When paginating forwards, the cursor to continue."""
+  endCursor: PaginationCursor
+
+  """
+  When paginating forwards (using `first`), are there more items?
+  
+  This could be false even if there are more items when paginating backwards (using `last`).
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards (using `last`), are there more items?
+  
+  This could be false even if there are more items when paginating forwards (using `first`).
+  """
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: PaginationCursor
+}
+
+"""An opaque string for pagination"""
+scalar PaginationCursor
+
+type PaymentMethod {
+  address: MailingAddress
+  bank: String
+  brand: CardBrand
+
+  """
+  Whether the payment method is the default payment method for the investor
+  """
+  default: Boolean!
+  expiration: CardExpiration
+  fingerprint: String!
+  funding: CardFundingType
+  id: ID!
+  last4: String
+  name: String
+  type: PaymentMethodType!
+}
+
+"""one of the three is required"""
+input PaymentMethodInput {
+  saved: SavedPaymentMethodRef
+  stripe: CreateStripePaymentMethodInput
+}
+
+"""Type of payment method; either a card or a bank account"""
+enum PaymentMethodType {
+  BankAccount
+  Card
+}
+
+"""Percentage represented as a float between -1 and 1"""
+scalar PercentageDecimal
+
+type PeriodOfReportedWork {
+  impactReportPeriod: DateInterval!
+
+  """This is a calendar quarter, not a fiscal quarter."""
+  impactReportQuarter: YearQuarter!
+  partnershipDeadline: LocalDate!
+  reportPreparationPeriod: DateInterval!
+  translationActivityPeriod: DateInterval!
+}
+
+"""Floats that will have a value greater than 0."""
+scalar PositiveFloat
+
+"""Percentage represented as a float between 0 and 1"""
+scalar PositivePercentageDecimal
+
+enum PreferredContactMethod {
+  Email
+  Phone
+  Text
+}
+
+enum PreferredContactTime {
+  Afternoon
+  Evening
+  Morning
+}
+
+type Product {
+  category: String!
+  id: ID!
+  label: String!
+  medium: [ProductMedium!]!
+  scripture: [ScriptureRange!]!
+  unspecifiedScripture: UnspecifiedScripturePortion
+}
+
+"""
+How the product is delivered.
+
+This is independent of how the translation is done.
+"""
+enum ProductMedium {
+  App
+  Audio
+
+  """@label E-Book"""
+  EBook
+  Other
+  Print
+  TrainedStoryTellers
+  Video
+  Web
+}
+
+type ProgressMetric {
+  """The progress that was actually accomplished"""
+  actual: PositivePercentageDecimal!
+
+  """The progress that was planned to be made"""
+  planned: PositivePercentageDecimal!
+
+  """The variance between what was planned and what was accomplished"""
+  variance: PercentageDecimal!
+}
+
+type ProgressReport {
+  communityStories: [PromptResponse!]!
+  end: LocalDate!
+  engagement: Engagement!
+  featuredImage: Image
+  id: ID!
+  impactReport(accountId: ID!): QuarterlyInvestorImpactReport
+  metrics: EngagementProgressReportMetrics
+  start: LocalDate!
+  teamNews: [PromptResponse!]!
+  varianceExplanation: ProgressReportVarianceExplanation!
+}
+
+type ProgressReportVarianceExplanation {
+  comments: EditorJsJSON
+  reasons: [String!]!
+
+  """
+  Based on the cumulative variance. Here to be helpful since it goes hand in hand with this explanation
+  """
+  scheduleStatus: ScheduleStatus
+}
+
+type Project {
+  id: ID!
+  location: String
+  mapImageUrl: URL
+  name: String!
+  sensitivity: Sensitivity!
+}
+
+type PromptResponse {
+  id: ID!
+  prompt: EditorJsJSON!
+  response: EditorJsJSON!
+}
+
+type QuarterlyInvestorImpactReport {
+  account: InvestorAccount
+  greeting: String!
+  id: ID!
+  lastGeneratedAt: DateTime
+  periodOfReportedWork: PeriodOfReportedWork
+  progressReports: [ProgressReport!]!
+
+  """
+  The period covered by this impact report.
+  
+  This is a calendar quarter, not a fiscal quarter.
+  """
+  quarter: YearQuarter!
+  status: QuarterlyInvestorImpactReportStatus!
+}
+
+type QuarterlyInvestorImpactReportList {
+  """
+  The page of impact reports.
+  Note that this could include items that where also in sibling pages;
+  you should de-duplicate these based on ID.
+  """
+  items: [QuarterlyInvestorImpactReport!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total count of items"""
+  total: Int!
+}
+
+enum QuarterlyInvestorImpactReportStatus {
+  NotReady
+  Ready
+  Shared
+}
+
+type Query {
+  globalTranslationLeader(
+    """A GTL ID or short code"""
+    id: ID!
+  ): GlobalTranslationLeader
+  globalTranslationLeaders(
+    """Returns the elements in the list that come after the specified cursor."""
+    after: PaginationCursor
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: PaginationCursor
+
+    """
+    Returns the first n elements from the list.
+    Mutually exclusive with `last`.
+    """
+    first: Int
+
+    """
+    Returns the last n elements from the list.
+    Mutually exclusive with `first`.
+    """
+    last: Int
+    orderBy: GlobalTranslationLeaderOrder! = {direction: ASC, field: Id}
+  ): GlobalTranslationLeaderList!
+  impactReport(id: ID!): QuarterlyInvestorImpactReport!
+
+  """An investor"""
+  investor(
+    """
+    An investor's ID or email address
+    
+    Usually just omit this to use "me" which references the current investor
+    logged in (based on auth header)
+    """
+    id: ID! = "me"
+  ): Investor!
+
+  """An Investor's Account"""
+  investorAccount(id: ID!): InvestorAccount!
+  investorRepresentative(
+    """
+    An InvestorRepresentative's ID
+    
+    When omitted this defaults to the currently logged in InvestorRepresentative.
+    If the logged in user is not an InvestorRepresentative, this will throw an error.
+    """
+    id: ID
+  ): InvestorRepresentative!
+
+  """Full text search for investor related objects"""
+  investorSearch(term: String!): [InvestorSearchResult!]!
+  mondaySubscriptions: [MondaySubscription!]!
+  periodsOfReportedWork: [PeriodOfReportedWork!]!
+  progressReport(id: ID!): ProgressReport!
+  queue(name: String!): Queue!
+  salesforceUrl: URL!
+  tasks(name: String): [ScheduledTask!]!
+  unstable_stubBirthday: Birthday @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubDateInterval: DateInterval @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubDateTime: DateTime @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubDuration: Duration @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubEditorJsJSON: EditorJsJSON @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubEmailAddress: EmailAddress @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubFloat: Float @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubJMESPath: JMESPath @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubJSONObject: JSONObject @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubLocalDate: LocalDate @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubPaginationCursor: PaginationCursor @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubPercentageDecimal: PercentageDecimal @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubPositivePercentageDecimal: PositivePercentageDecimal @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubURL: URL @deprecated(reason: "Only here to prevent schema errors, do not use")
+  unstable_stubYearQuarter: YearQuarter @deprecated(reason: "Only here to prevent schema errors, do not use")
+  watermarkCampaignTotals: WatermarkCampaignTotals!
+}
+
+type Queue {
+  job(id: ID!): QueueJob
+  jobCounts: JSONObject!
+  jobs(end: Int, filter: JMESPath, order: OrderDirection, start: Int, types: [QueueJobState!]): [QueueJob!]!
+  maxed: Boolean!
+  metricsCompleted(end: Int, start: Int): JSONObject!
+  metricsFailed(end: Int, start: Int): JSONObject!
+  name: String!
+  paused: Boolean!
+}
+
+type QueueCleanOutput {
+  deletedIds: [ID!]!
+  queue: Queue!
+}
+
+type QueueJob {
+  """
+  Number of times the job has failed/completed.
+  
+  This will be 0 from the time the job is first added to the queue,
+  until the job finishes or throws,
+  following that worker execution it will be incremented to 1.
+  
+  @default 0
+  """
+  attemptsMade: Int!
+
+  """
+  Number of times the job has started / moved to active.
+  
+  Rate limits/delays/etc. also count towards this number.
+  
+  @default 0
+  """
+  attemptsStarted: Int!
+  createdAt: DateTime!
+  data(path: JMESPath): JSON
+  delayHuman: String!
+  delayISO: Duration!
+  failedReason: String
+  failures: [[String!]!]!
+  finishedAt: DateTime
+  id: ID!
+  json(path: JMESPath): JSON
+  name: String!
+  options(path: JMESPath): JSON
+
+  """
+  Ranges from 0 (highest priority) to 2 097 152 (lowest priority).
+  Note that using priorities has a slight impact on performance,
+  so do not use it if not required.
+  
+  @default 0
+  """
+  priority: Int!
+  processedAt: DateTime
+  progress(path: JMESPath): JSON
+  queue: Queue!
+  return(path: JMESPath): JSON
+  state: QueueJobState!
+}
+
+enum QueueJobState {
+  Active
+  Completed
+  Delayed
+  Failed
+  Paused
+  Prioritized
+  Repeat
+  Unknown
+  Wait
+  Waiting
+  WaitingChildren
+}
+
+type QueueModifier {
+  add(data: JSONObject, name: String!, options: JSONObject): QueueJob!
+
+  """Removes certain jobs from the queue."""
+  clean(
+    grace: Duration!
+
+    """Max number of jobs to clean"""
+    limit: Int!
+    type: QueueJobState! = Completed
+  ): QueueCleanOutput!
+
+  """
+  Drains the queue, i.e., removes all jobs that are waiting
+  or delayed, but not active, completed or failed.
+  """
+  drain(
+    """Whether to also remove delayed jobs"""
+    delayed: Boolean = false
+  ): Queue!
+  job(id: ID!): JobModifier!
+
+  """
+  Completely destroys the queue and all of its contents irreversibly.
+  
+  This method will the *pause* the queue and requires that there are no active jobs.
+  It is possible to bypass this requirement, i.e. not having active jobs using the `force` option.
+  
+  Note: This operation requires to iterate on all the jobs stored in the queue
+  and can be slow for very large queues.
+  """
+  obliterate(
+    """
+    How many jobs to move at once.
+    This is not an overall limit - all jobs are still processed
+    """
+    batchSize: Int = 1000
+
+    """Force obliteration even with active jobs in the queue"""
+    force: Boolean = false
+  ): Queue!
+  pause: Queue!
+
+  """Promote all the delayed jobs"""
+  promoteJobs(
+    """
+    How many jobs to move at once.
+    This is not an overall limit - all jobs are still processed
+    """
+    batchSize: Int = 1000
+  ): Queue!
+  resume: Queue!
+
+  """Retry all the failed or completed jobs"""
+  retryJobs(
+    """
+    How many jobs to move at once.
+    This is not an overall limit - all jobs are still processed
+    """
+    batchSize: Int = 1000
+
+    """
+    When to start moving jobs to wait status.
+    Mutually exclusive with `startAt`.
+    
+    Defaults to now if neither are specified.
+    """
+    startAfter: Duration
+
+    """
+    When to start moving jobs to wait status.
+    Mutually exclusive with `startAfter`.
+    
+    Defaults to now if neither are specified.
+    """
+    startAt: DateTime
+
+    """Which jobs to retry? failed or completed"""
+    state: QueueJobState = Failed
+  ): Queue!
+}
+
+input ReportInquiryCorrespondenceInput {
+  investor: CreateInvestor!
+  telemetry: Telemetry
+  type: String!
+  year: Int!
+}
+
+type ReportInquiryCorrespondenceOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input SavedPaymentMethodRef {
+  id: ID!
+}
+
+enum ScheduleStatus {
+  Ahead
+  Behind
+  OnTime
+}
+
+type ScheduledTask {
+  enabled: Boolean!
+  name: String!
+  nextRuns(count: Int! = 5, format: DateTimeFormat! = ISO, timezone: String): [String!]!
+  running: Boolean!
+}
+
+type ScriptureRange {
+  end: ScriptureReference!
+  start: ScriptureReference!
+}
+
+type ScriptureReference {
+  book: String!
+  chapter: Int!
+  verse: Int!
+}
+
+enum Sensitivity {
+  High
+  Low
+  Medium
+}
+
+"""The type of investor sharing"""
+enum Sharing {
+  Email
+  Link
+  Print
+}
+
+interface StripeIntent {
+  clientSecret: String
+}
+
+type StripePaymentIntent implements StripeIntent {
+  clientSecret: String
+}
+
+input Telemetry {
+  """Name of the calling app, i.e. Pray For Zero"""
+  app: String
+
+  """Name of the calling feature, i.e. Contact Us Form"""
+  feature: String
+
+  """
+  How the user got to this feature.
+  Maybe a url to a campaign landing page.
+  Maybe just a campaign name.
+  Also, Campaign short codes
+  """
+  referrer: String
+  sourceName: String
+
+  """URL of the calling app, i.e. https://seedcompany.com/contact-us"""
+  sourceUrl: URL
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+type UnspecifiedScripturePortion {
+  book: String!
+  totalVerses: Int!
+}
+
+input UpdateImpactReportInput {
+  investorId: ID!
+  reportDate: LocalDate!
+}
+
+type UpdateImpactReportOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input UpdateImpactReportSharingInput {
+  investorId: ID!
+  reportDate: DateTime
+  sharing: Sharing!
+}
+
+type UpdateImpactReportSharingOutput {
+  success: Boolean! @deprecated(reason: "This operation will not return if there is a failure.\nCheck the errors instead of using this field.\nIf you need to reference a field in the output use `__typename` instead.\nThis field will go away at any point in time without warning.")
+}
+
+input UpdateInvestorInput {
+  firstName: String
+  lastName: String
+  mailingAddress: MailingAddressInput
+  phone: String
+}
+
+type UpdateInvestorOutput {
+  investor: Investor!
+}
+
+input UpdatePaymentMethodInput {
+  address: MailingAddressInput
+  default: Boolean!
+  expiration: CardExpirationInput
+  id: ID!
+  name: String
+}
+
+type UpdatePaymentMethodOutput {
+  paymentMethod: PaymentMethod!
+}
+
+type WatermarkCampaignTotals {
+  """Total amount donated to the campaign"""
+  amount(
+    """Should this amount include pledged donations?"""
+    includePledges: Boolean! = true
+  ): Float!
+  pledged: Float!
+  received: Float!
+}
+
+"""
+A specific quarter time frame represented as "YYYY-Q"
+"""
+scalar YearQuarter

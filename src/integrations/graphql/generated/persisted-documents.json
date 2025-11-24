@@ -1,0 +1,6 @@
+{
+  "d061bcd4cb2432f9df51139f474897993188f45b9248ffd133ee9f7ea6ff0d26": "mutation Donate($input: DonateInput!) { __typename donate(input: $input) { __typename intent { __typename clientSecret } } }",
+  "1e11fcfe8697edb14e21bf1163fbeb17ab688fccfd831bc327bff989c30fe922": "query WatermarkCampaign { __typename watermarkCampaignTotals { __typename amount } }",
+  "cef866c2932c2477b64dfa28e32d5ba108faa9b54b08a2e8b4b43ea215ebbeeb": "query SponsorDetail($id: ID!) { __typename globalTranslationLeader(id: $id) { __typename biography focus funding { __typename remaining(applyPledges: true) } gender id image name region shortCode } }",
+  "e654ac836f6060761cfb410f4806a5dd3fb604adcd59744b07b178ebc1f79efa": "fragment sponsorCard on GlobalTranslationLeader { __typename biography focus funding { __typename remaining(applyPledges: true) } gender id image name region shortCode } query SponsorList { __typename globalTranslationLeaders { __typename items { __typename ...sponsorCard } } }"
+}
