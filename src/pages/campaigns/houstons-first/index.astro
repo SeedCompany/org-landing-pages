@@ -50,19 +50,20 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
       </div>
       <!-- Main Content -->
       {
-        campaign.aboutSections?.map((section) => (
-          <>
-            <h2
-              class="text-4xl text-center md:text-left gotham-bold tracking-tight
-        sm:text-5xl pt-12 pb-8 lg:py-4"
-            >
-              {section.title}
-            </h2>
-            <div class="prose prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:gotham-bold prose-h2:tracking-tight prose-p:text-md prose-p:p-0 prose-p:m-0 prose-p:leading-none prose-p:md:text-lg max-w-none lg:max-w-3xl lg:mx-0">
-              <PortableText value={section.content ?? []} />
+        campaign.aboutSections &&
+          campaign.aboutSections.map((section) => (
+            <div>
+              <h2
+                class="text-4xl md:text-left gotham-bold tracking-tight
+      sm:text-5xl pt-12 pb-8 lg:py-4"
+              >
+                {section.title}
+              </h2>
+              <div class="prose prose-h2:text-3xl prose-h3:text-2xl prose-h3:leading-none prose-h3:m-0 prose-h3:p-0 prose-h2:md:text-4xl prose-h2:!gotham-bold prose-h2:tracking-tight prose-p:text-md prose-p:p-0 prose-p:m-0 prose-p:leading-none prose-p:md:text-lg max-w-none lg:max-w-3xl lg:mx-0">
+                <PortableText value={section.content ?? []} />
+              </div>
             </div>
-          </>
-        ))
+          ))
       }
     </main>
     <!-- Give form desktop -->
