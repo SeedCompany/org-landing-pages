@@ -8,6 +8,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
 import HoustonFAQ from './_components/HoustonFAQ.astro';
+import { PortableText } from 'astro-portabletext';
 const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-first' });
 ---
 
@@ -48,24 +49,21 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
       >
       </div>
       <!-- Main Content -->
-      <h2
-        class="text-4xl text-center md:text-left gotham-bold tracking-tight
+      {
+        campaign.aboutSections?.map((section) => (
+          <>
+            <h2
+              class="text-4xl text-center md:text-left gotham-bold tracking-tight
         sm:text-5xl pt-12 pb-8 lg:py-4"
-      >
-        Translate the <br />Book of Matthew.
-      </h2>
-      <div class="prose">
-        <p>
-          Partnering with a missions-focused church like Houston's First is a big step for Gospel
-          impact, but we're here to walk with you every part of the way.
-        </p>
-        <p>
-          On Sundays (and beyond), expect generous worship giving, biblical preaching on Matthew,
-          and a community passionate about global Scripture access. Whether pitching to leadership
-          or the full congregation, you'll find friendly pastors, eager volunteers, and channels
-          like World Mission Offering (historically millions raised for translation & missions).
-        </p>
-      </div>
+            >
+              {section.title}
+            </h2>
+            <div class="prose prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:gotham-bold prose-h2:tracking-tight prose-p:text-md prose-p:p-0 prose-p:m-0 prose-p:leading-none prose-p:md:text-lg max-w-none lg:max-w-3xl lg:mx-0">
+              <PortableText value={section.content ?? []} />
+            </div>
+          </>
+        ))
+      }
     </main>
     <!-- Give form desktop -->
     <aside class="hidden lg:block sticky top-0 -translate-y-1/5 self-start">
