@@ -1,12 +1,14 @@
 ---
-// import { toHTML } from '../../../lib/portableTextSerializer';
-// import type { Campaign } from '../../../pages/campaigns/campaignBySlug.groq';
+import type { Campaign } from '../../../pages/campaigns/campaignBySlug.groq';
+import { campaignBySlug } from '../../../pages/campaigns/campaignBySlug.groq';
+import { sanityClient as sanity } from 'sanity:client';
 import Hero from './_components/Hero.astro';
 import GiveFormWithTotals from '../../../components/GiveFormWithTotals.astro';
 import Layout from '../../../layouts/Layout.astro';
 import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
 // import HoustonFAQ from './_components/HoustonFAQ.astro';
+const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-first' });
 ---
 
 <Layout>
@@ -28,7 +30,7 @@ import Footer from '../../../components/Footer.astro';
         from-gray to-transparent"
       >
       </div>
-      <Hero />
+      <Hero campaignData={campaign} />
       <!-- Give form mobile -->
       <aside class="form" id="give-form-mobile">
         <GiveFormWithTotals disableDialog={true} />
