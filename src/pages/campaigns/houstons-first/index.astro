@@ -7,7 +7,7 @@ import GiveFormWithTotals from '../../../components/GiveFormWithTotals.astro';
 import Layout from '../../../layouts/Layout.astro';
 import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
-// import HoustonFAQ from './_components/HoustonFAQ.astro';
+import HoustonFAQ from './_components/HoustonFAQ.astro';
 const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-first' });
 ---
 
@@ -32,7 +32,7 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
       </div>
       <Hero campaignData={campaign} />
       <!-- Give form mobile -->
-      <aside class="form" id="give-form-mobile">
+      <aside id="give-form-mobile">
         <GiveFormWithTotals disableDialog={true} />
       </aside>
       <Video
@@ -74,7 +74,7 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
   </div>
 
   <!-- FAQs -->
-  <!-- <HoustonFAQ campaignData={campaignData} /> -->
+  <HoustonFAQ campaignData={campaign} />
   <section class="mb-[-140px] lg:mb-0">
     <Footer />
   </section>

@@ -3693,10 +3693,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@portabletext/toolkit@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@portabletext/toolkit@npm:4.0.0"
+  dependencies:
+    "@portabletext/types": "npm:^3.0.0"
+  checksum: 10c0/4d4bd55f1f12e9c297d48a3e8eb9de485ec78dc10004e91a7d2e6da936660d7cdc860b7734f352086238791af3b6d83813c9a51be2de7745ef7086816b166dc3
+  languageName: node
+  linkType: hard
+
 "@portabletext/types@npm:^2.0.13, @portabletext/types@npm:^2.0.15":
   version: 2.0.15
   resolution: "@portabletext/types@npm:2.0.15"
   checksum: 10c0/383ca702340d69ba7355e2a02399c815d32f4e27b8d417aebfbd9bcd3fc49e5f15985f983913c1d0f3da8602297898e5704ed53f4adf5a446b9a3b132c25a8cb
+  languageName: node
+  linkType: hard
+
+"@portabletext/types@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@portabletext/types@npm:3.0.0"
+  checksum: 10c0/efc2a219d639c7d97a4943fca8bc5e259aea13377b4ecb96f4c150c3f3bd1361034b37b1b89f5001a39963104614aa68eb43e0a18514d0ad5a229f7db7f73e5a
   languageName: node
   linkType: hard
 
@@ -6313,6 +6329,18 @@ __metadata:
     "@iconify/types": "npm:^2.0.0"
     "@iconify/utils": "npm:^2.1.30"
   checksum: 10c0/036a608928036868c727ec041cb1ef7e42000dbb272ad4357579678147cb1a3fd1be97a8e8d6f457ee58bcd9ac09f032da395b068f79a2ddd384f4aee44e91e4
+  languageName: node
+  linkType: hard
+
+"astro-portabletext@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "astro-portabletext@npm:0.12.0"
+  dependencies:
+    "@portabletext/toolkit": "npm:^4.0.0"
+    "@portabletext/types": "npm:^3.0.0"
+  peerDependencies:
+    astro: ">=4.6.0"
+  checksum: 10c0/d095eee4bc3c22ca14d9f93b493140b569c8f925f63f4b0cd961a759adedd325baa846d265aba74f424f3f14a8e59378e52aa9fa317ea00e6cf8dd05806cf547
   languageName: node
   linkType: hard
 
@@ -12366,6 +12394,7 @@ __metadata:
     "@types/serialize-javascript": "npm:^5.0.4"
     astro: "npm:^5.7.9"
     astro-icon: "npm:^1.1.5"
+    astro-portabletext: "npm:^0.12.0"
     autoprefixer: "npm:^10.4.19"
     chart.js: "npm:^4.4.9"
     dotenv: "npm:^16.5.0"
