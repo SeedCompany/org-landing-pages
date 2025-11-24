@@ -11,9 +11,17 @@ generated
 .yarn/cache
 .yarn/unplugged
 .yarn/install-state.gz
+.yarn/build-state.yml
+.yarn/sdks
 .pnp.*
 node_modules
 package-lock.json
+
+# Keep these Yarn files
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
 # logs
 npm-debug.log*
