@@ -20,9 +20,9 @@ const { campaignData } = Astro.props;
             <dt>
               <button
                 type="button"
-                command="--toggle"
-                commandfor="faq-0"
                 class="flex w-full items-start justify-between text-left text-gray-900"
+                aria-expanded="false"
+                aria-controls="faq-0"
               >
                 <span class="text-base/7 faq-question"
                   >How much of my gift goes straight to Matthew's translation?</span
@@ -72,9 +72,9 @@ const { campaignData } = Astro.props;
             <dt>
               <button
                 type="button"
-                command="--toggle"
-                commandfor="faq-1"
                 class="flex w-full items-start justify-between text-left text-gray-900"
+                aria-expanded="false"
+                aria-controls="faq-1"
               >
                 <span class="text-base/7 faq-question">What does a typical gift actually fund?</span
                 >
