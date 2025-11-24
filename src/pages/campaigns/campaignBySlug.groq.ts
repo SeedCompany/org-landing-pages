@@ -5,7 +5,7 @@ import { defineQuery } from 'groq';
 // It should be more specific to this actual use case,
 // to make room for different campaign projections.
 // A common example of two different projections is list v detail.
-export type Campaign = ClientReturn<typeof campaignBySlug> & {};
+export type Campaign = NonNullable<ClientReturn<typeof campaignBySlug, unknown>>;
 
 export const campaignBySlug = defineQuery(`*[_type == "campaign" && slug.current == $slug][0] {
   templateType,

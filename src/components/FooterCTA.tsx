@@ -1,7 +1,6 @@
 import React from 'react';
 import { HeartIcon } from '@heroicons/react/24/outline';
-import { sanityClient as sanity } from 'sanity:client';
-import imageUrlBuilder from '@sanity/image-url';
+import { sanityClient as sanity } from '~/sanity';
 
 interface Partner {
   logo?: string;
@@ -12,8 +11,6 @@ interface Props {
   ctaLink: string;
   partners: Partner[];
 }
-
-const builder = imageUrlBuilder(sanity);
 
 const FooterCTA: React.FC<Props> = ({ ctaLink, partners }) => {
   return (
@@ -42,7 +39,7 @@ const FooterCTA: React.FC<Props> = ({ ctaLink, partners }) => {
                 <div key={index} className="flex flex-col items-center">
                   {partner.logo && (
                     <img
-                      src={builder.image(partner.logo).url()}
+                      src={sanity.image(partner.logo).url()}
                       alt={partner.name || 'Partner logo'}
                       className="h-16 w-auto rounded-lg shadow-md"
                     />

@@ -1,9 +1,9 @@
 ---
-import { toHTML } from '../../lib/portableTextSerializer';
+import { portableText } from '~/sanity';
+import { FaqAccordion } from '~/common/FaqAccordion.tsx';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 import Hero from '../../components/Hero.astro';
 import GiveFormWithTotals from '../GiveFormWithTotals.astro';
-import '../../styles/global.css';
 import Layout from '../../layouts/Layout.astro';
 import Video from '../../components/Video.astro';
 import ContentSection from '../../components/ContentSection.astro';
@@ -189,7 +189,7 @@ const isAfterSept19 = todayFormatted >= sept19;
 </style>
 <Layout
   title={campaignData.pageTitle ||
-    (campaignData.heading ? toHTML(campaignData.heading) : 'Campaign Page')}
+    (campaignData.heading ? portableText.toHTML(campaignData.heading) : 'Campaign Page')}
 >
   <div class="page">
     <main class="content">
@@ -209,7 +209,7 @@ const isAfterSept19 = todayFormatted >= sept19;
       {
         campaignData.aboutSections?.map((section) => (
           <ContentSection
-            content={toHTML(section.content)}
+            content={portableText.toHTML(section.content)}
             htmlContent={true}
             className="content-body"
           />
@@ -222,11 +222,11 @@ const isAfterSept19 = todayFormatted >= sept19;
       </h2>
       <DonationCard />
       <div class="prose">
-        <div set:html={toHTML(campaignData.body)} />
+        <div set:html={portableText.toHTML(campaignData.body)} />
       </div>
     </main>
     <aside class="form form-desktop">
-      <GiveFormWithTotals disabledDialog={true} />
+      <GiveFormWithTotals />
     </aside>
   </div>
 
@@ -236,76 +236,12 @@ const isAfterSept19 = todayFormatted >= sept19;
         <section class="donation-faq pb-16 z-100">
           {campaignData.templateType === 'church' &&
             campaignData.faqs[0]?.template === 'faqAccordion' && (
-              <>
-                <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module" />
-                <div class="faq-wrapper">
-                  <div class="px-6 py-2 lg:pl-14 lg:pr-0">
-                    <div>
-                      <h2 class="faq-heading text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                        Frequently Asked Questions
-                      </h2>
-                      <dl class="mt-16 divide-y divide-gray-900/10">
-                        {campaignData.faqs.map((faq, index) => (
-                          <div class="py-6 first:pt-0 last:pb-0">
-                            <dt>
-                              <button
-                                type="button"
-                                command="--toggle"
-                                commandfor={`faq-${index}`}
-                                class="flex w-full items-start justify-between text-left text-gray-900"
-                              >
-                                <span class="text-base/7 faq-question">{faq.question}</span>
-
-                                <span class="ml-6 flex h-7 items-center">
-                                  <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    data-slot="icon"
-                                    aria-hidden="true"
-                                    class="size-6 [[aria-expanded='true']_&]:hidden"
-                                  >
-                                    <path
-                                      d="M12 6v12m6-6H6"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
-                                  <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.5"
-                                    data-slot="icon"
-                                    aria-hidden="true"
-                                    class="size-6 [&:not([aria-expanded='true']_*)]:hidden"
-                                  >
-                                    <path
-                                      d="M18 12H6"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
-                                </span>
-                              </button>
-                            </dt>
-                            <el-disclosure
-                              id={`faq-${index}`}
-                              hidden={index > 0}
-                              class="[&:not([hidden])]:contents"
-                            >
-                              <dd class="mt-2 pr-12">
-                                <div class="prose mt-4 faq-answer" set:html={toHTML(faq.answer)} />
-                              </dd>
-                            </el-disclosure>
-                          </div>
-                        ))}
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-              </>
+              <div class="faq-wrapper px-6 py-2 lg:pl-14 lg:pr-0">
+                <h2 class="faq-heading text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                  Frequently Asked Questions
+                </h2>
+                <FaqAccordion faqs={campaignData.faqs} client:load css={{ mt: '16' }} />
+              </div>
             )}
           {campaignData.templateType === 'church' &&
             campaignData.faqs[0]?.template === 'faqGrid' && (
@@ -316,7 +252,7 @@ const isAfterSept19 = todayFormatted >= sept19;
                 {campaignData.faqs.map((faq) => (
                   <div>
                     <h3 class="text-lg font-semibold">{faq.question}</h3>
-                    <div class="prose mt-2" set:html={toHTML(faq.answer)} />
+                    <div class="prose mt-2" set:html={portableText.toHTML(faq.answer)} />
                   </div>
                 ))}
               </div>
@@ -331,7 +267,7 @@ const isAfterSept19 = todayFormatted >= sept19;
                   {campaignData.faqs.map((faq) => (
                     <li>
                       <h3 class="text-lg font-semibold">{faq.question}</h3>
-                      <div class="prose mt-2" set:html={toHTML(faq.answer)} />
+                      <div class="prose mt-2" set:html={portableText.toHTML(faq.answer)} />
                     </li>
                   ))}
                 </ul>
@@ -367,12 +303,12 @@ const isAfterSept19 = todayFormatted >= sept19;
     )
   }
   <script>
-    const form = document.querySelector('#give-form-mobile');
-    const button = document.querySelector('.mobile-donation-cta');
+    const form = document.querySelector('#give-form-mobile')!;
+    const button = document.querySelector('.mobile-donation-cta')!;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const isFormVisible = entries[0].isIntersecting;
+        const isFormVisible = entries[0]!.isIntersecting;
         if (isFormVisible) {
           button.classList.add('hidden');
         } else {

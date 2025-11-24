@@ -34,6 +34,8 @@ ARG POSTHOG_UI_HOST
 ARG POSTHOG_API_HOST
 ARG REDIS_URL
 ARG REDIS_NS
+ARG GIT_HASH
+ARG GIT_BRANCH
 ENV PUBLIC_SANITY_PROJECT_ID=$SANITY_PROJECT_ID \
     PUBLIC_SANITY_DATASET=$SANITY_DATASET \
     PUBLIC_RECAPTCHA_SITE_KEY=$RECAPTCHA_SITE_KEY \
@@ -43,7 +45,9 @@ ENV PUBLIC_SANITY_PROJECT_ID=$SANITY_PROJECT_ID \
     PUBLIC_POSTHOG_UI_HOST=$POSTHOG_UI_HOST \
     PUBLIC_POSTHOG_API_HOST=$POSTHOG_API_HOST \
     REDIS_URL=$REDIS_URL \
-    REDIS_NS=$REDIS_NS
+    REDIS_NS=$REDIS_NS \
+    PUBLIC_GIT_HASH=$GIT_HASH \
+    PUBLIC_GIT_BRANCH=$GIT_BRANCH
 
 ENV NODE_ENV=production
 
@@ -62,7 +66,7 @@ FROM env AS builder
 COPY --from=deps /app .
 COPY . .
 
-RUN yarn sanity:gen && yarn build
+RUN yarn sanity:gen && yarn gql:gen && yarn panda:gen && yarn build
 
 # Clear all downloaded libraries to reduce image size
 RUN yarn cache clean --all

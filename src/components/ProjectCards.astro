@@ -31,21 +31,19 @@ const { projectData } = Astro.props;
     />
   </div>
   <div class="relative donation-card-content">
-    <ProgressBar maxNumber={100} currentNumber={100} backgroundType="image" />
-    <div class="donation-card-subheading mt-2">
-      Above and Beyond
-    </div>
+    <ProgressBar maxNumber={100} currentNumber={100} backgroundType="dots" />
+    <div class="donation-card-subheading mt-2">Above and Beyond</div>
     <div class="lg:flex justify-between gap-2">
       <div class="donation-card-heading">Opportunity Eight</div>
       <div class="flex items-center">
-        <LockSection client:load fundingStatus="funded" />
+        <LockSection fundingStatus="funded" />
         <span class="ml-2 sus-green-text font-medium">$2,000,000 +</span>
       </div>
     </div>
     <p class="donation-card-description">
       God has provided above and beyond all expectations, leading us to add another opportunity.
-      With this newly added opportunity, we will cumulatively reach 60 people groups and bring more
-      access of God’s Word to 17,102,597 people. We celebrate that the following milestones will now
+      With this newly added opportunity, we will cumulatively reach 63 people groups and bring more
+      access of God’s Word to 17,749,597 people. We celebrate that the following milestones will now
       be completed:
     </p>
     <ul class="donation-card-ul">

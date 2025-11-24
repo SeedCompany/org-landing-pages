@@ -1,7 +1,5 @@
 ---
-import { sanityClient as sanity } from 'sanity:client';
-import img from '@sanity/image-url';
-import { toHTML } from '@portabletext/to-html';
+import { sanityClient as sanity, portableText } from '~/sanity';
 import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
 
 interface Props {
@@ -17,9 +15,6 @@ const { campaignData } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{campaignData.heading}</title>
-    <style is:global>
-      @import '../../styles/global.css';
-    </style>
   </head>
   <body>
     <article>
@@ -30,7 +25,7 @@ const { campaignData } = Astro.props;
             campaignData.heroImage && (
               <img
                 class="md:w-1/2 h-auto mb-4 mr-8 rounded-lg shadow-lg"
-                src={img(sanity).image(campaignData.heroImage).url()}
+                src={sanity.image(campaignData.heroImage).url()}
                 alt={campaignData.heroImageAlt || 'Default alt text'}
               />
             )
@@ -38,14 +33,14 @@ const { campaignData } = Astro.props;
           <div class="p-4">
             <h1 class="font-bold mb-4 text-[#323232]">{campaignData.heading}</h1>
             <!-- Render the heroCopy content -->
-            <div class="mb-[60px]" set:html={toHTML(campaignData.heroCopy)} />
+            <div class="mb-[60px]" set:html={portableText.toHTML(campaignData.heroCopy)} />
             <a class="cta" href={campaignData.ctaLink}>{campaignData.ctaText}</a>
           </div>
         </div>
       </section>
       <div class="px-8 max-w-7xl mx-auto">
         <!-- Render the body content -->
-        <div class="text-[#323232] mb-6" set:html={toHTML(campaignData.body)} />
+        <div class="text-[#323232] mb-6" set:html={portableText.toHTML(campaignData.body)} />
 
         <div class="mt-8 p-4 border border-slate-300 rounded">
           <h2 class="font-semibold text-[#323232]">Advocates Template</h2>

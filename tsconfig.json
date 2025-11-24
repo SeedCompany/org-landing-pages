@@ -1,12 +1,23 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "checkJs": true,
     "noUncheckedIndexedAccess": true,
     // Temporary until GROQ type gen is compatible
     // "exactOptionalPropertyTypes": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
+    "plugins": [
+      {
+        "name": "@0no-co/graphqlsp",
+        "schema": "./schema.graphql",
+      },
+    ],
+    "baseUrl": ".",
+    "paths": {
+      // See note in panda.config.ts about this mapping.
+      "styled-system/*": ["./generated/styled-system/*"],
+      "~/*": ["./src/integrations/*", "./src/*"]
+    }
   },
   "include": [".astro/types.d.ts", "**/*", "*.mjs", ".prettierrc.mjs"],
   "exclude": ["dist"]

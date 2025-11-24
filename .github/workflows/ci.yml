@@ -23,12 +23,17 @@ jobs:
       - name: Generate Sanity types
         run: yarn sanity:gen
 
+      - name: Generate GraphQL
+        run: yarn gql:gen
+
+      - name: Generate Panda CSS
+        run: yarn panda:gen
+
       - name: Check TypeScript
         run: yarn type-check
 
       - name: Lint
-        run: yarn eslint --max-warnings 0 .
-        continue-on-error: true
+        run: yarn lint:check
 
       - name: Build
         run: yarn build

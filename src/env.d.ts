@@ -1,7 +1,7 @@
 /// <reference types="astro/client" />
 /// <reference types="@sanity/astro/module" />
-/// <reference types="../sanity.types.ts" />
-/// <reference types="./components/posthog/posthog.d.ts" />
+/// <reference types="./integrations/sanity/generated/sanity.types.ts" />
+/// <reference types="./integrations/posthog/posthog.d.ts" />
 
 interface ViteTypeOptions {
   strictImportMetaEnv: unknown;
@@ -17,6 +17,9 @@ interface ImportMetaEnv {
   readonly PUBLIC_POSTHOG_KEY?: string;
   readonly PUBLIC_POSTHOG_UI_HOST?: string;
   readonly PUBLIC_POSTHOG_API_HOST?: string;
+
+  readonly PUBLIC_GIT_HASH?: string;
+  readonly PUBLIC_GIT_BRANCH?: string;
 }
 
 interface ImportMeta {

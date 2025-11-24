@@ -1,7 +1,6 @@
 ---
-import type { ClientReturn } from '@sanity/client';
-import { sanityClient as sanity } from 'sanity:client';
-import { toPlainText } from '../../lib/portableTextSerializer.js';
+import { sanityClient as sanity, portableText } from '~/sanity';
+import Layout from '~/layouts/Layout.astro';
 
 // Import the templates for different campaign types
 import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
@@ -20,16 +19,9 @@ const templateMap = {
   church: ChurchTemplate,
 };
 
-interface Props {
-  campaign?: ClientReturn<typeof campaignBySlug>;
-}
+const { slug } = Astro.params as { slug: string };
 
-const { slug } = Astro.params;
-let { campaign } = Astro.props;
-
-// Fetch campaign data if not provided via props
-campaign ??= await sanity.fetch(campaignBySlug, { slug });
-
+const campaign = await sanity.fetch(campaignBySlug, { slug });
 if (!campaign) {
   return new Response(null, {
     status: 404,
@@ -38,31 +30,24 @@ if (!campaign) {
 }
 
 // Determine which template to use
-const TemplateComponent = templateMap[campaign.templateType] || MarketingTemplate;
-const pageTitle = campaign.pageTitle || (campaign.heading ? toPlainText(campaign.heading) : 'Campaign Page');
+const TemplateComponent = templateMap[campaign.templateType!] || MarketingTemplate;
+const pageTitle =
+  campaign.pageTitle ||
+  (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/favicon.png" type="image/svg+xml" />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <section>
-      {/* Render the template with campaign data */}
-      {campaign && TemplateComponent && <TemplateComponent campaignData={campaign} />}
+<Layout title={pageTitle}>
+  <main>
+    {/* Render the template with campaign data */}
+    {campaign && TemplateComponent && <TemplateComponent campaignData={campaign} />}
 
-      {/* Display warning if template type is unknown */}
-      {
-        campaign && !templateMap[campaign.templateType] && (
-          <div class="text-center py-10 text-orange-600">
-            <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
-          </div>
-        )
-      }
-    </section>
-  </body>
-</html>
+    {/* Display warning if template type is unknown */}
+    {
+      campaign && !templateMap[campaign.templateType!] && (
+        <div class="text-center py-10 text-orange-600">
+          <p>Warning: Unknown template type '{campaign.templateType}'. Using default template.</p>
+        </div>
+      )
+    }
+  </main>
+</Layout>

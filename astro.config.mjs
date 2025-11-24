@@ -5,12 +5,20 @@ import icon from 'astro-icon';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
 import sanity from '@sanity/astro';
-import { posthogAstro as posthog } from './src/components/posthog/posthog.astro-plugin.js';
+import { graphqlBabelPlugin as graphql } from './src/integrations/graphql/babel-plugin.js';
+import { posthogAstro as posthog } from './src/integrations/posthog/posthog.astro-plugin.js';
 
 export default defineConfig({
   integrations: [
-    tailwind(),
-    react(),
+    tailwind({
+      // We import tw base styles in global.css - do not duplicate
+      applyBaseStyles: false,
+    }),
+    react({
+      babel: {
+        plugins: [graphql],
+      },
+    }),
     sanity({
       projectId: env.PUBLIC_SANITY_PROJECT_ID,
       dataset: env.PUBLIC_SANITY_DATASET,

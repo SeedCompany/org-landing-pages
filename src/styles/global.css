@@ -5,15 +5,12 @@
 @import '@fontsource/oswald/700.css';
 @import '@fontsource/dm-serif-text/400.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tw_reset, reset, panda_base, tokens, tw_components, recipes, tw_utilities, panda_utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@layer tw_reset { @tailwind base; }
+@layer tw_components { @tailwind components; }
+@layer tw_utilities { @tailwind utilities; }
+
 :root {
   /* Sustainers Template Colors */
   --sus-primary-bg: #414e46;
@@ -189,16 +186,14 @@ Church page styles
   background: #fff;
 }
 .form-wrapper {
-  display: flex
-;
-    flex-direction: column;
-    box-sizing: border-box;
-    overflow: hidden;
-    justify-content: center;
-    align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  justify-content: center;
+  align-items: stretch;
 }
-.form-wrapper button
-.hero-bg {
+.form-wrapper button .hero-bg {
   height: 884px;
 }
 .logo {
@@ -273,7 +268,7 @@ Church page styles
   font-weight: 600;
 }
 .donation-card-content {
-  @apply pb-6
+  @apply pb-6;
 }
 .donation-card-content > :not(.progress-bar) {
   @apply px-6;
@@ -407,29 +402,6 @@ Church page styles
 .footer {
   background-color: var(--footer-bg);
   color: var(--footer-text);
-}
-/*
-Sponsor a Global Translation Leader Section
-*/
-.sponsored-badge::before {
-  content: 'Sponsored';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(42, 42, 42, 0.9);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 4px;
-  font-family: 'Rader Medium', sans-serif;
-  text-transform: uppercase;
-  font-size: 2rem;
-}
-@media (max-width: 640px) {
-  .sponsored-badge::before {
-    font-size: 1.5rem;
-    padding: 0.5rem 1rem;
-  }
 }
 @font-face {
   font-family: 'Rader Bold';

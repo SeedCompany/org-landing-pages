@@ -4,9 +4,10 @@ import type { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { type ReactNode, useEffect, useState } from 'react';
 import { type FieldErrors, useController, useForm } from 'react-hook-form';
 import { z } from 'zod/v4/mini';
+import { graphqlClient, graphql, type Telemetry, type VariablesOf } from '~/graphql';
 import { donateSchema } from '../schemaTypes/donate.schema.ts';
 import { DonationInput } from './DonationInput.tsx';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useCaptchaAction } from '~/recaptcha';
 import { DonationPresets } from './DonationPresets.tsx';
 import { RecurringDonationSwitcher } from './RecurringDonationSwitcher.tsx';
 import { DonationButton } from './DonationButton.tsx';
@@ -14,74 +15,17 @@ import { ExclamationCircleIcon } from '@heroicons/react/16/solid';
 import { CheckPaymentModal } from './atoms/CheckPaymentModal.tsx';
 import { CampaignEndedModal } from './atoms/CampaignEndedModal.tsx';
 
-const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
-
-const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
-
 type DonateFormValues = z.infer<typeof donateSchema>;
 
-// Defining the type for the GraphQL variables
-interface DonateInput {
-  input: {
-    cadence: string;
-    investor: {
-      firstName: string | null;
-      lastName: string;
-      email: string;
-      phone: string;
-      mailingAddress: {
-        line1: string;
-        line2: string | null | undefined;
-        city: string;
-        state: string;
-        zip: string;
-        country: string | null;
-      };
-      type: string;
-    };
-    payment: {
-      stripe: { confirmationToken: string };
-    };
-    targets: { amount: number }[];
-    captcha?: {
-      v2?: string;
-      v3?: string;
-    };
-    telemetry?: {
-      app?: string | null;
-      feature?: string | null;
-      referrer?: string | null;
-      sourceName?: string | null;
-      sourceUrl?: string | null;
-    };
-  };
-}
-
-// again defining some graphQL typing to get past errors:
-interface GraphQLResponse {
-  data?: {
-    donate: {
-      intent: {
-        clientSecret: string;
-      };
-    };
-  };
-  errors?: Array<{
-    message: string;
-    [key: string]: unknown; // Allow for additional error fields
-  }>;
-}
-
-// more defining of the return type for submitForm
-interface SubmitFormResponse {
-  data: {
-    donate: {
-      intent: {
-        clientSecret: string;
-      };
-    };
-  };
-}
+export const DonateDoc = graphql(`
+  mutation Donate($input: DonateInput!) {
+    donate(input: $input) {
+      intent {
+        clientSecret
+      }
+    }
+  }
+`);
 
 export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';
@@ -90,13 +34,7 @@ export type DonateProps = {
   campaignEnded?: boolean;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   onSubmit?: () => void;
-  telemetry?: {
-    app?: string | null;
-    feature?: string | null;
-    referrer?: string | null;
-    sourceName?: string | null;
-    sourceUrl?: string | null;
-  };
+  telemetry?: Telemetry;
 };
 
 export const DonationForm = ({
@@ -118,7 +56,7 @@ export const DonationForm = ({
   const [showEndModal, setShowEndModal] = useState(false);
   const [donationStep, setDonationStep] = useState<'amount' | 'contact' | 'payment'>('amount');
   const [checkInstructions, setCheckInstructions] = useState<boolean>(false);
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const getCaptchaToken = useCaptchaAction('donate');
   const form = useForm<DonateFormValues>({
     resolver: zodResolver(donateSchema),
     mode: 'onBlur',
@@ -141,42 +79,13 @@ export const DonationForm = ({
   const stripe = useStripe();
   const elements = useElements();
 
-  const submitForm = async ({
-    variables,
-  }: {
-    variables: DonateInput;
-  }): Promise<SubmitFormResponse> => {
+  const createDonation = async (input: VariablesOf<typeof DonateDoc>['input']) => {
     try {
-      const response = await fetch(GQL_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add authentication if needed, e.g.:
-          // 'Authorization': `Bearer ${yourToken}`,
-        },
-        body: JSON.stringify({
-          query: `
-          mutation Donate($input: DonateInput!) {
-            donate(input: $input) {
-              intent {
-                clientSecret
-              }
-            }
-          }
-        `,
-          variables,
-        }),
-      });
-
-      // squashing this ESLint issue for now as this will go away once we integrate GraphQL into the repo
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const result: GraphQLResponse = await response.json();
-
-      if (result.errors) {
-        throw new Error(result.errors.map((err) => err.message).join(', '));
+      const result = await graphqlClient.mutation(DonateDoc, { input }).toPromise();
+      if (result.error) {
+        throw result.error;
       }
-
-      return { data: result.data as SubmitFormResponse['data'] };
+      return result.data!.donate;
     } catch (error) {
       console.error('Error submitting donation:', error);
       throw error;
@@ -211,50 +120,43 @@ export const DonationForm = ({
           return;
         }
         let captchaToken;
-        if (!executeRecaptcha) {
-          console.error('reCAPTCHA not loaded yet');
-        }
         try {
-          captchaToken = await executeRecaptcha?.('donate');
+          captchaToken = await getCaptchaToken();
         } catch (error) {
           console.error('Recaptcha error:', error);
         }
         // I think data should be the DonateFormValues type here, but struggling to implement it
-        const { data } = await submitForm({
-          variables: {
-            input: {
-              cadence: donationCadence,
-              investor: {
-                firstName: formData.investor.firstName,
-                lastName: formData.investor.lastName,
-                email: formData.investor.email,
-                phone: formData.investor.phone,
-                mailingAddress: {
-                  line1: formData.investor.mailingAddress.line1,
-                  line2: formData.investor.mailingAddress.line2,
-                  city: formData.investor.mailingAddress.city,
-                  state: formData.investor.mailingAddress.state,
-                  zip: formData.investor.mailingAddress.zip,
-                  country: 'US', // Assuming US for simplicity, adjust as needed
-                },
-                type: 'Individual',
-              },
-              payment: {
-                stripe: { confirmationToken: confirmationToken.id },
-              },
-              targets: [
-                {
-                  amount: amount,
-                },
-              ],
-              captcha: {
-                v3: captchaToken,
-              },
-              telemetry: { ...formProps.telemetry },
+        const donation = await createDonation({
+          cadence: donationCadence,
+          investor: {
+            firstName: formData.investor.firstName,
+            lastName: formData.investor.lastName,
+            email: formData.investor.email,
+            phone: formData.investor.phone,
+            mailingAddress: {
+              line1: formData.investor.mailingAddress.line1,
+              line2: formData.investor.mailingAddress.line2,
+              city: formData.investor.mailingAddress.city,
+              state: formData.investor.mailingAddress.state,
+              zip: formData.investor.mailingAddress.zip,
+              country: 'US', // Assuming US for simplicity, adjust as needed
             },
+            type: 'Individual',
           },
+          payment: {
+            stripe: { confirmationToken: confirmationToken.id },
+          },
+          targets: [
+            {
+              amount: amount,
+            },
+          ],
+          captcha: {
+            v3: captchaToken,
+          },
+          telemetry: formProps.telemetry,
         });
-        const clientSecret = data?.donate.intent?.clientSecret;
+        const clientSecret = donation.intent?.clientSecret;
         if (!clientSecret) {
           console.error('no client secret');
           return;

@@ -1,0 +1,129 @@
+---
+import type { Campaign } from '../../campaignBySlug.groq';
+interface Props {
+  campaignData: Campaign;
+}
+
+const { campaignData } = Astro.props;
+---
+
+<script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+<section class="bg-gradient-to-t from-[#ebebec] via-[#ebebec] to-white p-8">
+  <div class="max-w-[1440px] my-0 mx-auto py-16 lg:py-20 lg:block">
+    <div class="py-2 lg:pr-0">
+      <div>
+        <h2 class="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+          Frequently Asked Questions
+        </h2>
+        <dl class="mt-16 divide-y divide-gray-900/10">
+          <div class="py-6 first:pt-0 last:pb-0">
+            <dt>
+              <button
+                type="button"
+                command="--toggle"
+                commandfor="faq-0"
+                class="flex w-full items-start justify-between text-left text-gray-900"
+              >
+                <span class="text-base/7 faq-question"
+                  >How much of my gift goes straight to Matthew's translation?</span
+                >
+
+                <span class="ml-6 flex h-7 items-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    data-slot="icon"
+                    aria-hidden="true"
+                    class="size-6 [[aria-expanded='true']_&]:hidden"
+                  >
+                    <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    data-slot="icon"
+                    aria-hidden="true"
+                    class="size-6 [&:not([aria-expanded='true']_*)]:hidden"
+                  >
+                    <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+              </button>
+            </dt>
+
+            <el-disclosure id="faq-0" class="[&:not([hidden])]:contents">
+              <dd class="mt-2 pr-12">
+                <div class="prose mt-4 faq-answer">
+                  <p>
+                    100% of designated gifts go to your chosen translation partner. When you give
+                    via text (GIVE to 44322), app, or offering envelope marked “Matthew
+                    Translation”, it bypasses overhead and lands directly with field linguists
+                    drafting, checking, and printing Matthew in unreached languages.
+                  </p>
+                </div>
+              </dd>
+            </el-disclosure>
+          </div>
+          <div class="py-6 first:pt-0 last:pb-0">
+            <dt>
+              <button
+                type="button"
+                command="--toggle"
+                commandfor="faq-1"
+                class="flex w-full items-start justify-between text-left text-gray-900"
+              >
+                <span class="text-base/7 faq-question">What does a typical gift actually fund?</span
+                >
+
+                <span class="ml-6 flex h-7 items-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    data-slot="icon"
+                    aria-hidden="true"
+                    class="size-6 [[aria-expanded='true']_&]:hidden"
+                  >
+                    <path d="M12 6v12m6-6H6" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    data-slot="icon"
+                    aria-hidden="true"
+                    class="size-6 [&:not([aria-expanded='true']_*)]:hidden"
+                  >
+                    <path d="M18 12H6" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </span>
+              </button>
+            </dt>
+
+            <el-disclosure hidden id="faq-1" class="[&:not([hidden])]:contents">
+              <dd class="mt-2 pr-12">
+                <div class="prose mt-4 faq-answer">
+                  <ul>
+                    <li>$25 = 1 chapter consultant-reviewed (accuracy + naturalness)</li>
+                    <li>
+                      $100 = 1 village tester listening session (real speakers confirm clarity)
+                    </li>
+                    <li>$500 = 1 full draft of Matthew printed for community testing</li>
+                    <li>$2,500 = audio recording of Matthew in a new language (for non-readers)</li>
+                  </ul>
+                </div>
+              </dd>
+            </el-disclosure>
+          </div>
+          <!-- Repeat the block above for additional FAQs -->
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>

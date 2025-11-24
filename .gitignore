@@ -3,8 +3,9 @@ dist/
 
 # generated types
 .astro/
-schema.json
-sanity.types.ts
+schema.graphql
+generated
+*.generated.*
 
 # Yarn / NPM
 .yarn/cache

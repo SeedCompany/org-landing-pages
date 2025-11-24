@@ -1,45 +1,12 @@
 ---
-import { StripeClientIsland } from './stripe/StripeClientIsland';
+import { fetchWatermarkTotals } from '../legacy/watermark-totals.ts';
+import { DonationFormIsland } from './DonationFormIsland.tsx';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
-const trailingSlash = (str: string) => (str.endsWith('/') ? str : str + '/');
 
-interface WatermarkCampaignTotals {
-  amount: number;
-}
+const totals = await fetchWatermarkTotals();
 
-interface GraphQLResponse {
-  data?: {
-    watermarkCampaignTotals: WatermarkCampaignTotals;
-  };
-  errors?: Array<{ message: string }>;
-}
-
-const GQL_API = new URL('graphql', trailingSlash(import.meta.env.PUBLIC_API_URL));
-const response = await fetch(GQL_API, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    // Add authentication if needed, e.g.:
-    // 'Authorization': `Bearer ${yourToken}`,
-  },
-  body: JSON.stringify({
-    query: `
-          query Query {
-            watermarkCampaignTotals {
-              amount
-            }
-          }
-        `,
-  }),
-});
-const data = (await response.json()) as GraphQLResponse;
-if (data.errors) {
-  console.error('GraphQL Errors:', data.errors);
-  throw new Error('Failed to fetch watermark campaign totals');
-}
-const amount = data.data?.watermarkCampaignTotals.amount;
 const campaignTotals = {
-  totalRaised: typeof amount === 'number' ? amount : 0,
+  totalRaised: totals.amount,
   goalAmount: 2000000,
 };
 
@@ -49,11 +16,15 @@ const campaignEnded =
   Astro.url.searchParams.get('form') === 'disabled' ||
   new Date() >= new Date('2025-10-19T05:00:00Z');
 
+interface Props {
+  disableDialog?: boolean;
+}
+
 const { disableDialog } = Astro.props;
 ---
 
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
-  <StripeClientIsland
+  <DonationFormIsland
     formProps={{
       enableRecurring: false,
       hideInvestorType: 'Organization',
@@ -69,6 +40,6 @@ const { disableDialog } = Astro.props;
     client:load
   >
     <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />
-  </StripeClientIsland>
+  </DonationFormIsland>
 </div>
 <style></style>
