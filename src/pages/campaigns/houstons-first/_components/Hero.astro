@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import Logo from '../_assets/houstons_first.png';
+import { PortableText } from 'astro-portabletext';
+import type { Campaign } from '../../../../pages/campaigns/campaignBySlug.groq';
+
+interface Props {
+  campaignData: Campaign;
+}
+const { campaignData } = Astro.props;
+---
+
+<div class="lg:w-3/4">
+  <div>
+    <Image src={Logo} alt="Houston's First Baptist Church" class="h-auto w-3/4 sm:w-1/2 md:w-1/2" />
+
+    {
+      campaignData.subheading && (
+        <p class="text-xl md:text-4xl text-white gotham-book uppercase tracking-wider mb-4 opacity-90">
+          {campaignData.subheading}
+        </p>
+      )
+    }
+
+    <!-- Main Heading (rich text) -->
+    <div
+      class="mb-8 prose prose-invert max-w-none prose-p:text-4xl prose-p:md:text-8xl prose-p:leading-none prose-p:font-bold prose-p:gotham-book"
+    >
+      <PortableText value={campaignData.heading || []} />
+    </div>
+
+    <!-- Hero Copy / Body -->
+    <div class="prose prose-invert max-w-none">
+      <PortableText value={campaignData.heroCopy || []} />
+    </div>
+  </div>
+</div>
