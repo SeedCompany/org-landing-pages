@@ -3,18 +3,18 @@ import type { Campaign } from '../../../pages/campaigns/campaignBySlug.groq';
 import { campaignBySlug } from '../../../pages/campaigns/campaignBySlug.groq';
 import { sanityClient as sanity } from 'sanity:client';
 import Hero from './_components/Hero.astro';
-import GiveFormWithTotals from '../../../components/GiveFormWithTotals.astro';
 import Layout from '../../../layouts/Layout.astro';
 import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
 import HoustonFAQ from './_components/HoustonFAQ.astro';
 import { portableText } from '~/sanity';
+import { DonationForm } from '~/features/donate';
 const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-first' });
 ---
 
 <Layout>
-  <div class="grid lg:grid-cols-[2fr_1fr] gap-8 max-w-screen-2xl mx-auto block lg:grid">
-    <main class="flex flex-col lg:gap-8 lg:p-[60px] gap-0 p-8 lg:p-[60px]">
+  <div class="relative mx-auto lg:grid lg:grid-cols-[1fr_400px] lg:gap-8 lg:px-12">
+    <main class="flex flex-col lg:gap-8 gap-0 p-8 lg:pl-24">
       <!-- Hero Image -->
       <div
         class="absolute top-0 left-0 w-full min-h-[800px] -z-10
@@ -23,23 +23,27 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
         to-[#1a303a]"
       >
       </div>
-      <!-- Hero Image Overlay -->
-      <div
-        class="absolute top-0 left-0 w-full min-h-[800px] -z-10
-        bg-gradient-to-b from-transparent to-[#1a303a]
-        lg:from-transparent lg:to-[#1a303a]
-        from-gray to-transparent"
-      >
-      </div>
       <Hero campaignData={campaign} />
-      <!-- Give form mobile -->
-      <aside id="give-form-mobile">
-        <GiveFormWithTotals disableDialog={true} />
+
+      <!-- Give form - between Hero and Video on mobile, sticky sidebar on desktop -->
+      <aside class="w-full bg-white p-6 my-8 rounded-md shadow-lg lg:hidden">
+        <DonationForm
+          amount={{
+            presets: [250, 500, 750, 1000],
+            min: { value: 250, message: 'At least $250 please' },
+          }}
+          telemetry={{
+            app: 'seed.bible',
+            sourceUrl: Astro.url.toString(),
+          }}
+          client:load
+        />
       </aside>
+
       <Video
         src=""
         poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
-        class="hero-video"
+        class="w-full lg:max-w-4xl"
         rounded={true}
       />
       <!-- BG Gradient -->
@@ -52,24 +56,39 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
       {
         campaign.aboutSections &&
           campaign.aboutSections.map((section) => (
-            <div>
+            <div class="py-8 lg:pb-24">
               <h2
                 class="text-4xl md:text-left gotham-bold tracking-tight
-      sm:text-5xl pt-12 pb-8 lg:py-4"
+      sm:text-5xl pb-8 lg:py-4"
               >
                 {section.title}
               </h2>
               <div
-                class="prose prose-h2:text-3xl prose-h3:text-2xl prose-h3:leading-none prose-h3:m-0 prose-h3:p-0 prose-h2:md:text-4xl prose-h2:!gotham-bold prose-h2:tracking-tight prose-p:text-md prose-p:p-0 prose-p:m-0 prose-p:leading-none prose-p:md:text-lg max-w-none lg:max-w-3xl lg:mx-0"
+                class="prose prose-lg max-w-none lg:max-w-3xl lg:mx-0 prose-p:text-lg prose-p:leading-[1.4] md:prose-p:text-xl md:prose-p:leading-7 prose-p:my-5 md:prose-p:my-6 prose-h2:text-3xl prose-h2:md:text-4xl 
+    prose-h2:gotham-bold prose-h2:tracking-tight
+    prose-h3:text-2xl prose-h3:leading-none prose-h3:my-0 gotham"
                 set:html={portableText.toHTML(section.content)}
               />
             </div>
           ))
       }
     </main>
-    <!-- Give form desktop -->
-    <aside class="hidden lg:block sticky top-0 -translate-y-1/5 self-start">
-      <GiveFormWithTotals disableDialog={true} />
+
+    <!-- Give form - desktop sticky sidebar -->
+    <aside
+      class="hidden lg:block w-full bg-white p-6 rounded-md shadow-lg lg:sticky lg:top-8 lg:h-fit lg:mx-0 lg:my-[60px]"
+    >
+      <DonationForm
+        amount={{
+          presets: [250, 500, 750, 1000],
+          min: { value: 250, message: 'At least $250 please' },
+        }}
+        telemetry={{
+          app: 'seed.bible',
+          sourceUrl: Astro.url.toString(),
+        }}
+        client:load
+      />
     </aside>
   </div>
 
