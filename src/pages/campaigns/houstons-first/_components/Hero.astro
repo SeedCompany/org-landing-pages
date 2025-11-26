@@ -16,7 +16,7 @@ const { campaignData } = Astro.props;
 
     {
       campaignData.subheading && (
-        <p class="text-xl md:text-4xl text-white gotham-book uppercase tracking-wider mb-4 opacity-90">
+        <p class="text-xl md:text-4xl text-white gotham-book uppercase tracking-wider opacity-90">
           {campaignData.subheading}
         </p>
       )
@@ -30,7 +30,7 @@ const { campaignData } = Astro.props;
 
     <!-- Hero Copy / Body -->
     <div
-      class="prose prose-invert max-w-none"
+      class="prose prose-invert max-w-none prose-p:text-lg md:prose-p:text-xl prose-p:leading-7 mt-6 gotham"
       set:html={portableText.toHTML(campaignData.heroCopy)}
     />
   </div>
