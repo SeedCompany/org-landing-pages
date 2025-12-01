@@ -4,20 +4,17 @@ import { styled } from 'styled-system/jsx';
 ---
 
 <Layout>
-  <styled.div css={{ textAlign: 'center', p: '8', bgColor: 'primary.solid.bg', h: 'dvh' }}>
-    <styled.div>
-      <styled.p css={{ textStyle: 'title1', fontSize: '5xl' }}>Thank You!</styled.p>
-      <styled.p css={{ p: '2' }}>
-        Your receipt will arrive in your inbox shortly. If your donation is an ACH transfer, it may
-        take several business days. For any additional questions or year-end giving statements,
-        please contact Seed Company at <a href="mailto:info@tsco.org">info@tsco.org</a>.
-        <styled.p />
-      </styled.p>
-      <script>
-        if (window.location.search) {
-          window.history.replaceState(null, '', window.location.pathname);
-        }
-      </script>
-    </styled.div>
-  </styled.div>
+  <styled.main css={{ textAlign: 'center', p: '8', bgColor: 'primary.solid.bg', h: 'dvh' }}>
+    <styled.h1 css={{ textStyle: 'title1', fontSize: '5xl' }}>Thank You!</styled.h1>
+    <styled.p css={{ p: '2' }}>
+      Your receipt will arrive in your inbox shortly. If your donation is an ACH transfer, it may
+      take several business days. For any additional questions or year-end giving statements, please
+      contact Seed Company at <a href="mailto:info@tsco.org">info@tsco.org</a>.
+    </styled.p>
+    <script>
+      if (window.location.search) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    </script>
+  </styled.main>
 </Layout>
