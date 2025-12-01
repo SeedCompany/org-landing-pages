@@ -1,8 +1,10 @@
 ---
+import { styled } from 'styled-system/jsx';
 import * as editorJs from '~/editorjs';
 import { graphql, graphqlClient } from '~/graphql';
 import { portableText } from '~/sanity';
 import Layout from '~/layouts/Layout.astro';
+import { DonationForm } from '~/features/donate';
 
 const SponsorDetailDoc = graphql(`
   query SponsorDetail($id: ID!) {
@@ -73,18 +75,27 @@ const isSponsored = sponsor.funding.remaining === 0;
           <div>
             <div class="space-y-4 mb-6">
               {
-                !isSponsored && (
-                  <form action="">
-                    <input
-                      type="text"
-                      placeholder="Your message..."
-                      class="border border-gray-300 p-2 rounded-lg w-full"
+                !isSponsored ? (
+                  <styled.div css={{ p: '4', rounded: 'lg', color: 'fg.default', bg: 'white' }}>
+                    <DonationForm
+                      amount={{
+                        presets: [250, 500, 750, 1000],
+                        // TODO message
+                        min: { value: 250, message: 'At least $250 please' },
+                      }}
+                      intent={{
+                        program: 'GlobalTranslationLeaders',
+                        engagement: sponsor.id,
+                      }}
+                      telemetry={{
+                        app: 'seed.bible',
+                        feature: 'gtl',
+                        sourceUrl: Astro.url.toString(),
+                      }}
+                      client:load
                     />
-                  </form>
-                )
-              }
-              {
-                isSponsored && (
+                  </styled.div>
+                ) : (
                   <div class="bg-[var(--sus-button-secondary-bg)] text-black p-4 rounded-lg">
                     <p class="font-semibold">This leader is currently sponsored!</p>
                   </div>
