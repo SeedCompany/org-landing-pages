@@ -30,6 +30,7 @@ export const campaignBySlug = defineQuery(`*[_type == "campaign" && slug.current
   ctaText,
   ctaLink,
   faqs[] { template, question, answer },
+  sfCode,
   donationForm {...},
   contactEmail,
   sections[] {

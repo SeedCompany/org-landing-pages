@@ -66,6 +66,13 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'sfCode',
+      type: 'string',
+      title: 'Salesforce Code',
+      description: 'This is the unique "short code" for this campaign in Salesforce.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'pageTitle',
       title: 'Page Title',
       type: 'string',
