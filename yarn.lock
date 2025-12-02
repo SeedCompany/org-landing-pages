@@ -6633,8 +6633,8 @@ __metadata:
   linkType: hard
 
 "@seedcompany/common@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@seedcompany/common@npm:1.3.0"
+  version: 1.3.1
+  resolution: "@seedcompany/common@npm:1.3.1"
   dependencies:
     change-case: "npm:^5.4.4"
     title-case: "npm:^4.3.2"
@@ -6644,7 +6644,7 @@ __metadata:
   peerDependenciesMeta:
     luxon:
       optional: true
-  checksum: 10c0/43701cf7c26978af4f440e51555600c9edc83ae79015660464c541f686d8872710234c14b4a4863e13a2d251cf60b4896532f2f440cd848da1aa416979cb18dc
+  checksum: 10c0/8979e0d3f9bc3e19b7a7bfc82f71f8cf062b2a843c809ff8cf46b21fa77ba391727359e7e7e21167f659d0721fde129ac42d009ec72580fcc89a2508266a44a5
   languageName: node
   linkType: hard
 

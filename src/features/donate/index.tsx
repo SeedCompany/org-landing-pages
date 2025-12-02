@@ -3,6 +3,8 @@ import { DonationForm as Form } from './DonationForm.tsx';
 import { StripeProvider } from '~/stripe';
 import { RecaptchaProvider } from '~/recaptcha';
 
+export { getDonationProps } from './sanity';
+
 export const DonationForm = (props: PropsOf<typeof Form>) => (
   <StripeProvider>
     <RecaptchaProvider>
