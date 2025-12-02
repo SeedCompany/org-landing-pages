@@ -32,6 +32,7 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
           telemetry={{
             app: 'seed.bible',
             sourceUrl: Astro.url.toString(),
+            feature: campaign.sfCode,
           }}
           client:load
         />
@@ -80,6 +81,7 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
         telemetry={{
           app: 'seed.bible',
           sourceUrl: Astro.url.toString(),
+          feature: campaign.sfCode,
         }}
         client:load
       />
