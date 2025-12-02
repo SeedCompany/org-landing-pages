@@ -8,7 +8,7 @@ import Video from '../../../components/Video.astro';
 import Footer from '../../../components/Footer.astro';
 import HoustonFAQ from './_components/HoustonFAQ.astro';
 import { portableText } from '~/sanity';
-import { DonationForm } from '~/features/donate';
+import { DonationForm, getDonationProps } from '~/features/donate';
 const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-first' });
 ---
 
@@ -28,10 +28,7 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
       <!-- Give form - between Hero and Video on mobile, sticky sidebar on desktop -->
       <aside class="w-full bg-white p-6 my-8 rounded-md shadow-lg lg:hidden">
         <DonationForm
-          amount={{
-            presets: [250, 500, 750, 1000],
-            min: { value: 250, message: 'At least $250 please' },
-          }}
+          {...getDonationProps(campaign.donationForm)}
           telemetry={{
             app: 'seed.bible',
             sourceUrl: Astro.url.toString(),
@@ -79,10 +76,7 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
       class="hidden lg:block w-full bg-white p-6 rounded-md shadow-lg lg:sticky lg:top-8 lg:h-fit lg:mx-0 lg:my-[60px]"
     >
       <DonationForm
-        amount={{
-          presets: [250, 500, 750, 1000],
-          min: { value: 250, message: 'At least $250 please' },
-        }}
+        {...getDonationProps(campaign.donationForm)}
         telemetry={{
           app: 'seed.bible',
           sourceUrl: Astro.url.toString(),

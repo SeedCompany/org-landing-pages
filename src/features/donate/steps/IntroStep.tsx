@@ -43,6 +43,7 @@ export const IntroStep = ({
               : amount.presets[form.getValues('cadence')]
             : undefined
         }
+        hideOther={amount?.hideOther}
       />
       <Buttons>
         <SubmitButton size="xl">Give Now</SubmitButton>

@@ -18,9 +18,11 @@ const formatter = new Intl.NumberFormat(undefined, {
 export const AmountField = ({
   lens,
   presets,
+  hideOther,
 }: {
   lens: Lens<number>;
   presets?: readonly number[];
+  hideOther?: boolean;
 }) => {
   const formCtx = useFormContext();
   const { name, control } = lens.interop();
@@ -35,7 +37,7 @@ export const AmountField = ({
   const otherInputRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(fieldRef, () => otherInputRef.current);
 
-  const otherInput = (
+  const otherInput = !hideOther && (
     <Field
       {...props}
       data-hidden={showOther ? undefined : true}
@@ -114,18 +116,20 @@ export const AmountField = ({
                 <Button>{formatter.format(amount)}</Button>
               </ToggleGroup.Item>
             ))}
-            <ToggleGroup.Item
-              value="other"
-              asChild
-              onClick={() => {
-                setTimeout(() => {
-                  otherInputRef.current?.focus();
-                  formCtx.resetField(name);
-                });
-              }}
-            >
-              <Button>Other</Button>
-            </ToggleGroup.Item>
+            {!hideOther && (
+              <ToggleGroup.Item
+                value="other"
+                asChild
+                onClick={() => {
+                  setTimeout(() => {
+                    otherInputRef.current?.focus();
+                    formCtx.resetField(name);
+                  });
+                }}
+              >
+                <Button>Other</Button>
+              </ToggleGroup.Item>
+            )}
           </ButtonGroup>
         </ToggleGroup.Root>
       )}

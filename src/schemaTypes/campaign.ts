@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { DonationFormSchema } from '~/features/donate/sanity';
 import { ImageRadioInput } from '../components/ImageRadioInput';
 import TemplateThumbnailMarketing from '../components/templates/MarketingTemplate.png';
 import TemplateThumbnailSustainers from '../components/templates/SustainersTemplate.png';
@@ -55,6 +56,7 @@ export default defineType({
     { name: 'template', title: 'Templates' },
     { name: 'faq', title: 'FAQs' },
     { name: 'templateContent', title: 'Template Content' },
+    { name: 'donationForm', title: 'Donation Form' },
     { name: 'campaignData', title: 'Campaign Data' },
   ],
   fields: [
@@ -518,5 +520,6 @@ export default defineType({
       ],
       hidden: ({ document }) => document?.templateType !== 'sustainers',
     }),
+    { ...DonationFormSchema, group: 'donationForm' },
   ],
 });

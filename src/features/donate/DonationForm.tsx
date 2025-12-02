@@ -45,6 +45,16 @@ export type DonateCommonProps = {
     presets?: readonly number[] | Record<Cadence, readonly number[]>;
 
     /**
+     * Hide the `other` input, preventing custom amounts.
+     */
+    hideOther?: boolean;
+
+    /**
+     * The default starting value.
+     */
+    defaultValue?: number;
+
+    /**
      * A custom minimum value & the message to show when it's not met.
      */
     min?: { value: number; message: string };
@@ -97,7 +107,7 @@ const steps = Object.keys(declareSteps) as Step[];
 export const DonationForm = (props: DonateFormProps) => {
   const [state, setState] = useState<DonateInput>(() => ({
     cadence: (props.cadence?.options ? many(props.cadence.options) : undefined)?.at(0) ?? 'OneTime',
-    amount: 0,
+    amount: props.amount?.defaultValue ?? 0,
     investor: {
       type: 'Individual',
       email: '',

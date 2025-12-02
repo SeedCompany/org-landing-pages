@@ -17,17 +17,17 @@ jobs:
       - name: Check for no duplicate dependencies
         run: yarn dedupe --check
 
-      - name: Verify Sanity schema
-        run: yarn sanity schema validate
-
-      - name: Generate Sanity types
-        run: yarn sanity:gen
-
       - name: Generate GraphQL
         run: yarn gql:gen
 
       - name: Generate Panda CSS
         run: yarn panda:gen
+
+      - name: Verify Sanity schema
+        run: yarn sanity schema validate
+
+      - name: Generate Sanity types
+        run: yarn sanity:gen
 
       - name: Check TypeScript
         run: yarn type-check

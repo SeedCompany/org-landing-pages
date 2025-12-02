@@ -34,6 +34,7 @@ function Address() {
 
 export const InvestorStep = ({
   investor,
+  amount,
   values,
   onBack,
   onSubmit,
@@ -61,7 +62,7 @@ export const InvestorStep = ({
 
   return (
     <Form form={form} onSubmit={onSubmit}>
-      <AmountField lens={lens.focus('amount')} />
+      {!amount?.hideOther && <AmountField lens={lens.focus('amount')} />}
       <InvestorFields.Root lens={lens.focus('investor')}>
         {components.map(({ field, Comp }) => (
           <Comp key={field} />
