@@ -72,6 +72,18 @@ const amount = defineField({
   fields: [
     { ...presets, description: 'Predefined amount buttons' },
     defineField({
+      type: 'number',
+      name: 'defaultValue',
+      title: 'Default',
+      description: 'The default donation amount selected',
+      validation: (rule) => rule.greaterThan(0),
+    }),
+    defineField({
+      type: 'boolean',
+      name: 'hideOther',
+      description: 'Hide & disallow custom amounts to be entered by user',
+    }),
+    defineField({
       name: 'min',
       title: 'Minimum',
       type: 'object',
@@ -197,6 +209,8 @@ export const getDonationProps = (data: DonateDataShape | Nil) =>
         const presets = opt.presets ?? data?.amount?.presets;
         return opt.cadence && presets ? [opt.cadence, presets] : SKIP;
       }).asRecord,
+      hideOther: data?.amount?.hideOther,
+      defaultValue: data?.amount?.defaultValue,
       min:
         data?.amount?.min?.amount && data.amount?.min?.message
           ? { value: data.amount.min.amount, message: data.amount.min.message }
