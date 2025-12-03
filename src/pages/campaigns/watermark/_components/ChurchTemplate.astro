@@ -3,7 +3,6 @@ import { portableText } from '~/sanity';
 import { FaqAccordion } from '~/common/FaqAccordion.tsx';
 import MainLayout from '~/layouts/main/MainLayout.astro';
 import Footer from '~/layouts/main/Footer.astro';
-import Video from '../../../../components/Video.astro';
 import type { Campaign } from '../../campaignBySlug.groq';
 import Hero from './Hero.astro';
 import ContentSection from './ContentSection.astro';
@@ -199,12 +198,11 @@ const isAfterSept19 = todayFormatted >= sept19;
       <aside class="form" id="give-form-mobile">
         <GiveFormWithTotals disableDialog={true} />
       </aside>
-      <Video
+      <video
         src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/files/8bface030986ea7054431c64dc16b6288678da12.mp4"
         poster="https://cdn.sanity.io/images/fgpinugl/production/f4acb3125ecdf71cda89fed9226821f08c7bcc22-1920x1080.jpg"
-        class="hero-video"
-        rounded={true}
-      />
+        controls
+        class="hero-video rounded-3xl"></video>
       <div class="bg-gradient"></div>
       {
         campaignData.aboutSections?.map((section) => (
