@@ -3,7 +3,7 @@ import { styled } from 'styled-system/jsx';
 import * as editorJs from '~/editorjs';
 import { graphql, graphqlClient } from '~/graphql';
 import { portableText } from '~/sanity';
-import Layout from '~/layouts/Layout.astro';
+import MainLayout from '~/layouts/main/MainLayout.astro';
 import { DonationForm } from '~/features/donate';
 
 const SponsorDetailDoc = graphql(`
@@ -33,7 +33,7 @@ if (!sponsor) {
 const isSponsored = sponsor.funding.remaining === 0;
 ---
 
-<Layout>
+<MainLayout title={`${sponsor.name} - Global Translation Leader`}>
   <div class="bg-[var(--sus-primary-heading)] min-h-screen text-white py-12">
     <div class="container border-white border-2 rounded-lg mx-auto p-8 md:py-12">
       <div class="mb-8">
@@ -115,4 +115,4 @@ const isSponsored = sponsor.funding.remaining === 0;
       </div>
     </div>
   </div>
-</Layout>
+</MainLayout>

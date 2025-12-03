@@ -18,18 +18,12 @@ const DEFAULT_FOOTER_IMAGES = [
   },
 ];
 
-const FooterImageList: React.FC<Props> = ({ images = DEFAULT_FOOTER_IMAGES }) => {
-  return (
-    <div className="flex flex-row gap-x-8 w-full items-center min-h-[150px] justify-end">
-      {images.map((imageItem, index) => (
-        <div className="flex md:justify-end" key={index}>
-          {imageItem.image && (
-            <img className="w-1/3" src={imageItem.image} alt={imageItem.altText} />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export default FooterImageList;
+export const FooterImageList = ({ images = DEFAULT_FOOTER_IMAGES }: Props) => (
+  <div className="flex flex-row gap-x-8 w-full items-center min-h-[150px] justify-end">
+    {images.map((imageItem, index) => (
+      <div className="flex md:justify-end" key={index}>
+        {imageItem.image && <img className="w-1/3" src={imageItem.image} alt={imageItem.altText} />}
+      </div>
+    ))}
+  </div>
+);

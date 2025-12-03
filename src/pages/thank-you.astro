@@ -1,10 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { styled } from 'styled-system/jsx';
 import { Link } from '~/common/ui';
 ---
 
-<Layout>
+<BaseLayout title="Thank You!">
   <styled.main
     css={{
       p: '8',
@@ -29,4 +29,4 @@ import { Link } from '~/common/ui';
       }
     </script>
   </styled.main>
-</Layout>
+</BaseLayout>

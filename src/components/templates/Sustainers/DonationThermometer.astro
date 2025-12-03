@@ -1,9 +1,8 @@
 ---
-import Layout from '~/layouts/Layout.astro';
 const goal = 100000;
 ---
 
-<Layout title="Donation Thermometer">
+<div>
   <main class="flex w-full items-center justify-center">
     <div class="max-w-[100%] w-full rounded-lg border-[1px] shadow-lg p-6">
       <div class="thermometer-container">
@@ -131,7 +130,7 @@ const goal = 100000;
       }
     });
   </script>
-</Layout>
+</div>
 
 <style>
   .thermometer-background {

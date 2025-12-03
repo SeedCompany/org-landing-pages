@@ -1,6 +1,6 @@
 ---
 import { sanityClient as sanity, portableText } from '~/sanity';
-import Layout from '~/layouts/Layout.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 
 // Import the templates for different campaign types
 import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
@@ -36,7 +36,7 @@ const pageTitle =
   (campaign.heading ? portableText.toPlain(campaign.heading) : 'Campaign Page');
 ---
 
-<Layout title={pageTitle}>
+<BaseLayout title={pageTitle}>
   <main>
     {/* Render the template with campaign data */}
     {campaign && TemplateComponent && <TemplateComponent campaignData={campaign} />}
@@ -50,4 +50,4 @@ const pageTitle =
       )
     }
   </main>
-</Layout>
+</BaseLayout>
