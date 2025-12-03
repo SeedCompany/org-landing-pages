@@ -1,9 +1,9 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { type Telemetry } from '~/graphql';
 import { DonationForm as NewDonationForm } from '~/features/donate';
-import { CampaignEndedModal } from './atoms/CampaignEndedModal.tsx';
+import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { styled } from 'styled-system/jsx';
-import { Button } from '~/common/ui/index.ts';
+import { Button } from '~/common/ui';
 
 export type DonateProps = {
   hideInvestorType?: 'Individual' | 'Organization';

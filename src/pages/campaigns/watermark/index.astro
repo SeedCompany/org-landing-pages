@@ -1,0 +1,15 @@
+---
+import { sanityClient as sanity } from '~/sanity';
+import { campaignBySlug } from '../campaignBySlug.groq';
+import ChurchTemplate from './_components/ChurchTemplate.astro';
+
+const campaign = await sanity.fetch(campaignBySlug, { slug: 'watermark' });
+if (!campaign) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not Found',
+  });
+}
+---
+
+<ChurchTemplate campaignData={campaign} />
