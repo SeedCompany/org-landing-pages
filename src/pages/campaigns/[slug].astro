@@ -3,10 +3,10 @@ import { sanityClient as sanity, portableText } from '~/sanity';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 
 // Import the templates for different campaign types
-import AdvocatesTemplate from '../../components/templates/AdvocatesTemplate.astro';
-import InvestorRepsTemplate from '../../components/templates/InvestorRepsTemplate.astro';
-import MarketingTemplate from '../../components/templates/MarketingTemplate.astro';
-import SustainersTemplate from '../../components/templates/SustainersTemplate.astro';
+import AdvocatesTemplate from './_templates/AdvocatesTemplate.astro';
+import InvestorRepsTemplate from './_templates/InvestorRepsTemplate.astro';
+import MarketingTemplate from './_templates/MarketingTemplate.astro';
+import SustainersTemplate from './_templates/SustainersTemplate.astro';
 import ChurchTemplate from './watermark/_components/ChurchTemplate.astro';
 import { campaignBySlug } from './campaignBySlug.groq';
 

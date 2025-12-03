@@ -1,8 +1,6 @@
 import { defineField, defineType } from 'sanity';
 import { DonationFormSchema } from '~/features/donate/sanity';
-import { ImageRadioInput } from '../components/ImageRadioInput';
-import TemplateThumbnailMarketing from '../components/templates/MarketingTemplate.png';
-import TemplateThumbnailSustainers from '../components/templates/SustainersTemplate.png';
+import { ImageRadioInput } from '~/common/ImageRadioInput';
 
 const richTextBlock = {
   type: 'block',
