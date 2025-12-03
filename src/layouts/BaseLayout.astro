@@ -3,7 +3,7 @@ import '../styles/global.css';
 import '~/theme/fonts';
 
 interface Props {
-  title?: string;
+  title: string;
 }
 const { title } = Astro.props;
 ---
@@ -19,7 +19,7 @@ const { title } = Astro.props;
       href="https://seedcompany.com/wp-content/uploads/2021/09/favicon.png"
     />
     <meta name="generator" content={Astro.generator} />
-    <title>{title ?? 'Seed Campaigns'}</title>
+    <title>{title}</title>
     <slot name="head" />
   </head>
   <body>

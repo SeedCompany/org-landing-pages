@@ -1,5 +1,5 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+import MainLayout from '~/layouts/main/MainLayout.astro';
 import SponsorList from './_SponsorList.astro';
 ---
 
@@ -48,7 +48,7 @@ import SponsorList from './_SponsorList.astro';
     font-size: calc(1px * 100);
   }
 </style>
-<Layout>
+<MainLayout title="Global Translation Leaders">
   <section class="bg-black">
     <div class="relative isolate overflow-hidden pt-14">
       <img
@@ -180,4 +180,4 @@ import SponsorList from './_SponsorList.astro';
       <SponsorList />
     </div>
   </section>
-</Layout>
+</MainLayout>

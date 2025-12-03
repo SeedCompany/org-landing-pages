@@ -1,9 +1,9 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { DonationForm } from '~/features/donate';
 ---
 
-<Layout>
+<BaseLayout title="Donate - Seed Company">
   <DonationForm
     amount={{
       presets: {
@@ -16,4 +16,4 @@ import { DonationForm } from '~/features/donate';
     }}
     client:load
   />
-</Layout>
+</BaseLayout>

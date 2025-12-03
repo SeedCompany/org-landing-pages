@@ -5,7 +5,6 @@ import DonationThermometer from './Sustainers/DonationThermometer.astro';
 import SustainerStep from './Sustainers/SustainerStep.astro';
 import CampaignButtons from './Sustainers/CampaignButtons.tsx';
 import SustainerSection from './Sustainers/SustainerSection.astro';
-import Footer from '../Footer.astro';
 
 interface Props {
   campaignData: Campaign;
@@ -114,5 +113,3 @@ const steps = [
   <!-- Footer CTA -->
   {/* <FooterCTA ctaLink={campaignData.ctaLink || '#'} partners={campaignData.partners} /> */}
 </main>
-
-<Footer />
