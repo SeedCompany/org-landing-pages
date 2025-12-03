@@ -1,22 +1,3 @@
-import { graphql, graphqlClient } from '~/graphql';
+import { fetchCampaignTotals } from '../../_components/campaign-totals.ts';
 
-export async function fetchWatermarkTotals() {
-  const response = await graphqlClient
-    .query(
-      graphql(`
-        query WatermarkCampaign {
-          watermarkCampaignTotals {
-            amount
-          }
-        }
-      `),
-      {},
-    )
-    .toPromise();
-  if (response.error) {
-    throw new Error('Failed to fetch watermark campaign totals', {
-      cause: response.error,
-    });
-  }
-  return response.data!.watermarkCampaignTotals;
-}
+export const fetchWatermarkTotals = () => fetchCampaignTotals('Watermark');
