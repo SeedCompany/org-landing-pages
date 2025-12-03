@@ -5,7 +5,6 @@ import { sanityClient as sanity } from 'sanity:client';
 import Hero from './_components/Hero.astro';
 import MainLayout from '~/layouts/main/MainLayout.astro';
 import Footer from '~/layouts/main/Footer.astro';
-import Video from '../../../components/Video.astro';
 import HoustonFAQ from './_components/HoustonFAQ.astro';
 import { portableText } from '~/sanity';
 import { DonationForm, getDonationProps } from '~/features/donate';
@@ -38,12 +37,11 @@ const campaign: Campaign = await sanity.fetch(campaignBySlug, { slug: 'houstons-
         />
       </aside>
 
-      <Video
+      <video
         src="https://player.vimeo.com/video/1063711566?badge=0&autopause=0&player_id=0&app_id=58479"
         poster="https://www.houstonsfirst.org/Themes/HoustonsFirstV1/Assets/Images/People/StaffWelcome.png?width=800&auto_optimize=high"
-        class="w-full lg:max-w-4xl"
-        rounded={true}
-      />
+        controls
+        class="w-full lg:max-w-4xl rounded-3xl"></video>
       <!-- BG Gradient -->
       <div
         class="hidden lg:block absolute top-[800px] left-0 w-full min-h-[800px] -z-10
