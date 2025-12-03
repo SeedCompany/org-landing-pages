@@ -1,14 +1,14 @@
 ---
 import { portableText } from '~/sanity';
 import { FaqAccordion } from '~/common/FaqAccordion.tsx';
-import type { Campaign } from '../../pages/campaigns/campaignBySlug.groq';
-import Hero from '../../components/Hero.astro';
-import GiveFormWithTotals from '../GiveFormWithTotals.astro';
-import Layout from '../../layouts/Layout.astro';
-import Video from '../../components/Video.astro';
-import ContentSection from '../../components/ContentSection.astro';
-import DonationCard from '../../components/DonationCard.astro';
-import Footer from '../../components/Footer.astro';
+import Layout from '~/layouts/Layout.astro';
+import Footer from '../../../../components/Footer.astro';
+import Video from '../../../../components/Video.astro';
+import type { Campaign } from '../../campaignBySlug.groq';
+import Hero from './Hero.astro';
+import ContentSection from './ContentSection.astro';
+import DonationCard from './DonationCard.astro';
+import GiveFormWithTotals from './GiveFormWithTotals.astro';
 
 interface Props {
   campaignData: Campaign;
