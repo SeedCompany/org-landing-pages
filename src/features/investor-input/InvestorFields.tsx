@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Input, ToggleGroup } from '~/common/ui';
 import { Field, useController } from '~/common/form';
 import type { createInvestor } from './investor.schema';
 import { AddressFields } from '~/features/address';
+import { useWatch } from 'react-hook-form';
 
 type InvestorShape = z.infer<typeof createInvestor>;
 
@@ -67,25 +68,29 @@ export const Email = () => {
 
 export const FirstName = () => {
   const props = useController(useContext().focus('firstName').interop());
+  const type: InvestorType = useWatch({ name: 'investor.type' }) as InvestorType;
   return (
-    <Field {...props}>
-      <Input
-        placeholder="First Name"
-        autoComplete="given-name"
-        {...props.field}
-        value={props.field.value ?? ''}
-      />
-    </Field>
+    type === 'Individual' && (
+      <Field {...props}>
+        <Input
+          placeholder="First Name"
+          autoComplete="given-name"
+          {...props.field}
+          value={props.field.value ?? ''}
+        />
+      </Field>
+    )
   );
 };
 
 export const LastName = () => {
   const props = useController(useContext().focus('lastName').interop());
+  const type: InvestorType = useWatch({ name: 'investor.type' }) as InvestorType;
   return (
     <Field {...props}>
       <Input
-        placeholder="Last Name"
-        autoComplete="family-name"
+        placeholder={type === 'Organization' ? 'Organization Name' : 'Last Name'}
+        autoComplete={type === 'Organization' ? '' : 'family-name'}
         {...props.field}
         value={props.field.value ?? ''}
       />
