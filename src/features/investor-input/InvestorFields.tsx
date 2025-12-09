@@ -68,7 +68,7 @@ export const Email = () => {
 
 export const FirstName = () => {
   const props = useController(useContext().focus('firstName').interop());
-  const type: InvestorType = useWatch({ name: 'investor.type' }) as InvestorType;
+  const type = useWatch(useContext().focus('type').interop());
   return (
     type === 'Individual' && (
       <Field {...props}>
@@ -85,7 +85,7 @@ export const FirstName = () => {
 
 export const LastName = () => {
   const props = useController(useContext().focus('lastName').interop());
-  const type: InvestorType = useWatch({ name: 'investor.type' }) as InvestorType;
+  const type = useWatch(useContext().focus('type').interop());
   return (
     <Field {...props}>
       <Input
