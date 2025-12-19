@@ -1,8 +1,6 @@
 import { type ExtendableOptions, type PartialTheme } from '@pandacss/types';
 import { animationStyles } from './animation-styles.ts';
 import { red } from './colors/red.ts';
-import { scDarkBlue } from './colors/sc-dark-blue.ts';
-import { scGreen } from './colors/sc-green.ts';
 import { slate } from './colors/slate.ts';
 import { conditions } from './conditions.ts';
 import { globalCss } from './global-css.ts';
@@ -15,6 +13,8 @@ import { durations } from './tokens/durations.ts';
 import { fonts } from './tokens/fonts.ts';
 import { shadows } from './tokens/shadows.ts';
 import { zIndex } from './tokens/z-index.ts';
+import { scTerracotta } from '~/theme/colors/sc-terracotta.ts';
+import { scForest } from '~/theme/colors/sc-forest.ts';
 
 const theme = {
   animationStyles: animationStyles,
@@ -40,8 +40,8 @@ const theme = {
       },
       border: { value: '{colors.gray.6}' },
 
-      primary: scGreen,
-      secondary: scDarkBlue,
+      primary: scForest,
+      secondary: scTerracotta,
 
       error: red,
       // Park UI requires a gray color available
