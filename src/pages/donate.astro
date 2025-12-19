@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { DonationForm } from '~/features/donate';
+import { Link } from '~/common/ui';
 import { grid, stack } from 'styled-system/patterns';
 import { css } from 'styled-system/css';
 import { styled } from 'styled-system/jsx';
@@ -29,10 +30,7 @@ import { styled } from 'styled-system/jsx';
       </styled.p>
       <styled.h1 css={{ textStyle: 'title2', fontSize: '4xl' }}>LEAVE A GREATER LEGACY</styled.h1>
       <styled.p css={{ p: '2' }}>
-import { Link } from '~/common/ui'; 
-        <Link href="mailto:Jamie_Hanson@tsco.org">
-          Contact our team
-        </a>{' '}
+        <Link href="mailto:Jamie_Hanson@tsco.org"> Contact our team </Link>{' '}
         to discover how you can make a multi-year commitment as an individual, business, or church and
         partner with local translation teams around the world.
       </styled.p>
