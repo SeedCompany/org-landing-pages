@@ -1,8 +1,8 @@
 import { type ExtendableOptions, type PartialTheme } from '@pandacss/types';
 import { animationStyles } from './animation-styles.ts';
 import { red } from './colors/red.ts';
-import { scDarkBlue } from '~/theme/colors/sc-dark-blue.ts';
-import { scGreen } from '~/theme/colors/sc-green.ts';
+import { scDarkBlue } from './colors/sc-dark-blue.ts';
+import { scGreen } from './colors/sc-green.ts';
 import { slate } from './colors/slate.ts';
 import { conditions } from './conditions.ts';
 import { globalCss } from './global-css.ts';
