@@ -29,12 +29,8 @@ import { styled } from 'styled-system/jsx';
       </styled.p>
       <styled.h1 css={{ textStyle: 'title2', fontSize: '4xl' }}>LEAVE A GREATER LEGACY</styled.h1>
       <styled.p css={{ p: '2' }}>
-        <a
-          href="mailto:Jamie_Hanson@tsco.org"
-          class={css({
-            textDecoration: 'underline',
-          })}
-        >
+import { Link } from '~/common/ui'; 
+        <Link href="mailto:Jamie_Hanson@tsco.org">
           Contact our team
         </a>{' '}
         to discover how you can make a multi-year commitment as an individual, business, or church and
