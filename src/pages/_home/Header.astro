@@ -1,6 +1,8 @@
 ---
 import { ImageLink } from './ImageLink';
 import { NavLinkList } from './NavLinkList';
+
+import seedLogo from '../../assets/images/Seed-logo-primary-white.png';
 ---
 
 <header class="md:fixed absolute inset-x-0 top-0 z-50">
@@ -9,11 +11,7 @@ import { NavLinkList } from './NavLinkList';
     aria-label="Global"
     id="nav"
   >
-    <ImageLink
-      linkUrl="#"
-      imageUrl="https://seedcompany.com/wp-content/uploads/2025/01/sc-full-logo-white-1.svg"
-      altText="Seed Company"
-    />
+    <ImageLink linkUrl="#" imageUrl={seedLogo.src} altText="Seed Company" />
     <div class="flex lg:hidden">
       <button
         type="button"
