@@ -1,0 +1,25 @@
+---
+import logo from '../assets/images/Seed-logo-primary-white.png';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting to white logo…</title>
+    <!-- 0 = instant redirect -->
+    <meta http-equiv="refresh" content="0;url={logo.src}" />
+    <!-- Helps SEO / crawlers -->
+    <link rel="canonical" href={logo.src} />
+  </head>
+  <body>
+    <p>
+      Redirecting to the white logo… <br />
+      If it doesn't happen automatically, <a href={logo.src}>click here</a>.
+    </p>
+
+    <script define:vars={{ logoUrl: logo.src }}>
+      window.location.replace(logoUrl);
+    </script>
+  </body>
+</html>
