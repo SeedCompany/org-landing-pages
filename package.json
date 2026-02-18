@@ -58,7 +58,7 @@
     "@urql/core": "^6.0.1",
     "@urql/exchange-persisted": "^5.0.1",
     "@wojtekmaj/react-recaptcha-v3": "^0.1.4",
-    "astro": "^5.7.9",
+    "astro": "^5.15.9",
     "astro-icon": "^1.1.5",
     "chart.js": "^4.4.9",
     "dotenv": "^16.5.0",
