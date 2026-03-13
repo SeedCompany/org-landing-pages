@@ -1,12 +1,13 @@
 ---
-import { fetchWatermarkTotals } from './watermark-totals.ts';
+// import { fetchWatermarkTotals } from './watermark-totals.ts';
 import ProjectCards, { type CardProps } from './ProjectCards.astro';
 
-const { amount } = await fetchWatermarkTotals();
+// const { amount } = await fetchWatermarkTotals();
+const amount = 2602530;
 
 const mockData: CardProps[] = [
   {
-    currentAmount: 2602530,
+    currentAmount: amount,
     startAmount: 0,
     endAmount: 100000,
     peopleGroups: 4,
