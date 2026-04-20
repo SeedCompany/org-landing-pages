@@ -3,8 +3,6 @@ import { PaymentElement, useElements } from '@stripe/react-stripe-js';
 import type { StripePaymentElementOptions } from '@stripe/stripe-js';
 import { useEffect } from 'react';
 import { useController, useWatch } from 'react-hook-form';
-import { css } from 'styled-system/css';
-import type { JsxStyleProps } from 'styled-system/types';
 import { controlType } from '~/common/form';
 import { DonateInput } from '../donate.schema.ts';
 
@@ -13,7 +11,7 @@ const options: StripePaymentElementOptions = {
   paymentMethodOrder: ['card', 'apple_pay', 'google_pay'],
 };
 
-export const PaymentFields = ({ lens, css: cssProp }: { lens: Lens<boolean> } & JsxStyleProps) => {
+export const PaymentFields = ({ lens, className }: { lens: Lens<boolean>; className?: string }) => {
   const form = useController(lens.interop());
   const elements = useElements();
 
@@ -40,7 +38,7 @@ export const PaymentFields = ({ lens, css: cssProp }: { lens: Lens<boolean> } & 
       onChange={(e) => {
         form.field.onChange(e.complete);
       }}
-      className={css(cssProp)}
+      className={className}
     />
   );
 };

@@ -14,8 +14,6 @@
     ],
     "baseUrl": ".",
     "paths": {
-      // See note in panda.config.ts about this mapping.
-      "styled-system/*": ["./generated/styled-system/*"],
       "~/*": ["./src/integrations/*", "./src/*"]
     }
   },

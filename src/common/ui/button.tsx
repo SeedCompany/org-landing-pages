@@ -1,80 +1,128 @@
-import { ark } from '@ark-ui/react/factory';
-import { createContext, mergeProps } from '@ark-ui/react/utils';
-import { type ComponentProps, forwardRef, useMemo, type ReactNode } from 'react';
-import { styled } from 'styled-system/jsx';
-import { type ButtonVariantProps, button } from 'styled-system/recipes';
+import {
+  Children,
+  cloneElement,
+  createContext,
+  forwardRef,
+  isValidElement,
+  useContext,
+  type ComponentProps,
+  type ReactNode,
+} from 'react';
 import { Group, type GroupProps } from './group.tsx';
 import { Loader } from './loader.tsx';
 
-interface ButtonLoadingProps {
-  /**
-   * If `true`, the button will show a loading spinner.
-   * @default false
-   */
-  loading?: boolean | undefined;
-  /**
-   * The text to show while loading.
-   */
-  loadingText?: ReactNode | undefined;
-  /**
-   * The spinner to show while loading.
-   */
-  spinner?: ReactNode | undefined;
-  /**
-   * The placement of the spinner
-   * @default "start"
-   */
-  spinnerPlacement?: 'start' | 'end' | undefined;
+export type ButtonVariant = 'solid' | 'outline' | 'plain' | 'ghost';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+export interface ButtonVariantProps {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  colorPalette?: string;
 }
 
-type BaseButtonProps = ComponentProps<typeof BaseButton>;
-const BaseButton = styled(ark.button, button);
+const variantClass: Record<ButtonVariant, string> = {
+  solid:
+    'bg-indigo-600 text-white border border-transparent hover:bg-indigo-700 disabled:bg-indigo-300',
+  outline: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:opacity-50',
+  plain:
+    'bg-transparent text-gray-700 border border-transparent hover:bg-gray-100 disabled:opacity-50',
+  ghost:
+    'bg-transparent text-gray-700 border border-transparent hover:bg-gray-100 disabled:opacity-50',
+};
 
-export interface ButtonProps extends BaseButtonProps, ButtonLoadingProps {}
+const sizeClass: Record<ButtonSize, string> = {
+  xs: 'px-2 py-1 text-xs rounded',
+  sm: 'px-3 py-1.5 text-sm rounded',
+  md: 'px-4 py-2 text-sm rounded-md',
+  lg: 'px-5 py-2.5 text-base rounded-md',
+  xl: 'px-6 py-3 text-base rounded-md',
+};
+
+interface ButtonLoadingProps {
+  loading?: boolean;
+  loadingText?: ReactNode;
+  spinner?: ReactNode;
+  spinnerPlacement?: 'start' | 'end';
+}
+
+export interface ButtonProps
+  extends Omit<ComponentProps<'button'>, 'children'>,
+    ButtonVariantProps,
+    ButtonLoadingProps {
+  asChild?: boolean;
+  children?: ReactNode;
+  css?: unknown;
+}
+
+const ButtonPropsContext = createContext<ButtonVariantProps>({});
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
-  const propsContext = useButtonPropsContext();
-  const buttonProps = useMemo(
-    () => mergeProps<ButtonProps>(propsContext, props),
-    [propsContext, props],
+  const ctx = useContext(ButtonPropsContext);
+  const {
+    variant = ctx.variant ?? 'solid',
+    size = ctx.size ?? 'md',
+    colorPalette: _colorPalette,
+    loading,
+    loadingText,
+    spinner,
+    spinnerPlacement,
+    asChild,
+    children,
+    css: _css,
+    className = '',
+    disabled,
+    ...rest
+  } = props;
+
+  const classes = [
+    'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 disabled:cursor-not-allowed',
+    variantClass[variant],
+    sizeClass[size],
+    className,
+  ].join(' ');
+
+  const content = loading ? (
+    <Loader spinner={spinner} text={loadingText} spinnerPlacement={spinnerPlacement}>
+      {children}
+    </Loader>
+  ) : (
+    children
   );
 
-  const { loading, loadingText, children, spinner, spinnerPlacement, ...rest } = buttonProps;
+  if (asChild && isValidElement(children)) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const child = Children.only(children) as React.ReactElement<any>;
+    return cloneElement(child, {
+      ...rest,
+      className: classes,
+      disabled: loading || disabled,
+      'data-loading': loading ? '' : undefined,
+    });
+  }
+
   return (
-    <BaseButton
+    <button
       type="button"
       ref={ref}
       {...rest}
+      disabled={loading || disabled}
       data-loading={loading ? '' : undefined}
-      disabled={loading || rest.disabled}
+      className={classes}
     >
-      {!props.asChild && loading ? (
-        <Loader spinner={spinner} text={loadingText} spinnerPlacement={spinnerPlacement}>
-          {children}
-        </Loader>
-      ) : (
-        children
-      )}
-    </BaseButton>
+      {content}
+    </button>
   );
 });
 
 export interface ButtonGroupProps extends GroupProps, ButtonVariantProps {}
 
-export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
-  function ButtonGroup(props, ref) {
-    const [variantProps, otherProps] = useMemo(() => button.splitVariantProps(props), [props]);
-    return (
-      <ButtonPropsProvider value={variantProps}>
-        <Group ref={ref} {...otherProps} />
-      </ButtonPropsProvider>
-    );
-  },
-);
-
-const [ButtonPropsProvider, useButtonPropsContext] = createContext<ButtonVariantProps>({
-  name: 'ButtonPropsContext',
-  hookName: 'useButtonPropsContext',
-  providerName: '<PropsProvider />',
-  strict: false,
+export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(
+  { variant, size, colorPalette, ...props },
+  ref,
+) {
+  return (
+    <ButtonPropsContext.Provider value={{ variant, size, colorPalette }}>
+      <Group ref={ref} {...props} />
+    </ButtonPropsContext.Provider>
+  );
 });

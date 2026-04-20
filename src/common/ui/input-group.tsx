@@ -1,122 +1,60 @@
-import { Children, cloneElement, forwardRef, type ReactElement, type ReactNode } from 'react';
-import { css, cx } from 'styled-system/css';
-import type { BoxProps } from 'styled-system/jsx';
-import type { SystemStyleObject } from 'styled-system/types';
-import { Group } from './group';
-import type { InputProps } from './input';
-import { InputAddon, type InputAddonProps } from './input-addon';
-import { InputElement, type InputElementProps } from './input-element';
+import { cloneElement, forwardRef, isValidElement, type ReactElement, type ReactNode } from 'react';
+import { InputElement } from './input-element.tsx';
 
-export interface InputGroupProps extends BoxProps {
-  /**
-   * The props to pass to the start element
-   */
-  startElementProps?: InputElementProps | undefined;
-  /**
-   * The props to pass to the end element
-   */
-  endElementProps?: InputElementProps | undefined;
-  /**
-   * The start element to render the inner left of the group
-   */
-  startElement?: ReactNode | undefined;
-  /**
-   * The end element to render the inner right of the group
-   */
-  endElement?: ReactNode | undefined;
-  /**
-   * The start addon to render the left of the group
-   */
-  startAddon?: ReactNode | undefined;
-  /**
-   * The props to pass to the start addon
-   */
-  startAddonProps?: InputAddonProps | undefined;
-  /**
-   * The end addon to render the right of the group
-   */
-  endAddon?: ReactNode | undefined;
-  /**
-   * The props to pass to the end addon
-   */
-  endAddonProps?: InputAddonProps | undefined;
-  /**
-   * The input to wrap
-   */
-  children: ReactElement<InputProps>;
-  /**
-   * The offset to apply to the start element
-   */
-  startOffset?: Extract<SystemStyleObject['paddingStart'], string> | undefined;
-  /**
-   * The offset to apply to the end element
-   */
-  endOffset?: Extract<SystemStyleObject['paddingEnd'], string> | undefined;
+export interface InputGroupProps {
+  startElement?: ReactNode;
+  endElement?: ReactNode;
+  startAddon?: ReactNode;
+  endAddon?: ReactNode;
+  children: ReactElement;
+  className?: string;
 }
 
-export const InputGroup = forwardRef<HTMLDivElement, InputGroupProps>(
-  function InputGroup(props, ref) {
-    const {
-      startElement,
-      startElementProps,
-      endElement,
-      endElementProps,
-      startAddon,
-      startAddonProps,
-      endAddon,
-      endAddonProps,
-      children,
-      startOffset = '0px',
-      endOffset = '0px',
-      ...rest
-    } = props;
+export const InputGroup = forwardRef<HTMLDivElement, InputGroupProps>(function InputGroup(
+  { startElement, endElement, startAddon, endAddon, children, className = '' },
+  ref,
+) {
+  const hasStart = Boolean(startElement || startAddon);
+  const hasEnd = Boolean(endElement || endAddon);
 
-    const child = Children.only<ReactElement<InputElementProps>>(children);
-    const attached = Boolean(startAddon || endAddon);
+  const child = isValidElement(children) ? children : null;
+  const inputWithPadding = child
+    ? cloneElement(child as ReactElement<{ className?: string }>, {
+        className: [
+          (child.props as { className?: string }).className ?? '',
+          hasStart ? 'pl-10' : '',
+          hasEnd ? 'pr-10' : '',
+        ]
+          .filter(Boolean)
+          .join(' '),
+      })
+    : children;
 
-    const inputStyles = css({
-      ...(startElement && {
-        ps: `[calc(var(--input-height) - ${startOffset})]`,
-      }),
-      ...(endElement && { pe: `[calc(var(--input-height) - ${endOffset})]` }),
-    });
-
-    return (
-      <Group
-        ref={ref}
-        attached={attached}
-        skip={(el) => el.type === InputElement}
-        {...rest}
-        className={cx(
-          css({
-            width: 'full',
-            _icon: {
-              boxSize: '5',
-            },
-          }),
-          rest.className,
-        )}
-      >
-        {startAddon && <InputAddon {...startAddonProps}>{startAddon}</InputAddon>}
+  return (
+    <div ref={ref} className={`relative flex items-center w-full ${className}`}>
+      {startAddon && (
+        <div className="shrink-0 inline-flex items-center px-3 border border-r-0 border-gray-300 bg-gray-50 rounded-l-md text-sm text-gray-500">
+          {startAddon}
+        </div>
+      )}
+      <div className="relative flex-1">
         {startElement && (
-          <InputElement
-            {...startElementProps}
-            className={cx(css({ pointerEvents: 'none' }), startElementProps?.className)}
-          >
+          <InputElement placement="start" className="pointer-events-none">
             {startElement}
           </InputElement>
         )}
-        {cloneElement(child, {
-          ...children.props,
-          className: cx(child.props.className, inputStyles),
-        })}
+        {inputWithPadding}
         {endElement && (
-          <InputElement placement="end" {...endElementProps}>
+          <InputElement placement="end" className="pointer-events-none">
             {endElement}
           </InputElement>
         )}
-        {endAddon && <InputAddon {...endAddonProps}>{endAddon}</InputAddon>}
-      </Group>
-    );
-  },
-);
+      </div>
+      {endAddon && (
+        <div className="shrink-0 inline-flex items-center px-3 border border-l-0 border-gray-300 bg-gray-50 rounded-r-md text-sm text-gray-500">
+          {endAddon}
+        </div>
+      )}
+    </div>
+  );
+});

@@ -1,16 +1,68 @@
-import { Field } from '@ark-ui/react/field';
-import type { ComponentProps } from 'react';
-import { createStyleContext } from 'styled-system/jsx';
-import { field } from 'styled-system/recipes';
+import { createContext, forwardRef, useContext, type ComponentProps, type ReactNode } from 'react';
 
-const { withProvider, withContext } = createStyleContext(field);
+interface FieldState {
+  invalid?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+}
 
-export type RootProps = ComponentProps<typeof Root>;
-export const Root = withProvider(Field.Root, 'root');
-export const RootProvider = withProvider(Field.RootProvider, 'root');
-export const ErrorText = withContext(Field.ErrorText, 'errorText');
-export const HelperText = withContext(Field.HelperText, 'helperText');
-export const Label = withContext(Field.Label, 'label');
-export const RequiredIndicator = withContext(Field.RequiredIndicator, 'requiredIndicator');
+const FieldContext = createContext<FieldState>({});
 
-export { FieldContext as Context } from '@ark-ui/react/field';
+export const useFieldContext = () => useContext(FieldContext);
+
+export type RootProps = ComponentProps<'div'> & FieldState;
+
+export const Root = forwardRef<HTMLDivElement, RootProps>(function FieldRoot(
+  { invalid, disabled, required, className = '', children, ...props },
+  ref,
+) {
+  return (
+    <FieldContext.Provider value={{ invalid, disabled, required }}>
+      <div
+        ref={ref}
+        data-invalid={invalid ? '' : undefined}
+        data-disabled={disabled ? '' : undefined}
+        className={`flex flex-col gap-1 ${className}`}
+        {...props}
+      >
+        {children}
+      </div>
+    </FieldContext.Provider>
+  );
+});
+
+export const Label = forwardRef<HTMLLabelElement, ComponentProps<'label'>>(function FieldLabel(
+  { className = '', ...props },
+  ref,
+) {
+  return (
+    <label ref={ref} className={`text-sm font-medium text-gray-700 ${className}`} {...props} />
+  );
+});
+
+export const RequiredIndicator = ({ className = '' }: { className?: string }) => (
+  <span className={`text-red-500 ml-0.5 ${className}`} aria-hidden="true">
+    *
+  </span>
+);
+
+export const ErrorText = forwardRef<HTMLParagraphElement, ComponentProps<'p'>>(
+  function FieldErrorText({ className = '', ...props }, ref) {
+    return <p ref={ref} className={`text-sm text-red-600 ${className}`} {...props} />;
+  },
+);
+
+export const HelperText = forwardRef<HTMLParagraphElement, ComponentProps<'p'>>(
+  function FieldHelperText({ className = '', ...props }, ref) {
+    return <p ref={ref} className={`text-sm text-gray-500 ${className}`} {...props} />;
+  },
+);
+
+export const RootProvider = Root;
+
+export type { FieldState };
+
+export const Context = FieldContext;
+
+// Helper for child components to pick up field state (e.g. Input reading invalid state)
+export const useField = useFieldContext;

@@ -1,7 +1,14 @@
-import { ark } from '@ark-ui/react/factory';
-import type { ComponentProps } from 'react';
-import { styled } from 'styled-system/jsx';
-import { link } from 'styled-system/recipes';
+import { forwardRef, type ComponentProps } from 'react';
 
-export type LinkProps = ComponentProps<typeof Link>;
-export const Link = styled(ark.a, link);
+export type LinkProps = ComponentProps<'a'> & {
+  variant?: 'plain' | 'underline';
+};
+
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
+  { className = '', variant = 'underline', ...props },
+  ref,
+) {
+  const variantClass =
+    variant === 'plain' ? 'hover:underline' : 'underline decoration-current hover:opacity-80';
+  return <a ref={ref} className={`${variantClass} ${className}`} {...props} />;
+});
