@@ -7,7 +7,6 @@ import {
   useState,
 } from 'react';
 import { pickBy } from 'remeda';
-import { Stack, styled } from 'styled-system/jsx';
 import type { PartialDeep } from 'type-fest';
 import { z } from 'zod/v4/mini';
 import { type DonationCadence as Cadence, type DonationIntent, type Telemetry } from '~/graphql';
@@ -135,8 +134,6 @@ export const DonationForm = (props: DonateFormProps) => {
         ? amount.clone({
             ...amount.def,
             checks: [
-              // Cloned() to put this check before the default ones.
-              // That way we don't say "min is $1...no wait actually its $200"
               z.minimum(props.amount.min.value, props.amount.min.message),
               ...(amount.def.checks ?? []),
             ],
@@ -151,7 +148,6 @@ export const DonationForm = (props: DonateFormProps) => {
   });
 
   const onSubmit = async ({
-    // Ignored, just for validation handling
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     paymentComplete: _,
     amount,
@@ -189,9 +185,6 @@ export const DonationForm = (props: DonateFormProps) => {
     onSubmit: async (next: Partial<DonateInput>) => {
       const isLast = step === steps.at(-1);
       if (isLast) {
-        // Must await submission here, before state change.
-        // state change causes form to re-render with new values,
-        // which negates awaiting the submission & showing the spinner.
         await onSubmit({ ...state, ...next });
       }
       setState((prev) => ({ ...prev, ...next }));
@@ -202,41 +195,33 @@ export const DonationForm = (props: DonateFormProps) => {
 
   return (
     <DonateSchemaProvider value={schema}>
-      <Stack
+      <div
         data-scope="donate-form"
         data-step={step}
         ref={formRef}
-        css={{ scrollMarginTop: '10' }}
+        className="flex flex-col gap-4 scroll-mt-10"
       >
         {props.before}
         {Object.entries(declareSteps).map(([key, Component]) => {
           const hideStep = key !== step;
           return (
-            <styled.div
+            <div
               key={key}
-              // force DOM to draw layout for all steps
-              // this allows stripe elements to show correctly without
-              // "popping in" when the step is first shown
-              css={
+              // force DOM to draw layout for all steps so stripe elements render correctly
+              className={
                 hideStep
-                  ? {
-                      position: 'absolute',
-                      visibility: 'hidden',
-                      pointerEvents: 'none',
-                      insetY: '0',
-                      overflow: 'hidden',
-                    }
-                  : {}
+                  ? 'absolute invisible pointer-events-none inset-y-0 overflow-hidden'
+                  : undefined
               }
               aria-hidden={hideStep ? true : undefined}
               tabIndex={hideStep ? -1 : undefined}
             >
               <Component {...stepProps} />
-            </styled.div>
+            </div>
           );
         })}
         {props.after}
-      </Stack>
+      </div>
     </DonateSchemaProvider>
   );
 };

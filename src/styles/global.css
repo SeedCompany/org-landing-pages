@@ -1,25 +1,30 @@
 /* global fonts */
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/400-italic.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/montserrat/700-italic.css';
+@import '@fontsource-variable/red-hat-mono';
+@import '../theme/fonts/rader/Rader.css';
+@import '../theme/fonts/sentinel/Sentinel.css';
 @import '@fontsource/lato/400.css';
 @import '@fontsource/lato/700.css';
 @import '@fontsource/oswald/400.css';
 @import '@fontsource/oswald/700.css';
 @import '@fontsource/dm-serif-text/400.css';
 
-@layer tw_reset, reset, panda_base, tokens, tw_components, recipes, tw_utilities, panda_utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@layer reset {
-  /* From of Panda's reset (that is currently disabled)
-     Park UI assumes this exists.
-     This deviates from TW reset, by using !important.
-   */
-  [hidden]:where(:not([hidden=until-found])) {
-    display: none !important;
+@layer base {
+  html {
+    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    color-scheme: light;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900;
   }
 }
-
-@layer tw_reset { @tailwind base; }
-@layer tw_components { @tailwind components; }
-@layer tw_utilities { @tailwind utilities; }
 
 :root {
   /* Sustainers Template Colors */

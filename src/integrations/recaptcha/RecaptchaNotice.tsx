@@ -1,9 +1,8 @@
-import { styled } from 'styled-system/jsx';
-import { Link } from '~/common/ui';
 import type { ComponentProps } from 'react';
+import { Link } from '~/common/ui';
 
-export const RecaptchaNotice = (props: ComponentProps<typeof NoticeRoot>) => (
-  <NoticeRoot {...props}>
+export const RecaptchaNotice = ({ className = '', ...props }: ComponentProps<'div'>) => (
+  <div className={`text-xs text-gray-500 ${className}`} {...props}>
     This site is protected by reCAPTCHA and the Google{' '}
     <Link
       variant="plain"
@@ -18,9 +17,5 @@ export const RecaptchaNotice = (props: ComponentProps<typeof NoticeRoot>) => (
       Terms of Service
     </Link>{' '}
     apply.
-  </NoticeRoot>
+  </div>
 );
-
-const NoticeRoot = styled('div', {
-  base: { fontSize: 'xs', color: 'fg.subtle' },
-});

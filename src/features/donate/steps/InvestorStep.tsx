@@ -1,7 +1,6 @@
 import { z } from 'zod/v4/mini';
 import { type FunctionComponent as Component, useMemo } from 'react';
 import { difference } from 'remeda';
-import { Grid } from 'styled-system/jsx';
 import { Form, SubmitButton, useForm } from '~/common/form';
 import { AddressFields } from '~/features/address';
 import { InvestorFields } from '~/features/investor-input';
@@ -24,10 +23,10 @@ function Address() {
       <AddressFields.Line1 />
       <AddressFields.Line2 />
       <AddressFields.City />
-      <Grid columns={{ sm: 2 }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <AddressFields.State />
         <AddressFields.ZipCode />
-      </Grid>
+      </div>
     </InvestorFields.Address>
   );
 }

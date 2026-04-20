@@ -38,7 +38,7 @@ export const PaymentStep = ({
         <SubmitButton>Give Now</SubmitButton>
         <BackButton onClick={() => onBack()} />
       </Buttons>
-      <RecaptchaNotice css={{ mt: '3' }} />
+      <RecaptchaNotice className="mt-3" />
     </Form>
   );
 };

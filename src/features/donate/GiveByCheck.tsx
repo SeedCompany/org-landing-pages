@@ -1,51 +1,46 @@
-import { Stack, type StackProps, styled, VStack } from 'styled-system/jsx';
-import type { JsxStyleProps } from 'styled-system/types';
+import type { ComponentProps } from 'react';
 import { Button, CloseButton, Dialog, Icon, Link } from '~/common/ui';
-import { Portal } from '@ark-ui/react';
 import { MailIcon as LetterIcon } from 'lucide-react';
 
-interface GiveByCheckProps extends JsxStyleProps {
+interface GiveByCheckProps {
   memo?: string;
+  className?: string;
 }
 
-export const GiveByCheck = ({ memo, css: cssProp }: GiveByCheckProps) => (
+export const GiveByCheck = ({ memo, className }: GiveByCheckProps) => (
   <Dialog.Root>
     <Dialog.Trigger asChild>
-      <Button variant="plain" size="xs" css={cssProp}>
+      <Button variant="plain" size="xs" className={className}>
         Want to give by check?
       </Button>
     </Dialog.Trigger>
 
-    <Portal>
-      <Dialog.Backdrop />
-      <Dialog.Positioner>
-        <Dialog.Content>
-          <Dialog.Header asChild>
-            <VStack>
-              <MailIcon />
-              <Dialog.Title>Give by Check</Dialog.Title>
-            </VStack>
-          </Dialog.Header>
+    <Dialog.Backdrop />
+    <Dialog.Positioner>
+      <Dialog.Content>
+        <div className="flex flex-col items-center gap-2 p-6 pb-0">
+          <MailIconCircle />
+          <Dialog.Title>Give by Check</Dialog.Title>
+        </div>
 
-          <Dialog.Body asChild>
-            <GiveByCheckBody memo={memo} />
-          </Dialog.Body>
+        <div className="px-6 py-4">
+          <GiveByCheckBody memo={memo} />
+        </div>
 
-          <Dialog.CloseTrigger asChild>
-            <CloseButton />
-          </Dialog.CloseTrigger>
-        </Dialog.Content>
-      </Dialog.Positioner>
-    </Portal>
+        <Dialog.CloseTrigger asChild>
+          <CloseButton className="absolute top-3 right-3" />
+        </Dialog.CloseTrigger>
+      </Dialog.Content>
+    </Dialog.Positioner>
   </Dialog.Root>
 );
 
-const GiveByCheckBody = ({ memo, ...rest }: { memo?: string } & StackProps) => (
-  <Stack gap="3" {...rest}>
+const GiveByCheckBody = ({ memo }: { memo?: string } & ComponentProps<'div'>) => (
+  <div className="flex flex-col gap-3">
     <p>
       Please make your check payable to <i>Seed Company</i> and send to the following address:
     </p>
-    <styled.p css={{ px: '2', textStyle: 'body3' }}>
+    <p className="px-2 text-sm">
       Seed Company
       <br />
       ATTN: Finance
@@ -62,26 +57,18 @@ const GiveByCheckBody = ({ memo, ...rest }: { memo?: string } & StackProps) => (
           Memo: {memo}
         </>
       )}
-    </styled.p>
+    </p>
     <p>
       You may call us at <Link href="tel:+1(817)557-2121">(817) 557-2121</Link> or email at{' '}
       <Link href="mailto:info@tsco.org">info@tsco.org</Link> for further information.
     </p>
-  </Stack>
+  </div>
 );
 
-const MailIcon = () => (
-  <styled.div
-    css={{
-      colorPalette: 'primary',
-      color: 'colorPalette.solid.bg',
-      bg: 'colorPalette.subtle.bg',
-      rounded: 'full',
-      p: '3',
-    }}
-  >
+const MailIconCircle = () => (
+  <div className="rounded-full bg-[#b7de002e] p-3 text-scForest">
     <Icon size="xl">
       <LetterIcon />
     </Icon>
-  </styled.div>
+  </div>
 );

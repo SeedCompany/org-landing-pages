@@ -1,56 +1,75 @@
-import type { Assign, SelectRootProps } from '@ark-ui/react';
-import { ark } from '@ark-ui/react/factory';
-import { Select, useSelectItemContext } from '@ark-ui/react/select';
-import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react';
-import { forwardRef, type RefAttributes } from 'react';
-import { createStyleContext } from 'styled-system/jsx';
-import { type SelectVariantProps, select } from 'styled-system/recipes';
-import type { HTMLStyledProps } from 'styled-system/types';
+// Minimal native-select-based implementation.
+// The primary consumer (StateSelect) has been rewritten to use a native <select>.
+// These stubs are kept for potential future re-use.
 
-const { withProvider, withContext } = createStyleContext(select);
+import { forwardRef, type ComponentProps, type ReactNode } from 'react';
 
-type StyleProps = SelectVariantProps & HTMLStyledProps<'div'>;
+export type RootProps<T = string> = ComponentProps<'div'> & {
+  value?: string[];
+  onValueChange?: (detail: { value: string[]; items: T[] }) => void;
+  collection?: { items: T[] };
+  lazyMount?: boolean;
+  'aria-label'?: string;
+};
 
-export type RootProps<T> = Assign<SelectRootProps<T>, StyleProps> & RefAttributes<HTMLDivElement>;
+export const Root = <T,>({ children, ...props }: RootProps<T>) => (
+  <div {...(props as ComponentProps<'div'>)}>{children}</div>
+);
 
-export const Root = withProvider(Select.Root, 'root') as Select.RootComponent<StyleProps>;
-
-export const ClearTrigger = withContext(Select.ClearTrigger, 'clearTrigger');
-export const Content = withContext(Select.Content, 'content');
-export const Control = withContext(Select.Control, 'control');
-export const IndicatorGroup = withContext(ark.div, 'indicatorGroup');
-export const Item = withContext(Select.Item, 'item');
-export const ItemGroup = withContext(Select.ItemGroup, 'itemGroup');
-export const ItemGroupLabel = withContext(Select.ItemGroupLabel, 'itemGroupLabel');
-export const ItemText = withContext(Select.ItemText, 'itemText');
-export const Label = withContext(Select.Label, 'label');
-export const List = withContext(Select.List, 'list');
-export const Positioner = withContext(Select.Positioner, 'positioner');
-export const Trigger = withContext(Select.Trigger, 'trigger');
-export const ValueText = withContext(Select.ValueText, 'valueText');
-export const Indicator = withContext(Select.Indicator, 'indicator', {
-  defaultProps: { children: <ChevronsUpDownIcon /> },
-});
-export const HiddenSelect = Select.HiddenSelect;
-
-export {
-  SelectContext as Context,
-  SelectItemContext as ItemContext,
-  type SelectValueChangeDetails as ValueChangeDetails,
-} from '@ark-ui/react/select';
-
-const StyledItemIndicator = withContext(Select.ItemIndicator, 'itemIndicator');
-
-export const ItemIndicator = forwardRef<HTMLDivElement, HTMLStyledProps<'div'>>(
-  function ItemIndicator(props, ref) {
-    const item = useSelectItemContext();
-
-    return item.selected ? (
-      <StyledItemIndicator ref={ref} {...props}>
-        <CheckIcon />
-      </StyledItemIndicator>
-    ) : (
-      <svg aria-hidden="true" focusable="false" />
-    );
+export const HiddenSelect = forwardRef<HTMLSelectElement, ComponentProps<'select'>>(
+  function HiddenSelect(props, ref) {
+    return <select ref={ref} className="sr-only" {...props} />;
   },
 );
+
+export const Control = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Trigger = ({
+  children,
+  className = '',
+}: {
+  children?: ReactNode;
+  className?: string;
+}) => (
+  <button type="button" className={`flex items-center gap-1 ${className}`}>
+    {children}
+  </button>
+);
+export const ValueText = ({
+  placeholder,
+  children,
+}: {
+  placeholder?: string;
+  children?: ReactNode;
+}) => <span>{children ?? placeholder}</span>;
+export const IndicatorGroup = ({ children }: { children?: ReactNode }) => (
+  <span className="ml-1">{children}</span>
+);
+export const Indicator = () => <span>▾</span>;
+export const Positioner = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Content = ({
+  children,
+  className = '',
+}: {
+  children?: ReactNode;
+  className?: string;
+}) => (
+  <div className={`absolute z-50 bg-white border border-gray-200 rounded shadow-lg ${className}`}>
+    {children}
+  </div>
+);
+export const Item = ({ children }: { children?: ReactNode; item?: unknown }) => (
+  <div className="px-3 py-2 hover:bg-gray-100 cursor-pointer">{children}</div>
+);
+export const ItemIndicator = () => null;
+export const ItemGroup = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const ItemGroupLabel = ({ children }: { children?: ReactNode }) => (
+  <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase">{children}</div>
+);
+export const Label = ({ children }: { children?: ReactNode }) => (
+  <label className="text-sm font-medium text-gray-700">{children}</label>
+);
+export const ClearTrigger = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const List = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const ItemText = ({ children }: { children?: ReactNode }) => <span>{children}</span>;
+export const Context = null;
+export type ValueChangeDetails<T = string> = { value: string[]; items: T[] };

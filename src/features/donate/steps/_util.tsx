@@ -1,5 +1,4 @@
-import { HStack, styled } from 'styled-system/jsx';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { Button } from '~/common/ui';
 import type { DonateCommonProps } from '../DonationForm.tsx';
 
@@ -9,15 +8,14 @@ export type DonateStepProps<Values> = DonateCommonProps & {
   onSubmit: (values: Values) => Promise<void>;
 };
 
-export const Buttons = styled(HStack, {
-  base: {
-    flexDir: 'row-reverse',
-    '& button': { flex: '1', textTransform: 'uppercase' },
-  },
-});
+export const Buttons = ({ children }: { children?: ReactNode }) => (
+  <div className="flex flex-row-reverse gap-2 [&_button]:flex-1 [&_button]:uppercase">
+    {children}
+  </div>
+);
 
 export const BackButton = (props: ComponentProps<typeof Button>) => (
-  <Button variant="outline" css={{ colorPalette: 'gray' }} {...props}>
+  <Button variant="outline" {...props}>
     {props.children ?? 'Go Back'}
   </Button>
 );

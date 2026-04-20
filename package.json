@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "postinstall": "husky || true",
-    "dev": "yarn gql:gen:schema && yarn gql:gen:ops --watch -s & yarn panda:gen -w & astro dev",
+    "dev": "yarn gql:gen:schema && yarn gql:gen:ops --watch -s & astro dev",
     "build": "astro build && yarn sanity manifest extract --path ./dist/client/studio/static",
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
@@ -19,16 +19,13 @@
     "gql:gen:schema": "graphql-codegen-esm -p schema",
     "gql:gen:ops": "graphql-codegen-esm -p ops",
     "gql-gen": "yarn gql:gen # run our script instead of the unconfigured, but auto-completed, binary from library",
-    "panda:gen": "panda codegen",
-    "astro": "astro",
-    "park-ui": "park-ui"
+    "astro": "astro"
   },
   "engines": {
     "node": ">= 24"
   },
   "packageManager": "yarn@4.10.3",
   "dependencies": {
-    "@ark-ui/react": "^5.26.2",
     "@astrojs/node": "^9.2.1",
     "@astrojs/react": "^4.2.7",
     "@fontsource-variable/red-hat-mono": "^5.2.8",
@@ -41,7 +38,6 @@
     "@hookform/lenses": "^0.9.0",
     "@hookform/resolvers": "^5.1.1",
     "@iconify-json/lucide": "^1.2.38",
-    "@pandacss/preset-panda": "^1.4.3",
     "@portabletext/react": "^3.2.1",
     "@portabletext/to-html": "^2.0.14",
     "@sanity/astro": "^3.2.10",
@@ -89,11 +85,7 @@
     "@graphql-codegen/cli": "^6.0.1",
     "@graphql-codegen/client-preset": "patch:@graphql-codegen/client-preset@npm%3A5.1.0#~/.yarn/patches/@graphql-codegen-client-preset-npm-5.1.0-3453453975.patch",
     "@graphql-codegen/schema-ast": "^5.0.0",
-    "@pandacss/dev": "^1.4.3",
-    "@pandacss/studio": "^1.4.3",
-    "@pandacss/types": "^1.4.3",
     "@parcel/watcher": "^2.5.1",
-    "@park-ui/cli": "^1.0.0-next.7",
     "@types/node": "^24.9.1",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.4",

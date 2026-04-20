@@ -1,7 +1,10 @@
-import { ark } from '@ark-ui/react/factory';
 import type { ComponentProps } from 'react';
-import { styled } from 'styled-system/jsx';
-import { absoluteCenter } from 'styled-system/recipes';
 
-export type AbsoluteCenterProps = ComponentProps<typeof AbsoluteCenter>;
-export const AbsoluteCenter = styled(ark.div, absoluteCenter);
+export type AbsoluteCenterProps = ComponentProps<'div'>;
+
+export const AbsoluteCenter = ({ className = '', ...props }: AbsoluteCenterProps) => (
+  <div
+    className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ${className}`}
+    {...props}
+  />
+);

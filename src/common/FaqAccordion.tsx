@@ -1,8 +1,6 @@
-import type { JsxStyleProps } from 'styled-system/types';
 import { portableText } from '~/sanity';
 import { Accordion } from './ui';
 
-// not importing directly because I think we will do something different with that type soon.
 type PortableText = Parameters<typeof portableText.toHTML>[0];
 
 interface FaqItem {
@@ -10,12 +8,13 @@ interface FaqItem {
   answer: PortableText;
 }
 
-interface FaqAccordionProps extends JsxStyleProps {
+interface FaqAccordionProps {
   faqs: FaqItem[];
+  className?: string;
 }
 
-export const FaqAccordion = ({ faqs, css }: FaqAccordionProps) => (
-  <Accordion.Root collapsible size="lg" indicator="plus" css={css}>
+export const FaqAccordion = ({ faqs, className }: FaqAccordionProps) => (
+  <Accordion.Root className={className}>
     {faqs.map((faq) => {
       if (!faq.question) {
         return null;

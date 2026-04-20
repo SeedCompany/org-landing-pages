@@ -24,23 +24,11 @@ export const CadenceField = ({
   } = useController(lens.interop());
   return (
     <ToggleGroup.Root
-      variant="outline"
       {...field}
       value={value ? [value] : []}
       onValueChange={({ value }) => onChange(value.at(0) ?? null)}
     >
-      <ButtonGroup
-        variant="plain"
-        size="xl"
-        css={{
-          width: 'full',
-          '--group-gap': 'spacing.1',
-          flexWrap: 'wrap',
-          '& button': {
-            flexGrow: '1',
-          },
-        }}
-      >
+      <ButtonGroup variant="plain" size="xl" className="w-full flex-wrap gap-1 [&_button]:flex-1">
         {options.map((cadence) => (
           <ToggleGroup.Item key={cadence} value={cadence} asChild>
             <Button>{(labels ?? defaultLabels)[cadence]}</Button>
