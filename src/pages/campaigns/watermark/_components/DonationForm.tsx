@@ -44,7 +44,11 @@ export const DonationForm = ({
       {campaignEnded ? (
         <>
           {formProps.campaignTotals && campaignProgress}
-          <Button disabled size="xl" className="w-full mt-3">
+          <Button
+            disabled
+            size="xl"
+            className="w-full mt-3 bg-watermarkGreen text-watermarkDarkBlue border-transparent hover:bg-watermarkGreen disabled:bg-watermarkDisabled disabled:opacity-60"
+          >
             Campaign Ended 10/18
           </Button>
         </>

@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Rader';
+  src: url(./PPRader-Medium.woff2) format("woff2");
+  /* This is technically 740. */
+  /* mapping it to "normal" to this */
+  font-weight: 400 740;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Rader';
+  src: url(./PPRader-Bold.woff2) format("woff2");
+  /* This is technically 900. */
+  /* mapping it to "bold" to this */
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}

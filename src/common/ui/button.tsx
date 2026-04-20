@@ -22,10 +22,10 @@ export interface ButtonVariantProps {
 
 const variantClass: Record<ButtonVariant, string> = {
   solid:
-    'bg-indigo-600 text-white border border-transparent hover:bg-indigo-700 disabled:bg-indigo-300',
+    'bg-scForest text-white border border-transparent hover:bg-scForestHover disabled:opacity-50',
   outline: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:opacity-50',
   plain:
-    'bg-transparent text-gray-700 border border-transparent hover:bg-gray-100 disabled:opacity-50',
+    'bg-transparent text-gray-700 border border-transparent hover:bg-gray-100 disabled:opacity-50 data-[selected]:bg-scForestTint data-[selected]:text-gray-900',
   ghost:
     'bg-transparent text-gray-700 border border-transparent hover:bg-gray-100 disabled:opacity-50',
 };
@@ -75,7 +75,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   } = props;
 
   const classes = [
-    'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500 disabled:cursor-not-allowed',
+    'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-scForest disabled:cursor-not-allowed',
     variantClass[variant],
     sizeClass[size],
     className,

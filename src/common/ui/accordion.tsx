@@ -19,7 +19,7 @@ export const Root = ({
   css: _css,
   ...props
 }: RootProps) => (
-  <div className={`divide-y divide-gray-200 border-y border-gray-200 ${className}`} {...props} />
+  <div className={`divide-y divide-gray-200 border-b border-gray-200 ${className}`} {...props} />
 );
 
 export type ItemProps = ComponentProps<'div'> & { value: string };

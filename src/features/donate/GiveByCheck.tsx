@@ -66,7 +66,7 @@ const GiveByCheckBody = ({ memo }: { memo?: string } & ComponentProps<'div'>) =>
 );
 
 const MailIconCircle = () => (
-  <div className="rounded-full bg-indigo-50 p-3 text-indigo-600">
+  <div className="rounded-full bg-[#b7de002e] p-3 text-scForest">
     <Icon size="xl">
       <LetterIcon />
     </Icon>

@@ -1,4 +1,11 @@
 /* global fonts */
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/400-italic.css';
+@import '@fontsource/montserrat/700.css';
+@import '@fontsource/montserrat/700-italic.css';
+@import '@fontsource-variable/red-hat-mono';
+@import '../theme/fonts/rader/Rader.css';
+@import '../theme/fonts/sentinel/Sentinel.css';
 @import '@fontsource/lato/400.css';
 @import '@fontsource/lato/700.css';
 @import '@fontsource/oswald/400.css';
@@ -8,6 +15,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+    color-scheme: light;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
 
 :root {
   /* Sustainers Template Colors */
