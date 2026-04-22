@@ -29,7 +29,7 @@
   "packageManager": "yarn@4.10.3",
   "dependencies": {
     "@ark-ui/react": "^5.26.2",
-    "@astrojs/node": "^9.2.1",
+    "@astrojs/node": "^9.5.5",
     "@astrojs/react": "^4.2.7",
     "@fontsource-variable/red-hat-mono": "^5.2.8",
     "@fontsource/dm-serif-text": "^5.2.6",
@@ -58,7 +58,7 @@
     "@urql/core": "^6.0.1",
     "@urql/exchange-persisted": "^5.0.1",
     "@wojtekmaj/react-recaptcha-v3": "^0.1.4",
-    "astro": "^5.7.9",
+    "astro": "^5.18.1",
     "astro-icon": "^1.1.5",
     "chart.js": "^4.4.9",
     "dotenv": "^16.5.0",
