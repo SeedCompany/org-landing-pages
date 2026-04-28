@@ -56,7 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function NumberInp
       className={[
         'block w-full rounded-md border px-3 py-2 text-sm shadow-sm',
         'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0',
-        isInvalid ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-indigo-500',
+        isInvalid ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-scForest',
         isDisabled ? 'bg-gray-50 text-gray-500 cursor-not-allowed' : 'bg-white',
         className,
       ]
