@@ -6,15 +6,17 @@ import type { DonationCadence as Cadence } from '~/graphql';
 import { createInvestor } from '~/features/investor-input';
 import type { DonateFormProps } from '~/features/donate/DonationForm.tsx';
 
+type InvestorFieldName = keyof typeof createInvestor.shape;
+
 interface DonateDataShape {
-  cadence?: Array<{ cadence?: string; label?: string; presets?: number[] }>;
+  cadence?: Array<{ cadence?: Cadence; label?: string; presets?: number[] }>;
   amount?: {
     presets?: number[];
     defaultValue?: number;
     hideOther?: boolean;
     min?: { amount?: number; message?: string };
   };
-  investor?: { field?: Array<{ name?: string; defaultValue?: string }> };
+  investor?: { field?: Array<{ name?: InvestorFieldName; defaultValue?: string }> };
   giveByMail?: { enabled?: boolean; memo?: string };
 }
 
