@@ -51,6 +51,6 @@ const PlusMinusIcon = () => (
     strokeLinejoin="round"
   >
     <path d="M5 12h14" />
-    <path d="M12 5v14" data-only-if-open />
+    <path d="M12 5v14" className="group-data-[open]:hidden" />
   </svg>
 );
