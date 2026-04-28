@@ -57,6 +57,7 @@
     "astro": "^5.7.9",
     "astro-icon": "^1.1.5",
     "chart.js": "^4.4.9",
+    "class-variance-authority": "^0.7.1",
     "dotenv": "^16.5.0",
     "editorjs-to-portabletext": "^0.0.4",
     "graphql": "^16.11.0",
