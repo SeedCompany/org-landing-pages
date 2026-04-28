@@ -2,7 +2,6 @@ import { createPortal } from 'react-dom';
 import {
   cloneElement,
   createContext,
-  forwardRef,
   isValidElement,
   useContext,
   useState,
@@ -53,21 +52,15 @@ const withAsChild = (
   );
 };
 
-export const Trigger = forwardRef<HTMLButtonElement, ComponentProps<'button'> & AsChildProps>(
-  function DialogTrigger(props, _ref) {
-    const { setOpen } = useContext(DialogContext);
-    return <>{withAsChild(props as AsChildProps & Record<string, unknown>, () => setOpen(true))}</>;
-  },
-);
+export const Trigger = (props: ComponentProps<'button'> & AsChildProps) => {
+  const { setOpen } = useContext(DialogContext);
+  return <>{withAsChild(props as AsChildProps & Record<string, unknown>, () => setOpen(true))}</>;
+};
 
-export const CloseTrigger = forwardRef<HTMLButtonElement, ComponentProps<'button'> & AsChildProps>(
-  function DialogCloseTrigger(props, _ref) {
-    const { setOpen } = useContext(DialogContext);
-    return (
-      <>{withAsChild(props as AsChildProps & Record<string, unknown>, () => setOpen(false))}</>
-    );
-  },
-);
+export const CloseTrigger = (props: ComponentProps<'button'> & AsChildProps) => {
+  const { setOpen } = useContext(DialogContext);
+  return <>{withAsChild(props as AsChildProps & Record<string, unknown>, () => setOpen(false))}</>;
+};
 
 export const Backdrop = () => {
   const { open } = useContext(DialogContext);

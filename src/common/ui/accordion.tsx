@@ -2,29 +2,15 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react
 import { ChevronDownIcon } from 'lucide-react';
 import { type ComponentProps, type ReactNode } from 'react';
 
-export type RootProps = ComponentProps<'div'> & {
-  collapsible?: boolean;
-  multiple?: boolean;
-  size?: string;
-  indicator?: string;
-  css?: unknown;
-};
+export type RootProps = ComponentProps<'div'>;
 
-export const Root = ({
-  className = '',
-  collapsible: _c,
-  multiple: _m,
-  size: _s,
-  indicator: _i,
-  css: _css,
-  ...props
-}: RootProps) => (
+export const Root = ({ className = '', ...props }: RootProps) => (
   <div className={`divide-y divide-gray-200 border-b border-gray-200 ${className}`} {...props} />
 );
 
-export type ItemProps = ComponentProps<'div'> & { value: string };
+export type ItemProps = ComponentProps<'div'>;
 
-export const Item = ({ value: _v, className = '', ...props }: ItemProps) => (
+export const Item = ({ className = '', ...props }: ItemProps) => (
   <Disclosure as="div" className={className} {...(props as ComponentProps<typeof Disclosure>)} />
 );
 

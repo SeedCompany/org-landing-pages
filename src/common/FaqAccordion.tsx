@@ -20,7 +20,7 @@ export const FaqAccordion = ({ faqs, className }: FaqAccordionProps) => (
         return null;
       }
       return (
-        <Accordion.Item value={faq.question} key={faq.question}>
+        <Accordion.Item key={faq.question}>
           <Accordion.ItemTrigger>
             {faq.question}
             <Accordion.ItemIndicator>

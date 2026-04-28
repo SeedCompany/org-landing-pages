@@ -13,8 +13,6 @@ const NumberInputContext = createContext<NumberInputState>({});
 
 export type RootProps = NumberInputState & {
   children?: ReactNode;
-  name?: string;
-  disabled?: boolean;
 };
 
 export const Root = ({
@@ -24,8 +22,6 @@ export const Root = ({
   formatOptions,
   clampValueOnBlur,
   required,
-  name: _name,
-  disabled: _disabled,
   ...rest
 }: RootProps & Record<string, unknown>) => (
   <NumberInputContext.Provider

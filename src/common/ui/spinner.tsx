@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react';
 
-export type SpinnerProps = ComponentProps<'svg'> & { size?: string };
+export type SpinnerProps = ComponentProps<'svg'>;
 
-export const Spinner = ({ className = '', size: _size, ...props }: SpinnerProps) => (
+export const Spinner = ({ className = '', ...props }: SpinnerProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"

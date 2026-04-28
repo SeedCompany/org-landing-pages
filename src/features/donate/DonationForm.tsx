@@ -147,12 +147,7 @@ export const DonationForm = (props: DonateFormProps) => {
     returnUrl: '/thank-you',
   });
 
-  const onSubmit = async ({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    paymentComplete: _,
-    amount,
-    ...input
-  }: DonateInput) => {
+  const onSubmit = async ({ paymentComplete: _, amount, ...input }: DonateInput) => {
     console.log('Submitting', { amount, ...input });
     await submitDonation({
       ...input,

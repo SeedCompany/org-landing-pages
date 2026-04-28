@@ -17,7 +17,6 @@ export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export interface ButtonVariantProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  colorPalette?: string;
 }
 
 const variantClass: Record<ButtonVariant, string> = {
@@ -51,7 +50,6 @@ export interface ButtonProps
     ButtonLoadingProps {
   asChild?: boolean;
   children?: ReactNode;
-  css?: unknown;
 }
 
 const ButtonPropsContext = createContext<ButtonVariantProps>({});
@@ -61,14 +59,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   const {
     variant = ctx.variant ?? 'solid',
     size = ctx.size ?? 'md',
-    colorPalette: _colorPalette,
     loading,
     loadingText,
     spinner,
     spinnerPlacement,
     asChild,
     children,
-    css: _css,
     className = '',
     disabled,
     ...rest
@@ -117,11 +113,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 export interface ButtonGroupProps extends GroupProps, ButtonVariantProps {}
 
 export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function ButtonGroup(
-  { variant, size, colorPalette, ...props },
+  { variant, size, ...props },
   ref,
 ) {
   return (
-    <ButtonPropsContext.Provider value={{ variant, size, colorPalette }}>
+    <ButtonPropsContext.Provider value={{ variant, size }}>
       <Group ref={ref} {...props} />
     </ButtonPropsContext.Provider>
   );

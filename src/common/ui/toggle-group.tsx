@@ -21,23 +21,10 @@ const ToggleGroupContext = createContext<ToggleGroupState>({
 export type RootProps = ComponentProps<'div'> & {
   value?: string[];
   onValueChange?: (detail: { value: string[] }) => void;
-  variant?: string;
-  size?: string;
-  css?: unknown;
-  name?: string;
-  disabled?: boolean;
 };
 
 export const Root = forwardRef<HTMLDivElement, RootProps>(function ToggleGroupRoot(
-  {
-    value = [],
-    onValueChange = () => undefined,
-    variant: _variant,
-    size: _size,
-    css: _css,
-    className = '',
-    ...props
-  },
+  { value = [], onValueChange = () => undefined, className = '', ...props },
   ref,
 ) {
   return (
