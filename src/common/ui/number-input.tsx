@@ -68,14 +68,3 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function NumberInp
 });
 
 export const Context = NumberInputContext;
-
-// Unused exports kept for type compatibility
-export const Control = ({ children }: { children?: ReactNode }) => <>{children}</>;
-export const Label = ({ children }: { children?: ReactNode; className?: string }) => (
-  <>{children}</>
-);
-export const ValueText = ({ children }: { children?: ReactNode }) => <>{children}</>;
-export const Scrubber = () => null;
-export const IncrementTrigger = () => null;
-export const DecrementTrigger = () => null;
-export const RootProvider = Root;
