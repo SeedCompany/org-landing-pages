@@ -1,4 +1,4 @@
-import { createPortal } from 'react-dom';
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import {
   cloneElement,
   createContext,
@@ -62,26 +62,13 @@ export const CloseTrigger = (props: ComponentProps<'button'> & AsChildProps) => 
   return <>{withAsChild(props as AsChildProps & Record<string, unknown>, () => setOpen(false))}</>;
 };
 
-export const Backdrop = () => {
-  const { open } = useContext(DialogContext);
-  if (!open || typeof document === 'undefined') return null;
-  return createPortal(
-    <div className="fixed inset-0 bg-black/50 z-40" aria-hidden="true" />,
-    document.body,
-  );
-};
-
 export const Positioner = ({ children }: { children?: ReactNode }) => {
   const { open, setOpen } = useContext(DialogContext);
-  if (!open || typeof document === 'undefined') return null;
-  return createPortal(
-    <div
-      className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      onClick={(e) => e.target === e.currentTarget && setOpen(false)}
-    >
-      {children}
-    </div>,
-    document.body,
+  return (
+    <Dialog open={open} onClose={() => setOpen(false)} className="relative z-50">
+      <DialogBackdrop className="fixed inset-0 bg-black/50" />
+      <div className="fixed inset-0 flex items-center justify-center p-4">{children}</div>
+    </Dialog>
   );
 };
 
@@ -92,14 +79,9 @@ export const Content = ({
   children?: ReactNode;
   className?: string;
 }) => (
-  <div
-    role="dialog"
-    aria-modal="true"
-    className={`relative bg-white rounded-lg shadow-xl max-w-md w-full ${className}`}
-    onClick={(e) => e.stopPropagation()}
-  >
+  <DialogPanel className={`relative bg-white rounded-lg shadow-xl max-w-md w-full ${className}`}>
     {children}
-  </div>
+  </DialogPanel>
 );
 
 export const Header = ({ asChild, children, ...props }: AsChildProps & ComponentProps<'div'>) => {
@@ -142,7 +124,11 @@ export const Title = ({
 }: {
   children?: ReactNode;
   className?: string;
-}) => <h2 className={`text-lg font-semibold text-gray-900 ${className}`}>{children}</h2>;
+}) => (
+  <DialogTitle className={`text-lg font-semibold text-gray-900 ${className}`}>
+    {children}
+  </DialogTitle>
+);
 
 export const Description = ({
   children,

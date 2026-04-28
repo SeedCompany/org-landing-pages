@@ -15,7 +15,6 @@ export const GiveByCheck = ({ memo, className }: GiveByCheckProps) => (
       </Button>
     </Dialog.Trigger>
 
-    <Dialog.Backdrop />
     <Dialog.Positioner>
       <Dialog.Content>
         <div className="flex flex-col items-center gap-2 p-6 pb-0">
