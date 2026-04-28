@@ -1,16 +1,22 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 import { defineField, defineArrayMember } from 'sanity';
 import { ClockIcon } from '@sanity/icons';
 import { keys, mapEntries, type Nil } from '@seedcompany/common';
 import { Case } from '@seedcompany/common/case';
 import type { DonationCadence as Cadence } from '~/graphql';
-import type { Campaign } from '~/sanity/generated/sanity.types.ts';
 import { createInvestor } from '~/features/investor-input';
 import type { DonateFormProps } from '~/features/donate/DonationForm.tsx';
 
-// Cheat to get the generated shape of this field from a known spot.
-// Since there is no other way to get it.
-type DonateDataShape = Campaign['donationForm'] & {};
+interface DonateDataShape {
+  cadence?: Array<{ cadence?: string; label?: string; presets?: number[] }>;
+  amount?: {
+    presets?: number[];
+    defaultValue?: number;
+    hideOther?: boolean;
+    min?: { amount?: number; message?: string };
+  };
+  investor?: { field?: Array<{ name?: string; defaultValue?: string }> };
+  giveByMail?: { enabled?: boolean; memo?: string };
+}
 
 const presets = defineField({
   type: 'array',
