@@ -1,7 +1,10 @@
-import { ark } from '@ark-ui/react/factory';
 import type { ComponentProps } from 'react';
-import { styled } from 'styled-system/jsx';
-import { inputAddon } from 'styled-system/recipes';
 
-export type InputAddonProps = ComponentProps<typeof InputAddon>;
-export const InputAddon = styled(ark.div, inputAddon);
+export type InputAddonProps = ComponentProps<'div'>;
+
+export const InputAddon = ({ className = '', ...props }: InputAddonProps) => (
+  <div
+    className={`inline-flex items-center px-3 border border-gray-300 bg-gray-50 text-sm ${className}`}
+    {...props}
+  />
+);

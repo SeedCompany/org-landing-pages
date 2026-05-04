@@ -1,4 +1,4 @@
-import { createContext } from '@ark-ui/react/utils';
+import { createContext, createElement, useContext, type ReactNode } from 'react';
 import { z } from 'zod/v4/mini';
 import { createInvestor } from '~/features/investor-input';
 
@@ -14,8 +14,14 @@ export const DonateInput = z.object({
   paymentComplete: z.boolean().check(z.refine((val) => val === true, 'Please complete payment')),
 });
 
-const [DonateSchemaProvider, useDonateSchema] = createContext<typeof DonateInput>({
-  name: 'DonateSchema',
-  defaultValue: DonateInput,
-});
-export { DonateSchemaProvider, useDonateSchema };
+const Ctx = createContext<typeof DonateInput>(DonateInput);
+
+export const DonateSchemaProvider = ({
+  value,
+  children,
+}: {
+  value: typeof DonateInput;
+  children: ReactNode;
+}) => createElement(Ctx.Provider, { value }, children);
+
+export const useDonateSchema = () => useContext(Ctx);

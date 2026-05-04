@@ -1,6 +1,5 @@
 import { type Lens } from '@hookform/lenses';
-import { createContext } from '@ark-ui/react/utils';
-import type { ComponentProps, ReactNode } from 'react';
+import { createContext, useContext, type ComponentProps, type ReactNode } from 'react';
 import { z } from 'zod/v4/mini';
 import { Field, useController } from '~/common/form';
 import { Input } from '~/common/ui';
@@ -9,12 +8,20 @@ import { StateSelect } from './StateSelect.tsx';
 
 type AddressShape = z.infer<typeof address>;
 
-const [Provider, useContext, Context] = createContext<
-  Omit<ComponentProps<typeof Root>, 'children'>
->({
-  name: 'AddressFields',
-});
-export { Provider, Context };
+type AddressContext = Omit<ComponentProps<typeof Root>, 'children'>;
+
+const AddressFieldsContext = createContext<AddressContext | null>(null);
+
+const useAddressContext = () => {
+  const ctx = useContext(AddressFieldsContext);
+  if (!ctx) throw new Error('AddressFields context missing');
+  return ctx;
+};
+
+export const Context = AddressFieldsContext;
+export const Provider = ({ value, children }: { value: AddressContext; children: ReactNode }) => (
+  <AddressFieldsContext.Provider value={value}>{children}</AddressFieldsContext.Provider>
+);
 
 export const Root = ({
   children,
@@ -26,7 +33,7 @@ export const Root = ({
 }) => <Provider value={props}>{children}</Provider>;
 
 export const Line1 = () => {
-  const { lens, type } = useContext();
+  const { lens, type } = useAddressContext();
   const props = useController(lens.focus('line1').interop());
   return (
     <Field {...props}>
@@ -41,7 +48,7 @@ export const Line1 = () => {
 };
 
 export const Line2 = () => {
-  const { lens, type } = useContext();
+  const { lens, type } = useAddressContext();
   const props = useController(lens.focus('line2').interop());
   return (
     <Field {...props}>
@@ -56,7 +63,7 @@ export const Line2 = () => {
 };
 
 export const City = () => {
-  const { lens, type } = useContext();
+  const { lens, type } = useAddressContext();
   const props = useController(lens.focus('city').interop());
   return (
     <Field {...props}>
@@ -71,7 +78,7 @@ export const City = () => {
 };
 
 export const State = () => {
-  const { lens, type } = useContext();
+  const { lens, type } = useAddressContext();
   const props = useController(lens.focus('state').interop());
   const {
     field: { onChange, value, ...field },
@@ -80,16 +87,16 @@ export const State = () => {
     <Field {...props}>
       <StateSelect
         {...field}
-        value={value ? [value] : []}
-        onValueChange={(e) => onChange(e.value[0])}
-        autoCompetePrefix={type}
+        value={value ?? ''}
+        onChange={(e) => onChange(e.target.value)}
+        autoComplete={`${type ?? ''} address-level1`}
       />
     </Field>
   );
 };
 
 export const ZipCode = () => {
-  const { lens, type } = useContext();
+  const { lens, type } = useAddressContext();
   const props = useController(lens.focus('zip').interop());
   return (
     <Field {...props}>
@@ -105,7 +112,7 @@ export const ZipCode = () => {
 };
 
 export const CountryCode = () => {
-  const { lens, type } = useContext();
+  const { lens, type } = useAddressContext();
   const props = useController(lens.focus('country').interop());
   return (
     <Field {...props}>

@@ -1,8 +1,6 @@
-import type { JsxStyleProps } from 'styled-system/types';
 import { portableText } from '~/sanity';
 import { Accordion } from './ui';
 
-// not importing directly because I think we will do something different with that type soon.
 type PortableText = Parameters<typeof portableText.toHTML>[0];
 
 interface FaqItem {
@@ -10,18 +8,19 @@ interface FaqItem {
   answer: PortableText;
 }
 
-interface FaqAccordionProps extends JsxStyleProps {
+interface FaqAccordionProps {
   faqs: FaqItem[];
+  className?: string;
 }
 
-export const FaqAccordion = ({ faqs, css }: FaqAccordionProps) => (
-  <Accordion.Root collapsible size="lg" indicator="plus" css={css}>
+export const FaqAccordion = ({ faqs, className }: FaqAccordionProps) => (
+  <Accordion.Root className={className}>
     {faqs.map((faq) => {
       if (!faq.question) {
         return null;
       }
       return (
-        <Accordion.Item value={faq.question} key={faq.question}>
+        <Accordion.Item key={faq.question}>
           <Accordion.ItemTrigger>
             {faq.question}
             <Accordion.ItemIndicator>
@@ -52,6 +51,6 @@ const PlusMinusIcon = () => (
     strokeLinejoin="round"
   >
     <path d="M5 12h14" />
-    <path d="M12 5v14" data-only-if-open />
+    <path d="M12 5v14" className="group-data-[open]:hidden" />
   </svg>
 );

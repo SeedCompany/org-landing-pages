@@ -3,13 +3,22 @@ import { ClockIcon } from '@sanity/icons';
 import { keys, mapEntries, type Nil } from '@seedcompany/common';
 import { Case } from '@seedcompany/common/case';
 import type { DonationCadence as Cadence } from '~/graphql';
-import type { Campaign } from '~/sanity/generated/sanity.types.ts';
 import { createInvestor } from '~/features/investor-input';
 import type { DonateFormProps } from '~/features/donate/DonationForm.tsx';
 
-// Cheat to get the generated shape of this field from a known spot.
-// Since there is no other way to get it.
-type DonateDataShape = Campaign['donationForm'] & {};
+type InvestorFieldName = keyof typeof createInvestor.shape;
+
+interface DonateDataShape {
+  cadence?: Array<{ cadence?: Cadence; label?: string; presets?: number[] }>;
+  amount?: {
+    presets?: number[];
+    defaultValue?: number;
+    hideOther?: boolean;
+    min?: { amount?: number; message?: string };
+  };
+  investor?: { field?: Array<{ name?: InvestorFieldName; defaultValue?: string }> };
+  giveByMail?: { enabled?: boolean; memo?: string };
+}
 
 const presets = defineField({
   type: 'array',

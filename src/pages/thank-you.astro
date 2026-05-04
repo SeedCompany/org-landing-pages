@@ -1,32 +1,22 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { styled } from 'styled-system/jsx';
 import { Link } from '~/common/ui';
 ---
 
 <BaseLayout title="Thank You!">
-  <styled.main
-    css={{
-      p: '8',
-      bgColor: 'primary.solid.bg',
-      minH: 'dvh',
-      textAlign: 'center',
-      display: 'grid',
-      placeContent: 'center',
-    }}
-  >
-    <styled.h1 css={{ textStyle: 'title1', fontSize: '5xl' }}>Thank You!</styled.h1>
-    <styled.p css={{ p: '2' }}>
+  <main class="p-8 min-h-dvh text-center grid place-content-center">
+    <h1 class="text-5xl font-bold">Thank You!</h1>
+    <p class="p-2">
       Your receipt will arrive in your inbox shortly. If your donation is an ACH transfer, it may
       take several business days.
       <br />
       For any additional questions or year-end giving statements, please contact Seed Company at
       <Link href="mailto:info@tsco.org">info@tsco.org</Link>.
-    </styled.p>
+    </p>
     <script>
       if (window.location.search) {
         window.history.replaceState(null, '', window.location.pathname);
       }
     </script>
-  </styled.main>
+  </main>
 </BaseLayout>

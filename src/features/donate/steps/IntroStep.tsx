@@ -51,7 +51,7 @@ export const IntroStep = ({
       {giveByMail !== false && (
         <GiveByCheck
           memo={typeof giveByMail === 'object' ? giveByMail.memo : undefined}
-          css={{ alignSelf: 'center', mt: '2' }}
+          className="self-center mt-2"
         />
       )}
     </Form>

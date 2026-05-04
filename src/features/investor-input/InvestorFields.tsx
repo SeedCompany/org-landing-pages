@@ -1,6 +1,5 @@
-import { createContext } from '@ark-ui/react/utils';
+import { createContext, useContext, type ComponentProps, type ReactNode } from 'react';
 import { type Lens } from '@hookform/lenses';
-import type { ComponentProps, ReactNode } from 'react';
 import { z } from 'zod/v4/mini';
 import type { InvestorType } from '~/graphql';
 import { Button, ButtonGroup, Input, ToggleGroup } from '~/common/ui';
@@ -11,10 +10,22 @@ import { useWatch } from 'react-hook-form';
 
 type InvestorShape = z.infer<typeof createInvestor>;
 
-const [Provider, useContext, Context] = createContext<Lens<InvestorShape>>({
-  name: 'InvestorFields',
-});
-export { Provider, Context };
+const InvestorFieldsContext = createContext<Lens<InvestorShape> | null>(null);
+
+const useInvestorContext = () => {
+  const ctx = useContext(InvestorFieldsContext);
+  if (!ctx) throw new Error('InvestorFields context missing');
+  return ctx;
+};
+
+export const Context = InvestorFieldsContext;
+export const Provider = ({
+  value,
+  children,
+}: {
+  value: Lens<InvestorShape>;
+  children: ReactNode;
+}) => <InvestorFieldsContext.Provider value={value}>{children}</InvestorFieldsContext.Provider>;
 
 export const Root = ({ lens, children }: { lens: Lens<InvestorShape>; children: ReactNode }) => (
   <Provider value={lens}>{children}</Provider>
@@ -23,24 +34,14 @@ export const Root = ({ lens, children }: { lens: Lens<InvestorShape>; children: 
 export const Type = () => {
   const {
     field: { value, onChange, ...field },
-  } = useController(useContext().focus('type').interop());
+  } = useController(useInvestorContext().focus('type').interop());
   return (
     <ToggleGroup.Root
-      variant="outline"
       {...field}
       value={value ? [value] : []}
       onValueChange={({ value }) => onChange(value.at(0) ?? null)}
     >
-      <ButtonGroup
-        variant="plain"
-        css={{
-          width: 'full',
-          '--group-gap': 'spacing.1',
-          '& button': {
-            flexGrow: '1',
-          },
-        }}
-      >
+      <ButtonGroup variant="plain" className="w-full flex-wrap gap-1 [&_button]:flex-1">
         <ToggleGroup.Item value={'Individual' satisfies InvestorType} asChild>
           <Button>Individual</Button>
         </ToggleGroup.Item>
@@ -53,7 +54,7 @@ export const Type = () => {
 };
 
 export const Email = () => {
-  const props = useController(useContext().focus('email').interop());
+  const props = useController(useInvestorContext().focus('email').interop());
   return (
     <Field {...props}>
       <Input
@@ -67,8 +68,8 @@ export const Email = () => {
 };
 
 export const FirstName = () => {
-  const props = useController(useContext().focus('firstName').interop());
-  const type = useWatch(useContext().focus('type').interop());
+  const props = useController(useInvestorContext().focus('firstName').interop());
+  const type = useWatch(useInvestorContext().focus('type').interop());
   return (
     type === 'Individual' && (
       <Field {...props}>
@@ -84,8 +85,8 @@ export const FirstName = () => {
 };
 
 export const LastName = () => {
-  const props = useController(useContext().focus('lastName').interop());
-  const type = useWatch(useContext().focus('type').interop());
+  const props = useController(useInvestorContext().focus('lastName').interop());
+  const type = useWatch(useInvestorContext().focus('type').interop());
   return (
     <Field {...props}>
       <Input
@@ -99,7 +100,7 @@ export const LastName = () => {
 };
 
 export const Phone = () => {
-  const props = useController(useContext().focus('phone').interop());
+  const props = useController(useInvestorContext().focus('phone').interop());
   return (
     <Field {...props}>
       <Input
@@ -116,7 +117,7 @@ export const Address = ({
   children,
   ...props
 }: Omit<ComponentProps<typeof AddressFields.Root>, 'lens'>) => (
-  <AddressFields.Root lens={useContext().focus('mailingAddress')} {...props}>
+  <AddressFields.Root lens={useInvestorContext().focus('mailingAddress')} {...props}>
     {children}
   </AddressFields.Root>
 );

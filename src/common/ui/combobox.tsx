@@ -1,60 +1,27 @@
-import {
-  Combobox,
-  useComboboxItemContext,
-  type ComboboxRootBaseProps,
-} from '@ark-ui/react/combobox';
-import { ark } from '@ark-ui/react/factory';
-import { CheckIcon, ChevronsUpDownIcon, XIcon } from 'lucide-react';
-import { forwardRef, type JSX } from 'react';
-import { createStyleContext, type HTMLStyledProps } from 'styled-system/jsx';
-import { type ComboboxVariantProps, combobox } from 'styled-system/recipes';
-import type { Assign } from 'styled-system/types';
+// Combobox is not currently used in the codebase — stub exports for type compatibility
+import type { ReactNode } from 'react';
 
-const { withProvider, withContext } = createStyleContext(combobox);
+export type RootProps<T = unknown> = {
+  children?: ReactNode;
+  value?: string[];
+  onValueChange?: (detail: { value: string[]; items: T[] }) => void;
+};
 
-export type RootProps<T = unknown> = Assign<
-  HTMLStyledProps<'div'>,
-  ComboboxRootBaseProps<T> & ComboboxVariantProps
->;
-export const Root = withProvider(Combobox.Root, 'root', {
-  defaultProps: { positioning: { sameWidth: false } },
-}) as <T>(props: RootProps<T>) => JSX.Element;
-
-export const RootProvider = withProvider(Combobox.RootProvider, 'root');
-
-export const ClearTrigger = withContext(Combobox.ClearTrigger, 'clearTrigger', {
-  defaultProps: { children: <XIcon /> },
-});
-export const Content = withContext(Combobox.Content, 'content');
-export const Control = withContext(Combobox.Control, 'control');
-export const Empty = withContext(Combobox.Empty, 'empty');
-export const IndicatorGroup = withContext(ark.div, 'indicatorGroup');
-export const Input = withContext(Combobox.Input, 'input');
-export const Item = withContext(Combobox.Item, 'item');
-export const ItemGroup = withContext(Combobox.ItemGroup, 'itemGroup');
-export const ItemGroupLabel = withContext(Combobox.ItemGroupLabel, 'itemGroupLabel');
-export const ItemText = withContext(Combobox.ItemText, 'itemText');
-export const Label = withContext(Combobox.Label, 'label');
-export const List = withContext(Combobox.List, 'list');
-export const Positioner = withContext(Combobox.Positioner, 'positioner');
-export const Trigger = withContext(Combobox.Trigger, 'trigger', {
-  defaultProps: { children: <ChevronsUpDownIcon /> },
-});
-
-export { ComboboxContext as Context } from '@ark-ui/react/combobox';
-
-const StyledItemIndicator = withContext(Combobox.ItemIndicator, 'itemIndicator');
-
-export const ItemIndicator = forwardRef<HTMLDivElement, HTMLStyledProps<'div'>>(
-  function ItemIndicator(props, ref) {
-    const item = useComboboxItemContext();
-
-    return item.selected ? (
-      <StyledItemIndicator ref={ref} {...props}>
-        <CheckIcon />
-      </StyledItemIndicator>
-    ) : (
-      <svg aria-hidden="true" focusable="false" />
-    );
-  },
-);
+export const Root = <T,>({ children }: RootProps<T>) => <>{children}</>;
+export const RootProvider = Root;
+export const ClearTrigger = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Content = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Control = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Empty = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const IndicatorGroup = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Input = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Item = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const ItemGroup = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const ItemGroupLabel = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const ItemText = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Label = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const List = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Positioner = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Trigger = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const ItemIndicator = ({ children }: { children?: ReactNode }) => <>{children}</>;
+export const Context = null;
