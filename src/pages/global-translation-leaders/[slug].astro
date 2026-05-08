@@ -37,7 +37,7 @@ const isSponsored = sponsor.funding.remaining === 0;
     <div class="container border-white border-2 rounded-lg mx-auto p-8 md:py-12">
       <div class="mb-8">
         <a
-          href="/global-translation-leaders"
+          href={`/global-translation-leaders#${slug}`}
           class="text-[var(--sus-button-secondary-bg)] hover:underline"
         >
           ← Back to Global Translation Leaders
@@ -85,6 +85,9 @@ const isSponsored = sponsor.funding.remaining === 0;
                       intent={{
                         program: 'GlobalTranslationLeaders',
                         engagement: sponsor.id,
+                      }}
+                      cadence={{
+                        options: ['Monthly'],
                       }}
                       telemetry={{
                         app: 'seed.bible',

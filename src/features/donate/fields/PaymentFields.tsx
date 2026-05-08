@@ -23,7 +23,7 @@ export const PaymentFields = ({ lens, className }: { lens: Lens<boolean>; classN
     elements?.update({
       mode: cadence === 'Monthly' ? 'subscription' : 'payment',
     });
-  }, [cadence]);
+  }, [cadence, elements]);
   useEffect(() => {
     // Constrain to stripe's limits.
     // Out of bound amounts cause stripe to hide the payment fields.
