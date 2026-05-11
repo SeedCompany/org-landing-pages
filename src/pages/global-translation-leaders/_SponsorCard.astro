@@ -64,7 +64,7 @@ const isSponsored = sponsor.funding.remaining === 0;
       >
         View Details
       </ButtonLink>
-      {!isSponsored && <p>$1,000 per month needed</p>}
+      {!isSponsored && <p>${sponsor.funding.remaining.toLocaleString()} / yr remaining</p>}
     </div>
     <p class="text-lg font-bold">Focus: {focus}</p>
     <div class="line-clamp-4">

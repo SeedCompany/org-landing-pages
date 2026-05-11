@@ -17,6 +17,7 @@ const SponsorDetailDoc = graphql(`
       biography
       image
       funding {
+        goal
         remaining(applyPledges: true)
       }
     }
@@ -76,6 +77,28 @@ const isSponsored = sponsor.funding.remaining === 0;
               {
                 !isSponsored ? (
                   <div class="p-4 rounded-lg bg-white text-gray-900">
+                    <div class="p-4 rounded-lg bg-white text-gray-900">
+                      <p class="text-sm text-gray-500 mb-3 text-center">
+                        All GTL sponsorships are monthly recurring gifts.
+                      </p>
+                    </div>
+                    {sponsor.funding.remaining > 0 && (
+                      <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-1">
+                          <span>
+                            ${(sponsor.funding.goal - sponsor.funding.remaining).toLocaleString()}{' '}
+                            raised
+                          </span>
+                          <span>${sponsor.funding.remaining.toLocaleString()} remaining</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            class="bg-green-500 h-2 rounded-full"
+                            style={`width: ${(((sponsor.funding.goal - sponsor.funding.remaining) / sponsor.funding.goal) * 100).toFixed(0)}%`}
+                          />
+                        </div>
+                      </div>
+                    )}
                     <DonationForm
                       amount={{
                         presets: [250, 500, 750, 1000],
@@ -94,6 +117,7 @@ const isSponsored = sponsor.funding.remaining === 0;
                         feature: 'gtl',
                         sourceUrl: Astro.url.toString(),
                       }}
+                      giveByMail={false}
                       client:load
                     />
                   </div>
