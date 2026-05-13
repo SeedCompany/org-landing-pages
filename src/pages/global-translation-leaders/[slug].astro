@@ -4,6 +4,7 @@ import { graphql, graphqlClient } from '~/graphql';
 import { portableText } from '~/sanity';
 import MainLayout from '~/layouts/main/MainLayout.astro';
 import { DonationForm } from '~/features/donate';
+import { calcGtlFunding } from './_funding';
 
 const SponsorDetailDoc = graphql(`
   query SponsorDetail($id: ID!) {
@@ -16,6 +17,7 @@ const SponsorDetailDoc = graphql(`
       focus
       biography
       image
+      endDate
       funding {
         goal
         remaining(applyPledges: true)
@@ -31,6 +33,12 @@ if (!sponsor) {
   return Astro.redirect('/404');
 }
 const isSponsored = sponsor.funding.remaining === 0;
+
+const { monthlyNeed, monthlyRaised } = calcGtlFunding(
+  sponsor.funding.goal,
+  sponsor.funding.remaining,
+  sponsor.endDate as string,
+);
 ---
 
 <MainLayout title={`${sponsor.name} - Global Translation Leader`}>
@@ -85,11 +93,8 @@ const isSponsored = sponsor.funding.remaining === 0;
                     {sponsor.funding.remaining > 0 && (
                       <div class="mb-4">
                         <div class="flex justify-between text-sm text-gray-600 mb-1">
-                          <span>
-                            ${(sponsor.funding.goal - sponsor.funding.remaining).toLocaleString()}{' '}
-                            raised
-                          </span>
-                          <span>${sponsor.funding.remaining.toLocaleString()} remaining</span>
+                          <span>${monthlyRaised.toLocaleString()} / mo raised</span>
+                          <span>${monthlyNeed.toLocaleString()} / mo remaining</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2">
                           <div

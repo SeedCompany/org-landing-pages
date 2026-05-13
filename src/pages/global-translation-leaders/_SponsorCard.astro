@@ -4,6 +4,7 @@ import { ButtonLink } from '~/common/ui';
 import * as editorJs from '~/editorjs';
 import { type FragmentType, graphql, useFragment } from '~/graphql';
 import { portableText } from '~/sanity';
+import { calcGtlFunding } from './_funding';
 
 const SponsorCardFragment = graphql(`
   fragment sponsorCard on GlobalTranslationLeader {
@@ -15,7 +16,9 @@ const SponsorCardFragment = graphql(`
     focus
     biography
     image
+    endDate
     funding {
+      goal
       remaining(applyPledges: true)
     }
   }
@@ -29,6 +32,12 @@ interface Props {
 const sponsor = useFragment(SponsorCardFragment, Astro.props.sponsor);
 const { name, region, gender, shortCode: gtlId, focus, image: imageUrl, id: slug } = sponsor;
 const isSponsored = sponsor.funding.remaining === 0;
+
+const { monthlyNeed } = calcGtlFunding(
+  sponsor.funding.goal,
+  sponsor.funding.remaining,
+  sponsor.endDate as string,
+);
 ---
 
 <article
@@ -64,11 +73,7 @@ const isSponsored = sponsor.funding.remaining === 0;
       >
         View Details
       </ButtonLink>
-      {
-        !isSponsored && (
-          <p>${Math.round(sponsor.funding.remaining / 12).toLocaleString()} / mo remaining</p>
-        )
-      }
+      {!isSponsored && <p>${monthlyNeed.toLocaleString()} / mo remaining</p>}
     </div>
     <p class="text-lg font-bold">Focus: {focus}</p>
     <div class="line-clamp-4">
