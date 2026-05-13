@@ -4,31 +4,26 @@ import {
   type SubmitHandler,
   type UseFormReturn,
 } from 'react-hook-form';
-import type { ReactNode } from 'react';
-import { styled } from 'styled-system/jsx';
-import { stack } from 'styled-system/patterns';
-import type { JsxStyleProps } from 'styled-system/types';
+import type { ComponentProps, ReactNode } from 'react';
 
 export const Form = <T extends FieldValues, C, TT = T>({
   form,
   onSubmit,
   children,
+  className = '',
   ...rest
 }: {
   form: UseFormReturn<T, C, TT>;
   onSubmit: SubmitHandler<TT>;
   children: ReactNode;
-  className?: string;
-} & JsxStyleProps) => {
+} & Omit<ComponentProps<'form'>, 'onSubmit'>) => {
   const submit = form.handleSubmit(
     async (values) => {
       try {
         await onSubmit(values);
       } catch (e) {
         console.error(e);
-        form.setError('root', {
-          message: (e as Error).message,
-        });
+        form.setError('root', { message: (e as Error).message });
       }
     },
     (e) => console.warn('Invalid submission', e),
@@ -36,13 +31,9 @@ export const Form = <T extends FieldValues, C, TT = T>({
   return (
     <FormProvider {...form}>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <StyledForm {...rest} onSubmit={submit}>
+      <form className={`flex flex-col gap-4 ${className}`} onSubmit={submit} {...rest}>
         {children}
-      </StyledForm>
+      </form>
     </FormProvider>
   );
 };
-
-const StyledForm = styled('form', {
-  base: stack.raw(),
-});

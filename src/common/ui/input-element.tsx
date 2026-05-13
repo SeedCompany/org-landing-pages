@@ -1,7 +1,16 @@
-import { ark } from '@ark-ui/react/factory';
 import type { ComponentProps } from 'react';
-import { styled } from 'styled-system/jsx';
-import { inputElement } from 'styled-system/recipes';
 
-export type InputElementProps = ComponentProps<typeof InputElement>;
-export const InputElement = styled(ark.div, inputElement);
+export type InputElementProps = ComponentProps<'div'> & {
+  placement?: 'start' | 'end';
+};
+
+export const InputElement = ({
+  placement = 'start',
+  className = '',
+  ...props
+}: InputElementProps) => (
+  <div
+    className={`absolute top-1/2 -translate-y-1/2 flex items-center justify-center w-10 text-gray-500 ${placement === 'end' ? 'right-0' : 'left-0'} ${className}`}
+    {...props}
+  />
+);

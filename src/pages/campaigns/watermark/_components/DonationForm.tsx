@@ -2,7 +2,6 @@ import { type ReactNode, useEffect, useState } from 'react';
 import { type Telemetry } from '~/graphql';
 import { DonationForm as NewDonationForm } from '~/features/donate';
 import { CampaignEndedModal } from './CampaignEndedModal.tsx';
-import { styled } from 'styled-system/jsx';
 import { Button } from '~/common/ui';
 
 export type DonateProps = {
@@ -34,7 +33,7 @@ export const DonationForm = ({
   useEffect(() => void (campaignEnded && setShowEndModal(true)), []);
 
   return (
-    <styled.div css={{ m: '4' }}>
+    <div className="m-4">
       {!disableDialog && (
         <CampaignEndedModal
           campaignProgress={campaignProgress}
@@ -45,7 +44,11 @@ export const DonationForm = ({
       {campaignEnded ? (
         <>
           {formProps.campaignTotals && campaignProgress}
-          <Button disabled size="xl" css={{ width: 'full', mt: '3' }}>
+          <Button
+            disabled
+            size="xl"
+            className="w-full mt-3 bg-watermarkGreen text-watermarkDarkBlue border-transparent hover:bg-watermarkGreen disabled:bg-watermarkDisabled disabled:opacity-60"
+          >
             Campaign Ended 10/18
           </Button>
         </>
@@ -65,17 +68,12 @@ export const DonationForm = ({
           }}
           telemetry={formProps.telemetry}
           before={
-            <styled.div
-              css={{
-                display: 'none',
-                '[data-scope=donate-form][data-step=intro] &': { display: 'block' },
-              }}
-            >
+            <div className="hidden [data-scope=donate-form][data-step=intro]_&:block">
               {formProps.campaignTotals && campaignProgress}
-            </styled.div>
+            </div>
           }
         />
       )}
-    </styled.div>
+    </div>
   );
 };

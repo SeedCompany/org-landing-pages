@@ -1,5 +1,4 @@
 ---
-import { styled } from 'styled-system/jsx';
 import * as editorJs from '~/editorjs';
 import { graphql, graphqlClient } from '~/graphql';
 import { portableText } from '~/sanity';
@@ -38,7 +37,7 @@ const isSponsored = sponsor.funding.remaining === 0;
     <div class="container border-white border-2 rounded-lg mx-auto p-8 md:py-12">
       <div class="mb-8">
         <a
-          href="/global-translation-leaders"
+          href={`/global-translation-leaders#${slug}`}
           class="text-[var(--sus-button-secondary-bg)] hover:underline"
         >
           ← Back to Global Translation Leaders
@@ -76,7 +75,7 @@ const isSponsored = sponsor.funding.remaining === 0;
             <div class="space-y-4 mb-6">
               {
                 !isSponsored ? (
-                  <styled.div css={{ p: '4', rounded: 'lg', color: 'fg.default', bg: 'white' }}>
+                  <div class="p-4 rounded-lg bg-white text-gray-900">
                     <DonationForm
                       amount={{
                         presets: [250, 500, 750, 1000],
@@ -87,6 +86,9 @@ const isSponsored = sponsor.funding.remaining === 0;
                         program: 'GlobalTranslationLeaders',
                         engagement: sponsor.id,
                       }}
+                      cadence={{
+                        options: ['Monthly'],
+                      }}
                       telemetry={{
                         app: 'seed.bible',
                         feature: 'gtl',
@@ -94,7 +96,7 @@ const isSponsored = sponsor.funding.remaining === 0;
                       }}
                       client:load
                     />
-                  </styled.div>
+                  </div>
                 ) : (
                   <div class="bg-[var(--sus-button-secondary-bg)] text-black p-4 rounded-lg">
                     <p class="font-semibold">This leader is currently sponsored!</p>

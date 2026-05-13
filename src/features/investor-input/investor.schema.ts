@@ -24,7 +24,7 @@ export const createInvestor = z.object({
 });
 
 // Check if the schema conforms to the GraphQL input type
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const _conformsToGQLInput: CreateInvestor | undefined = undefined as
   | z.input<typeof createInvestor>
   | undefined;
