@@ -18,7 +18,6 @@ const SponsorCardFragment = graphql(`
     image
     endDate
     funding {
-      goal
       remaining(applyPledges: true)
     }
   }
@@ -33,11 +32,7 @@ const sponsor = useFragment(SponsorCardFragment, Astro.props.sponsor);
 const { name, region, gender, shortCode: gtlId, focus, image: imageUrl, id: slug } = sponsor;
 const isSponsored = sponsor.funding.remaining === 0;
 
-const { monthlyNeed } = calcGtlFunding(
-  sponsor.funding.goal,
-  sponsor.funding.remaining,
-  sponsor.endDate as string,
-);
+const { monthlyNeed } = calcGtlFunding(sponsor.funding.remaining, sponsor.endDate as string);
 ---
 
 <article

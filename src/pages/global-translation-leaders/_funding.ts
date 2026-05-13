@@ -1,5 +1,4 @@
 export function calcGtlFunding(
-  goal: number,
   remaining: number,
   endDate: string,
 ): { monthlyNeed: number; monthlyRaised: number } {
@@ -10,8 +9,9 @@ export function calcGtlFunding(
     1,
     (end.getFullYear() - now.getFullYear()) * 12 + (end.getMonth() - now.getMonth()) + 1,
   );
+  const monthlyNeed = Math.min(Math.round(remaining / monthsRemaining), 1000);
   return {
-    monthlyNeed: Math.round(remaining / monthsRemaining),
-    monthlyRaised: Math.round((goal - remaining) / monthsRemaining),
+    monthlyNeed,
+    monthlyRaised: 1000 - monthlyNeed,
   };
 }

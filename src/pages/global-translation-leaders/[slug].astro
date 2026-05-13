@@ -19,7 +19,6 @@ const SponsorDetailDoc = graphql(`
       image
       endDate
       funding {
-        goal
         remaining(applyPledges: true)
       }
     }
@@ -35,7 +34,6 @@ if (!sponsor) {
 const isSponsored = sponsor.funding.remaining === 0;
 
 const { monthlyNeed, monthlyRaised } = calcGtlFunding(
-  sponsor.funding.goal,
   sponsor.funding.remaining,
   sponsor.endDate as string,
 );
@@ -99,7 +97,7 @@ const { monthlyNeed, monthlyRaised } = calcGtlFunding(
                         <div class="w-full bg-gray-200 rounded-full h-2">
                           <div
                             class="bg-green-500 h-2 rounded-full"
-                            style={`width: ${(((sponsor.funding.goal - sponsor.funding.remaining) / sponsor.funding.goal) * 100).toFixed(0)}%`}
+                            style={`width: ${((monthlyRaised / 1000) * 100).toFixed(0)}%`}
                           />
                         </div>
                       </div>
