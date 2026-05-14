@@ -9,6 +9,8 @@
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "type-check": "astro check && tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "yarn lint:check --fix --prune-suppressions",
     "lint:check": "eslint --max-warnings 0",
     "sanity:gen": "yarn sanity:gen:schema && yarn sanity:gen:ops",
@@ -107,7 +109,8 @@
     "ts-node": "^10.9.2",
     "type-fest": "^5.1.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript-eslint": "^8.32.1",
+    "vitest": "^4.1.6"
   },
   "resolutions": {
     "@graphql-codegen/client-preset@npm:^5.0.0": "patch:@graphql-codegen/client-preset@npm%3A5.1.0#~/.yarn/patches/@graphql-codegen-client-preset-npm-5.1.0-3453453975.patch",
