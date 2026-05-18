@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import { ButtonLink } from '~/common/ui';
 import * as editorJs from '~/editorjs';
 import { type FragmentType, graphql, useFragment } from '~/graphql';
@@ -46,7 +45,7 @@ const { monthlyNeed } = calcGtlFunding(sponsor.funding.remaining, sponsor.endDat
     ]}
   >
     <div class="flex gap-4" id={slug}>
-      <Image src={imageUrl} alt="" inferSize={true} class="rounded-xl w-1/3 object-cover" />
+      <img src={imageUrl} alt="" class="rounded-xl w-1/3 object-cover" />
       <div class="flex-1 flex flex-col gap-4">
         <h3 class="text-2xl font-semibold">{name}</h3>
         <div class="text-sm flex flex-col gap-2">
