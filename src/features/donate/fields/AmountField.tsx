@@ -84,7 +84,7 @@ export const AmountField = ({
           <ButtonGroup
             variant="plain"
             size="xl"
-            className="w-full flex-wrap gap-1 [&_button]:flex-auto"
+            className="w-full flex-wrap gap-1 [&_button]:flex-auto py-4"
           >
             {presets.map((amount) => (
               <ToggleGroup.Item key={amount} value={String(amount)} asChild>
