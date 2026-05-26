@@ -1,6 +1,7 @@
 ---
 import MainLayout from '~/layouts/main/MainLayout.astro';
 import SponsorList from './_SponsorList.astro';
+import seedLogoAlt from '../../assets/images/Seed-logo-alt-white.png';
 ---
 
 <style>
@@ -60,11 +61,7 @@ import SponsorList from './_SponsorList.astro';
         <div></div>
       </div>
       <div class="gtl-logo-wrapper px-6">
-        <img
-          src="https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/0fa6e1351fb91829fbdcca10d29d727c26cd1e25-2048x336.png"
-          alt="Seed Company Logo"
-          class="w-1/2 md:max-w-xs"
-        />
+        <img src={seedLogoAlt.src} alt="Seed Company Logo" class="w-1/2 md:max-w-xs" />
       </div>
       <div class="sm:flex container min-h-screen md:h-full px-6 lg:px-8">
         <div class="w-full sm:w-1/2 py-24">
@@ -146,7 +143,7 @@ import SponsorList from './_SponsorList.astro';
           alt="Woman smiling"
           class="rounded-lg shadow-lg mb-6 sm:mb-0"
         />
-        <blockquote class="quote gotham-office mb-8 text-md italic pt-4">
+        <blockquote class="quote gotham mb-8 text-md italic pt-4">
           It's been such a joy for our family to support Aline on her journey to becoming a trained
           translator. Being able to share in her specific journey and needs has been a special way
           to connect with work happening on the other side of the globe!
@@ -159,7 +156,7 @@ import SponsorList from './_SponsorList.astro';
         >
           Become a Sponsor:
         </h2>
-        <p class="gotham-office text-lg pr-1 lg:pr-32">
+        <p class="gotham text-lg pr-1 lg:pr-32">
           With a modest cost to cover translation mentorship, education, and practicums with
           hands-on application, a full GTL sponsorship provides the opportunity to change lives
           through training individuals collaborating. Sponsors make it possible for GTL participants

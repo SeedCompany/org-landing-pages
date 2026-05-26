@@ -46,7 +46,7 @@ const { monthlyNeed } = calcGtlFunding(sponsor.funding.remaining, sponsor.endDat
   >
     <div class="flex gap-4" id={slug}>
       <img src={imageUrl} alt="" class="rounded-xl w-1/3 object-cover" />
-      <div class="flex-1 flex flex-col gap-4">
+      <div class="flex-1 flex flex-col gap-4 gotham">
         <h3 class="text-2xl font-semibold">{name}</h3>
         <div class="text-sm flex flex-col gap-2">
           <p><strong>Region:</strong> {region}</p>
@@ -59,7 +59,7 @@ const { monthlyNeed } = calcGtlFunding(sponsor.funding.remaining, sponsor.endDat
         </div>
       </div>
     </div>
-    <div class="flex flex-wrap justify-between gap-4">
+    <div class="flex flex-wrap justify-between gap-4 gotham">
       <ButtonLink
         href={`/global-translation-leaders/${slug}`}
         variant={isSponsored ? 'outline' : 'solid'}
@@ -67,10 +67,10 @@ const { monthlyNeed } = calcGtlFunding(sponsor.funding.remaining, sponsor.endDat
       >
         View Details
       </ButtonLink>
-      {!isSponsored && <p>${monthlyNeed.toLocaleString()} / mo remaining</p>}
+      {!isSponsored && <p class="gotham">${monthlyNeed.toLocaleString()} / mo remaining</p>}
     </div>
-    <p class="text-lg font-bold">Focus: {focus}</p>
-    <div class="line-clamp-4">
+    <p class="text-lg font-bold gotham">Focus: {focus}</p>
+    <div class="line-clamp-4 gotham">
       <p set:html={portableText.toHTML(editorJs.toPortableText(sponsor.biography))} />
     </div>
   </div>
