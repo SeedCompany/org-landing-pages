@@ -1,21 +1,50 @@
 ---
-import { graphql, graphqlClient } from '~/graphql';
-import SponsorCard from './_SponsorCard.astro';
+import * as editorJs from '~/editorjs';
+import { graphql, graphqlClient, useFragment } from '~/graphql';
+import { portableText } from '~/sanity';
+import { SponsorCardFragment, type SponsorCardData } from './_SponsorCard.tsx';
+import { SponsorList as SponsorListIsland } from './_SponsorList.tsx';
 
-const SponsorListDoc = graphql(`
-  query SponsorList {
-    globalTranslationLeaders {
+const SponsorListInitialDoc = graphql(`
+  query SponsorListInitial {
+    globalTranslationLeaders(first: 25) {
       items {
         ...sponsorCard
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
 `);
 
-const { data } = await graphqlClient.query(SponsorListDoc, {}).toPromise();
-const sponsors = data?.globalTranslationLeaders?.items ?? [];
+const { data } = await graphqlClient.query(SponsorListInitialDoc, {}).toPromise();
+const list = data?.globalTranslationLeaders;
+
+const initialItems: SponsorCardData[] = (list?.items ?? []).map((item) => {
+  const sponsor = useFragment(SponsorCardFragment, item);
+  return {
+    id: sponsor.id,
+    shortCode: sponsor.shortCode,
+    name: sponsor.name,
+    region: sponsor.region,
+    gender: sponsor.gender,
+    focus: sponsor.focus,
+    image: sponsor.image,
+    endDate: sponsor.endDate,
+    funding: { remaining: sponsor.funding.remaining },
+    biographyHtml: portableText.toHTML(editorJs.toPortableText(sponsor.biography)),
+  };
+});
+
+const initialCursor = list?.pageInfo.endCursor ?? null;
+const initialHasNextPage = list?.pageInfo.hasNextPage ?? false;
 ---
 
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-  {sponsors.map((sponsor) => <SponsorCard sponsor={sponsor} />)}
-</div>
+<SponsorListIsland
+  initialItems={initialItems}
+  initialCursor={initialCursor}
+  initialHasNextPage={initialHasNextPage}
+  client:only="react"
+/>
