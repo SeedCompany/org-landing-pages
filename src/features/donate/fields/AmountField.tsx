@@ -70,7 +70,7 @@ export const AmountField = ({
     <div>
       {presets && presets.length > 0 && (
         <ToggleGroup.Root
-          value={isPresetValue ? [String(value)] : value || showOther ? ['other'] : []}
+          value={showOther ? (value ? ['other'] : []) : isPresetValue ? [String(value)] : []}
           onValueChange={(e) => {
             const v = e.value.at(0)!;
             if (v === 'other') {
