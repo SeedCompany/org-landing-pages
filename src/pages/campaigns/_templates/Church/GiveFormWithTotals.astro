@@ -1,0 +1,45 @@
+---
+// import { fetchWatermarkTotals } from './watermark-totals.ts';
+import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
+import CampaignGivingInfo from './CampaignGivingInfo.astro';
+
+// const totals = await fetchWatermarkTotals();
+
+const campaignTotals = {
+  totalRaised: 2602530,
+  goalAmount: 2000000,
+};
+
+const campaignEnded =
+  import.meta.env.DEV ||
+  Astro.url.origin.includes('dev.') ||
+  Astro.url.searchParams.get('form') === 'disabled' ||
+  new Date() >= new Date('2025-10-19T05:00:00Z');
+
+interface Props {
+  disableDialog?: boolean;
+}
+
+const { disableDialog } = Astro.props;
+---
+
+<div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
+  <DonationFormIsland
+    formProps={{
+      enableRecurring: false,
+      hideInvestorType: 'Organization',
+      presetAmounts: {
+        oneTime: [50, 100, 300, 500, 1000],
+        recurring: [50, 100, 300, 500, 1000],
+      },
+      campaignTotals: true,
+      campaignEnded,
+      telemetry: { referrer: 'Watermark' },
+    }}
+    disableDialog={disableDialog}
+    client:load
+  >
+    <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />
+  </DonationFormIsland>
+</div>
+<style></style>

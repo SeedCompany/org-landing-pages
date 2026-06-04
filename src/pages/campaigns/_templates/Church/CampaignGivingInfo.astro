@@ -1,0 +1,45 @@
+---
+import ProgressBar from './ProgressBar.astro';
+import { watermarkProjectCalculator } from './watermarkProjectCalculator.ts';
+interface Props {
+  campaignTotals: {
+    totalRaised: number;
+    goalAmount: number;
+  };
+}
+const { campaignTotals } = Astro.props;
+const currentProgress = watermarkProjectCalculator(campaignTotals.totalRaised);
+---
+
+<div>
+  <div class="grid grid-cols-2">
+    <span class="tiny:text-2xl max-tiny:text-md tiny:mb-4 font-oswald uppercase text-nowrap"
+      >Total Raised</span
+    >
+    <span class="tiny:text-xl max-tiny:text-sm tiny:mb-4 text-right font-lato"
+      >{`$${campaignTotals.totalRaised.toLocaleString('en-US')}`}</span
+    >
+  </div>
+  <ProgressBar
+    currentNumber={campaignTotals.totalRaised}
+    maxNumber={campaignTotals.goalAmount}
+    backgroundType="dots"
+  />
+  <div class="grid grid-cols-2 my-2">
+    <span class="tiny:text-2xl max-tiny:text-md font-oswald uppercase text-nowrap"
+      >Projects Unlocked</span
+    >
+    <span class="tiny:text-xl max-tiny:text-sm text-right font-lato"
+      >{currentProgress.projects}</span
+    >
+  </div>
+  <hr />
+  <div class="grid grid-cols-2 my-2">
+    <span class="tiny:text-2xl max-tiny:text-md font-oswald uppercase text-nowrap"
+      >People Impacted</span
+    >
+    <span class="tiny:text-xl max-tiny:text-sm text-right font-lato"
+      >{currentProgress.people.toLocaleString('en-US')}</span
+    >
+  </div>
+</div>

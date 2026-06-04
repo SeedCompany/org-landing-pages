@@ -1,0 +1,79 @@
+import { type ReactNode, useEffect, useState } from 'react';
+import { type Telemetry } from '~/graphql';
+import { DonationForm as NewDonationForm } from '~/features/donate';
+import { CampaignEndedModal } from './CampaignEndedModal.tsx';
+import { Button } from '~/common/ui';
+
+export type DonateProps = {
+  hideInvestorType?: 'Individual' | 'Organization';
+  enableRecurring?: boolean;
+  campaignTotals?: boolean;
+  campaignEnded?: boolean;
+  presetAmounts?: { recurring: number[]; oneTime: number[] };
+  telemetry?: Telemetry;
+};
+
+/**
+ * @deprecated Use {@link import('~/features/donate').DonationForm} instead.
+ */
+export const DonationForm = ({
+  formProps,
+  campaignProgress,
+  disableDialog,
+}: {
+  formProps: DonateProps;
+  campaignProgress?: ReactNode;
+  disableDialog?: boolean;
+}) => {
+  const { campaignEnded = false } = formProps;
+
+  const [showEndModal, setShowEndModal] = useState(false);
+
+  // Only run on the client because the dialog uses a portal which doesn't support SSR
+  useEffect(() => void (campaignEnded && setShowEndModal(true)), []);
+
+  return (
+    <div className="m-4">
+      {!disableDialog && (
+        <CampaignEndedModal
+          campaignProgress={campaignProgress}
+          open={showEndModal}
+          onClose={() => setShowEndModal(false)}
+        />
+      )}
+      {campaignEnded ? (
+        <>
+          {formProps.campaignTotals && campaignProgress}
+          <Button
+            disabled
+            size="xl"
+            className="w-full mt-3 bg-watermarkGreen text-watermarkDarkBlue border-transparent hover:bg-watermarkGreen disabled:bg-watermarkDisabled disabled:opacity-60"
+          >
+            Campaign Ended 10/18
+          </Button>
+        </>
+      ) : (
+        <NewDonationForm
+          cadence={formProps.enableRecurring ? undefined : { options: 'OneTime' }}
+          amount={{
+            presets: formProps.presetAmounts
+              ? {
+                  OneTime: formProps.presetAmounts.oneTime,
+                  Monthly: formProps.presetAmounts.recurring,
+                }
+              : undefined,
+          }}
+          investor={{
+            hide: formProps.hideInvestorType ? ['type'] : [],
+          }}
+          telemetry={formProps.telemetry}
+          before={
+            <div className="hidden [data-scope=donate-form][data-step=intro]_&:block">
+              {formProps.campaignTotals && campaignProgress}
+            </div>
+          }
+        />
+      )}
+    </div>
+  );
+};
