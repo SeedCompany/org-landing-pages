@@ -142,15 +142,15 @@ const mockData: CardProps[] = [
 <ProjectCards
   projectData={sanityTiers?.length
     ? sanityTiers
-        .filter((tier) => !tier.hidden || amount >= tier.startAmount)
+        .filter((tier) => !tier.hidden || amount >= (tier.startAmount ?? Infinity))
         .map((tier) => ({
           currentAmount: amount,
-          startAmount: tier.startAmount,
-          endAmount: tier.endAmount,
-          peopleGroups: tier.peopleGroups,
+          startAmount: tier.startAmount ?? 0,
+          endAmount: tier.endAmount ?? 0,
+          peopleGroups: tier.peopleGroups ?? 0,
           image: tier.image?.asset?.url ?? '',
-          projectHeader: tier.projectHeader,
-          projectDescription: tier.projectDescription,
+          projectHeader: tier.projectHeader ?? '',
+          projectDescription: tier.projectDescription ?? '',
           projectBullets: tier.projectBullets ?? [],
         }))
     : mockData}
