@@ -67,7 +67,7 @@ export const CampaignEndedModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="font-lato uppercase inline-flex w-full justify-center rounded-md bg-watermarkGreen px-3 py-2 text-sm font-semibold text-watermarkDarkBlue shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="font-lato uppercase inline-flex w-full justify-center rounded-md bg-partnerRust px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-partnerRustHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-partnerRust"
             >
               Back to site
             </button>

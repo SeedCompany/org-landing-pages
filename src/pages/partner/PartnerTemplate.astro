@@ -38,13 +38,33 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
     flex-direction: column;
     gap: 2rem;
   }
+  /* Solid tan base that fills the viewport behind everything; the dark hero block
+     sits on top of it (higher z-index) to create the solid dark-top / tan-bottom split */
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background-color: #f7f1e7;
+    z-index: -2;
+  }
+  /* Solid dark hero block. Its height is measured from the actual hero content by
+     the script below (var --hero-bg-height), so it ends at the bottom of the hero
+     regardless of heading/copy length or whether the optional video is present. */
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--hero-bg-height, 640px);
+    background-color: #323232;
+    z-index: -1;
+  }
   .donation-faq {
     max-width: 1440px;
     margin: 0 auto;
   }
   .faq-bg {
     height: 100%;
-    background: linear-gradient(to top, #ebebec 0%, #ebebec 50%, #ffffff 100%);
+    background: linear-gradient(to top, #f7f1e7 0%, #f7f1e7 50%, #ffffff 100%);
   }
   /* Right form column (Sticky) */
   @media (min-width: 1024px) {
@@ -66,36 +86,6 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
     }
     .faq-heading {
       margin-top: 2rem;
-    }
-    .bg-gradient {
-      background: linear-gradient(to bottom, #ebebec 0%, #ebebec 50%, #ffffff 100%);
-      position: absolute;
-      top: 800px;
-      left: 0;
-      width: 100%;
-      min-height: 800px;
-      z-index: -1;
-    }
-    .hero-bg {
-      background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      min-height: 800px;
-      z-index: -1;
-    }
-    .hero-bg-overlay {
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ebebeb 100%);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      min-height: 800px;
-      z-index: -1;
     }
     .mobile-donation-cta {
       display: none; /* hide mobile CTA on desktop */
@@ -123,31 +113,6 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
       position: static;
       transform: none;
       width: 100%;
-    }
-    .hero-bg {
-      background-image: url('https://cdn.sanity.io/media-libraries/ml0ZDygBMJD9/images/4fa5c4296731328c6124ba85e83e268705dcc8cf-1440x733.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: right;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      min-height: 800px;
-      z-index: -1;
-    }
-    .hero-bg-overlay {
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0) 100%,
-        rgba(255, 255, 255, 1) 0%
-      );
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      min-height: 800px;
-      z-index: -1;
     }
     .mobile-donation-cta {
       position: sticky;
@@ -185,15 +150,56 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
     }
   }
 </style>
+<!--
+  Partner template theme overrides. Scoped under .partner-theme so the shared
+  global.css classes (hero-*, sus-green-text, donation-card-*) are only recolored
+  on partner pages and the Watermark page is unaffected.
+-->
+<style is:global>
+  .partner-theme .hero-h1,
+  .partner-theme .hero-sub-heading,
+  .partner-theme .hero-p {
+    color: #cdc3b0;
+  }
+  .partner-theme .sus-green-text {
+    color: #a8654c;
+    fill: #a8654c;
+  }
+  .partner-theme .donation-card-amount {
+    color: #a8654c;
+  }
+  .partner-theme .donation-card-li::before {
+    background-color: #a8654c;
+  }
+  .partner-theme .form-card {
+    background-color: #f7f1e7;
+  }
+  .partner-theme .donation-card {
+    border-color: #a8654c;
+  }
+  .partner-theme .donation-card-status {
+    background: #a8654c;
+  }
+  /* The shared "Give Now" button (solid variant) is scForest with a lighter hover
+     site-wide. On partner pages the design calls for Black (#323232) with a slightly
+     darker hover, so override both here without affecting other pages. */
+  .partner-theme .bg-scForest {
+    background-color: #323232;
+  }
+  .partner-theme .bg-scForest:hover {
+    background-color: #232323;
+  }
+</style>
 <MainLayout
   title={campaignData.pageTitle ||
     (campaignData.heading ? portableText.toHTML(campaignData.heading) : 'Campaign Page')}
 >
-  <div class="page">
+  <div class="page partner-theme">
     <main class="content">
-      <div class="hero-bg"></div>
-      <div class="hero-bg-overlay"></div>
-      <Hero campaignData={campaignData} />
+      <div class="hero-bg" id="hero-bg"></div>
+      <div id="hero-content">
+        <Hero campaignData={campaignData} />
+      </div>
       <aside class="form" id="give-form-mobile">
         <GiveFormWithTotals disableDialog={true} campaignData={campaignData} />
       </aside>
@@ -285,7 +291,7 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
         <div class="mobile-donation-cta hidden">
           <a
             href="#give-form-mobile"
-            class="donation-button bg-watermarkGreen text-white shadow-sm hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold"
+            class="donation-button bg-partnerRust text-white shadow-sm hover:bg-partnerRustHover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-partnerRust inline-block w-full rounded-sm px-3.5 py-2.5 text-sm font-semibold"
           >
             {campaignData.ctaText || 'Ready to Give?'}
           </a>
@@ -325,5 +331,24 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
     );
 
     observer.observe(form);
+  </script>
+  <script>
+    // Size the dark hero background to the actual bottom of the hero content, so the
+    // dark/tan split lands correctly regardless of copy length or the optional video.
+    const heroBg = document.querySelector<HTMLElement>('#hero-bg');
+    const heroContent = document.querySelector<HTMLElement>('#hero-content');
+
+    const syncHeroHeight = () => {
+      if (!heroBg || !heroContent) return;
+      const bottom = heroContent.getBoundingClientRect().bottom + window.scrollY;
+      heroBg.style.setProperty('--hero-bg-height', `${Math.round(bottom)}px`);
+    };
+
+    syncHeroHeight();
+    window.addEventListener('resize', syncHeroHeight);
+    window.addEventListener('load', syncHeroHeight);
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(syncHeroHeight);
+    }
   </script>
 </MainLayout>

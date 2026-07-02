@@ -74,7 +74,7 @@ export const DonationForm = ({
           <Button
             disabled
             size="xl"
-            className="w-full mt-3 bg-watermarkGreen text-watermarkDarkBlue border-transparent hover:bg-watermarkGreen disabled:bg-watermarkDisabled disabled:opacity-60"
+            className="w-full mt-3 bg-partnerDark text-partnerCream border-transparent hover:bg-partnerDark disabled:bg-partnerDisabled disabled:opacity-60"
           >
             {ctaLabel}
           </Button>
