@@ -13,6 +13,7 @@ export type DonateProps = {
   campaignStartDate?: string;
   logoUrl?: string;
   logoAlt?: string;
+  giveByMailMemo?: string;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   telemetry?: Telemetry;
 };
@@ -74,7 +75,7 @@ export const DonationForm = ({
           <Button
             disabled
             size="xl"
-            className="w-full mt-3 bg-watermarkGreen text-watermarkDarkBlue border-transparent hover:bg-watermarkGreen disabled:bg-watermarkDisabled disabled:opacity-60"
+            className="w-full mt-3 bg-scBlack text-scNatural border-transparent hover:bg-scBlack disabled:bg-scGranite disabled:opacity-60"
           >
             {ctaLabel}
           </Button>
@@ -95,6 +96,7 @@ export const DonationForm = ({
             investor={{
               hide: formProps.hideInvestorType ? ['type'] : [],
             }}
+            giveByMail={formProps.giveByMailMemo ? { memo: formProps.giveByMailMemo } : undefined}
             telemetry={formProps.telemetry}
           />
         </>
