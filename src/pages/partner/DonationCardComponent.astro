@@ -1,0 +1,120 @@
+---
+import ProgressBar from './ProgressBar.astro';
+import { type FundingStatus, LockSection } from './LockSection.tsx';
+
+const compareTotals = ({
+  current,
+  end,
+  start,
+}: {
+  current: number;
+  end: number;
+  start: number;
+}): FundingStatus => {
+  if (current < start) {
+    return 'locked';
+  } else if (current >= start && current < end) {
+    return 'inProgress';
+  } else if (current >= end) {
+    return 'funded';
+  } else {
+    return 'unknown';
+  }
+};
+
+interface CardProps {
+  currentAmount: number;
+  startAmount: number;
+  endAmount: number;
+  peopleGroups: number;
+  projectHeader: string;
+  projectDescription: string;
+  projectBullets: string[];
+  image: string;
+  index: number;
+}
+
+interface Props {
+  projectData: CardProps;
+}
+
+const numberToString = (num: number): string => {
+  const numberWords: { [key: number]: string } = {
+    1: 'One',
+    2: 'Two',
+    3: 'Three',
+    4: 'Four',
+    5: 'Five',
+    6: 'Six',
+    7: 'Seven',
+    8: 'Eight',
+    9: 'Nine',
+    10: 'Ten',
+  };
+
+  return numberWords[num] || 'Number out of range';
+};
+
+const { projectData } = Astro.props;
+const fundingStatus: FundingStatus = compareTotals({
+  current: projectData.currentAmount,
+  end: projectData.endAmount,
+  start: projectData.startAmount,
+});
+const currentProgress = Math.min(
+  (projectData.currentAmount / projectData.endAmount) * 100,
+  100,
+).toFixed(0);
+---
+
+<div class={`donation-card w-full mx-0 ${fundingStatus === 'locked' && 'donation-card-grey'}`}>
+  <div class="donation-card-image-wrapper">
+    <img
+      class={`donation-card-image ${(fundingStatus === 'locked' || fundingStatus === 'unknown') && 'grayscale'}`}
+      src={projectData.image}
+      alt=""
+    />
+  </div>
+  <div class="relative donation-card-content">
+    {
+      fundingStatus === 'inProgress' && (
+        <ProgressBar
+          maxNumber={projectData.endAmount}
+          currentNumber={projectData.currentAmount}
+          backgroundType="dots"
+          currentProgress={currentProgress}
+        />
+      )
+    }
+    {
+      fundingStatus === 'funded' && (
+        <ProgressBar
+          maxNumber={100}
+          currentNumber={100}
+          backgroundType="dots"
+          currentProgress="100"
+        />
+      )
+    }
+    {
+      fundingStatus === 'inProgress' && (
+        <div class="absolute inset-0 bg-[url('../assets/card-bg-gradient.png')] bg-cover opacity-20 h-full rounded-b-[7px]" />
+      )
+    }
+    <div class="donation-card-subheading mt-2">
+      {projectData.projectHeader}
+    </div>
+    <div class="lg:flex justify-between gap-2">
+      <div class="donation-card-heading">
+        {`Opportunity ${numberToString(projectData.index + 1)}`}
+      </div>
+      <div class="flex items-center">
+        <LockSection fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
+      </div>
+    </div>
+    <p class="donation-card-description">{projectData.projectDescription}</p>
+    <ul class="donation-card-ul">
+      {projectData.projectBullets.map((bullet) => <li class="donation-card-li">{bullet}</li>)}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+---
+import { portableText, sanityClient as sanity } from '~/sanity';
+import type { PartnerCampaign } from './partnerBySlug.groq';
+
+interface Props {
+  campaignData: PartnerCampaign;
+}
+
+const { campaignData } = Astro.props;
+const heroImageUrl = campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : null;
+---
+
+<div class="md:w-3/4">
+  <div>
+    {
+      heroImageUrl && (
+        <img
+          src={heroImageUrl}
+          alt={campaignData.heroImageAlt || ''}
+          class="logo -ml-6 h-auto sm:-ml-5 w-3/4 sm:w-1/2 md:w-1/2"
+        />
+      )
+    }
+    {
+      campaignData.heading && (
+        <h1
+          class="hero-h1 uppercase text-pretty"
+          set:html={portableText.toHTML(campaignData.heading)}
+        />
+      )
+    }
+    {
+      campaignData.subheading && (
+        <span class="hero-sub-heading uppercase text-pretty">{campaignData.subheading}</span>
+      )
+    }
+    {
+      campaignData.heroCopy && (
+        <div
+          class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base"
+          set:html={portableText.toHTML(campaignData.heroCopy)}
+        />
+      )
+    }
+  </div>
+</div>

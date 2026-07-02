@@ -1,0 +1,17 @@
+---
+import { sanityClient as sanity } from '~/sanity';
+import { partnerBySlug } from './partnerBySlug.groq';
+import PartnerTemplate from './PartnerTemplate.astro';
+
+const { slug } = Astro.params;
+const campaign = await sanity.fetch(partnerBySlug, { slug });
+
+if (!campaign) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not Found',
+  });
+}
+---
+
+<PartnerTemplate campaignData={campaign} />

@@ -1,0 +1,68 @@
+---
+import { sanityClient as sanity } from '~/sanity';
+import { fetchPartnerTotals } from './watermark-totals.ts';
+import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
+import CampaignGivingInfo from './CampaignGivingInfo.astro';
+import type { PartnerCampaign } from './partnerBySlug.groq';
+
+interface Props {
+  disableDialog?: boolean;
+  campaignData: PartnerCampaign;
+}
+
+const { disableDialog, campaignData } = Astro.props;
+
+// TODO: Remove 'Watermark' fallback once campaignData.sfCode exists for this campaign
+const { amount: fetchedAmount } = await fetchPartnerTotals(campaignData.sfCode ?? 'Watermark');
+
+const amountOverride = Astro.url.searchParams.get('amount');
+const totalRaised = amountOverride ? parseInt(amountOverride, 10) : fetchedAmount;
+
+const campaignTotals = {
+  totalRaised,
+  goalAmount: 2000000,
+};
+
+// ?campaign=active forces the live form state; ?campaign=notstarted forces "before start"; ?campaign=ended forces the ended state
+const campaignStateOverride = Astro.url.searchParams.get('campaign');
+const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+const overrideStartDate =
+  campaignStateOverride === 'notstarted'
+    ? tomorrow
+    : campaignStateOverride === 'active' || campaignStateOverride === 'ended'
+      ? yesterday
+      : undefined;
+const overrideEndDate =
+  campaignStateOverride === 'ended'
+    ? yesterday
+    : campaignStateOverride === 'active'
+      ? tomorrow
+      : undefined;
+
+const forceDisabled = Astro.url.searchParams.get('form') === 'disabled';
+---
+
+<div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
+  <DonationFormIsland
+    formProps={{
+      enableRecurring: false,
+      hideInvestorType: 'Organization',
+      presetAmounts: {
+        oneTime: [50, 100, 300, 500, 1000],
+        recurring: [50, 100, 300, 500, 1000],
+      },
+      campaignTotals: true,
+      forceDisabled,
+      campaignStartDate: overrideStartDate ?? campaignData.campaignStartDate ?? undefined,
+      campaignEndDate: overrideEndDate ?? campaignData.campaignEndDate ?? undefined,
+      logoUrl: campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : undefined,
+      logoAlt: campaignData.heroImageAlt ?? undefined,
+      telemetry: { referrer: campaignData.campaignName ?? 'Partner' },
+    }}
+    disableDialog={disableDialog}
+    client:load
+  >
+    <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />
+  </DonationFormIsland>
+</div>
