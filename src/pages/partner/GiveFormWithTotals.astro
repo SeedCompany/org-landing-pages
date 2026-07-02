@@ -41,6 +41,19 @@ const overrideEndDate =
       : undefined;
 
 const forceDisabled = Astro.url.searchParams.get('form') === 'disabled';
+
+// Build the "give by check" memo from the slug: swap separators for spaces, strip
+// any other special characters, and title-case each word (e.g. central-bible-church
+// -> "Central Bible Church"). Falls back to undefined so no memo line shows.
+const slug = campaignData.slug?.current;
+const giveByMailMemo = slug
+  ? slug
+      .replace(/[-_]+/g, ' ')
+      .replace(/[^a-zA-Z0-9 ]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/\b\w/g, (char) => char.toUpperCase()) || undefined
+  : undefined;
 ---
 
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
@@ -58,6 +71,7 @@ const forceDisabled = Astro.url.searchParams.get('form') === 'disabled';
       campaignEndDate: overrideEndDate ?? campaignData.campaignEndDate ?? undefined,
       logoUrl: campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : undefined,
       logoAlt: campaignData.heroImageAlt ?? undefined,
+      giveByMailMemo,
       telemetry: { referrer: campaignData.campaignName ?? 'Partner' },
     }}
     disableDialog={disableDialog}

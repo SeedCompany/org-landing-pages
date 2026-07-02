@@ -13,6 +13,7 @@ export type DonateProps = {
   campaignStartDate?: string;
   logoUrl?: string;
   logoAlt?: string;
+  giveByMailMemo?: string;
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   telemetry?: Telemetry;
 };
@@ -95,6 +96,7 @@ export const DonationForm = ({
             investor={{
               hide: formProps.hideInvestorType ? ['type'] : [],
             }}
+            giveByMail={formProps.giveByMailMemo ? { memo: formProps.giveByMailMemo } : undefined}
             telemetry={formProps.telemetry}
           />
         </>

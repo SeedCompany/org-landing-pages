@@ -53,7 +53,7 @@ const GiveByCheckBody = ({ memo }: { memo?: string } & ComponentProps<'div'>) =>
         <>
           <br />
           <br />
-          Memo: {memo}
+          Check Memo: {memo}
         </>
       )}
     </p>
