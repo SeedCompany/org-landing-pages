@@ -1,5 +1,6 @@
 ---
 import DonationCardComponent from './DonationCardComponent.astro';
+import type { LanguageProjectsProps } from './LanguageProjectsModal.tsx';
 
 export interface CardProps {
   currentAmount: number;
@@ -10,6 +11,7 @@ export interface CardProps {
   projectDescription: string;
   projectBullets: string[];
   image: string;
+  languageProjects?: LanguageProjectsProps;
 }
 
 interface Props {

@@ -202,15 +202,6 @@ export default defineType({
       ],
     }),
 
-    // Body
-    defineField({
-      name: 'body',
-      title: 'Body Copy',
-      type: 'array',
-      group: 'content',
-      of: [richTextBlock],
-    }),
-
     // Donation Tiers
     defineField({
       name: 'donationTiers',
@@ -264,7 +255,7 @@ export default defineType({
               name: 'projectDescription',
               title: 'Project Description',
               type: 'text',
-              validation: (Rule) => Rule.required(),
+              description: 'Optional. Longer-form copy shown on the card when provided.',
             }),
             defineField({
               name: 'projectBullets',
@@ -279,6 +270,115 @@ export default defineType({
               description:
                 'If enabled, this tier only appears once the current amount reaches its start amount.',
               initialValue: false,
+            }),
+            defineField({
+              name: 'languageProjects',
+              title: 'Language Projects (optional)',
+              type: 'object',
+              description:
+                'Optional. When one or more projects are added, a link appears on this card that opens a modal listing them. Leave empty to hide the link.',
+              options: { collapsible: true, collapsed: true },
+              // If this section is used at all (heading/link text set), it must contain
+              // at least one project.
+              validation: (Rule) =>
+                Rule.custom(
+                  (
+                    value:
+                      | { heading?: string; linkText?: string; projects?: unknown[] }
+                      | undefined,
+                  ) => {
+                    if (!value) return true;
+                    const inUse = Boolean(
+                      value.heading || value.linkText || value.projects?.length,
+                    );
+                    if (inUse && !value.projects?.length) {
+                      return 'Add at least one project, or clear the heading/link text to remove this section.';
+                    }
+                    return true;
+                  },
+                ),
+              fields: [
+                defineField({
+                  name: 'heading',
+                  title: 'Modal Heading',
+                  type: 'string',
+                  description: 'Optional heading shown at the top of the modal.',
+                }),
+                defineField({
+                  name: 'linkText',
+                  title: 'Link Text',
+                  type: 'string',
+                  description:
+                    'Optional. Defaults to "Learn more about these specific projects" if left blank.',
+                }),
+                defineField({
+                  name: 'projects',
+                  title: 'Projects',
+                  type: 'array',
+                  of: [
+                    {
+                      type: 'object',
+                      name: 'languageProject',
+                      fields: [
+                        defineField({
+                          name: 'languageName',
+                          title: 'Language Name',
+                          type: 'string',
+                          validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                          name: 'sensitivity',
+                          title: 'Sensitivity',
+                          type: 'string',
+                          options: {
+                            layout: 'radio',
+                            list: [
+                              { title: 'Low', value: 'low' },
+                              { title: 'Medium', value: 'medium' },
+                              { title: 'High', value: 'high' },
+                            ],
+                          },
+                          validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                          name: 'country',
+                          title: 'Country / Region',
+                          type: 'string',
+                          description:
+                            'Optional. Hidden for High sensitivity projects — those display "Sensitive" publicly and never store a country.',
+                          // High sensitivity → field hidden so no country is ever entered/stored.
+                          // The GROQ query also strips it and the modal shows "Sensitive".
+                          hidden: ({ parent }) =>
+                            (parent as { sensitivity?: string })?.sensitivity === 'high',
+                        }),
+                        defineField({
+                          name: 'region',
+                          title: 'Region',
+                          type: 'string',
+                          validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                          name: 'milestone',
+                          title: 'Milestone',
+                          type: 'text',
+                          rows: 2,
+                          validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                          name: 'amount',
+                          title: 'Amount',
+                          type: 'number',
+                          description: 'Displayed as currency, e.g. $25,000.',
+                          validation: (Rule) => Rule.required().min(0),
+                        }),
+                      ],
+                      preview: {
+                        select: { title: 'languageName', subtitle: 'region' },
+                      },
+                    },
+                  ],
+                }),
+              ],
             }),
           ],
         },

@@ -216,9 +216,9 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
       {
         campaignData.aboutSections?.map((section) => (
           <ContentSection
+            title={section.title}
             content={portableText.toHTML(section.content)}
             htmlContent={true}
-            className="content-body"
           />
         ))
       }
@@ -228,9 +228,6 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
         Unlock a Project.<br />Join the Mission.
       </h2>
       <DonationCard campaignData={campaignData} />
-      <div class="prose">
-        <div set:html={portableText.toHTML(campaignData.body)} />
-      </div>
     </main>
     <aside class="form form-desktop">
       <GiveFormWithTotals campaignData={campaignData} />
