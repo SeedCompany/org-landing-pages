@@ -1,6 +1,7 @@
 ---
 import ProgressBar from './ProgressBar.astro';
 import { type FundingStatus, LockSection } from './LockSection.tsx';
+import { LanguageProjectsModal, type LanguageProjectsProps } from './LanguageProjectsModal.tsx';
 
 const compareTotals = ({
   current,
@@ -32,6 +33,7 @@ interface CardProps {
   projectBullets: string[];
   image: string;
   index: number;
+  languageProjects?: LanguageProjectsProps;
 }
 
 interface Props {
@@ -112,9 +114,18 @@ const currentProgress = Math.min(
         <LockSection fundingStatus={fundingStatus} endAmount={projectData.endAmount} />
       </div>
     </div>
-    <p class="donation-card-description">{projectData.projectDescription}</p>
+    {
+      projectData.projectDescription && (
+        <p class="donation-card-description">{projectData.projectDescription}</p>
+      )
+    }
     <ul class="donation-card-ul">
       {projectData.projectBullets.map((bullet) => <li class="donation-card-li">{bullet}</li>)}
     </ul>
+    {
+      projectData.languageProjects && (
+        <LanguageProjectsModal {...projectData.languageProjects} client:load />
+      )
+    }
   </div>
 </div>

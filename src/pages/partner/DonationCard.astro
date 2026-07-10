@@ -152,6 +152,20 @@ const mockData: CardProps[] = [
           projectHeader: tier.projectHeader ?? '',
           projectDescription: tier.projectDescription ?? '',
           projectBullets: tier.projectBullets ?? [],
+          languageProjects: tier.languageProjects?.projects?.length
+            ? {
+                heading: tier.languageProjects.heading ?? undefined,
+                linkText: tier.languageProjects.linkText ?? undefined,
+                projects: tier.languageProjects.projects.map((p) => ({
+                  languageName: p.languageName ?? '',
+                  country: p.country ?? undefined,
+                  region: p.region ?? '',
+                  milestone: p.milestone ?? '',
+                  sensitivity: (p.sensitivity ?? 'low') as 'low' | 'medium' | 'high',
+                  amount: p.amount ?? 0,
+                })),
+              }
+            : undefined,
         }))
     : mockData}
 />

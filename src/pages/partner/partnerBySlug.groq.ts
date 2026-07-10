@@ -18,7 +18,6 @@ export const partnerBySlug =
     title,
     content
   },
-  body,
   ctaText,
   campaignStartDate,
   campaignEndDate,
@@ -31,7 +30,20 @@ export const partnerBySlug =
     projectHeader,
     projectDescription,
     projectBullets,
-    hidden
+    hidden,
+    languageProjects {
+      heading,
+      linkText,
+      projects[] {
+        languageName,
+        // Country is never returned for high-sensitivity projects, regardless of what is stored.
+        "country": select(sensitivity == "high" => null, country),
+        region,
+        milestone,
+        sensitivity,
+        amount
+      }
+    }
   },
   faqs[] { template, question, answer },
   sfCode,
