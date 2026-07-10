@@ -1,12 +1,48 @@
 import { defineField, defineType } from 'sanity';
-import { DonationFormSchema } from '~/features/donate/sanity';
 
-// Partner campaigns reuse the shared donation form, but with a couple of changes,
-// leaving the shared schema (and the Campaign/Watermark type) untouched:
-//  - the amount "default value", "hide other", and "minimum" options are removed
-//    (only presets are used)
-//  - the complex shared "investor" field is replaced with a simple "Who can give?"
-//    selector (both / individuals only / organizations only)
+// Partner campaigns define their own donation form (rather than reusing the shared
+// DonationFormSchema) so they stay fully typed and independent of that module:
+//  - amount is presets-only (no "default value", "hide other", or "minimum")
+//  - cadence is intentionally omitted (recurring/subscriptions not enabled yet)
+//  - "investor" is replaced with a simple "Who can give?" selector
+const partnerAmount = defineField({
+  name: 'amount',
+  title: 'Amount',
+  type: 'object',
+  options: { collapsible: true, collapsed: true },
+  fields: [
+    defineField({
+      name: 'presets',
+      title: 'Amount Presets',
+      type: 'array',
+      description: 'Predefined donation amount buttons.',
+      of: [{ type: 'number', validation: (rule) => rule.greaterThan(0) }],
+    }),
+  ],
+});
+
+const partnerGiveByMail = defineField({
+  name: 'giveByMail',
+  title: 'Give by Mail',
+  type: 'object',
+  options: { collapsible: true, collapsed: true },
+  fields: [
+    defineField({
+      name: 'enabled',
+      title: 'Enabled',
+      type: 'boolean',
+      description: 'Show the "give by check" option on the form.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'memo',
+      title: 'Memo',
+      type: 'string',
+      description: 'Optional memo line shown in the "give by check" instructions.',
+    }),
+  ],
+});
+
 const giverTypeField = defineField({
   name: 'giverType',
   title: 'Who can give?',
@@ -24,25 +60,13 @@ const giverTypeField = defineField({
   initialValue: 'both',
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const partnerDonationForm: any = {
-  ...DonationFormSchema,
+const partnerDonationForm = defineField({
+  name: 'donationForm',
+  title: 'Donation Form',
+  type: 'object',
   group: 'donationForm',
-  fields: [
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ...(DonationFormSchema as any).fields
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ?.filter((field: any) => field.name !== 'investor')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((field: any) =>
-        field.name === 'amount'
-          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            { ...field, fields: field.fields?.filter((f: any) => f.name === 'presets') }
-          : field,
-      ),
-    giverTypeField,
-  ],
-};
+  fields: [partnerAmount, partnerGiveByMail, giverTypeField],
+});
 
 const richTextBlock = {
   type: 'block',
