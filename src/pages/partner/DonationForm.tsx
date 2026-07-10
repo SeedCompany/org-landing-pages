@@ -5,8 +5,8 @@ import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { Button } from '~/common/ui';
 
 export type DonateProps = {
-  /** Which giver types the form allows. 'both' shows the Individual/Organization toggle. */
-  giverType?: 'both' | 'individual' | 'organization';
+  /** Which investor types the form allows. 'both' shows the Individual/Organization toggle. */
+  investorType?: 'both' | 'individual' | 'organization';
   enableRecurring?: boolean;
   campaignTotals?: boolean;
   forceDisabled?: boolean;
@@ -96,9 +96,9 @@ export const DonationForm = ({
                 : undefined,
             }}
             investor={
-              formProps.giverType === 'individual'
+              formProps.investorType === 'individual'
                 ? { defaults: { type: 'Individual' }, hide: ['type'] }
-                : formProps.giverType === 'organization'
+                : formProps.investorType === 'organization'
                   ? { defaults: { type: 'Organization' }, hide: ['type'] }
                   : undefined // 'both' (or unset): show the Individual/Organization toggle
             }
