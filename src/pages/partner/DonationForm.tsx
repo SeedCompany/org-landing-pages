@@ -5,7 +5,8 @@ import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { Button } from '~/common/ui';
 
 export type DonateProps = {
-  hideInvestorType?: 'Individual' | 'Organization';
+  /** Which giver types the form allows. 'both' shows the Individual/Organization toggle. */
+  giverType?: 'both' | 'individual' | 'organization';
   enableRecurring?: boolean;
   campaignTotals?: boolean;
   forceDisabled?: boolean;
@@ -13,7 +14,8 @@ export type DonateProps = {
   campaignStartDate?: string;
   logoUrl?: string;
   logoAlt?: string;
-  giveByMailMemo?: string;
+  /** false hides the "give by check" option; { memo } shows it with an optional memo line. */
+  giveByMail?: false | { memo?: string };
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   telemetry?: Telemetry;
 };
@@ -93,10 +95,14 @@ export const DonationForm = ({
                   }
                 : undefined,
             }}
-            investor={{
-              hide: formProps.hideInvestorType ? ['type'] : [],
-            }}
-            giveByMail={formProps.giveByMailMemo ? { memo: formProps.giveByMailMemo } : undefined}
+            investor={
+              formProps.giverType === 'individual'
+                ? { defaults: { type: 'Individual' }, hide: ['type'] }
+                : formProps.giverType === 'organization'
+                  ? { defaults: { type: 'Organization' }, hide: ['type'] }
+                  : undefined // 'both' (or unset): show the Individual/Organization toggle
+            }
+            giveByMail={formProps.giveByMail}
             telemetry={formProps.telemetry}
           />
         </>

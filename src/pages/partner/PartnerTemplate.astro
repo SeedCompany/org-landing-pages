@@ -8,6 +8,7 @@ import Hero from './Hero.astro';
 import ContentSection from './ContentSection.astro';
 import DonationCard from './DonationCard.astro';
 import GiveFormWithTotals from './GiveFormWithTotals.astro';
+import { resolveVideoEmbed } from './videoEmbed.ts';
 
 interface Props {
   campaignData: PartnerCampaign;
@@ -19,6 +20,8 @@ const campaignStart = campaignData.campaignStartDate
   ? new Date(campaignData.campaignStartDate)
   : null;
 const isAfterStart = campaignStart ? today >= campaignStart : true;
+
+const video = await resolveVideoEmbed(campaignData.video?.src);
 ---
 
 <style>
@@ -203,14 +206,26 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
         <GiveFormWithTotals disableDialog={true} campaignData={campaignData} />
       </aside>
       {
-        campaignData.video?.src && (
+        video?.kind === 'iframe' ? (
+          <div class="hero-video aspect-video w-full overflow-hidden rounded-3xl">
+            <iframe
+              src={video.src}
+              title="Campaign video"
+              class="h-full w-full"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            />
+          </div>
+        ) : video?.kind === 'file' ? (
           <video
-            src={campaignData.video.src}
-            poster={campaignData.video.poster ?? undefined}
+            src={video.src}
+            poster={campaignData.video?.poster ?? undefined}
             controls
             class="hero-video rounded-3xl"
           />
-        )
+        ) : null
       }
       <div class="bg-gradient"></div>
       {
@@ -225,7 +240,16 @@ const isAfterStart = campaignStart ? today >= campaignStart : true;
       <h2
         class="text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl pt-12 pb-8 lg:py-4"
       >
-        Unlock a Project.<br />Join the Mission.
+        {
+          (campaignData.projectsHeading?.trim() || 'Unlock a Project.\nJoin the Mission.')
+            .split('\n')
+            .map((line, i) => (
+              <Fragment>
+                {i > 0 && <br />}
+                {line}
+              </Fragment>
+            ))
+        }
       </h2>
       <DonationCard campaignData={campaignData} />
     </main>

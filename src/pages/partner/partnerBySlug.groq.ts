@@ -14,6 +14,7 @@ export const partnerBySlug =
   heroImageAlt,
   slug,
   video { src, poster },
+  projectsHeading,
   aboutSections[] {
     title,
     content

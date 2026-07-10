@@ -1,6 +1,49 @@
 import { defineField, defineType } from 'sanity';
 import { DonationFormSchema } from '~/features/donate/sanity';
 
+// Partner campaigns reuse the shared donation form, but with a couple of changes,
+// leaving the shared schema (and the Campaign/Watermark type) untouched:
+//  - the amount "default value", "hide other", and "minimum" options are removed
+//    (only presets are used)
+//  - the complex shared "investor" field is replaced with a simple "Who can give?"
+//    selector (both / individuals only / organizations only)
+const giverTypeField = defineField({
+  name: 'giverType',
+  title: 'Who can give?',
+  type: 'string',
+  description:
+    'Controls the Individual / Organization options on the form. "Both" lets donors choose; the others lock the form to a single giver type.',
+  options: {
+    layout: 'radio',
+    list: [
+      { title: 'Individuals and organizations', value: 'both' },
+      { title: 'Individuals only', value: 'individual' },
+      { title: 'Organizations only', value: 'organization' },
+    ],
+  },
+  initialValue: 'both',
+});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const partnerDonationForm: any = {
+  ...DonationFormSchema,
+  group: 'donationForm',
+  fields: [
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...(DonationFormSchema as any).fields
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ?.filter((field: any) => field.name !== 'investor')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((field: any) =>
+        field.name === 'amount'
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            { ...field, fields: field.fields?.filter((f: any) => f.name === 'presets') }
+          : field,
+      ),
+    giverTypeField,
+  ],
+};
+
 const richTextBlock = {
   type: 'block',
   marks: {
@@ -162,6 +205,8 @@ export default defineType({
           name: 'src',
           title: 'Video URL',
           type: 'url',
+          description:
+            'Paste a Vimeo or YouTube link (a normal share link works), or a direct video file URL (.mp4).',
           validation: (Rule) => Rule.required(),
         }),
         defineField({
@@ -170,6 +215,18 @@ export default defineType({
           type: 'url',
         }),
       ],
+    }),
+
+    // Projects section heading
+    defineField({
+      name: 'projectsHeading',
+      title: 'Projects Section Heading',
+      type: 'text',
+      rows: 2,
+      group: 'content',
+      description:
+        'Heading shown above the opportunity cards. Add a line break to split it across two lines. If left blank, defaults to "Unlock a Project. / Join the Mission.".',
+      initialValue: 'Unlock a Project.\nJoin the Mission.',
     }),
 
     // About Sections
@@ -428,6 +485,6 @@ export default defineType({
       ],
     }),
 
-    { ...DonationFormSchema, group: 'donationForm' },
+    partnerDonationForm,
   ],
 });
