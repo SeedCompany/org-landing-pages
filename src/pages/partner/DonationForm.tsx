@@ -1,11 +1,22 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ComponentProps, type ReactNode, useEffect, useState } from 'react';
 import { type Telemetry } from '~/graphql';
 import { DonationForm as NewDonationForm } from '~/features/donate';
 import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { Button } from '~/common/ui';
 
+export type InvestorType = 'both' | 'individual' | 'organization';
+
+// Maps the selected investor type to the underlying form's `investor` prop.
+// 'both' is undefined so the Individual/Organization toggle is shown.
+const INVESTOR_CONFIG: Record<InvestorType, ComponentProps<typeof NewDonationForm>['investor']> = {
+  both: undefined,
+  individual: { defaults: { type: 'Individual' }, hide: ['type'] },
+  organization: { defaults: { type: 'Organization' }, hide: ['type'] },
+};
+
 export type DonateProps = {
-  hideInvestorType?: 'Individual' | 'Organization';
+  /** Which investor types the form allows. 'both' shows the Individual/Organization toggle. */
+  investorType?: InvestorType;
   enableRecurring?: boolean;
   campaignTotals?: boolean;
   forceDisabled?: boolean;
@@ -13,7 +24,8 @@ export type DonateProps = {
   campaignStartDate?: string;
   logoUrl?: string;
   logoAlt?: string;
-  giveByMailMemo?: string;
+  /** false hides the "give by check" option; { memo } shows it with an optional memo line. */
+  giveByMail?: false | { memo?: string };
   presetAmounts?: { recurring: number[]; oneTime: number[] };
   telemetry?: Telemetry;
 };
@@ -93,10 +105,8 @@ export const DonationForm = ({
                   }
                 : undefined,
             }}
-            investor={{
-              hide: formProps.hideInvestorType ? ['type'] : [],
-            }}
-            giveByMail={formProps.giveByMailMemo ? { memo: formProps.giveByMailMemo } : undefined}
+            investor={INVESTOR_CONFIG[formProps.investorType ?? 'both']}
+            giveByMail={formProps.giveByMail}
             telemetry={formProps.telemetry}
           />
         </>

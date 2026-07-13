@@ -18,9 +18,18 @@ const { amount: fetchedAmount } = await fetchPartnerTotals(campaignData.sfCode ?
 const amountOverride = Astro.url.searchParams.get('amount');
 const totalRaised = amountOverride ? parseInt(amountOverride, 10) : fetchedAmount;
 
+// Goal = the highest end amount among the tiers currently showing (same visibility
+// rule as the cards: always-visible tiers, plus hidden ones the raised amount has unlocked).
+const visibleTiers = (campaignData.donationTiers ?? []).filter(
+  (tier) => !tier.hidden || totalRaised >= (tier.startAmount ?? Infinity),
+);
+const goalAmount = visibleTiers.length
+  ? Math.max(...visibleTiers.map((tier) => tier.endAmount ?? 0))
+  : totalRaised;
+
 const campaignTotals = {
   totalRaised,
-  goalAmount: 2000000,
+  goalAmount,
 };
 
 // ?campaign=active forces the live form state; ?campaign=notstarted forces "before start"; ?campaign=ended forces the ended state
@@ -46,29 +55,26 @@ const forceDisabled = Astro.url.searchParams.get('form') === 'disabled';
 const donationForm = campaignData.donationForm;
 const DEFAULT_PRESETS = [50, 100, 300, 500, 1000];
 
-// Presets: prefer per-cadence presets, then the general amount presets, then defaults.
-// A missing OR empty list falls back so the form never renders zero preset buttons.
-const presetsFor = (cadence: 'OneTime' | 'Monthly') => {
-  const perCadence = donationForm?.cadence?.find((c) => c?.cadence === cadence)?.presets;
-  const general = donationForm?.amount?.presets;
-  return perCadence?.length ? perCadence : general?.length ? general : DEFAULT_PRESETS;
-};
+// Presets from the Sanity amount presets; falls back to defaults when missing or empty
+// so the form never renders zero preset buttons.
+const presetAmounts = donationForm?.amount?.presets?.length
+  ? donationForm.amount.presets
+  : DEFAULT_PRESETS;
 
-// Memo: only shown when an editor enables "give by mail" and fills in a memo in Sanity.
-const giveByMailMemo =
-  donationForm?.giveByMail?.enabled && donationForm?.giveByMail?.memo
-    ? donationForm.giveByMail.memo
-    : undefined;
+// Give by check: shown only when enabled in Sanity; memo line included when provided.
+const giveByMail = donationForm?.giveByMail?.enabled
+  ? { memo: donationForm.giveByMail.memo ?? undefined }
+  : (false as const);
 ---
 
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
   <DonationFormIsland
     formProps={{
       enableRecurring: false,
-      hideInvestorType: 'Organization',
+      investorType: donationForm?.giverType ?? 'both',
       presetAmounts: {
-        oneTime: presetsFor('OneTime'),
-        recurring: presetsFor('Monthly'),
+        oneTime: presetAmounts,
+        recurring: presetAmounts,
       },
       campaignTotals: true,
       forceDisabled,
@@ -76,7 +82,7 @@ const giveByMailMemo =
       campaignEndDate: overrideEndDate ?? campaignData.campaignEndDate ?? undefined,
       logoUrl: campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : undefined,
       logoAlt: campaignData.heroImageAlt ?? undefined,
-      giveByMailMemo,
+      giveByMail,
       telemetry: { referrer: campaignData.campaignName ?? 'Partner' },
     }}
     disableDialog={disableDialog}

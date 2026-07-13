@@ -1,5 +1,72 @@
 import { defineField, defineType } from 'sanity';
-import { DonationFormSchema } from '~/features/donate/sanity';
+
+// Partner campaigns define their own donation form (rather than reusing the shared
+// DonationFormSchema) so they stay fully typed and independent of that module:
+//  - amount is presets-only (no "default value", "hide other", or "minimum")
+//  - cadence is intentionally omitted (recurring/subscriptions not enabled yet)
+//  - "investor" is replaced with a simple "Who can give?" selector
+const partnerAmount = defineField({
+  name: 'amount',
+  title: 'Amount',
+  type: 'object',
+  options: { collapsible: true, collapsed: true },
+  fields: [
+    defineField({
+      name: 'presets',
+      title: 'Amount Presets',
+      type: 'array',
+      description: 'Predefined donation amount buttons.',
+      of: [{ type: 'number', validation: (rule) => rule.greaterThan(0) }],
+    }),
+  ],
+});
+
+const partnerGiveByMail = defineField({
+  name: 'giveByMail',
+  title: 'Give by Mail',
+  type: 'object',
+  options: { collapsible: true, collapsed: true },
+  fields: [
+    defineField({
+      name: 'enabled',
+      title: 'Enabled',
+      type: 'boolean',
+      description: 'Show the "give by check" option on the form.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'memo',
+      title: 'Memo',
+      type: 'string',
+      description: 'Optional memo line shown in the "give by check" instructions.',
+    }),
+  ],
+});
+
+const giverTypeField = defineField({
+  name: 'giverType',
+  title: 'Who can give?',
+  type: 'string',
+  description:
+    'Controls the Individual / Organization options on the form. "Both" lets donors choose; the others lock the form to a single giver type.',
+  options: {
+    layout: 'radio',
+    list: [
+      { title: 'Individuals and organizations', value: 'both' },
+      { title: 'Individuals only', value: 'individual' },
+      { title: 'Organizations only', value: 'organization' },
+    ],
+  },
+  initialValue: 'both',
+});
+
+const partnerDonationForm = defineField({
+  name: 'donationForm',
+  title: 'Donation Form',
+  type: 'object',
+  group: 'donationForm',
+  fields: [partnerAmount, partnerGiveByMail, giverTypeField],
+});
 
 const richTextBlock = {
   type: 'block',
@@ -162,6 +229,8 @@ export default defineType({
           name: 'src',
           title: 'Video URL',
           type: 'url',
+          description:
+            'Paste a Vimeo or YouTube link (a normal share link works), or a direct video file URL (.mp4).',
           validation: (Rule) => Rule.required(),
         }),
         defineField({
@@ -170,6 +239,18 @@ export default defineType({
           type: 'url',
         }),
       ],
+    }),
+
+    // Projects section heading
+    defineField({
+      name: 'projectsHeading',
+      title: 'Projects Section Heading',
+      type: 'text',
+      rows: 2,
+      group: 'content',
+      description:
+        'Heading shown above the opportunity cards. Add a line break to split it across two lines. If left blank, defaults to "Unlock a Project. / Join the Mission.".',
+      initialValue: 'Unlock a Project.\nJoin the Mission.',
     }),
 
     // About Sections
@@ -428,6 +509,6 @@ export default defineType({
       ],
     }),
 
-    { ...DonationFormSchema, group: 'donationForm' },
+    partnerDonationForm,
   ],
 });
