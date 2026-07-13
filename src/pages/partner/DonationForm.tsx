@@ -1,12 +1,22 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ComponentProps, type ReactNode, useEffect, useState } from 'react';
 import { type Telemetry } from '~/graphql';
 import { DonationForm as NewDonationForm } from '~/features/donate';
 import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { Button } from '~/common/ui';
 
+export type InvestorType = 'both' | 'individual' | 'organization';
+
+// Maps the selected investor type to the underlying form's `investor` prop.
+// 'both' is undefined so the Individual/Organization toggle is shown.
+const INVESTOR_CONFIG: Record<InvestorType, ComponentProps<typeof NewDonationForm>['investor']> = {
+  both: undefined,
+  individual: { defaults: { type: 'Individual' }, hide: ['type'] },
+  organization: { defaults: { type: 'Organization' }, hide: ['type'] },
+};
+
 export type DonateProps = {
   /** Which investor types the form allows. 'both' shows the Individual/Organization toggle. */
-  investorType?: 'both' | 'individual' | 'organization';
+  investorType?: InvestorType;
   enableRecurring?: boolean;
   campaignTotals?: boolean;
   forceDisabled?: boolean;
@@ -95,13 +105,7 @@ export const DonationForm = ({
                   }
                 : undefined,
             }}
-            investor={
-              formProps.investorType === 'individual'
-                ? { defaults: { type: 'Individual' }, hide: ['type'] }
-                : formProps.investorType === 'organization'
-                  ? { defaults: { type: 'Organization' }, hide: ['type'] }
-                  : undefined // 'both' (or unset): show the Individual/Organization toggle
-            }
+            investor={INVESTOR_CONFIG[formProps.investorType ?? 'both']}
             giveByMail={formProps.giveByMail}
             telemetry={formProps.telemetry}
           />
