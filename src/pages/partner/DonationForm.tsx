@@ -14,10 +14,21 @@ const INVESTOR_CONFIG: Record<InvestorType, ComponentProps<typeof NewDonationFor
   organization: { defaults: { type: 'Organization' }, hide: ['type'] },
 };
 
+export type DonationType = 'oneTime' | 'monthly' | 'both';
+
+// Maps the selected donation type to the underlying form's `cadence` prop.
+// A single option hides the cadence toggle; 'both' shows One-time / Monthly.
+const CADENCE_CONFIG: Record<DonationType, ComponentProps<typeof NewDonationForm>['cadence']> = {
+  oneTime: { options: 'OneTime' },
+  monthly: { options: 'Monthly' },
+  both: { options: ['OneTime', 'Monthly'] },
+};
+
 export type DonateProps = {
   /** Which investor types the form allows. 'both' shows the Individual/Organization toggle. */
   investorType?: InvestorType;
-  enableRecurring?: boolean;
+  /** Which donation cadences the form allows. 'both' shows the One-time / Monthly toggle. */
+  donationType?: DonationType;
   campaignTotals?: boolean;
   forceDisabled?: boolean;
   campaignEndDate?: string;
@@ -96,7 +107,7 @@ export const DonationForm = ({
         <>
           {formProps.campaignTotals && campaignProgress}
           <NewDonationForm
-            cadence={formProps.enableRecurring ? undefined : { options: 'OneTime' }}
+            cadence={CADENCE_CONFIG[formProps.donationType ?? 'oneTime']}
             amount={{
               presets: formProps.presetAmounts
                 ? {

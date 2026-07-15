@@ -55,10 +55,14 @@ const forceDisabled = Astro.url.searchParams.get('form') === 'disabled';
 const donationForm = campaignData.donationForm;
 const DEFAULT_PRESETS = [50, 100, 300, 500, 1000];
 
-// Presets from the Sanity amount presets; falls back to defaults when missing or empty
-// so the form never renders zero preset buttons.
-const presetAmounts = donationForm?.amount?.presets?.length
-  ? donationForm.amount.presets
+// Cadence + presets from Sanity. Each preset list falls back to defaults when missing
+// or empty so the form never renders zero preset buttons.
+const donationType = donationForm?.donationType ?? 'oneTime';
+const oneTimePresets = donationForm?.oneTimePresets?.length
+  ? donationForm.oneTimePresets
+  : DEFAULT_PRESETS;
+const recurringPresets = donationForm?.recurringPresets?.length
+  ? donationForm.recurringPresets
   : DEFAULT_PRESETS;
 
 // Give by check: shown only when enabled in Sanity; memo line included when provided.
@@ -70,11 +74,11 @@ const giveByMail = donationForm?.giveByMail?.enabled
 <div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
   <DonationFormIsland
     formProps={{
-      enableRecurring: false,
+      donationType,
       investorType: donationForm?.giverType ?? 'both',
       presetAmounts: {
-        oneTime: presetAmounts,
-        recurring: presetAmounts,
+        oneTime: oneTimePresets,
+        recurring: recurringPresets,
       },
       campaignTotals: true,
       forceDisabled,
