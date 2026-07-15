@@ -2,24 +2,59 @@ import { defineField, defineType } from 'sanity';
 
 // Partner campaigns define their own donation form (rather than reusing the shared
 // DonationFormSchema) so they stay fully typed and independent of that module:
-//  - amount is presets-only (no "default value", "hide other", or "minimum")
-//  - cadence is intentionally omitted (recurring/subscriptions not enabled yet)
-//  - "investor" is replaced with a simple "Who can give?" selector
-const partnerAmount = defineField({
-  name: 'amount',
-  title: 'Amount',
-  type: 'object',
-  options: { collapsible: true, collapsed: true },
-  fields: [
-    defineField({
-      name: 'presets',
-      title: 'Amount Presets',
-      type: 'array',
-      description: 'Predefined donation amount buttons.',
-      of: [{ type: 'number', validation: (rule) => rule.greaterThan(0) }],
-    }),
-  ],
+//  - preset-only amounts (no "default value", "hide other", or "minimum")
+//  - "What types of donations?" selector controls one-time vs recurring
+//  - "Who can give?" selector replaces the complex shared "investor" field
+
+const donationTypeField = defineField({
+  name: 'donationType',
+  title: 'What types of donations?',
+  type: 'string',
+  description:
+    'Controls whether donors can give one-time, recurring (monthly), or choose between them.',
+  options: {
+    layout: 'radio',
+    list: [
+      { title: 'One-time only', value: 'oneTime' },
+      { title: 'Recurring (monthly) only', value: 'monthly' },
+      { title: 'One-time and recurring', value: 'both' },
+    ],
+  },
+  initialValue: 'oneTime',
 });
+
+// A preset-amounts field that is hidden when its cadence isn't offered.
+const makePresetsField = (name: string, title: string, hideWhenDonationType: string) =>
+  defineField({
+    name,
+    title,
+    type: 'array',
+    description:
+      'Predefined donation amount buttons. Provide exactly 5, or leave empty to use the defaults.',
+    of: [{ type: 'number', validation: (rule) => rule.greaterThan(0) }],
+    hidden: ({ parent }) =>
+      (parent as { donationType?: string })?.donationType === hideWhenDonationType,
+    validation: (Rule) =>
+      Rule.custom((amounts: number[] | undefined) => {
+        if (!amounts || amounts.length === 0) return true;
+        return (
+          amounts.length === 5 ||
+          'Please provide exactly 5 amounts (or leave empty to use the defaults).'
+        );
+      }),
+  });
+
+// One-time presets hide when only recurring is offered, and vice-versa.
+const oneTimePresetsField = makePresetsField(
+  'oneTimePresets',
+  'One-Time Amount Presets',
+  'monthly',
+);
+const recurringPresetsField = makePresetsField(
+  'recurringPresets',
+  'Recurring Amount Presets',
+  'oneTime',
+);
 
 const partnerGiveByMail = defineField({
   name: 'giveByMail',
@@ -65,7 +100,13 @@ const partnerDonationForm = defineField({
   title: 'Donation Form',
   type: 'object',
   group: 'donationForm',
-  fields: [partnerAmount, partnerGiveByMail, giverTypeField],
+  fields: [
+    donationTypeField,
+    oneTimePresetsField,
+    recurringPresetsField,
+    partnerGiveByMail,
+    giverTypeField,
+  ],
 });
 
 const richTextBlock = {
@@ -215,6 +256,15 @@ export default defineType({
       group: 'hero',
       validation: (Rule) =>
         Rule.required().min(5).max(100).warning('Alt text should be between 5 and 100 characters'),
+    }),
+    defineField({
+      name: 'logoBackground',
+      title: 'Add logo background',
+      type: 'boolean',
+      group: 'hero',
+      description:
+        'Places the logo on a light background — helps a dark logo stay legible on the dark hero.',
+      initialValue: false,
     }),
 
     // Video (optional)
@@ -434,8 +484,20 @@ export default defineType({
                         }),
                         defineField({
                           name: 'region',
-                          title: 'Region',
+                          title: 'Marketing Region',
                           type: 'string',
+                          options: {
+                            list: [
+                              { title: 'Africa', value: 'Africa' },
+                              { title: 'Americas', value: 'Americas' },
+                              { title: 'Asia', value: 'Asia' },
+                              {
+                                title: 'Europe & The Middle East',
+                                value: 'Europe & The Middle East',
+                              },
+                              { title: 'Pacific', value: 'Pacific' },
+                            ],
+                          },
                           validation: (Rule) => Rule.required(),
                         }),
                         defineField({

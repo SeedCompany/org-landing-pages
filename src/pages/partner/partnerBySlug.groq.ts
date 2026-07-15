@@ -12,6 +12,7 @@ export const partnerBySlug =
   heroCopy,
   heroImage,
   heroImageAlt,
+  logoBackground,
   slug,
   video { src, poster },
   projectsHeading,
