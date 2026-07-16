@@ -37,7 +37,8 @@ export const LanguageProjectsModal = ({ heading, linkText, projects }: LanguageP
         {linkText || DEFAULT_LINK_TEXT}
       </button>
 
-      <Dialog open={open} onClose={() => setOpen(false)} className="relative z-20">
+      {/* z-index must clear the mobile give CTA (z-100) so the modal sits above it */}
+      <Dialog open={open} onClose={() => setOpen(false)} className="relative z-[110]">
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200"

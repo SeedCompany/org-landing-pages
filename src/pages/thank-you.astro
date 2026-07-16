@@ -13,8 +13,29 @@ import { Link } from '~/common/ui';
       For any additional questions or year-end giving statements, please contact Seed Company at
       <Link href="mailto:info@tsco.org">info@tsco.org</Link>.
     </p>
+    <p id="redirect-notice" class="p-2 hidden">
+      Taking you back to <a id="redirect-link" class="underline" href="/">the campaign page</a> in a
+      few seconds…
+    </p>
     <script>
-      if (window.location.search) {
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect');
+
+      // Only allow internal, single-slash paths (no "//host" open-redirects, no absolute URLs).
+      const isSafeInternalPath = (path: string | null): path is string =>
+        !!path && path.startsWith('/') && !path.startsWith('//');
+
+      if (isSafeInternalPath(redirect)) {
+        const notice = document.getElementById('redirect-notice');
+        const link = document.getElementById('redirect-link') as HTMLAnchorElement | null;
+        if (link) link.href = redirect;
+        notice?.classList.remove('hidden');
+        // Clean the Stripe/redirect params from the URL, then head back after a short pause.
+        window.history.replaceState(null, '', window.location.pathname);
+        window.setTimeout(() => {
+          window.location.href = redirect;
+        }, 8000);
+      } else if (window.location.search) {
         window.history.replaceState(null, '', window.location.pathname);
       }
     </script>
