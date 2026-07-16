@@ -84,6 +84,12 @@ export type DonateCommonProps = {
 
   intent?: DonationIntent;
   telemetry?: Telemetry;
+
+  /**
+   * Path Stripe returns to after payment.
+   * @default '/thank-you'
+   */
+  returnUrl?: string;
 };
 
 export type DonateFormProps = DonateCommonProps & {
@@ -144,7 +150,7 @@ export const DonationForm = (props: DonateFormProps) => {
 
   const { submit: submitDonation } = useSubmitDonationFn({
     telemetry: props.telemetry,
-    returnUrl: '/thank-you',
+    returnUrl: props.returnUrl ?? '/thank-you',
   });
 
   const onSubmit = async ({ paymentComplete: _, amount, ...input }: DonateInput) => {

@@ -71,7 +71,7 @@ const giveByMail = donationForm?.giveByMail?.enabled
   : (false as const);
 ---
 
-<div class="form-card right-4 top-28 lg:fixed lg:right-8 lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
+<div class="form-card lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
   <DonationFormIsland
     formProps={{
       donationType,
@@ -87,6 +87,7 @@ const giveByMail = donationForm?.giveByMail?.enabled
       logoUrl: campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : undefined,
       logoAlt: campaignData.heroImageAlt ?? undefined,
       giveByMail,
+      returnPath: Astro.url.pathname,
       telemetry: { referrer: campaignData.campaignName ?? 'Partner' },
     }}
     disableDialog={disableDialog}

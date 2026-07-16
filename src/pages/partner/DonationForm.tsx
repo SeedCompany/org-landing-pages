@@ -38,6 +38,8 @@ export type DonateProps = {
   /** false hides the "give by check" option; { memo } shows it with an optional memo line. */
   giveByMail?: false | { memo?: string };
   presetAmounts?: { recurring: number[]; oneTime: number[] };
+  /** Campaign path to return to after donating; drives the thank-you page auto-redirect. */
+  returnPath?: string;
   telemetry?: Telemetry;
 };
 
@@ -118,6 +120,11 @@ export const DonationForm = ({
             }}
             investor={INVESTOR_CONFIG[formProps.investorType ?? 'both']}
             giveByMail={formProps.giveByMail}
+            returnUrl={
+              formProps.returnPath
+                ? `/thank-you?redirect=${encodeURIComponent(formProps.returnPath)}`
+                : undefined
+            }
             telemetry={formProps.telemetry}
           />
         </>
