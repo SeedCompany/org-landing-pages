@@ -1,12 +1,12 @@
 ---
-// import { fetchWatermarkTotals } from './watermark-totals.ts';
+import { fetchWatermarkTotals } from './watermark-totals.ts';
 import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
 
-// const totals = await fetchWatermarkTotals();
+const totals = await fetchWatermarkTotals();
 
 const campaignTotals = {
-  totalRaised: 2602530,
+  totalRaised: totals.amount,
   goalAmount: 2000000,
 };
 
