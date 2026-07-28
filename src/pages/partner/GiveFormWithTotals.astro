@@ -87,7 +87,9 @@ const giveByMail = donationForm?.giveByMail?.enabled
       logoAlt: campaignData.heroImageAlt ?? undefined,
       giveByMail,
       returnPath: Astro.url.pathname,
-      telemetry: { referrer: campaignData.campaignName ?? 'Partner' },
+      // Attribution: send the Salesforce short code as the referrer, mirroring the
+      // (proven) Watermark page so donations land on the correct campaign.
+      telemetry: { referrer: campaignData.sfCode ?? undefined },
     }}
     disableDialog={disableDialog}
     client:load
