@@ -1,6 +1,6 @@
 ---
 import { sanityClient as sanity } from '~/sanity';
-import { fetchPartnerTotals } from './watermark-totals.ts';
+import { fetchPartnerTotals } from './partner-totals.ts';
 import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
 import type { PartnerCampaign } from './partnerBySlug.groq';
@@ -12,8 +12,7 @@ interface Props {
 
 const { disableDialog, campaignData } = Astro.props;
 
-// TODO: Remove 'Watermark' fallback once campaignData.sfCode exists for this campaign
-const { amount: fetchedAmount } = await fetchPartnerTotals(campaignData.sfCode ?? 'Watermark');
+const { amount: fetchedAmount } = await fetchPartnerTotals(campaignData.sfCode);
 
 const amountOverride = Astro.url.searchParams.get('amount');
 const totalRaised = amountOverride ? parseInt(amountOverride, 10) : fetchedAmount;
