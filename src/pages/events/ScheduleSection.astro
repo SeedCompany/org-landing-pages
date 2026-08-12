@@ -1,0 +1,152 @@
+---
+import { portableText } from '~/sanity';
+import type { EventPage } from './eventBySlug.groq';
+
+interface Props {
+  heading?: string | null;
+  intro?: EventPage['scheduleIntro'];
+  days?: EventPage['scheduleDays'];
+}
+
+const { heading, intro, days } = Astro.props;
+---
+
+{
+  days && days.length > 0 && (
+    <section class="schedule-section">
+      {heading && <h2 class="schedule-heading">{heading}</h2>}
+      {intro && (
+        <div class="schedule-intro prose max-w-none" set:html={portableText.toHTML(intro)} />
+      )}
+
+      <div class="schedule-days">
+        {days.map((day) => (
+          <div class="schedule-day">
+            {day.dayLabel && <h3 class="schedule-day-label">{day.dayLabel}</h3>}
+            {day.timeSlots && day.timeSlots.length > 0 && (
+              <ul class="schedule-slots">
+                {day.timeSlots.map((slot) => (
+                  <li class="schedule-slot">
+                    <div class="schedule-slot-header">
+                      {slot.time && <span class="schedule-slot-time">{slot.time}</span>}
+                      {slot.title && <span class="schedule-slot-title">{slot.title}</span>}
+                    </div>
+                    {slot.summary && <p class="schedule-slot-summary">{slot.summary}</p>}
+                    {slot.details && (
+                      <details class="schedule-slot-details">
+                        <summary>More details</summary>
+                        <div
+                          class="prose max-w-none"
+                          set:html={portableText.toHTML(slot.details)}
+                        />
+                      </details>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .schedule-section {
+    margin-bottom: 2rem;
+  }
+  .schedule-heading {
+    font-family: 'Gotham Bold', sans-serif;
+    font-weight: bold;
+    font-size: 2.25rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #323232;
+    margin-bottom: 1rem;
+  }
+  .schedule-intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #323232;
+    margin-bottom: 1.5rem;
+  }
+  .schedule-days {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .schedule-day-label {
+    font-family: 'Gotham Bold', sans-serif;
+    font-weight: bold;
+    font-size: 1.35rem;
+    color: #323232;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #41452b;
+  }
+  .schedule-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .schedule-slot {
+    padding-left: 1rem;
+    border-left: 3px solid #cdc3b0;
+  }
+  .schedule-slot-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .schedule-slot-time {
+    font-family: 'Gotham Bold', sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #41452b;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .schedule-slot-title {
+    font-family: 'Gotham Bold', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #323232;
+  }
+  .schedule-slot-summary {
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #323232;
+  }
+  .schedule-slot-details {
+    margin-top: 0.5rem;
+  }
+  .schedule-slot-details summary {
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #41452b;
+    list-style: none;
+  }
+  .schedule-slot-details summary::-webkit-details-marker {
+    display: none;
+  }
+  .schedule-slot-details summary::before {
+    content: '+ ';
+  }
+  .schedule-slot-details[open] summary::before {
+    content: '– ';
+  }
+  .schedule-slot-details > div {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #323232;
+  }
+</style>

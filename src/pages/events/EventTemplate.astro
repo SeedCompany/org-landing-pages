@@ -1,0 +1,214 @@
+---
+import { portableText } from '~/sanity';
+import { FaqAccordion } from '~/common/FaqAccordion.tsx';
+import MainLayout from '~/layouts/main/MainLayout.astro';
+import Footer from '~/layouts/main/Footer.astro';
+import type { EventPage } from './eventBySlug.groq';
+import Hero from './Hero.astro';
+import ContentSection from './ContentSection.astro';
+import ScheduleSection from './ScheduleSection.astro';
+import { resolveVideoEmbed } from './videoEmbed.ts';
+
+interface Props {
+  eventData: EventPage;
+}
+
+const { eventData } = Astro.props;
+const video = await resolveVideoEmbed(eventData.video?.src);
+---
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 60px;
+  }
+  /* Solid tan base that fills the viewport behind everything; the dark hero block
+     sits on top of it (higher z-index) to create the solid dark-top / tan-bottom split */
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background-color: #f7f1e7;
+    z-index: -2;
+  }
+  /* Solid dark hero block. Its height is measured from the actual hero content by
+     the script below (var --hero-bg-height), so it ends at the bottom of the hero
+     regardless of heading/copy length or whether the optional video is present. */
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--hero-bg-height, 500px);
+    background-color: #323232;
+    z-index: -1;
+  }
+  .faq-bg {
+    height: 100%;
+    background: linear-gradient(to top, #f7f1e7 0%, #f7f1e7 50%, #ffffff 100%);
+  }
+  .donation-faq {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  @media (max-width: 1023px) {
+    .content {
+      padding: 60px 30px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .faq-wrapper {
+      max-width: 60%;
+    }
+    .faq-heading {
+      margin-top: 2rem;
+    }
+  }
+  @media (max-width: 640px) {
+    .faq-heading {
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+    .faq-question {
+      font-size: 1rem;
+    }
+  }
+</style>
+<!--
+  Event template theme overrides. Scoped under .event-theme so the shared
+  global.css hero-* classes are only recolored on event pages. Needs `is:global`
+  because .hero-h1/.hero-sub-heading/.hero-p live in the Hero.astro child
+  component, which a plain scoped <style> here can't reach.
+-->
+<style is:global>
+  .event-theme .hero-h1,
+  .event-theme .hero-sub-heading,
+  .event-theme .hero-p {
+    color: #cdc3b0;
+  }
+</style>
+<MainLayout
+  title={eventData.pageTitle ||
+    (eventData.heading ? portableText.toHTML(eventData.heading) : 'Event Page')}
+>
+  <div class="page event-theme">
+    <main class="content">
+      <div class="hero-bg" id="hero-bg"></div>
+      <div id="hero-content">
+        <Hero eventData={eventData} />
+      </div>
+      {
+        video?.kind === 'iframe' ? (
+          <div class="hero-video aspect-video w-full overflow-hidden rounded-3xl">
+            <iframe
+              src={video.src}
+              title="Event video"
+              class="h-full w-full"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+            />
+          </div>
+        ) : video?.kind === 'file' ? (
+          <video
+            src={video.src}
+            poster={eventData.video?.poster ?? undefined}
+            controls
+            class="hero-video rounded-3xl"
+          />
+        ) : null
+      }
+      <div class="bg-gradient"></div>
+      {
+        eventData.aboutSections?.map((section) => (
+          <ContentSection
+            title={section.title}
+            content={portableText.toHTML(section.content)}
+            htmlContent={true}
+          />
+        ))
+      }
+      <ScheduleSection
+        heading={eventData.scheduleHeading}
+        intro={eventData.scheduleIntro}
+        days={eventData.scheduleDays}
+      />
+    </main>
+  </div>
+
+  <section class="faq-bg w-full">
+    {
+      eventData.faqs && (
+        <section class="donation-faq pb-16 z-100">
+          {eventData.faqs[0]?.template === 'faqAccordion' && (
+            <div class="faq-wrapper px-6 py-2 lg:pl-14 lg:pr-0">
+              <h2 class="faq-heading text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                Frequently Asked Questions
+              </h2>
+              <FaqAccordion faqs={eventData.faqs} client:load className="mt-16" />
+            </div>
+          )}
+          {eventData.faqs[0]?.template === 'faqGrid' && (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">
+                Frequently Asked Questions
+              </h2>
+              {eventData.faqs.map((faq) => (
+                <div>
+                  <h3 class="text-lg font-semibold">{faq.question}</h3>
+                  <div class="prose mt-2" set:html={portableText.toHTML(faq.answer)} />
+                </div>
+              ))}
+            </div>
+          )}
+          {eventData.faqs[0]?.template === 'faqList' && (
+            <div>
+              <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                Frequently Asked Questions
+              </h2>
+              <ul class="mt-4 space-y-4">
+                {eventData.faqs.map((faq) => (
+                  <li>
+                    <h3 class="text-lg font-semibold">{faq.question}</h3>
+                    <div class="prose mt-2" set:html={portableText.toHTML(faq.answer)} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      )
+    }
+  </section>
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+  <script>
+    // Size the dark hero background to the actual bottom of the hero content, so the
+    // dark/tan split lands correctly regardless of copy length or the optional video.
+    const heroBg = document.querySelector<HTMLElement>('#hero-bg');
+    const heroContent = document.querySelector<HTMLElement>('#hero-content');
+
+    const syncHeroHeight = () => {
+      if (!heroBg || !heroContent) return;
+      const bottom = heroContent.getBoundingClientRect().bottom + window.scrollY;
+      heroBg.style.setProperty('--hero-bg-height', `${Math.round(bottom)}px`);
+    };
+
+    syncHeroHeight();
+    window.addEventListener('resize', syncHeroHeight);
+    window.addEventListener('load', syncHeroHeight);
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(syncHeroHeight);
+    }
+  </script>
+</MainLayout>

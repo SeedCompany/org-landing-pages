@@ -1,0 +1,48 @@
+---
+import { portableText, sanityClient as sanity } from '~/sanity';
+import type { EventPage } from './eventBySlug.groq';
+
+interface Props {
+  eventData: EventPage;
+}
+
+const { eventData } = Astro.props;
+const heroImageUrl = eventData.heroImage ? sanity.image(eventData.heroImage).url() : null;
+
+// When enabled, place the logo on a light chip (same Natural fill as the site's
+// default cards) so a dark logo stays legible on the dark hero. Otherwise render it flush.
+const logoClass = eventData.logoBackground
+  ? 'logo h-auto w-3/4 sm:w-1/2 md:w-1/2 bg-scNatural p-4 rounded-xl'
+  : 'logo -ml-6 h-auto sm:-ml-5 w-3/4 sm:w-1/2 md:w-1/2';
+---
+
+<div class="md:w-3/4">
+  <div>
+    {
+      heroImageUrl && (
+        <img src={heroImageUrl} alt={eventData.heroImageAlt || ''} class={logoClass} />
+      )
+    }
+    {
+      eventData.heading && (
+        <h1
+          class="hero-h1 uppercase text-pretty"
+          set:html={portableText.toHTML(eventData.heading)}
+        />
+      )
+    }
+    {
+      eventData.subheading && (
+        <span class="hero-sub-heading uppercase text-pretty">{eventData.subheading}</span>
+      )
+    }
+    {
+      eventData.heroCopy && (
+        <div
+          class="hero-p mt-6 mb-6 text-pretty max-w-full md:max-w-lg text-base"
+          set:html={portableText.toHTML(eventData.heroCopy)}
+        />
+      )
+    }
+  </div>
+</div>
