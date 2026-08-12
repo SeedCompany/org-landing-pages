@@ -1,8 +1,15 @@
 import type { Lens } from '@hookform/lenses';
 import { DollarSignIcon } from 'lucide-react';
-import { useImperativeHandle, useRef, useState } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Button, ButtonGroup, InputGroup, NumberInput, ToggleGroup } from '~/common/ui';
+import {
+  Button,
+  ButtonGroup,
+  Field as FieldUI,
+  InputGroup,
+  NumberInput,
+  ToggleGroup,
+} from '~/common/ui';
 import { useController, Field } from '~/common/form';
 
 const formatOptions: Intl.NumberFormatOptions = {
@@ -29,6 +36,7 @@ export const AmountField = ({
   const props = useController({ name, control });
   const {
     field: { value, onChange, ref: fieldRef, onBlur, ...field },
+    fieldState,
   } = props;
 
   const isPresetValue = value && presets && presets.includes(value);
@@ -36,6 +44,16 @@ export const AmountField = ({
 
   const otherInputRef = useRef<HTMLInputElement>(null);
   useImperativeHandle(fieldRef, () => otherInputRef.current);
+
+  // Give Now can be clicked with no amount selected; instead of silently
+  // failing, open the "Other" input (as if it were selected) so the
+  // validation error has somewhere to show and the user can enter an amount.
+  useEffect(() => {
+    if (fieldState.error && !hideOther && !showOther) {
+      setShowOther(true);
+      setTimeout(() => otherInputRef.current?.focus());
+    }
+  }, [fieldState.error, hideOther, showOther]);
 
   const otherInput = !hideOther && (
     <Field
@@ -107,6 +125,9 @@ export const AmountField = ({
             )}
           </ButtonGroup>
         </ToggleGroup.Root>
+      )}
+      {hideOther && fieldState.error?.message && (
+        <FieldUI.ErrorText className="mt-2">{fieldState.error.message}</FieldUI.ErrorText>
       )}
       {otherInput}
     </div>
