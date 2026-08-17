@@ -3,6 +3,7 @@ import { sanityClient as sanity } from '~/sanity';
 import { fetchPartnerTotals } from './partner-totals.ts';
 import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
+import { withStartAmounts } from './donationTiers.ts';
 import type { PartnerCampaign } from './partnerBySlug.groq';
 
 interface Props {
@@ -19,8 +20,8 @@ const totalRaised = amountOverride ? parseInt(amountOverride, 10) : fetchedAmoun
 
 // Goal = the highest end amount among the tiers currently showing (same visibility
 // rule as the cards: always-visible tiers, plus hidden ones the raised amount has unlocked).
-const visibleTiers = (campaignData.donationTiers ?? []).filter(
-  (tier) => !tier.hidden || totalRaised >= (tier.startAmount ?? Infinity),
+const visibleTiers = withStartAmounts(campaignData.donationTiers ?? []).filter(
+  (tier) => !tier.hidden || totalRaised >= tier.startAmount,
 );
 const goalAmount = visibleTiers.length
   ? Math.max(...visibleTiers.map((tier) => tier.endAmount ?? 0))
@@ -94,6 +95,10 @@ const giveByMail = donationForm?.giveByMail?.enabled
     disableDialog={disableDialog}
     client:load
   >
-    <CampaignGivingInfo campaignTotals={campaignTotals} slot="campaign-progress" />
+    <CampaignGivingInfo
+      campaignTotals={campaignTotals}
+      donationTiers={campaignData.donationTiers}
+      slot="campaign-progress"
+    />
   </DonationFormIsland>
 </div>

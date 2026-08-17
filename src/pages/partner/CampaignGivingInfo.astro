@@ -1,14 +1,17 @@
 ---
 import ProgressBar from './ProgressBar.astro';
-import { watermarkProjectCalculator } from './watermarkProjectCalculator.ts';
+import { partnerProjectCalculator } from './partnerProjectCalculator.ts';
+import type { PartnerCampaign } from './partnerBySlug.groq';
+
 interface Props {
   campaignTotals: {
     totalRaised: number;
     goalAmount: number;
   };
+  donationTiers: PartnerCampaign['donationTiers'];
 }
-const { campaignTotals } = Astro.props;
-const currentProgress = watermarkProjectCalculator(campaignTotals.totalRaised);
+const { campaignTotals, donationTiers } = Astro.props;
+const currentProgress = partnerProjectCalculator(campaignTotals.totalRaised, donationTiers ?? []);
 ---
 
 <div>

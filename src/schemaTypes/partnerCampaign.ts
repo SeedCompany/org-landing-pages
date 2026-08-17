@@ -352,22 +352,28 @@ export default defineType({
               validation: (Rule) => Rule.required(),
             }),
             defineField({
-              name: 'startAmount',
-              title: 'Start Amount ($)',
-              type: 'number',
-              validation: (Rule) => Rule.required().min(0),
-            }),
-            defineField({
               name: 'endAmount',
               title: 'End Amount ($)',
+              description:
+                "Dollar amount at which this tier is fully funded. The previous tier's End Amount is used as this tier's starting point, so tiers must be ordered lowest to highest in this list.",
               type: 'number',
               validation: (Rule) => Rule.required().min(0),
             }),
             defineField({
               name: 'peopleGroups',
-              title: 'Number of People Groups',
+              title: 'Number of People',
+              description:
+                'Number of additional people this tier alone reaches. Added to the totals of every other funded tier to produce the "People Impacted" counter.',
               type: 'number',
               validation: (Rule) => Rule.required().min(1),
+            }),
+            defineField({
+              name: 'projectsUnlocked',
+              title: 'Projects Unlocked',
+              description:
+                'Number of additional projects this tier alone unlocks. Added to the totals of every other funded tier to produce the "Projects Unlocked" counter.',
+              type: 'number',
+              validation: (Rule) => Rule.required().min(0),
             }),
             defineField({
               name: 'image',
