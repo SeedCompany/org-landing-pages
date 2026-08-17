@@ -24,9 +24,9 @@ export const partnerBySlug =
   campaignStartDate,
   campaignEndDate,
   donationTiers[] {
-    startAmount,
     endAmount,
     peopleGroups,
+    projectsUnlocked,
     image { asset->{ url } },
     imageAlt,
     projectHeader,
