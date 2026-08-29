@@ -1,0 +1,17 @@
+---
+import { sanityClient as sanity } from '~/sanity';
+import { eventBySlug } from './eventBySlug.groq';
+import EventTemplate from './EventTemplate.astro';
+
+const { slug } = Astro.params;
+const event = await sanity.fetch(eventBySlug, { slug });
+
+if (!event) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not Found',
+  });
+}
+---
+
+<EventTemplate eventData={event} />
