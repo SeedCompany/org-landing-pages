@@ -8077,6 +8077,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"astro-social-share@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "astro-social-share@npm:2.2.0"
+  checksum: 10c0/a82a56deb830e6e1bed78a94939ea051db75b13890828e2c36e49573fc495cafda7a5de06ad4502beb7bd50467d0dd4a27da9803b671afa0d89019e3bf52c0cd
+  languageName: node
+  linkType: hard
+
 "astro@npm:^5.18.1":
   version: 5.18.1
   resolution: "astro@npm:5.18.1"
@@ -15064,6 +15071,7 @@ __metadata:
     "@wojtekmaj/react-recaptcha-v3": "npm:^0.1.4"
     astro: "npm:^5.18.1"
     astro-icon: "npm:^1.1.5"
+    astro-social-share: "npm:^2.2.0"
     autoprefixer: "npm:^10.4.19"
     chart.js: "npm:^4.4.9"
     class-variance-authority: "npm:^0.7.1"

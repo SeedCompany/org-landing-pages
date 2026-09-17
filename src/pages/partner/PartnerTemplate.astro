@@ -9,6 +9,21 @@ import ContentSection from './ContentSection.astro';
 import DonationCard from './DonationCard.astro';
 import GiveFormWithTotals from './GiveFormWithTotals.astro';
 import { resolveVideoEmbed } from './videoEmbed.ts';
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LinkedInShareButton,
+  SocialShare,
+  TwitterShareButton,
+} from 'astro-social-share';
+
+// Keys match the `shareProviders` values in the partnerCampaign schema.
+const shareButtonsByProvider = {
+  facebook: FacebookShareButton,
+  twitter: TwitterShareButton,
+  linkedin: LinkedInShareButton,
+  email: EmailShareButton,
+};
 
 interface Props {
   campaignData: PartnerCampaign;
@@ -22,6 +37,12 @@ const campaignStart = campaignData.campaignStartDate
 const isAfterStart = campaignStart ? today >= campaignStart : true;
 
 const video = await resolveVideoEmbed(campaignData.video?.src);
+
+const selectedShareButtons = (campaignData.socialShare?.shareProviders ?? [])
+  .map((provider) => shareButtonsByProvider[provider as keyof typeof shareButtonsByProvider])
+  .filter((Button) => Boolean(Button));
+const shareTitle = campaignData.socialShare?.shareTitle?.trim() ?? '';
+const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '';
 ---
 
 <style>
@@ -244,6 +265,15 @@ const video = await resolveVideoEmbed(campaignData.video?.src);
       }
       <div class="bg-gradient"></div>
       {
+        selectedShareButtons.length > 0 && (
+          <SocialShare
+            buttons={selectedShareButtons}
+            description={shareDescription}
+            title={shareTitle}
+          />
+        )
+      }
+      {
         campaignData.aboutSections?.map((section) => (
           <ContentSection
             title={section.title}
@@ -272,7 +302,6 @@ const video = await resolveVideoEmbed(campaignData.video?.src);
       <GiveFormWithTotals campaignData={campaignData} />
     </aside>
   </div>
-
   <section class="faq-bg w-full">
     {
       campaignData.faqs && (
