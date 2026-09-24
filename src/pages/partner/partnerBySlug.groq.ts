@@ -47,6 +47,11 @@ export const partnerBySlug =
       }
     }
   },
+  socialShare {
+    shareProviders,
+    shareTitle,
+    shareDescription
+  },
   faqs[] { template, question, answer },
   sfCode,
   donationForm {...}

@@ -1,4 +1,5 @@
-import { defineField, defineType } from 'sanity';
+import { defineField, defineType, type ValidationContext } from 'sanity';
+import { createGeneratedFieldInput } from '~/common/GeneratedFieldInput';
 
 // Partner campaigns define their own donation form (rather than reusing the shared
 // DonationFormSchema) so they stay fully typed and independent of that module:
@@ -106,6 +107,80 @@ const partnerDonationForm = defineField({
     recurringPresetsField,
     partnerGiveByMail,
     giverTypeField,
+  ],
+});
+
+const ShareTitleInput = createGeneratedFieldInput({
+  sourcePath: ['pageTitle'],
+  buttonText: 'Generate from page title',
+  missingSourceHint: 'Add a Page Title to use this.',
+  buildValue: (pageTitle) => pageTitle,
+});
+
+const ShareDescriptionInput = createGeneratedFieldInput({
+  sourcePath: ['campaignName'],
+  buttonText: 'Generate from campaign name',
+  missingSourceHint: 'Add a Campaign Name to use this.',
+  buildValue: (campaignName) =>
+    `See how ${campaignName} is partnering with Seed Company to bring God's word to every language.`,
+});
+
+// Share fields only matter once the campaign actually shows share buttons, so they
+// stay optional until an editor ticks one.
+function requireWithShareButtons(message: string) {
+  return (value: string | undefined, context: ValidationContext) => {
+    const shareProviders = (context.parent as { shareProviders?: string[] })?.shareProviders;
+    if (!shareProviders?.length) return true;
+    return Boolean(value?.trim()) || message;
+  };
+}
+
+const socialShareField = defineField({
+  name: 'socialShare',
+  title: 'Social Share',
+  type: 'object',
+  group: 'settings',
+  description: 'Controls the share buttons shown on the campaign page.',
+  options: { collapsible: true, collapsed: true },
+  fields: [
+    defineField({
+      name: 'shareProviders',
+      title: 'Share Buttons',
+      type: 'array',
+      description:
+        'Select the networks to show. Leave all of them clear to hide the share buttons.',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'grid',
+        list: [
+          { title: 'Facebook', value: 'facebook' },
+          { title: 'X (Twitter)', value: 'twitter' },
+          { title: 'LinkedIn', value: 'linkedin' },
+          { title: 'Email', value: 'email' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'shareTitle',
+      title: 'Share Title',
+      type: 'string',
+      description: 'Press Generate to reuse the Page Title, or write your own.',
+      components: { input: ShareTitleInput },
+      validation: (Rule) =>
+        Rule.custom(requireWithShareButtons('Title required when share buttons are selected.')),
+    }),
+    defineField({
+      name: 'shareDescription',
+      title: 'Share Description',
+      type: 'text',
+      rows: 3,
+      description: 'Press Generate for the standard sentence, or write your own.',
+      components: { input: ShareDescriptionInput },
+      validation: (Rule) =>
+        Rule.custom(
+          requireWithShareButtons('Description required when share buttons are selected.'),
+        ),
+    }),
   ],
 });
 
@@ -290,6 +365,9 @@ export default defineType({
         }),
       ],
     }),
+
+    // Social Share
+    socialShareField,
 
     // Projects section heading
     defineField({
