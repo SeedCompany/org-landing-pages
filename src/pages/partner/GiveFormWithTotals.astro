@@ -1,9 +1,9 @@
 ---
-import { sanityClient as sanity } from '~/sanity';
-import { fetchPartnerTotals } from './partner-totals.ts';
-import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
+import { portableText, sanityClient as sanity } from '~/sanity';
 import CampaignGivingInfo from './CampaignGivingInfo.astro';
+import { DonationForm as DonationFormIsland } from './DonationForm.tsx';
 import { withStartAmounts } from './donationTiers.ts';
+import { fetchPartnerTotals } from './partner-totals.ts';
 import type { PartnerCampaign } from './partnerBySlug.groq';
 
 interface Props {
@@ -69,6 +69,10 @@ const recurringPresets = donationForm?.recurringPresets?.length
 const giveByMail = donationForm?.giveByMail?.enabled
   ? { memo: donationForm.giveByMail.memo ?? undefined }
   : (false as const);
+
+const hasCustomReceiptMessage = Boolean(
+  campaignData.receiptBody && portableText.toPlain(campaignData.receiptBody).trim(),
+);
 ---
 
 <div class="form-card lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
@@ -87,6 +91,7 @@ const giveByMail = donationForm?.giveByMail?.enabled
       logoUrl: campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : undefined,
       logoAlt: campaignData.heroImageAlt ?? undefined,
       giveByMail,
+      hasCustomReceiptMessage,
       returnPath: Astro.url.pathname,
       // Attribution: send the Salesforce short code as the referrer, mirroring the
       // (proven) Watermark page so donations land on the correct campaign.

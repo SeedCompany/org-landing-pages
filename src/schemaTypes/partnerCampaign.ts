@@ -226,6 +226,21 @@ const richTextBlock = {
   },
 };
 
+// The seed-api sanitizes the receiptBody text by removing tags, such as links.
+// So updates here may need to be made there as well
+const receiptBodyBlock = {
+  type: 'block',
+  styles: [{ title: 'Normal', value: 'normal' }],
+  lists: [],
+  marks: {
+    decorators: [
+      { title: 'Strong', value: 'strong' },
+      { title: 'Emphasis', value: 'em' },
+    ],
+    annotations: [],
+  },
+};
+
 export default defineType({
   name: 'partnerCampaign',
   title: 'Partner Campaign',
@@ -237,6 +252,7 @@ export default defineType({
     { name: 'faq', title: 'FAQs' },
     { name: 'donationForm', title: 'Donation Form' },
     { name: 'settings', title: 'Settings' },
+    { name: 'receipt', title: 'Receipt' },
   ],
   fields: [
     defineField({
@@ -656,5 +672,15 @@ export default defineType({
     }),
 
     partnerDonationForm,
+
+    // Receipt
+    defineField({
+      name: 'receiptBody',
+      title: 'Receipt Body Copy',
+      type: 'array',
+      group: 'receipt',
+      description: 'Optional. Custom thank-you message shown on the donation receipt email.',
+      of: [receiptBodyBlock],
+    }),
   ],
 });
