@@ -54,6 +54,12 @@ export const partnerBySlug =
   },
   faqs[] { template, question, answer },
   sfCode,
-  donationForm {...},
+  donationForm {
+    ...,
+    giveByMail {
+      ...,
+      address-> { orgName, mailingAddress, phone, email }
+    }
+  },
   receiptBody
 }`);
