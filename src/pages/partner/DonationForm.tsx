@@ -41,6 +41,8 @@ export type DonateProps = {
   /** Campaign path to return to after donating; drives the thank-you page auto-redirect. */
   returnPath?: string;
   telemetry?: Telemetry;
+  /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
+  hasCustomReceiptMessage?: boolean;
 };
 
 // Parses a YYYY-MM-DD date string as local midnight to avoid UTC timezone shift
@@ -126,6 +128,7 @@ export const DonationForm = ({
                 : undefined
             }
             telemetry={formProps.telemetry}
+            hasCustomReceiptMessage={formProps.hasCustomReceiptMessage}
           />
         </>
       )}

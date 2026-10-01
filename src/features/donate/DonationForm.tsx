@@ -85,6 +85,9 @@ export type DonateCommonProps = {
   intent?: DonationIntent;
   telemetry?: Telemetry;
 
+  /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
+  hasCustomReceiptMessage?: boolean;
+
   /**
    * Path Stripe returns to after payment.
    * @default '/thank-you'
@@ -157,6 +160,7 @@ export const DonationForm = (props: DonateFormProps) => {
     console.log('Submitting', { amount, ...input });
     await submitDonation({
       ...input,
+      hasCustomReceiptMessage: props.hasCustomReceiptMessage,
       targets: [{ amount, intent: props.intent }],
     });
   };

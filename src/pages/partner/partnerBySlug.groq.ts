@@ -54,5 +54,6 @@ export const partnerBySlug =
   },
   faqs[] { template, question, answer },
   sfCode,
-  donationForm {...}
+  donationForm {...},
+  receiptBody
 }`);
