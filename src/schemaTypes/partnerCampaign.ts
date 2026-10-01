@@ -226,7 +226,8 @@ const richTextBlock = {
   },
 };
 
-// the seed-api sanitizes the receiptBody text so updates here may need to be made there as well
+// The seed-api sanitizes the receiptBody text by removing tags, such as links.
+// So updates here may need to be made there as well
 const receiptBodyBlock = {
   type: 'block',
   styles: [{ title: 'Normal', value: 'normal' }],

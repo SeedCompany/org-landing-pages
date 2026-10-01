@@ -70,7 +70,6 @@ const giveByMail = donationForm?.giveByMail?.enabled
   ? { memo: donationForm.giveByMail.memo ?? undefined }
   : (false as const);
 
-// True only when the campaign has custom receipt copy configured in Sanity.
 const hasCustomReceiptMessage = Boolean(
   campaignData.receiptBody && portableText.toPlain(campaignData.receiptBody).trim(),
 );
