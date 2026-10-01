@@ -1,15 +1,16 @@
 import {
   type PortableTextHtmlComponents as Components,
+  escapeHTML,
   toHTML as portableTextToHTML,
 } from '@portabletext/to-html';
-import type {
-  PortableTextBlock as PortableTextBlock,
-  PortableTextSpan as TextSpan,
-} from '@portabletext/types';
+import type { PortableTextBlock, PortableTextSpan as TextSpan } from '@portabletext/types';
 import type { SetOptional } from 'type-fest';
 
-// GROQ type gen makes children optional for some reason
-type TextBlock = SetOptional<PortableTextBlock, 'children'>;
+// GROQ type gen makes children optional for some reason, and types markDefs as
+// `null` (rather than omitting it) for blocks with no possible annotations.
+type TextBlock = Omit<SetOptional<PortableTextBlock, 'children'>, 'markDefs'> & {
+  markDefs?: PortableTextBlock['markDefs'] | null;
+};
 
 export const toPlain = (blocks: TextBlock[]) =>
   blocks
@@ -19,6 +20,13 @@ export const toPlain = (blocks: TextBlock[]) =>
 
 export const toHTML = (portableText: TextBlock | TextBlock[] | null) =>
   portableText == null ? '' : portableTextToHTML(portableText, { components });
+
+function isPropertyInValue<K extends PropertyKey>(
+  prop: K,
+  value: unknown,
+): value is Record<K, string> {
+  return value !== null && typeof value === 'object' && prop in value;
+}
 
 const components = {
   block: {
@@ -39,10 +47,16 @@ const components = {
     bullet: ({ children }) => `<li>${children}</li>`,
   },
   marks: {
-    textColor: ({ value, children }) => `<span style="color: ${value.value};">${children}</span>`,
+    textColor: ({ value, children }) =>
+      `<span style="color: ${isPropertyInValue('value', value) ? value.value : 'inherit'};">${children}</span>`,
     strong: ({ children }) => `<strong>${children}</strong>`,
     em: ({ children }) => `<em>${children}</em>`,
-    link: ({ value, children }) =>
-      `<a href="${value.href}" target="${value.target}">${children}</a>`,
+    link: ({ value, children }) => {
+      const unsafeUri = isPropertyInValue('href', value) ? value.href : '';
+      const looksSafe = /^(http|https|mailto|my-custom-proto):/i.test(unsafeUri);
+      return looksSafe
+        ? `<a href="${escapeHTML(unsafeUri)}" target="${isPropertyInValue('target', value) ? value.target : '_blank'}">${children}</a>`
+        : children;
+    },
   },
 } satisfies Partial<Components>;
