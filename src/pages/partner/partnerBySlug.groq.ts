@@ -65,5 +65,10 @@ export const partnerBySlug =
   receiptImage {
     caption,
     asset->{ url }
+  },
+  theme {
+    accentColor { value },
+    heroBackgroundColor { value },
+    heroTextStyle
   }
 }`);
