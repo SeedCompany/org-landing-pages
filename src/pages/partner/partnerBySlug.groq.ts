@@ -55,5 +55,9 @@ export const partnerBySlug =
   faqs[] { template, question, answer },
   sfCode,
   donationForm {...},
-  receiptBody
+  receiptBody,
+  receiptImage {
+    caption,
+    asset->{ url }
+  }
 }`);
