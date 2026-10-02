@@ -43,6 +43,8 @@ export type DonateProps = {
   telemetry?: Telemetry;
   /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
   hasCustomReceiptMessage?: boolean;
+  /** Sent so the receipt email knows to use the campaign's custom receipt image. */
+  hasCustomReceiptImage?: boolean;
 };
 
 // Parses a YYYY-MM-DD date string as local midnight to avoid UTC timezone shift
@@ -129,6 +131,7 @@ export const DonationForm = ({
             }
             telemetry={formProps.telemetry}
             hasCustomReceiptMessage={formProps.hasCustomReceiptMessage}
+            hasCustomReceiptImage={formProps.hasCustomReceiptImage}
           />
         </>
       )}

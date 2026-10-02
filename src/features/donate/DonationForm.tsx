@@ -10,12 +10,12 @@ import { pickBy } from 'remeda';
 import type { PartialDeep } from 'type-fest';
 import { z } from 'zod/v4/mini';
 import { type DonationCadence as Cadence, type DonationIntent, type Telemetry } from '~/graphql';
-import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
 import { DonateInput, DonateSchemaProvider } from './donate.schema.ts';
 import type { DonateStepProps } from './steps/_util.tsx';
 import { IntroStep } from './steps/IntroStep.tsx';
 import { InvestorStep } from './steps/InvestorStep.tsx';
 import { PaymentStep } from './steps/PaymentStep.tsx';
+import { useSubmitDonationFn } from './use-submit-donation-fn.hook.ts';
 
 type DonateInput = z.infer<typeof DonateInput>;
 
@@ -87,6 +87,9 @@ export type DonateCommonProps = {
 
   /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
   hasCustomReceiptMessage?: boolean;
+
+  /** Sent so the receipt email knows to use the campaign's custom receipt image. */
+  hasCustomReceiptImage?: boolean;
 
   /**
    * Path Stripe returns to after payment.
@@ -161,6 +164,7 @@ export const DonationForm = (props: DonateFormProps) => {
     await submitDonation({
       ...input,
       hasCustomReceiptMessage: props.hasCustomReceiptMessage,
+      hasCustomReceiptImage: props.hasCustomReceiptImage,
       targets: [{ amount, intent: props.intent }],
     });
   };
