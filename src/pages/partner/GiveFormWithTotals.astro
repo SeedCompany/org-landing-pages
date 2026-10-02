@@ -79,6 +79,8 @@ const giveByMail = donationForm?.giveByMail?.enabled
 const hasCustomReceiptMessage = Boolean(
   campaignData.receiptBody && portableText.toPlain(campaignData.receiptBody).trim(),
 );
+
+const hasCustomReceiptImage = Boolean(campaignData.receiptImage?.asset?.url);
 ---
 
 <div class="form-card lg:min-w-96 p-5 rounded-lg shadow-lg z-10">
@@ -97,7 +99,10 @@ const hasCustomReceiptMessage = Boolean(
       logoUrl: campaignData.heroImage ? sanity.image(campaignData.heroImage).url() : undefined,
       logoAlt: campaignData.heroImageAlt ?? undefined,
       giveByMail,
-      hasCustomReceiptMessage,
+      receipt: {
+        hasCustomImage: hasCustomReceiptImage,
+        hasCustomMessage: hasCustomReceiptMessage,
+      },
       returnPath: Astro.url.pathname,
       // Attribution: send the Salesforce short code as the referrer, mirroring the
       // (proven) Watermark page so donations land on the correct campaign.

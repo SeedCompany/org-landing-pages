@@ -690,5 +690,21 @@ export default defineType({
       description: 'Optional. Custom thank-you message shown on the donation receipt email.',
       of: [receiptBodyBlock],
     }),
+    defineField({
+      name: 'receiptImage',
+      title: 'Receipt Image',
+      type: 'image',
+      group: 'receipt',
+      description: 'Optional. Custom image shown on the donation receipt email.',
+      fields: [
+        defineField({
+          name: 'caption',
+          title: 'Caption',
+          type: 'string',
+          description: 'Used as the alt text for the image in the receipt email.',
+          validation: (Rule) => Rule.required().min(5).max(100),
+        }),
+      ],
+    }),
   ],
 });

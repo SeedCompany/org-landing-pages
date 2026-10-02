@@ -1,8 +1,8 @@
 import { type ComponentProps, type ReactNode, useEffect, useState } from 'react';
-import { type Telemetry } from '~/graphql';
-import { DonationForm as NewDonationForm } from '~/features/donate';
-import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { Button } from '~/common/ui';
+import { DonationForm as NewDonationForm } from '~/features/donate';
+import { type Telemetry } from '~/graphql';
+import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 
 export type InvestorType = 'both' | 'individual' | 'organization';
 
@@ -41,8 +41,12 @@ export type DonateProps = {
   /** Campaign path to return to after donating; drives the thank-you page auto-redirect. */
   returnPath?: string;
   telemetry?: Telemetry;
-  /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
-  hasCustomReceiptMessage?: boolean;
+  receipt?: {
+    /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
+    hasCustomMessage?: boolean;
+    /** Sent so the receipt email knows to use the campaign's custom receipt image. */
+    hasCustomImage?: boolean;
+  };
 };
 
 // Parses a YYYY-MM-DD date string as local midnight to avoid UTC timezone shift
@@ -128,7 +132,7 @@ export const DonationForm = ({
                 : undefined
             }
             telemetry={formProps.telemetry}
-            hasCustomReceiptMessage={formProps.hasCustomReceiptMessage}
+            receipt={formProps.receipt}
           />
         </>
       )}
