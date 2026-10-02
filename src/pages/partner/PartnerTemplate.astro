@@ -43,6 +43,36 @@ const selectedShareButtons = (campaignData.socialShare?.shareProviders ?? [])
   .filter((Button) => Boolean(Button));
 const shareTitle = campaignData.socialShare?.shareTitle?.trim() ?? '';
 const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '';
+
+// Theme: falls back to Seed Company's default colors when a campaign hasn't set any.
+const DEFAULT_ACCENT = '#a8654c'; // terracotta — amounts, borders, badges, progress bar
+const DEFAULT_CTA = '#323232'; // matches DEFAULT_HERO_BG, so the unthemed default is one simple dark palette
+const DEFAULT_HERO_BG = '#323232';
+const DEFAULT_HERO_TEXT_LIGHT = '#cdc3b0';
+const DEFAULT_HERO_TEXT_DARK = '#323232';
+
+// Sanity-editor-controlled, but values are injected into a raw <style> tag below (via
+// set:html, since Astro doesn't support expression interpolation inside <style>), so
+// validate against a strict hex pattern rather than trusting the CMS value as-is. Only
+// 3/4/6/8-digit hex forms are valid CSS; a value of another length would be inert (not
+// an error) in `var(--x, fallback)`, since the fallback only applies when a var is
+// unset, not when it's set-but-invalid — so this must reject bad lengths outright.
+const toSafeHex = (value: string | null | undefined, fallback: string) =>
+  value && /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value) ? value : fallback;
+
+// Same underlying Sanity field drives both: when a campaign sets a custom accent color,
+// it applies everywhere (button included). Unset, the button falls back to DEFAULT_CTA
+// (matching the hero background) rather than DEFAULT_ACCENT's terracotta, so a custom
+// Hero Background Color can never make the button blend into it by coincidence — only
+// an explicit custom Accent Color moves the button away from the dark default.
+const accentColor = toSafeHex(campaignData.theme?.accentColor?.value, DEFAULT_ACCENT);
+const ctaColor = toSafeHex(campaignData.theme?.accentColor?.value, DEFAULT_CTA);
+const heroBackgroundColor = toSafeHex(
+  campaignData.theme?.heroBackgroundColor?.value,
+  DEFAULT_HERO_BG,
+);
+const heroTextColor =
+  campaignData.theme?.heroTextStyle === 'dark' ? DEFAULT_HERO_TEXT_DARK : DEFAULT_HERO_TEXT_LIGHT;
 ---
 
 <style>
@@ -79,7 +109,7 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
     left: 0;
     width: 100%;
     height: var(--hero-bg-height, 640px);
-    background-color: #323232;
+    background-color: var(--partner-hero-bg, #323232);
     z-index: -1;
   }
   .donation-faq {
@@ -181,35 +211,62 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
   .partner-theme .hero-h1,
   .partner-theme .hero-sub-heading,
   .partner-theme .hero-p {
-    color: #cdc3b0;
+    color: var(--partner-hero-text, #cdc3b0);
   }
   .partner-theme .sus-green-text {
-    color: #a8654c;
-    fill: #a8654c;
+    color: var(--partner-accent, #a8654c);
+    fill: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-amount {
-    color: #a8654c;
+    color: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-li::before {
-    background-color: #a8654c;
+    background-color: var(--partner-accent, #a8654c);
   }
   .partner-theme .form-card {
     background-color: #f7f1e7;
   }
   .partner-theme .donation-card {
-    border-color: #a8654c;
+    border-color: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-status {
-    background: #a8654c;
+    background: var(--partner-accent, #a8654c);
   }
-  /* The shared "Give Now" button (solid variant) is scForest with a lighter hover
-     site-wide. On partner pages the design calls for Black (#323232) with a slightly
-     darker hover, so override both here without affecting other pages. */
+  /* The main "Give Now" button follows the campaign's accent color when one is set.
+     Unthemed, it falls back to the same dark color as the hero background (--partner-cta's
+     own default, #323232) rather than the terracotta used for amounts/borders/badges above,
+     so the unthemed page is one simple dark/tan/terracotta palette, same as it is today. */
   .partner-theme .bg-scForest {
-    background-color: #323232;
+    background-color: var(--partner-cta, #323232);
   }
   .partner-theme .bg-scForest:hover {
-    background-color: #232323;
+    background-color: var(--partner-cta, #323232);
+    filter: brightness(0.9);
+  }
+  /* The scTerracotta family is exclusive to Partner Campaign components (confirmed: no
+     other template uses these classes), but some of its consumers — CampaignEndedModal,
+     LanguageProjectsModal — render through a headlessui Dialog portal to document.body,
+     outside the .partner-theme div. These rules are intentionally NOT .partner-theme-scoped
+     so they still reach that portaled content. */
+  .bg-scTerracotta {
+    background-color: var(--partner-accent, #a8654c);
+  }
+  .text-scTerracotta {
+    color: var(--partner-accent, #a8654c);
+  }
+  /* Tailwind's own hover:bg-scTerracottaHover utility sets a hardcoded hex on hover, at
+     the same specificity as the rule above — so it must be overridden explicitly here,
+     not just dimmed via filter, or hovering would revert to the fixed default color. */
+  .hover\:bg-scTerracottaHover:hover {
+    background-color: var(--partner-accent, #a8654c);
+    filter: brightness(0.9);
+  }
+  .hover\:text-scTerracottaHover:hover {
+    color: var(--partner-accent, #a8654c);
+    filter: brightness(0.9);
+  }
+  .focus-visible\:outline-scTerracotta:focus-visible {
+    outline-color: var(--partner-accent, #a8654c);
   }
   /* Amount preset buttons (5 presets + "Other") — lay out as an even grid instead of
      the shared flex-wrap (which produced an uneven 4-then-2 layout). The amount group
@@ -232,6 +289,22 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
   title={campaignData.pageTitle ||
     (campaignData.heading ? portableText.toHTML(campaignData.heading) : 'Campaign Page')}
 >
+  <Fragment slot="head">
+    <!--
+      Theme custom properties for this campaign, defined on :root (not scoped to any
+      wrapper div) so they're inherited by everything in the document — including
+      headlessui's Dialog content, which portals to a #headlessui-portal-root node
+      that's a sibling of, not a descendant of, the .partner-theme div below. Astro
+      doesn't support expression interpolation inside <style>, so this is injected via
+      set:html; values are pre-validated against a strict hex pattern (toSafeHex,
+      above) before reaching here. Rendered into the `head` slot (forwarded by
+      MainLayout to BaseLayout) so it lands inside the real <head>, not wherever this
+      component's own template happens to sit relative to the layout.
+    -->
+    <style
+      set:html={`:root { --partner-accent: ${accentColor}; --partner-cta: ${ctaColor}; --partner-hero-bg: ${heroBackgroundColor}; --partner-hero-text: ${heroTextColor}; }`}
+    ></style>
+  </Fragment>
   <div class="page partner-theme">
     <main class="content">
       <div class="hero-bg" id="hero-bg"></div>

@@ -55,5 +55,10 @@ export const partnerBySlug =
   faqs[] { template, question, answer },
   sfCode,
   donationForm {...},
-  receiptBody
+  receiptBody,
+  theme {
+    accentColor { value },
+    heroBackgroundColor { value },
+    heroTextStyle
+  }
 }`);
