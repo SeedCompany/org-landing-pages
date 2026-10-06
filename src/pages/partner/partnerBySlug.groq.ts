@@ -56,9 +56,10 @@ export const partnerBySlug =
   sfCode,
   donationForm {...},
   receiptBody,
-  theme {
-    accentColor { value },
-    heroBackgroundColor { value },
-    heroTextStyle
-  }
+  accentColor { value },
+  heroBackgroundColor { value },
+  heroTextStyle,
+  bodyBackgroundColor { value },
+  bodyTextColor { value },
+  cardBackgroundColor { value }
 }`);

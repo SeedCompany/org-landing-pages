@@ -96,45 +96,66 @@ const giverTypeField = defineField({
   initialValue: 'both',
 });
 
-const partnerTheme = defineField({
-  name: 'theme',
-  title: 'Theme',
-  type: 'object',
-  group: 'theme',
-  description: "Optional. Leave blank to use Seed Company's default colors.",
-  options: { collapsible: true, collapsed: true },
-  fields: [
-    defineField({
-      name: 'accentColor',
-      title: 'Accent Color',
-      type: 'simplerColor',
-      options: { colorFormat: 'hex' },
-      description:
-        'Used for the main "Give Now" button, progress bar, donation amounts, card borders, status badges, and secondary buttons.',
-    }),
-    defineField({
-      name: 'heroBackgroundColor',
-      title: 'Hero Background Color',
-      type: 'simplerColor',
-      options: { colorFormat: 'hex' },
-      description: 'Background color of the hero section only.',
-    }),
-    defineField({
-      name: 'heroTextStyle',
-      title: 'Hero Text Style',
-      type: 'string',
-      description: 'Choose whichever reads better against your Hero Background Color.',
-      options: {
-        layout: 'radio',
-        list: [
-          { title: 'Light text (for dark backgrounds)', value: 'light' },
-          { title: 'Dark text (for light backgrounds)', value: 'dark' },
-        ],
-      },
-      initialValue: 'light',
-    }),
-  ],
-});
+// Flat fields tagged group: 'theme' (not nested in an object), same as other sections.
+// Order: hero-related, then body-related, then card-related.
+const themeFields = [
+  defineField({
+    name: 'accentColor',
+    title: 'Accent Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description:
+      'Used for the main "Give Now" button, progress bar, donation amounts, card borders, status badges, and secondary buttons.',
+  }),
+  defineField({
+    name: 'heroBackgroundColor',
+    title: 'Hero Background Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Background color of the hero section only.',
+  }),
+  defineField({
+    name: 'heroTextStyle',
+    title: 'Hero Text Style',
+    type: 'string',
+    group: 'theme',
+    description: 'Choose whichever reads better against your Hero Background Color.',
+    options: {
+      layout: 'radio',
+      list: [
+        { title: 'Light text (for dark backgrounds)', value: 'light' },
+        { title: 'Dark text (for light backgrounds)', value: 'dark' },
+      ],
+    },
+    initialValue: 'light',
+  }),
+  defineField({
+    name: 'bodyBackgroundColor',
+    title: 'Body Background Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Background color of the page body and FAQ section.',
+  }),
+  defineField({
+    name: 'bodyTextColor',
+    title: 'Body Text Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Text color for the About section and FAQ headings.',
+  }),
+  defineField({
+    name: 'cardBackgroundColor',
+    title: 'Card Background Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Background color of the donation tier cards.',
+  }),
+];
 
 const partnerDonationForm = defineField({
   name: 'donationForm',
@@ -724,6 +745,6 @@ export default defineType({
       of: [receiptBodyBlock],
     }),
 
-    partnerTheme,
+    ...themeFields,
   ],
 });
