@@ -80,6 +80,14 @@ export type DonateCommonProps = {
          * A custom "memo" message to display
          */
         memo?: string;
+        /** Organization name. @default 'Seed Company' */
+        orgName?: string | null;
+        /** Mailing address lines. @default Seed Company's current address */
+        mailingAddress?: string | null;
+        /** Contact phone number. @default Seed Company's current phone number */
+        phone?: string | null;
+        /** Contact email. @default Seed Company's current email */
+        email?: string | null;
       };
 
   intent?: DonationIntent;

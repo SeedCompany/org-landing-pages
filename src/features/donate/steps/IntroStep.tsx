@@ -51,6 +51,10 @@ export const IntroStep = ({
       {giveByMail !== false && (
         <GiveByCheck
           memo={typeof giveByMail === 'object' ? giveByMail.memo : undefined}
+          orgName={typeof giveByMail === 'object' ? giveByMail.orgName : undefined}
+          mailingAddress={typeof giveByMail === 'object' ? giveByMail.mailingAddress : undefined}
+          phone={typeof giveByMail === 'object' ? giveByMail.phone : undefined}
+          email={typeof giveByMail === 'object' ? giveByMail.email : undefined}
           className="self-center mt-2"
         />
       )}
