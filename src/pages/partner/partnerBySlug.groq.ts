@@ -66,9 +66,10 @@ export const partnerBySlug =
     caption,
     asset->{ url }
   },
-  theme {
-    accentColor { value },
-    heroBackgroundColor { value },
-    heroTextStyle
-  }
+  accentColor { value },
+  heroBackgroundColor { value },
+  heroTextStyle,
+  bodyBackgroundColor { value },
+  bodyTextColor { value },
+  cardBackgroundColor { value }
 }`);

@@ -44,35 +44,29 @@ const selectedShareButtons = (campaignData.socialShare?.shareProviders ?? [])
 const shareTitle = campaignData.socialShare?.shareTitle?.trim() ?? '';
 const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '';
 
-// Theme: falls back to Seed Company's default colors when a campaign hasn't set any.
-const DEFAULT_ACCENT = '#a8654c'; // terracotta — amounts, borders, badges, progress bar
-const DEFAULT_CTA = '#323232'; // matches DEFAULT_HERO_BG, so the unthemed default is one simple dark palette
+const DEFAULT_ACCENT = '#a8654c';
+const DEFAULT_CTA = '#323232'; // intentionally matches DEFAULT_HERO_BG, not DEFAULT_ACCENT
 const DEFAULT_HERO_BG = '#323232';
 const DEFAULT_HERO_TEXT_LIGHT = '#cdc3b0';
 const DEFAULT_HERO_TEXT_DARK = '#323232';
+const DEFAULT_BODY_BG = '#f7f1e7';
+const DEFAULT_BODY_TEXT_ABOUT = '#323232';
+const DEFAULT_BODY_TEXT_FAQ = '#111827';
+const DEFAULT_CARD_BG = '#ffffff';
 
-// Sanity-editor-controlled, but values are injected into a raw <style> tag below (via
-// set:html, since Astro doesn't support expression interpolation inside <style>), so
-// validate against a strict hex pattern rather than trusting the CMS value as-is. Only
-// 3/4/6/8-digit hex forms are valid CSS; a value of another length would be inert (not
-// an error) in `var(--x, fallback)`, since the fallback only applies when a var is
-// unset, not when it's set-but-invalid — so this must reject bad lengths outright.
 const toSafeHex = (value: string | null | undefined, fallback: string) =>
   value && /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value) ? value : fallback;
 
-// Same underlying Sanity field drives both: when a campaign sets a custom accent color,
-// it applies everywhere (button included). Unset, the button falls back to DEFAULT_CTA
-// (matching the hero background) rather than DEFAULT_ACCENT's terracotta, so a custom
-// Hero Background Color can never make the button blend into it by coincidence — only
-// an explicit custom Accent Color moves the button away from the dark default.
-const accentColor = toSafeHex(campaignData.theme?.accentColor?.value, DEFAULT_ACCENT);
-const ctaColor = toSafeHex(campaignData.theme?.accentColor?.value, DEFAULT_CTA);
-const heroBackgroundColor = toSafeHex(
-  campaignData.theme?.heroBackgroundColor?.value,
-  DEFAULT_HERO_BG,
-);
+const accentColor = toSafeHex(campaignData.accentColor?.value, DEFAULT_ACCENT);
+const ctaColor = toSafeHex(campaignData.accentColor?.value, DEFAULT_CTA);
+const heroBackgroundColor = toSafeHex(campaignData.heroBackgroundColor?.value, DEFAULT_HERO_BG);
 const heroTextColor =
-  campaignData.theme?.heroTextStyle === 'dark' ? DEFAULT_HERO_TEXT_DARK : DEFAULT_HERO_TEXT_LIGHT;
+  campaignData.heroTextStyle === 'dark' ? DEFAULT_HERO_TEXT_DARK : DEFAULT_HERO_TEXT_LIGHT;
+
+const bodyBackgroundColor = toSafeHex(campaignData.bodyBackgroundColor?.value, DEFAULT_BODY_BG);
+const bodyTextColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_BODY_TEXT_ABOUT);
+const faqHeadingColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_BODY_TEXT_FAQ);
+const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, DEFAULT_CARD_BG);
 ---
 
 <style>
@@ -92,17 +86,14 @@ const heroTextColor =
     flex-direction: column;
     gap: 2rem;
   }
-  /* Solid tan base that fills the viewport behind everything; the dark hero block
-     sits on top of it (higher z-index) to create the solid dark-top / tan-bottom split */
+
   .bg-gradient {
     position: fixed;
     inset: 0;
-    background-color: #f7f1e7;
+    background-color: var(--partner-body-bg, #f7f1e7);
     z-index: -2;
   }
-  /* Solid dark hero block. Its height is measured from the actual hero content by
-     the script below (var --hero-bg-height), so it ends at the bottom of the hero
-     regardless of heading/copy length or whether the optional video is present. */
+
   .hero-bg {
     position: absolute;
     top: 0;
@@ -118,7 +109,12 @@ const heroTextColor =
   }
   .faq-bg {
     height: 100%;
-    background: linear-gradient(to top, #f7f1e7 0%, #f7f1e7 50%, #ffffff 100%);
+    background: linear-gradient(
+      to top,
+      var(--partner-body-bg, #f7f1e7) 0%,
+      var(--partner-body-bg, #f7f1e7) 50%,
+      #ffffff 100%
+    );
   }
   /* Right form column (Sticky) */
   @media (min-width: 1024px) {
@@ -224,18 +220,23 @@ const heroTextColor =
     background-color: var(--partner-accent, #a8654c);
   }
   .partner-theme .form-card {
-    background-color: #f7f1e7;
+    background-color: var(--partner-body-bg, #f7f1e7);
+  }
+  .partner-theme .about-heading,
+  .partner-theme .about-content {
+    color: var(--partner-body-text, #323232);
+  }
+  .partner-theme .faq-heading {
+    color: var(--partner-faq-heading, #111827);
   }
   .partner-theme .donation-card {
+    background-color: var(--partner-card-bg, #ffffff);
     border-color: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-status {
     background: var(--partner-accent, #a8654c);
   }
-  /* The main "Give Now" button follows the campaign's accent color when one is set.
-     Unthemed, it falls back to the same dark color as the hero background (--partner-cta's
-     own default, #323232) rather than the terracotta used for amounts/borders/badges above,
-     so the unthemed page is one simple dark/tan/terracotta palette, same as it is today. */
+
   .partner-theme .bg-scForest {
     background-color: var(--partner-cta, #323232);
   }
@@ -243,20 +244,14 @@ const heroTextColor =
     background-color: var(--partner-cta, #323232);
     filter: brightness(0.9);
   }
-  /* The scTerracotta family is exclusive to Partner Campaign components (confirmed: no
-     other template uses these classes), but some of its consumers — CampaignEndedModal,
-     LanguageProjectsModal — render through a headlessui Dialog portal to document.body,
-     outside the .partner-theme div. These rules are intentionally NOT .partner-theme-scoped
-     so they still reach that portaled content. */
+
   .bg-scTerracotta {
     background-color: var(--partner-accent, #a8654c);
   }
   .text-scTerracotta {
     color: var(--partner-accent, #a8654c);
   }
-  /* Tailwind's own hover:bg-scTerracottaHover utility sets a hardcoded hex on hover, at
-     the same specificity as the rule above — so it must be overridden explicitly here,
-     not just dimmed via filter, or hovering would revert to the fixed default color. */
+
   .hover\:bg-scTerracottaHover:hover {
     background-color: var(--partner-accent, #a8654c);
     filter: brightness(0.9);
@@ -268,9 +263,7 @@ const heroTextColor =
   .focus-visible\:outline-scTerracotta:focus-visible {
     outline-color: var(--partner-accent, #a8654c);
   }
-  /* Amount preset buttons (5 presets + "Other") — lay out as an even grid instead of
-     the shared flex-wrap (which produced an uneven 4-then-2 layout). The amount group
-     is the button group with `py-4` (the investor toggle also uses flex-wrap). */
+
   .partner-theme .form-card .flex-wrap.py-4 {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -290,19 +283,8 @@ const heroTextColor =
     (campaignData.heading ? portableText.toHTML(campaignData.heading) : 'Campaign Page')}
 >
   <Fragment slot="head">
-    <!--
-      Theme custom properties for this campaign, defined on :root (not scoped to any
-      wrapper div) so they're inherited by everything in the document — including
-      headlessui's Dialog content, which portals to a #headlessui-portal-root node
-      that's a sibling of, not a descendant of, the .partner-theme div below. Astro
-      doesn't support expression interpolation inside <style>, so this is injected via
-      set:html; values are pre-validated against a strict hex pattern (toSafeHex,
-      above) before reaching here. Rendered into the `head` slot (forwarded by
-      MainLayout to BaseLayout) so it lands inside the real <head>, not wherever this
-      component's own template happens to sit relative to the layout.
-    -->
     <style
-      set:html={`:root { --partner-accent: ${accentColor}; --partner-cta: ${ctaColor}; --partner-hero-bg: ${heroBackgroundColor}; --partner-hero-text: ${heroTextColor}; }`}
+      set:html={`:root { --partner-accent: ${accentColor}; --partner-cta: ${ctaColor}; --partner-hero-bg: ${heroBackgroundColor}; --partner-hero-text: ${heroTextColor}; --partner-body-bg: ${bodyBackgroundColor}; --partner-body-text: ${bodyTextColor}; --partner-faq-heading: ${faqHeadingColor}; --partner-card-bg: ${cardBackgroundColor}; }`}
     ></style>
   </Fragment>
   <div class="page partner-theme">
@@ -389,7 +371,7 @@ const heroTextColor =
           )}
           {campaignData.faqs[0]?.template === 'faqGrid' && (
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">
+              <h2 class="faq-heading text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">
                 Frequently Asked Questions
               </h2>
               {campaignData.faqs.map((faq) => (
@@ -402,7 +384,7 @@ const heroTextColor =
           )}
           {campaignData.faqs[0]?.template === 'faqList' && (
             <div>
-              <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+              <h2 class="faq-heading text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
                 Frequently Asked Questions
               </h2>
               <ul class="mt-4 space-y-4">
