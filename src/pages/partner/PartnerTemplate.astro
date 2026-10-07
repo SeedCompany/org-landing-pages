@@ -51,7 +51,7 @@ const DEFAULT_HERO_TEXT_LIGHT = '#cdc3b0';
 const DEFAULT_HERO_TEXT_DARK = '#323232';
 const DEFAULT_BODY_BG = '#f7f1e7';
 const DEFAULT_BODY_TEXT_ABOUT = '#323232';
-const DEFAULT_BODY_TEXT_FAQ = '#111827';
+const DEFAULT_PROJECTS_HEADING = '#111827';
 const DEFAULT_CARD_BG = '#ffffff';
 
 const toSafeHex = (value: string | null | undefined, fallback: string) =>
@@ -65,7 +65,7 @@ const heroTextColor =
 
 const bodyBackgroundColor = toSafeHex(campaignData.bodyBackgroundColor?.value, DEFAULT_BODY_BG);
 const bodyTextColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_BODY_TEXT_ABOUT);
-const faqHeadingColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_BODY_TEXT_FAQ);
+const projectsHeadingColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_PROJECTS_HEADING);
 const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, DEFAULT_CARD_BG);
 ---
 
@@ -109,12 +109,7 @@ const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, D
   }
   .faq-bg {
     height: 100%;
-    background: linear-gradient(
-      to top,
-      var(--partner-body-bg, #f7f1e7) 0%,
-      var(--partner-body-bg, #f7f1e7) 50%,
-      #ffffff 100%
-    );
+    background: linear-gradient(to top, #f7f1e7 0%, #f7f1e7 50%, #ffffff 100%);
   }
   /* Right form column (Sticky) */
   @media (min-width: 1024px) {
@@ -226,8 +221,8 @@ const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, D
   .partner-theme .about-content {
     color: var(--partner-body-text, #323232);
   }
-  .partner-theme .faq-heading {
-    color: var(--partner-faq-heading, #111827);
+  .partner-theme .projects-heading {
+    color: var(--partner-projects-heading, #111827);
   }
   .partner-theme .donation-card {
     background-color: var(--partner-card-bg, #ffffff);
@@ -284,7 +279,7 @@ const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, D
 >
   <Fragment slot="head">
     <style
-      set:html={`:root { --partner-accent: ${accentColor}; --partner-cta: ${ctaColor}; --partner-hero-bg: ${heroBackgroundColor}; --partner-hero-text: ${heroTextColor}; --partner-body-bg: ${bodyBackgroundColor}; --partner-body-text: ${bodyTextColor}; --partner-faq-heading: ${faqHeadingColor}; --partner-card-bg: ${cardBackgroundColor}; }`}
+      set:html={`:root { --partner-accent: ${accentColor}; --partner-cta: ${ctaColor}; --partner-hero-bg: ${heroBackgroundColor}; --partner-hero-text: ${heroTextColor}; --partner-body-bg: ${bodyBackgroundColor}; --partner-body-text: ${bodyTextColor}; --partner-projects-heading: ${projectsHeadingColor}; --partner-card-bg: ${cardBackgroundColor}; }`}
     ></style>
   </Fragment>
   <div class="page partner-theme">
@@ -338,7 +333,7 @@ const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, D
         ))
       }
       <h2
-        class="text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl pt-12 pb-8 lg:py-4"
+        class="projects-heading text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl pt-12 pb-8 lg:py-4"
       >
         {
           (campaignData.projectsHeading?.trim() || 'Unlock a Project.\nJoin the Mission.')
@@ -371,7 +366,7 @@ const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, D
           )}
           {campaignData.faqs[0]?.template === 'faqGrid' && (
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <h2 class="faq-heading text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">
+              <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl col-span-full">
                 Frequently Asked Questions
               </h2>
               {campaignData.faqs.map((faq) => (
@@ -384,7 +379,7 @@ const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, D
           )}
           {campaignData.faqs[0]?.template === 'faqList' && (
             <div>
-              <h2 class="faq-heading text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+              <h2 class="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
                 Frequently Asked Questions
               </h2>
               <ul class="mt-4 space-y-4">
