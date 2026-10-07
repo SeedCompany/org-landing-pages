@@ -153,7 +153,7 @@ const themeFields = [
     type: 'simplerColor',
     group: 'theme',
     options: { colorFormat: 'hex' },
-    description: 'Text color for the About section and FAQ headings.',
+    description: 'Text color for the About section and the "Unlock a Project" heading.',
   }),
   defineField({
     name: 'cardBackgroundColor',
