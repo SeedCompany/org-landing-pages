@@ -67,7 +67,13 @@ const recurringPresets = donationForm?.recurringPresets?.length
 
 // Give by check: shown only when enabled in Sanity; memo line included when provided.
 const giveByMail = donationForm?.giveByMail?.enabled
-  ? { memo: donationForm.giveByMail.memo ?? undefined }
+  ? {
+      memo: donationForm.giveByMail.memo ?? undefined,
+      orgName: donationForm.giveByMail.address?.orgName,
+      mailingAddress: donationForm.giveByMail.address?.mailingAddress,
+      phone: donationForm.giveByMail.address?.phone,
+      email: donationForm.giveByMail.address?.email,
+    }
   : (false as const);
 
 const hasCustomReceiptMessage = Boolean(

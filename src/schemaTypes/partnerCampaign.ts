@@ -76,6 +76,14 @@ const partnerGiveByMail = defineField({
       type: 'string',
       description: 'Optional memo line shown in the "give by check" instructions.',
     }),
+    defineField({
+      name: 'address',
+      title: 'Org Address',
+      type: 'reference',
+      to: [{ type: 'orgAddress' }],
+      description:
+        'Select a saved address to show in the "Give by Check" modal. Leave blank to use Seed Company\'s address.',
+    }),
   ],
 });
 
