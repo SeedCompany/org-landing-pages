@@ -43,6 +43,30 @@ const selectedShareButtons = (campaignData.socialShare?.shareProviders ?? [])
   .filter((Button) => Boolean(Button));
 const shareTitle = campaignData.socialShare?.shareTitle?.trim() ?? '';
 const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '';
+
+const DEFAULT_ACCENT = '#a8654c';
+const DEFAULT_CTA = '#323232'; // intentionally matches DEFAULT_HERO_BG, not DEFAULT_ACCENT
+const DEFAULT_HERO_BG = '#323232';
+const DEFAULT_HERO_TEXT_LIGHT = '#cdc3b0';
+const DEFAULT_HERO_TEXT_DARK = '#323232';
+const DEFAULT_BODY_BG = '#f7f1e7';
+const DEFAULT_BODY_TEXT_ABOUT = '#323232';
+const DEFAULT_PROJECTS_HEADING = '#111827';
+const DEFAULT_CARD_BG = '#ffffff';
+
+const toSafeHex = (value: string | null | undefined, fallback: string) =>
+  value && /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(value) ? value : fallback;
+
+const accentColor = toSafeHex(campaignData.accentColor?.value, DEFAULT_ACCENT);
+const ctaColor = toSafeHex(campaignData.accentColor?.value, DEFAULT_CTA);
+const heroBackgroundColor = toSafeHex(campaignData.heroBackgroundColor?.value, DEFAULT_HERO_BG);
+const heroTextColor =
+  campaignData.heroTextStyle === 'dark' ? DEFAULT_HERO_TEXT_DARK : DEFAULT_HERO_TEXT_LIGHT;
+
+const bodyBackgroundColor = toSafeHex(campaignData.bodyBackgroundColor?.value, DEFAULT_BODY_BG);
+const bodyTextColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_BODY_TEXT_ABOUT);
+const projectsHeadingColor = toSafeHex(campaignData.bodyTextColor?.value, DEFAULT_PROJECTS_HEADING);
+const cardBackgroundColor = toSafeHex(campaignData.cardBackgroundColor?.value, DEFAULT_CARD_BG);
 ---
 
 <style>
@@ -62,24 +86,21 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
     flex-direction: column;
     gap: 2rem;
   }
-  /* Solid tan base that fills the viewport behind everything; the dark hero block
-     sits on top of it (higher z-index) to create the solid dark-top / tan-bottom split */
+
   .bg-gradient {
     position: fixed;
     inset: 0;
-    background-color: #f7f1e7;
+    background-color: var(--partner-body-bg, #f7f1e7);
     z-index: -2;
   }
-  /* Solid dark hero block. Its height is measured from the actual hero content by
-     the script below (var --hero-bg-height), so it ends at the bottom of the hero
-     regardless of heading/copy length or whether the optional video is present. */
+
   .hero-bg {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: var(--hero-bg-height, 640px);
-    background-color: #323232;
+    background-color: var(--partner-hero-bg, #323232);
     z-index: -1;
   }
   .donation-faq {
@@ -181,39 +202,63 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
   .partner-theme .hero-h1,
   .partner-theme .hero-sub-heading,
   .partner-theme .hero-p {
-    color: #cdc3b0;
+    color: var(--partner-hero-text, #cdc3b0);
   }
   .partner-theme .sus-green-text {
-    color: #a8654c;
-    fill: #a8654c;
+    color: var(--partner-accent, #a8654c);
+    fill: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-amount {
-    color: #a8654c;
+    color: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-li::before {
-    background-color: #a8654c;
+    background-color: var(--partner-accent, #a8654c);
   }
   .partner-theme .form-card {
-    background-color: #f7f1e7;
+    background-color: var(--partner-body-bg, #f7f1e7);
+  }
+  .partner-theme .about-heading,
+  .partner-theme .about-content {
+    color: var(--partner-body-text, #323232);
+  }
+  .partner-theme .projects-heading {
+    color: var(--partner-projects-heading, #111827);
   }
   .partner-theme .donation-card {
-    border-color: #a8654c;
+    background-color: var(--partner-card-bg, #ffffff);
+    border-color: var(--partner-accent, #a8654c);
   }
   .partner-theme .donation-card-status {
-    background: #a8654c;
+    background: var(--partner-accent, #a8654c);
   }
-  /* The shared "Give Now" button (solid variant) is scForest with a lighter hover
-     site-wide. On partner pages the design calls for Black (#323232) with a slightly
-     darker hover, so override both here without affecting other pages. */
+
   .partner-theme .bg-scForest {
-    background-color: #323232;
+    background-color: var(--partner-cta, #323232);
   }
   .partner-theme .bg-scForest:hover {
-    background-color: #232323;
+    background-color: var(--partner-cta, #323232);
+    filter: brightness(0.9);
   }
-  /* Amount preset buttons (5 presets + "Other") — lay out as an even grid instead of
-     the shared flex-wrap (which produced an uneven 4-then-2 layout). The amount group
-     is the button group with `py-4` (the investor toggle also uses flex-wrap). */
+
+  .bg-scTerracotta {
+    background-color: var(--partner-accent, #a8654c);
+  }
+  .text-scTerracotta {
+    color: var(--partner-accent, #a8654c);
+  }
+
+  .hover\:bg-scTerracottaHover:hover {
+    background-color: var(--partner-accent, #a8654c);
+    filter: brightness(0.9);
+  }
+  .hover\:text-scTerracottaHover:hover {
+    color: var(--partner-accent, #a8654c);
+    filter: brightness(0.9);
+  }
+  .focus-visible\:outline-scTerracotta:focus-visible {
+    outline-color: var(--partner-accent, #a8654c);
+  }
+
   .partner-theme .form-card .flex-wrap.py-4 {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -232,6 +277,11 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
   title={campaignData.pageTitle ||
     (campaignData.heading ? portableText.toHTML(campaignData.heading) : 'Campaign Page')}
 >
+  <Fragment slot="head">
+    <style
+      set:html={`:root { --partner-accent: ${accentColor}; --partner-cta: ${ctaColor}; --partner-hero-bg: ${heroBackgroundColor}; --partner-hero-text: ${heroTextColor}; --partner-body-bg: ${bodyBackgroundColor}; --partner-body-text: ${bodyTextColor}; --partner-projects-heading: ${projectsHeadingColor}; --partner-card-bg: ${cardBackgroundColor}; }`}
+    ></style>
+  </Fragment>
   <div class="page partner-theme">
     <main class="content">
       <div class="hero-bg" id="hero-bg"></div>
@@ -283,7 +333,7 @@ const shareDescription = campaignData.socialShare?.shareDescription?.trim() ?? '
         ))
       }
       <h2
-        class="text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl pt-12 pb-8 lg:py-4"
+        class="projects-heading text-4xl text-center md:text-left gotham-bold tracking-tight sm:text-5xl pt-12 pb-8 lg:py-4"
       >
         {
           (campaignData.projectsHeading?.trim() || 'Unlock a Project.\nJoin the Mission.')

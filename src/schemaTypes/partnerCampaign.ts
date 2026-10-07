@@ -104,6 +104,67 @@ const giverTypeField = defineField({
   initialValue: 'both',
 });
 
+// Flat fields tagged group: 'theme' (not nested in an object), same as other sections.
+// Order: hero-related, then body-related, then card-related.
+const themeFields = [
+  defineField({
+    name: 'accentColor',
+    title: 'Accent Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description:
+      'Used for the main "Give Now" button, progress bar, donation amounts, card borders, status badges, and secondary buttons.',
+  }),
+  defineField({
+    name: 'heroBackgroundColor',
+    title: 'Hero Background Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Background color of the hero section only.',
+  }),
+  defineField({
+    name: 'heroTextStyle',
+    title: 'Hero Text Style',
+    type: 'string',
+    group: 'theme',
+    description: 'Choose whichever reads better against your Hero Background Color.',
+    options: {
+      layout: 'radio',
+      list: [
+        { title: 'Light text (for dark backgrounds)', value: 'light' },
+        { title: 'Dark text (for light backgrounds)', value: 'dark' },
+      ],
+    },
+    initialValue: 'light',
+  }),
+  defineField({
+    name: 'bodyBackgroundColor',
+    title: 'Body Background Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Background color of the page body and FAQ section.',
+  }),
+  defineField({
+    name: 'bodyTextColor',
+    title: 'Body Text Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Text color for the About section and the "Unlock a Project" heading.',
+  }),
+  defineField({
+    name: 'cardBackgroundColor',
+    title: 'Card Background Color',
+    type: 'simplerColor',
+    group: 'theme',
+    options: { colorFormat: 'hex' },
+    description: 'Background color of the donation tier cards.',
+  }),
+];
+
 const partnerDonationForm = defineField({
   name: 'donationForm',
   title: 'Donation Form',
@@ -261,6 +322,7 @@ export default defineType({
     { name: 'donationForm', title: 'Donation Form' },
     { name: 'settings', title: 'Settings' },
     { name: 'receipt', title: 'Receipt' },
+    { name: 'theme', title: 'Theme' },
   ],
   fields: [
     defineField({
@@ -690,5 +752,7 @@ export default defineType({
       description: 'Optional. Custom thank-you message shown on the donation receipt email.',
       of: [receiptBodyBlock],
     }),
+
+    ...themeFields,
   ],
 });

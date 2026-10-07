@@ -61,5 +61,11 @@ export const partnerBySlug =
       address-> { orgName, mailingAddress, phone, email }
     }
   },
-  receiptBody
+  receiptBody,
+  accentColor { value },
+  heroBackgroundColor { value },
+  heroTextStyle,
+  bodyBackgroundColor { value },
+  bodyTextColor { value },
+  cardBackgroundColor { value }
 }`);
