@@ -10,6 +10,8 @@ interface ViteTypeOptions {
 interface ImportMetaEnv {
   readonly PUBLIC_SANITY_PROJECT_ID: string;
   readonly PUBLIC_SANITY_DATASET: 'production' | 'staging';
+  /** 'true' to read from the Sanity CDN (faster, ~30-60s stale). Defaults to off. */
+  readonly PUBLIC_SANITY_USE_CDN?: 'true' | 'false';
   readonly PUBLIC_STRIPE_KEY: string;
   readonly PUBLIC_RECAPTCHA_SITE_KEY: string;
   readonly PUBLIC_API_URL: string;

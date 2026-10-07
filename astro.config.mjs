@@ -23,9 +23,9 @@ export default defineConfig({
       projectId: env.PUBLIC_SANITY_PROJECT_ID,
       dataset: env.PUBLIC_SANITY_DATASET,
       studioBasePath: '/studio',
-      // Pages are server-rendered per-request already, so there's no caching benefit to
-      // also eating the Sanity CDN's ~30-60s staleness window on top of that.
-      useCdn: false,
+      // Opt-in per environment (production only). The CDN is faster & cheaper under load,
+      // but content edits can take ~30-60s to appear. Local dev & staging want instant edits.
+      useCdn: env.PUBLIC_SANITY_USE_CDN === 'true',
     }),
     posthog(env.PUBLIC_POSTHOG_KEY, {
       api_host: env.PUBLIC_POSTHOG_API_HOST,
