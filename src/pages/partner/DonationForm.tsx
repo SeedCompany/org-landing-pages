@@ -24,7 +24,7 @@ const CADENCE_CONFIG: Record<DonationType, ComponentProps<typeof NewDonationForm
   both: { options: ['OneTime', 'Monthly'] },
 };
 
-export type DonateProps = {
+export type PartnerDonateProps = {
   /** Which investor types the form allows. 'both' shows the Individual/Organization toggle. */
   investorType?: InvestorType;
   /** Which donation cadences the form allows. 'both' shows the One-time / Monthly toggle. */
@@ -41,11 +41,11 @@ export type DonateProps = {
   /** Campaign path to return to after donating; drives the thank-you page auto-redirect. */
   returnPath?: string;
   telemetry?: Telemetry;
-  receipt?: {
+  receipt: {
     /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
-    hasCustomMessage?: boolean;
+    hasCustomMessage: boolean;
     /** Sent so the receipt email knows to use the campaign's custom receipt image. */
-    hasCustomImage?: boolean;
+    hasCustomImage: boolean;
   };
 };
 
@@ -63,7 +63,7 @@ export const DonationForm = ({
   campaignProgress,
   disableDialog,
 }: {
-  formProps: DonateProps;
+  formProps: PartnerDonateProps;
   campaignProgress?: ReactNode;
   disableDialog?: boolean;
 }) => {

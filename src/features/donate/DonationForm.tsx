@@ -96,10 +96,10 @@ export type DonateCommonProps = {
   /** Receipt customization */
   receipt?: {
     /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
-    hasCustomMessage?: boolean;
+    hasCustomMessage: boolean;
 
     /** Sent so the receipt email knows to use the campaign's custom receipt image. */
-    hasCustomImage?: boolean;
+    hasCustomImage: boolean;
   };
 
   /**
@@ -175,8 +175,8 @@ export const DonationForm = (props: DonateFormProps) => {
     await submitDonation({
       ...input,
       receipt: {
-        hasCustomImage: props.receipt?.hasCustomImage ?? false,
-        hasCustomMessage: props.receipt?.hasCustomMessage ?? false,
+        hasCustomImage: props?.receipt?.hasCustomImage ?? false,
+        hasCustomMessage: props?.receipt?.hasCustomMessage ?? false,
       },
       targets: [{ amount, intent: props.intent }],
     });
