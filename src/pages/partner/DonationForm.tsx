@@ -1,8 +1,8 @@
 import { type ComponentProps, type ReactNode, useEffect, useState } from 'react';
-import { type Telemetry } from '~/graphql';
-import { DonationForm as NewDonationForm } from '~/features/donate';
-import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 import { Button } from '~/common/ui';
+import { DonationForm as NewDonationForm } from '~/features/donate';
+import { type Telemetry } from '~/graphql';
+import { CampaignEndedModal } from './CampaignEndedModal.tsx';
 
 export type InvestorType = 'both' | 'individual' | 'organization';
 
@@ -24,7 +24,7 @@ const CADENCE_CONFIG: Record<DonationType, ComponentProps<typeof NewDonationForm
   both: { options: ['OneTime', 'Monthly'] },
 };
 
-export type DonateProps = {
+export type PartnerDonateProps = {
   /** Which investor types the form allows. 'both' shows the Individual/Organization toggle. */
   investorType?: InvestorType;
   /** Which donation cadences the form allows. 'both' shows the One-time / Monthly toggle. */
@@ -41,8 +41,12 @@ export type DonateProps = {
   /** Campaign path to return to after donating; drives the thank-you page auto-redirect. */
   returnPath?: string;
   telemetry?: Telemetry;
-  /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
-  hasCustomReceiptMessage?: boolean;
+  receipt: {
+    /** Sent so the receipt email knows to use the campaign's custom receipt copy. */
+    hasCustomMessage: boolean;
+    /** Sent so the receipt email knows to use the campaign's custom receipt image. */
+    hasCustomImage: boolean;
+  };
 };
 
 // Parses a YYYY-MM-DD date string as local midnight to avoid UTC timezone shift
@@ -59,7 +63,7 @@ export const DonationForm = ({
   campaignProgress,
   disableDialog,
 }: {
-  formProps: DonateProps;
+  formProps: PartnerDonateProps;
   campaignProgress?: ReactNode;
   disableDialog?: boolean;
 }) => {
@@ -128,7 +132,7 @@ export const DonationForm = ({
                 : undefined
             }
             telemetry={formProps.telemetry}
-            hasCustomReceiptMessage={formProps.hasCustomReceiptMessage}
+            receipt={formProps.receipt}
           />
         </>
       )}

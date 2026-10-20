@@ -61,5 +61,9 @@ export const partnerBySlug =
       address-> { orgName, mailingAddress, phone, email }
     }
   },
-  receiptBody
+  receiptBody,
+  receiptImage {
+    caption,
+    asset->{ url }
+  }
 }`);
