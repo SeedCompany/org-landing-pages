@@ -65,5 +65,11 @@ export const partnerBySlug =
   receiptImage {
     caption,
     asset->{ url }
-  }
+  },
+  accentColor { value },
+  heroBackgroundColor { value },
+  heroTextStyle,
+  bodyBackgroundColor { value },
+  bodyTextColor { value },
+  cardBackgroundColor { value }
 }`);
