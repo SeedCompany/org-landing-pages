@@ -1,10 +1,10 @@
-import { env } from 'node:process';
-import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-import icon from 'astro-icon';
 import node from '@astrojs/node';
 import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 import sanity from '@sanity/astro';
+import icon from 'astro-icon';
+import { defineConfig } from 'astro/config';
+import { env } from 'node:process';
 import { graphqlBabelPlugin as graphql } from './src/integrations/graphql/babel-plugin.js';
 import { posthogAstro as posthog } from './src/integrations/posthog/posthog.astro-plugin.js';
 
@@ -38,6 +38,12 @@ export default defineConfig({
       },
     }),
   ],
+  vite: {
+    optimizeDeps: {
+      // Found late by the dev server. A late find triggers a re-optimize and stale chunk names.
+      include: ['@sanity/client', 'zod/v4/core'],
+    },
+  },
   output: 'server',
   adapter: node({
     mode: 'standalone',
